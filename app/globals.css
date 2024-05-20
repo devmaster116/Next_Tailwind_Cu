@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap");
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
@@ -38,6 +40,15 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  /* Swifti Colors */
+  --primary-purple-600: #8600ff;
+  --primary-purple-700: #6c01cc;
+  --gray-300: #d0d5dd;
+  --gray-600: #475467;
+  --gray-500: #667085;
+  --gray-700: #344054;
+  --gray-900: #353435;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -92,4 +103,17 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+button {
+  /* Reset all default button styles */
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  outline: none;
 }
