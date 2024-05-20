@@ -1,18 +1,33 @@
+@mixin input-styles($border-color) {
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  font-size: 16px;
+  gap: 8px;
+  height: 44px;
+  margin-bottom: 6px;
+  padding: 10px 14px 10px 14px;
+  width: 100%;
+}
+
 .main {
-  label {
+  .inputLabel {
     color: var(--gray-700);
     display: block;
     font-size: 14px;
     margin-bottom: 6px;
   }
 
-  input {
+  .inputContainer {
+    margin-bottom: 20px;
+  }
+
+  .input {
     border: 1px solid var(--gray-300);
     border-radius: 8px;
     font-size: 16px;
     gap: 8px;
     height: 44px;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
     padding: 10px 14px 10px 14px;
     width: 100%;
   }
@@ -23,8 +38,9 @@
   }
 }
 
-.forgotPasswordBtn {
+.forgotPasswordLink {
   color: var(--primary-purple-700);
+  display: block;
   font-size: 14px;
   margin-bottom: 24px;
 }
@@ -53,4 +69,13 @@
     color: var(--gray-600);
     margin-right: 4px;
   }
+}
+
+.errorLabel {
+  color: var(--error-500);
+  font-size: 14px;
+}
+
+.invalidInput {
+  border-color: var(--error-300) !important;
 }

@@ -44,11 +44,15 @@
   /* Swifti Colors */
   --primary-purple-600: #8600ff;
   --primary-purple-700: #6c01cc;
+
   --gray-300: #d0d5dd;
   --gray-600: #475467;
   --gray-500: #667085;
   --gray-700: #344054;
   --gray-900: #353435;
+
+  --error-300: #fda29b;
+  --error-500: #f04438;
 }
 
 @media (prefers-color-scheme: dark) {
