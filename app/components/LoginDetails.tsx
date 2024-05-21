@@ -28,23 +28,30 @@ const LoginDetails = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    let valid = true;
+
     if (!password) {
       setPasswordError("Please enter a password.");
-      return;
+      valid = false;
+    } else {
+      setPasswordError("");
     }
 
-    const emailValue = email.trim(); // Trim whitespace from email value
+    const emailValue = email.trim();
     if (!validateEmail(emailValue)) {
       setError("Please enter a valid email address.");
-      return; // Prevent form submission if email is invalid
+      valid = false;
+    } else {
+      setError("");
     }
 
-    alert("Form submitted successfully!");
+    if (valid) {
+      alert("Form submitted successfully!");
+    }
   };
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    // Clear the password error when the user starts typing in the password field
     setPasswordError("");
   };
 
@@ -94,7 +101,7 @@ const LoginDetails = () => {
         </button>
         <div className={styles.signUpContainer}>
           <p>Don't have an account?</p>
-          <Link href="/signup">Get started now</Link>
+          <Link href="https://swifti.com.au/get-started/">Get started now</Link>
         </div>
       </form>
     </div>
