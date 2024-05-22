@@ -9,12 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/bigquery": "^7.7.0",
+    "bcryptjs": "^2.4.3",
+    "firebase": "^10.12.1",
     "next": "^14.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sass": "^1.77.2"
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
     "@types/node": "20.12.12",
     "@types/react": "18.3.2",
     "eslint": "^9.3.0",
