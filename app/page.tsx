@@ -6,6 +6,8 @@ const Home = () => {
     <div>
       <main>Swifti</main>
       <Link href="/business-login">Login</Link>
+      <br />
+      <Link href="/statistics">Stats</Link>
     </div>
   );
 };
