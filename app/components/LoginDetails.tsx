@@ -2,12 +2,17 @@
 import React, { useState } from "react";
 import styles from "./LoginDetails.module.scss";
 import Link from "next/link";
+import { auth } from "@/environments/staging/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const LoginDetails = () => {
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+  const [loginMessage, setLoginMessage] = useState<string>("");
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,7 +30,7 @@ const LoginDetails = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let valid = true;
@@ -46,13 +51,20 @@ const LoginDetails = () => {
     }
 
     if (valid) {
-      alert("Form submitted successfully!");
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        router.push("/statistics");
+      } catch (error) {
+        setLoginMessage("Your password or email are incorrect. Try again.");
+      }
     }
   };
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     setPasswordError("");
+    setLoginMessage("");
   };
 
   return (
@@ -85,11 +97,14 @@ const LoginDetails = () => {
               onChange={handleChangePassword}
               placeholder="Enter password"
               className={`${styles.input} ${
-                passwordError ? styles.invalidInput : ""
+                passwordError || loginMessage ? styles.invalidInput : ""
               }`}
             />
             {!password && (
               <label className={styles.errorLabel}>{passwordError}</label>
+            )}
+            {loginMessage && (
+              <label className={styles.errorLabel}>{loginMessage}</label>
             )}
           </div>
         </div>
