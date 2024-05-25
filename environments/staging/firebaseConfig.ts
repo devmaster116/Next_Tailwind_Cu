@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import "firebase/auth";
 import { getAuth } from "firebase/auth";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDFfARCeYAuSuOg5iHZwEkQ2T2iCbKcLrc",
@@ -15,5 +16,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const functions = getFunctions(app, "australia-southeast1");
 
-export { auth };
+export { auth, functions, httpsCallable };
