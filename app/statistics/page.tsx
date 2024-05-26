@@ -32,7 +32,6 @@ const Statistics = () => {
 
   return (
     <div>
-      <h1>Statistics</h1>
       <button onClick={callAdvancedReporting}>Get Advanced Report</button>
     </div>
   );

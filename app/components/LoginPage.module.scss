@@ -1,5 +1,13 @@
 .container {
-  margin: 48px 16px 127px 16px;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+
+.loginElements {
+  margin: 48px 0px 127px 0px;
+  max-width: 545px;
+  flex: 1;
 }
 
 .staticLoginDetails {

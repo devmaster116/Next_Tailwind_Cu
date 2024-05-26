@@ -45,6 +45,7 @@
   --primary-purple-600: #8600ff;
   --primary-purple-700: #6c01cc;
 
+  --gray-25: #fcfcfd;
   --gray-300: #d0d5dd;
   --gray-600: #475467;
   --gray-500: #667085;
@@ -96,12 +97,15 @@
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  margin: 0;
+  height: 100%;
+  background-color: var(--gray-25);
 }
 
-body {
-  color: rgb(var(#475467));
+@media only screen and (max-width: 600px) {
+  body {
+    margin: 0px 16px;
+  }
 }
 
 a {
@@ -109,8 +113,9 @@ a {
   text-decoration: none;
 }
 
+/* Reset all default button styles */
+
 button {
-  /* Reset all default button styles */
   appearance: none;
   background-color: transparent;
   border: none;
