@@ -7,7 +7,7 @@ const Home = () => {
       <main>Swifti</main>
       <Link href="/business-login">Login</Link>
       <br />
-      <Link href="/statistics">Stats</Link>
+      <Link href="/reports-dashboard">Reports</Link>
     </div>
   );
 };
