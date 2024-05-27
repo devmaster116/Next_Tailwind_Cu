@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   functions,
   httpsCallable,
@@ -8,10 +8,18 @@ import {
 interface KitchenData {
   kitchen: string;
   kitchenId: string;
-  // Add other properties if necessary
+  categories: Category[];
+}
+
+interface Category {
+  category_name: string;
+  item_count: number;
+  total_price: number;
 }
 
 const Statistics = () => {
+  const [topCategories, setTopCategories] = useState<Category[]>([]);
+
   const callAdvancedReporting = async () => {
     const advancedReports = httpsCallable(functions, "advancedReporting");
     advancedReports({
@@ -20,19 +28,32 @@ const Statistics = () => {
       toReportDate: "2025-01-01",
     })
       .then(result => {
-        // Read result of the Cloud Function.
         /** @type {any} */
         const data = result.data as KitchenData;
         console.log("kitchen ==>", data);
+        setTopCategories(getTopCategories(data.categories));
+        console.log("top categories ==>", topCategories);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
+  const getTopCategories = (categories: Category[]): Category[] => {
+    return categories
+      .sort((a, b) => b.item_count - a.item_count) // Sort by total_price in descending order: ;
+      .slice(0, 5); // Get the top 5 categories
+  };
   return (
     <div>
       <button onClick={callAdvancedReporting}>Get Advanced Report</button>
+      <ul>
+        {topCategories.map(category => (
+          <li key={category.item_count}>
+            {category.category_name}: ${category.total_price}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
