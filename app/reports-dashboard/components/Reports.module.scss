@@ -12,6 +12,10 @@
   background-color: #fff;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
+
+  .countHeading {
+    text-align: center;
+  }
 }
 
 .headerItem {
@@ -24,6 +28,7 @@
 
 .headerItemTopCategories {
   text-align: left;
+  flex: 2;
 }
 
 .reportBody {
@@ -55,12 +60,18 @@
 }
 
 .reportItem {
+  align-self: center;
   flex: 1;
   padding: 10px;
-  text-align: right;
+  text-align: center;
   color: var(--gray-600);
+
+  &:last-of-type {
+    text-align: right;
+  }
 }
 
 .reportItemName {
+  flex: 2;
   text-align: left;
 }

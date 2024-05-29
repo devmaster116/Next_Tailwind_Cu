@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Skeleton.module.scss";
 
 const Skeleton = () => {
-  const skeletonItems = new Array(6).fill(null);
+  const skeletonItems = new Array(5).fill(null);
 
   return (
     <div className={styles.card}>

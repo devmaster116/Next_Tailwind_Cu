@@ -45,18 +45,21 @@ const Reports = () => {
   };
   return (
     <>
-      {!loading && (
-        <>
-          <div className={styles.report}>
-            <div className={styles.reportHeader}>
-              <div
-                className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
-              >
-                Top 5 Categories
-              </div>
-              <div className={styles.headerItem}>Count</div>
-              <div className={styles.headerItem}>Gross</div>
+      <>
+        <div className={styles.report}>
+          <div className={styles.reportHeader}>
+            <div
+              className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
+            >
+              Top 5 Categories
             </div>
+            <div className={`${styles.reportItem} ${styles.countHeading}`}>
+              Count
+            </div>
+            <div className={styles.headerItem}>Gross</div>{" "}
+          </div>
+          {loading && <Skeleton />}
+          {!loading && (
             <div className={styles.reportBody}>
               {topCategories.map((category, i) => (
                 <div key={i} className={styles.reportRow}>
@@ -72,17 +75,22 @@ const Reports = () => {
                 </div>
               ))}
             </div>
-          </div>
-          <div className={styles.report}>
-            <div className={styles.reportHeader}>
-              <div
-                className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
-              >
-                Top 5 Items
-              </div>
-              <div className={styles.headerItem}>Count</div>
-              <div className={styles.headerItem}>Gross</div>
+          )}
+        </div>
+        <div className={styles.report}>
+          <div className={styles.reportHeader}>
+            <div
+              className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
+            >
+              Top 5 Items
             </div>
+            <div className={`${styles.reportItem} ${styles.countHeading}`}>
+              Count
+            </div>
+            <div className={styles.headerItem}>Gross</div>
+          </div>
+          {loading && <Skeleton />}
+          {!loading && (
             <div className={styles.reportBody}>
               {topDishes.map((dish, i) => (
                 <div key={i} className={styles.reportRow}>
@@ -96,15 +104,9 @@ const Reports = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </>
-      )}
-      {loading && (
-        <>
-          <Skeleton />
-          <Skeleton />
-        </>
-      )}
+          )}
+        </div>
+      </>
     </>
   );
 };

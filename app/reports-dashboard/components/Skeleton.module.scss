@@ -4,7 +4,6 @@
   background-color: #fff;
   box-shadow: 0 5px 10px 0 rgba(#000, 0.15);
   border-radius: 10px;
-  margin-top: 20px;
   overflow: hidden;
 }
 
@@ -40,11 +39,11 @@
   animation: shine 1s ease infinite;
 }
 
-.skeleton:nth-child(even) {
-  background-color: var(--gray-300); /* White background for even rows */
+.skeleton:nth-child(odd) {
+  background-color: var(--gray-200); /* White background for even rows */
 }
 
-.skeleton:nth-child(odd) {
+.skeleton:nth-child(even) {
   background-color: #fff; /* Grey background for odd rows */
 }
 
