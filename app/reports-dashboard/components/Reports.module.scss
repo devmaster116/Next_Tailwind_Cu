@@ -1,0 +1,66 @@
+.report {
+  background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  margin-top: 20px;
+  padding: 0px 8px 16px 8px;
+  width: 100%;
+}
+
+.reportHeader {
+  display: flex;
+  background-color: #fff;
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
+
+.headerItem {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.headerItemTopCategories {
+  text-align: left;
+}
+
+.reportBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.reportRow {
+  display: flex;
+  border-radius: 8px;
+}
+
+.reportRow:nth-child(even) {
+  background-color: #fff;
+  border-radius: unset;
+}
+
+.reportRow:nth-child(odd) {
+  background-color: var(--gray-50);
+}
+
+.reportRow:last-child {
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.reportRow:last-child {
+  border-bottom: none;
+}
+
+.reportItem {
+  flex: 1;
+  padding: 10px;
+  text-align: right;
+  color: var(--gray-600);
+}
+
+.reportItemName {
+  text-align: left;
+}
