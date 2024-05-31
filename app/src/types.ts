@@ -3,6 +3,7 @@ export interface KitchenData {
   kitchenId: string;
   categories: KitchenItem[];
   dishes: KitchenItem[];
+  orders: OrdersResponse[];
 }
 
 export interface KitchenItem {
@@ -17,4 +18,13 @@ export interface Categories extends KitchenItem {
 
 export interface Dishes extends KitchenItem {
   dish_name: string;
+}
+
+export interface OrdersResponse {
+  completedOrders: number;
+  refundedOrders: number;
+  refundedAmount: number;
+  averageOrder: number;
+  grossSales: number;
+  tips: number;
 }

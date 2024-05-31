@@ -115,6 +115,10 @@ a {
   text-decoration: none;
 }
 
+h3 {
+  font-size: 16px;
+}
+
 /* Reset all default button styles */
 
 button {

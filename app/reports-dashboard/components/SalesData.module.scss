@@ -1,0 +1,20 @@
+.card {
+  padding: 20px 16px 20px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  flex: 1 1 0;
+  gap: 8px;
+  height: 104px;
+  width: 50%;
+
+  .cardInfo {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  h3 {
+    color: var(--gray-500);
+  }
+}
