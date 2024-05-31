@@ -19,6 +19,7 @@ const Reports = () => {
   const [loading, setLoading] = useState(true);
   const [topCategories, setTopCategories] = useState<Categories[]>([]);
   const [topDishes, setTopDishes] = useState<Dishes[]>([]);
+  const [ordersData, setOrdersData] = useState<OrdersResponse[]>([]);
 
   useEffect(() => {
     const advancedReports = httpsCallable(functions, "advancedReporting");
@@ -30,18 +31,15 @@ const Reports = () => {
       .then(result => {
         /** @type {any} */
         const data = result.data as KitchenData;
-        console.log("kitchen ==>", data);
+
         const topCategories = getTopFive(data.categories) as Categories[];
         setTopCategories(topCategories);
 
-        // Get top dishes
         const topDishes = getTopFive(data.dishes) as Dishes[];
         setTopDishes(topDishes);
         setLoading(false);
-        console.log("top categories ==>", topCategories);
       })
       .catch(error => {
-        console.log("Failed to fetch advanced reports", error);
         setLoading(false);
       });
 
@@ -53,8 +51,9 @@ const Reports = () => {
     })
       .then(result => {
         /** @type {any} */
-        const data = result.data as OrdersResponse;
-        console.log("overview data ==>", data);
+        const data = result.data as KitchenData;
+
+        setOrdersData(data.response);
       })
       .catch(error => {
         console.log("Failed to fetch overview reports", error);
@@ -65,9 +64,44 @@ const Reports = () => {
     const sortedItems = items.sort((a, b) => b.item_count - a.item_count);
     return sortedItems.slice(0, 5);
   };
+
+  const {
+    total_net_sales,
+    total_orders,
+    total_refunded_sum,
+    total_refunded_orders,
+  } = ordersData[0] || {};
   return (
     <>
-      <SalesData title="Gross sales" amount={34} />
+      {!loading && (
+        <div className={styles.salesDataContainer}>
+          <SalesData
+            title="Net Sales"
+            amount={total_net_sales}
+            isDollarAmount={true}
+          />
+          <SalesData
+            title="Orders"
+            amount={total_orders}
+            isDollarAmount={false}
+          />
+          <SalesData
+            title="Avg. Order"
+            amount={Number(
+              (
+                total_net_sales /
+                (total_orders - total_refunded_orders)
+              ).toFixed(2)
+            )}
+            isDollarAmount={true}
+          />
+          <SalesData
+            title="Refunds"
+            amount={total_refunded_sum}
+            isDollarAmount={true}
+          />
+        </div>
+      )}
       <div className={styles.report}>
         <div className={styles.reportHeader}>
           <div
