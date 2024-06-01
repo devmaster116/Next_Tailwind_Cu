@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import withAuth from "../../components/Auth/withAuth";
 import {
   functions,
   httpsCallable,
@@ -165,4 +166,4 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default withAuth(Reports);
