@@ -14,6 +14,7 @@
   border-top-left-radius: 12px;
 
   .countHeading {
+    font-weight: 700;
     text-align: center;
   }
 }
@@ -77,8 +78,8 @@
 }
 
 .salesDataContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
+  display: flex;
+  grid-template-columns: repeat(2, 45%);
   flex-wrap: wrap;
   gap: 16px;
 }

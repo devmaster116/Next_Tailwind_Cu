@@ -73,35 +73,36 @@ const Reports = () => {
   } = ordersData[0] || {};
   return (
     <>
-      {!loading && (
-        <div className={styles.salesDataContainer}>
-          <SalesData
-            title="Net Sales"
-            amount={total_net_sales}
-            isDollarAmount={true}
-          />
-          <SalesData
-            title="Orders"
-            amount={total_orders}
-            isDollarAmount={false}
-          />
-          <SalesData
-            title="Avg. Order"
-            amount={Number(
-              (
-                total_net_sales /
-                (total_orders - total_refunded_orders)
-              ).toFixed(2)
-            )}
-            isDollarAmount={true}
-          />
-          <SalesData
-            title="Refunds"
-            amount={total_refunded_sum}
-            isDollarAmount={true}
-          />
-        </div>
-      )}
+      <div className={styles.salesDataContainer}>
+        <SalesData
+          title="Net Sales"
+          amount={total_net_sales}
+          isDollarAmount={true}
+          loading={loading}
+        />
+        <SalesData
+          title="Orders"
+          amount={total_orders}
+          isDollarAmount={false}
+          loading={loading}
+        />
+        <SalesData
+          title="Avg. Order"
+          amount={Number(
+            (total_net_sales / (total_orders - total_refunded_orders)).toFixed(
+              2
+            )
+          )}
+          isDollarAmount={true}
+          loading={loading}
+        />
+        <SalesData
+          title="Refunds"
+          amount={total_refunded_sum}
+          isDollarAmount={true}
+          loading={loading}
+        />
+      </div>
       <div className={styles.report}>
         <div className={styles.reportHeader}>
           <div
