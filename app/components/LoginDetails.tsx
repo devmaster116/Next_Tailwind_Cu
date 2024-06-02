@@ -54,7 +54,7 @@ const LoginDetails = () => {
       e.preventDefault();
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        router.push("/reports");
+        router.push("/reports-dashboard");
       } catch (error) {
         setLoginMessage("Your password or email are incorrect. Try again.");
       }

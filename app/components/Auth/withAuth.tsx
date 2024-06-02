@@ -14,18 +14,16 @@ const withAuth = <P extends WithAuthProps>(
     const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
-      if (typeof window !== "undefined") {
-        const unsubscribe = onAuthStateChanged(auth, user => {
-          if (user) {
-            setAuthenticated(true);
-          } else {
-            router.push("/login");
-          }
-          setLoading(false);
-        });
+      const unsubscribe = onAuthStateChanged(auth, user => {
+        if (user) {
+          setAuthenticated(true);
+        } else {
+          router.push("/business-login");
+        }
+        setLoading(false);
+      });
 
-        return () => unsubscribe();
-      }
+      return () => unsubscribe();
     }, [router]);
 
     if (loading) {
