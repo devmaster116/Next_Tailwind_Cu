@@ -1,8 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Urbanist } from "next/font/google";
-
-const inter = Urbanist({ subsets: ["latin"], weight: ["500", "600"] });
+import LogoutButton from "./components/Auth/LogoutButton";
 
 export const metadata: Metadata = {
   title: "Customer admin webapp",
@@ -16,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <LogoutButton />
+        {children}
+      </body>
     </html>
   );
 }
