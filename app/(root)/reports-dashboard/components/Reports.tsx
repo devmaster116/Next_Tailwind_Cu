@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import withAuth from "../../components/Auth/withAuth";
+import withAuth from "../../../components/Auth/withAuth";
 import {
   functions,
   httpsCallable,
