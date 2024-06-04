@@ -2,9 +2,10 @@
 import React, { useState } from "react";
 import styles from "./LoginDetails.module.scss";
 import Link from "next/link";
-import { auth } from "@/environments/staging/firebaseConfig";
+import { auth, db } from "@/environments/staging/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
 
 const LoginDetails = () => {
   const router = useRouter();
@@ -53,8 +54,24 @@ const LoginDetails = () => {
     if (valid) {
       e.preventDefault();
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        router.push("/reports-dashboard");
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        const userId = userCredential.user.uid;
+        const userDocRef = doc(db, "users", userId);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          const kitchenId = userDocSnap.data().kitchenId;
+          const queryParams = new URLSearchParams({ kitchenId });
+          const url = `/reports-dashboard?${queryParams.toString()}`;
+
+          router.push(url);
+        } else {
+          throw new Error("User document not found");
+        }
       } catch (error) {
         setLoginMessage("Your password or email are incorrect. Try again.");
       }

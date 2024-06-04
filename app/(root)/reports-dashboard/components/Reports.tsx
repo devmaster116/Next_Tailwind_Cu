@@ -5,6 +5,7 @@ import {
   functions,
   httpsCallable,
 } from "@/environments/staging/firebaseConfig";
+import { useSearchParams } from "next/navigation";
 import {
   Dishes,
   Categories,
@@ -17,6 +18,9 @@ import Skeleton from "./Skeleton";
 import SalesData from "./SalesData";
 
 const Reports = () => {
+  const searchParams = useSearchParams();
+  const kitchenId = searchParams.get("kitchenId");
+
   const [loading, setLoading] = useState(true);
   const [topCategories, setTopCategories] = useState<Categories[]>([]);
   const [topDishes, setTopDishes] = useState<Dishes[]>([]);
@@ -25,7 +29,7 @@ const Reports = () => {
   useEffect(() => {
     const advancedReports = httpsCallable(functions, "advancedReporting");
     advancedReports({
-      kitchenId: "73stfjzxk3ocfxvqxnrhhcflhtet",
+      kitchenId: kitchenId,
       fromReportDate: "2024-01-01",
       toReportDate: "2025-01-01",
     })
@@ -46,7 +50,7 @@ const Reports = () => {
 
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
     overviewReports({
-      kitchenId: "73stfjzxk3ocfxvqxnrhhcflhtet",
+      kitchenId: kitchenId,
       fromReportDate: "2024-01-01",
       toReportDate: "2025-01-01",
     })
