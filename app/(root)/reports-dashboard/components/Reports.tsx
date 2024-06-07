@@ -16,6 +16,8 @@ import {
 import styles from "./Reports.module.scss";
 import Skeleton from "./Skeleton";
 import SalesData from "./SalesData";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Reports = () => {
   const searchParams = useSearchParams();
@@ -25,6 +27,14 @@ const Reports = () => {
   const [topCategories, setTopCategories] = useState<Categories[]>([]);
   const [topDishes, setTopDishes] = useState<Dishes[]>([]);
   const [ordersData, setOrdersData] = useState<OrdersResponse[]>([]);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const onChange = (dates: [any, any]) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
 
   useEffect(() => {
     const advancedReports = httpsCallable(functions, "advancedReporting");
@@ -78,6 +88,14 @@ const Reports = () => {
   } = ordersData[0] || {};
   return (
     <>
+      <DatePicker
+        selected={startDate}
+        onChange={onChange}
+        startDate={startDate}
+        endDate={endDate}
+        selectsRange
+        inline
+      />
       <div className={styles.salesDataContainer}>
         <SalesData
           title="Net Sales"
