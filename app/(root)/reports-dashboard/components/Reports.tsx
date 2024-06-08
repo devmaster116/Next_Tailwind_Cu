@@ -10,7 +10,6 @@ import {
   Dishes,
   Categories,
   KitchenData,
-  KitchenItem,
   OrdersResponse,
 } from "@/app/src/types";
 import styles from "./Reports.module.scss";
@@ -19,6 +18,7 @@ import SalesData from "./SalesData";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatDate, getTopFive } from "./utils/formatDate";
+import "./DatePicker.scss";
 
 const Reports = () => {
   const searchParams = useSearchParams();
@@ -92,14 +92,17 @@ const Reports = () => {
   } = ordersData[0] || {};
   return (
     <>
-      <DatePicker
-        selected={startDate}
-        onChange={onChange}
-        startDate={startDate}
-        endDate={endDate}
-        selectsRange
-        inline
-      />
+      <div className="customDatePickerWrapper">
+        <DatePicker
+          selected={startDate}
+          onChange={onChange}
+          startDate={startDate}
+          endDate={endDate}
+          selectsRange
+          inline
+          calendarStartDay={1}
+        />
+      </div>
       <div className={styles.salesDataContainer}>
         <SalesData
           title="Net Sales"
