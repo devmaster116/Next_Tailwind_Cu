@@ -18,6 +18,7 @@ import Skeleton from "./Skeleton";
 import SalesData from "./SalesData";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { formatDate, getTopFive } from "./utils/formatDate";
 
 const Reports = () => {
   const searchParams = useSearchParams();
@@ -28,20 +29,28 @@ const Reports = () => {
   const [topDishes, setTopDishes] = useState<Dishes[]>([]);
   const [ordersData, setOrdersData] = useState<OrdersResponse[]>([]);
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-  const onChange = (dates: [any, any]) => {
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [reportEndDate, setReportEndDate] = useState(new Date());
+  const [reportStartDate, setReportStartDate] = useState(new Date());
+
+  const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+
+    if (end !== null && start !== null) {
+      setReportStartDate(start);
+      setReportEndDate(end);
+    }
   };
 
   useEffect(() => {
     const advancedReports = httpsCallable(functions, "advancedReporting");
     advancedReports({
       kitchenId: kitchenId,
-      fromReportDate: "2024-01-01",
-      toReportDate: "2025-01-01",
+      fromReportDate: formatDate(reportStartDate),
+      toReportDate: formatDate(reportEndDate),
     })
       .then(result => {
         /** @type {any} */
@@ -61,24 +70,19 @@ const Reports = () => {
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
     overviewReports({
       kitchenId: kitchenId,
-      fromReportDate: "2024-01-01",
-      toReportDate: "2025-01-01",
+      fromReportDate: formatDate(reportStartDate),
+      toReportDate: formatDate(reportEndDate),
     })
       .then(result => {
         /** @type {any} */
         const data = result.data as KitchenData;
-
+        console.log("data response ==>", data.response);
         setOrdersData(data.response);
       })
       .catch(error => {
         console.log("Failed to fetch overview reports", error);
       });
-  }, []);
-
-  const getTopFive = (items: KitchenItem[]): KitchenItem[] => {
-    const sortedItems = items.sort((a, b) => b.item_count - a.item_count);
-    return sortedItems.slice(0, 5);
-  };
+  }, [reportEndDate]);
 
   const {
     total_net_sales,
@@ -99,7 +103,7 @@ const Reports = () => {
       <div className={styles.salesDataContainer}>
         <SalesData
           title="Net Sales"
-          amount={total_net_sales}
+          amount={Number(total_net_sales)}
           isDollarAmount={true}
           loading={loading}
         />
