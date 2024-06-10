@@ -34,6 +34,25 @@ const Reports = () => {
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
 
+  const [isVisible, setIsVisible] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const showModal = () => {
+    setIsVisible(true);
+    setTimeout(() => setIsAnimating(true), 0);
+  };
+
+  const hideModal = () => {
+    setIsAnimating(false);
+  };
+
+  useEffect(() => {
+    if (!isAnimating && isVisible) {
+      const timer = setTimeout(() => setIsVisible(false), 300); // Match the transition duration
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating, isVisible]);
+
   const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
     setStartDate(start);
@@ -92,17 +111,35 @@ const Reports = () => {
   } = ordersData[0] || {};
   return (
     <>
-      <div className="customDatePickerWrapper">
-        <DatePicker
-          selected={startDate}
-          onChange={onChange}
-          startDate={startDate}
-          endDate={endDate}
-          selectsRange
-          inline
-          calendarStartDay={1}
-        />
+      <div className={styles.timeSelector}>
+        <button onClick={showModal}>Today</button>
       </div>
+      {isVisible && (
+        <div
+          className={`${styles.timeSelectorModal} ${
+            isAnimating ? styles.show : styles.hide
+          }`}
+        >
+          <div className={styles.modalContent}>
+            <span className={styles.closeButton} onClick={hideModal}>
+              &times;
+            </span>
+            {/* <div className="customDatePickerWrapper">
+              <DatePicker
+                selected={startDate}
+                onChange={onChange}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                inline
+                calendarStartDay={1}
+              />
+            </div> */}
+            <div className={styles.heading}>Select report date</div>
+            <div></div>
+          </div>
+        </div>
+      )}
       <div className={styles.salesDataContainer}>
         <SalesData
           title="Net Sales"
