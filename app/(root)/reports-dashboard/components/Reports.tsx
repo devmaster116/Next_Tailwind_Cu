@@ -64,14 +64,26 @@ const Reports = () => {
   }, [isAnimating, isVisible]);
 
   const onChange = (dates: [Date | null, Date | null]) => {
+    console.log("==== CLicking on change ====");
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+  };
 
-    if (end !== null && start !== null) {
-      setReportStartDate(start);
-      setReportEndDate(end);
+  const handleApplyClick = () => {
+    if (startDate !== null && endDate !== null) {
+      setReportStartDate(startDate);
+      setReportEndDate(endDate);
+      setSelectedOption("Custom");
+      hideModal();
     }
+
+    console.log("Report Start Date:", startDate);
+    console.log("Report End Date:", endDate);
+  };
+
+  const handleCancelClick = () => {
+    setReportIsVisible(true);
   };
 
   function setReportDates(startDate: Date, endDate: Date): void {
@@ -82,24 +94,27 @@ const Reports = () => {
 
   const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setSelectedOption(event.target.value);
 
     switch (value) {
       case "Today":
         const today = new Date();
         setReportDates(today, today);
+        setSelectedOption(event.target.value);
         break;
       case "Yesterday":
         const yesterday = getYesterdayDate();
         setReportDates(yesterday, yesterday);
+        setSelectedOption(event.target.value);
         break;
       case "This Week":
         const { startDate, endDate } = getCurrentWeekRange();
         setReportDates(startDate, endDate);
+        setSelectedOption(event.target.value);
         break;
       case "This Month":
         const { startMonthDate, endMonthDate } = getCurrentMonthRange();
         setReportDates(startMonthDate, endMonthDate);
+        setSelectedOption(event.target.value);
         break;
       case "Custom":
         setReportIsVisible(false);
@@ -216,8 +231,12 @@ const Reports = () => {
                   calendarStartDay={1}
                 />
                 <div className={styles.dateConfirmation}>
-                  <button className={styles.cancel}>Cancel</button>
-                  <button className={styles.apply}>Apply</button>
+                  <button className={styles.cancel} onClick={handleCancelClick}>
+                    Cancel
+                  </button>
+                  <button className={styles.apply} onClick={handleApplyClick}>
+                    Apply
+                  </button>
                 </div>
               </div>
             </div>
