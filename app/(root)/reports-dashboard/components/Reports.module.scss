@@ -119,18 +119,32 @@
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modalContent {
-  background: white;
+@mixin modalContent {
   border-radius: 16px;
-  padding: 16px;
   position: relative;
   transform: scale(0.7);
   transition: transform 0.3s ease;
+}
+
+@mixin modalVisibility($opacity, $visibility, $transform) {
+  opacity: $opacity;
+  visibility: $visibility;
+
+  .modalContentReports,
+  .modalContentDatePicker {
+    transform: $transform;
+  }
+}
+
+.modalContentReports {
+  @include modalContent;
+  background: white;
+  padding: 16px;
   width: 343px;
 
   .modalContentHeader {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   .heading {
@@ -139,22 +153,44 @@
   }
 }
 
-.show {
-  opacity: 1;
-  visibility: visible;
+.modalContentDatePicker {
+  @include modalContent;
+  width: 328px;
+
+  .dateConfirmation {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+
+    @mixin button($borderColor, $textColor) {
+      border: 1px solid $borderColor;
+      color: $textColor;
+      display: inline-block;
+      flex: 1;
+      font-size: 14px;
+      font-weight: 600;
+      height: 40px;
+      padding: 10px 16px;
+      border-radius: 8px;
+    }
+
+    .cancel {
+      @include button(var(--gray-300), var(--gray-700));
+    }
+
+    .apply {
+      @include button(var(--primary-purple-600), #fff);
+      background-color: var(--primary-purple-600);
+    }
+  }
 }
 
-.show .modalContent {
-  transform: scale(1);
+.show {
+  @include modalVisibility(1, visible, scale(1));
 }
 
 .hide {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.hide .modalContent {
-  transform: scale(0.7);
+  @include modalVisibility(0, hidden, scale(0.7));
 }
 
 .closeButton {

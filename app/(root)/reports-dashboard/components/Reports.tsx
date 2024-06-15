@@ -42,6 +42,7 @@ const Reports = () => {
   const [reportStartDate, setReportStartDate] = useState(new Date());
 
   const [isVisible, setIsVisible] = useState(false);
+  const [isReportVisible, setReportIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const [selectedOption, setSelectedOption] = useState<string>("");
@@ -84,24 +85,24 @@ const Reports = () => {
     setSelectedOption(event.target.value);
 
     switch (value) {
-      case "today":
+      case "Today":
         const today = new Date();
         setReportDates(today, today);
         break;
-      case "yesterday":
+      case "Yesterday":
         const yesterday = getYesterdayDate();
         setReportDates(yesterday, yesterday);
         break;
-      case "thisWeek":
+      case "This Week":
         const { startDate, endDate } = getCurrentWeekRange();
         setReportDates(startDate, endDate);
         break;
-      case "thisMonth":
+      case "This Month":
         const { startMonthDate, endMonthDate } = getCurrentMonthRange();
         setReportDates(startMonthDate, endMonthDate);
         break;
-      case "dateRange":
-        console.log("Custom selected");
+      case "Custom":
+        setReportIsVisible(false);
         break;
       default:
         console.log("No valid option selected");
@@ -145,6 +146,9 @@ const Reports = () => {
       .catch(error => {
         console.log("Failed to fetch overview reports", error);
       });
+
+    console.log("Main START date ==>", reportStartDate);
+    console.log("Main END date ==>", reportEndDate);
   }, [reportEndDate]);
 
   const {
@@ -155,56 +159,70 @@ const Reports = () => {
   } = ordersData[0] || {};
 
   const options = [
-    { value: "today", label: "Today" },
-    { value: "yesterday", label: "Yesterday" },
-    { value: "thisWeek", label: "This Week" },
-    { value: "thisMonth", label: "This Month" },
-    { value: "dateRange", label: "Custom" },
+    { value: "Today", label: "Today" },
+    { value: "Yesterday", label: "Yesterday" },
+    { value: "This Week", label: "This Week" },
+    { value: "This Month", label: "This Month" },
+    { value: "Custom", label: "Custom" },
   ];
-
+  console.log("selected options", selectedOption);
   return (
     <>
       <div className={styles.timeSelector}>
-        <button onClick={showModal}>Today</button>
+        <button onClick={showModal}>{selectedOption || "Today"}</button>
       </div>
-      {isVisible && (
-        <div
-          className={`${styles.timeSelectorModal} ${
-            isAnimating ? styles.show : styles.hide
-          }`}
-        >
-          <div className={styles.modalContent}>
-            <div className={styles.modalContentHeader}>
-              <span className={styles.closeButton} onClick={hideModal}>
-                &times;
-              </span>
-            </div>
-            {/* <div className="customDatePickerWrapper">
-              <DatePicker
-                selected={startDate}
-                onChange={onChange}
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                inline
-                calendarStartDay={1}
-              />
-            </div> */}
-            <div className={styles.heading}>Select report date</div>
-            <div className={styles.selectDateButtons}>
-              {options.map(option => (
-                <RadioButton
-                  key={option.value}
-                  value={option.value}
-                  label={option.label}
-                  checked={selectedOption === option.value}
-                  onChange={handleOptionChange}
-                />
-              ))}
+      {isVisible &&
+        (isReportVisible ? (
+          <div
+            className={`${styles.timeSelectorModal} ${
+              isAnimating ? styles.show : styles.hide
+            }`}
+          >
+            <div className={styles.modalContentReports}>
+              <div className={styles.modalContentHeader}>
+                <span className={styles.closeButton} onClick={hideModal}>
+                  &times;
+                </span>
+              </div>
+              <div className={styles.heading}>Select report date</div>
+              <div className={styles.selectDateButtons}>
+                {options.map(option => (
+                  <RadioButton
+                    key={option.value}
+                    value={option.value}
+                    label={option.label}
+                    checked={selectedOption === option.value}
+                    onChange={handleOptionChange}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div
+            className={`${styles.timeSelectorModal} ${
+              isAnimating ? styles.show : styles.hide
+            }`}
+          >
+            <div className={styles.modalContentDatePicker}>
+              <div className="customDatePickerWrapper">
+                <DatePicker
+                  selected={startDate}
+                  onChange={onChange}
+                  startDate={startDate}
+                  endDate={endDate}
+                  selectsRange
+                  inline
+                  calendarStartDay={1}
+                />
+                <div className={styles.dateConfirmation}>
+                  <button className={styles.cancel}>Cancel</button>
+                  <button className={styles.apply}>Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
       <div className={styles.salesDataContainer}>
         <SalesData
           title="Net Sales"
