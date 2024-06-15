@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import withAuth from "../../../components/Auth/withAuth";
 import {
   functions,
@@ -17,8 +17,15 @@ import Skeleton from "./Skeleton";
 import SalesData from "./SalesData";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { formatDate, getTopFive } from "./utils/formatDate";
+import {
+  formatDate,
+  getTopFive,
+  getYesterdayDate,
+  getCurrentWeekRange,
+  getCurrentMonthRange,
+} from "./utils/formatDate";
 import "./DatePicker.scss";
+import RadioButton from "./RadioButton";
 
 const Reports = () => {
   const searchParams = useSearchParams();
@@ -37,6 +44,8 @@ const Reports = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  const [selectedOption, setSelectedOption] = useState<string>("");
+
   const showModal = () => {
     setIsVisible(true);
     setTimeout(() => setIsAnimating(true), 0);
@@ -48,7 +57,7 @@ const Reports = () => {
 
   useEffect(() => {
     if (!isAnimating && isVisible) {
-      const timer = setTimeout(() => setIsVisible(false), 300); // Match the transition duration
+      const timer = setTimeout(() => setIsVisible(false), 300);
       return () => clearTimeout(timer);
     }
   }, [isAnimating, isVisible]);
@@ -61,6 +70,41 @@ const Reports = () => {
     if (end !== null && start !== null) {
       setReportStartDate(start);
       setReportEndDate(end);
+    }
+  };
+
+  function setReportDates(startDate: Date, endDate: Date): void {
+    setReportStartDate(startDate);
+    setReportEndDate(endDate);
+    hideModal();
+  }
+
+  const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSelectedOption(event.target.value);
+
+    switch (value) {
+      case "today":
+        const today = new Date();
+        setReportDates(today, today);
+        break;
+      case "yesterday":
+        const yesterday = getYesterdayDate();
+        setReportDates(yesterday, yesterday);
+        break;
+      case "thisWeek":
+        const { startDate, endDate } = getCurrentWeekRange();
+        setReportDates(startDate, endDate);
+        break;
+      case "thisMonth":
+        const { startMonthDate, endMonthDate } = getCurrentMonthRange();
+        setReportDates(startMonthDate, endMonthDate);
+        break;
+      case "dateRange":
+        console.log("Custom selected");
+        break;
+      default:
+        console.log("No valid option selected");
     }
   };
 
@@ -109,6 +153,15 @@ const Reports = () => {
     total_refunded_sum,
     total_refunded_orders,
   } = ordersData[0] || {};
+
+  const options = [
+    { value: "today", label: "Today" },
+    { value: "yesterday", label: "Yesterday" },
+    { value: "thisWeek", label: "This Week" },
+    { value: "thisMonth", label: "This Month" },
+    { value: "dateRange", label: "Custom" },
+  ];
+
   return (
     <>
       <div className={styles.timeSelector}>
@@ -121,9 +174,11 @@ const Reports = () => {
           }`}
         >
           <div className={styles.modalContent}>
-            <span className={styles.closeButton} onClick={hideModal}>
-              &times;
-            </span>
+            <div className={styles.modalContentHeader}>
+              <span className={styles.closeButton} onClick={hideModal}>
+                &times;
+              </span>
+            </div>
             {/* <div className="customDatePickerWrapper">
               <DatePicker
                 selected={startDate}
@@ -136,7 +191,17 @@ const Reports = () => {
               />
             </div> */}
             <div className={styles.heading}>Select report date</div>
-            <div></div>
+            <div className={styles.selectDateButtons}>
+              {options.map(option => (
+                <RadioButton
+                  key={option.value}
+                  value={option.value}
+                  label={option.label}
+                  checked={selectedOption === option.value}
+                  onChange={handleOptionChange}
+                />
+              ))}
+            </div>
           </div>
         </div>
       )}
