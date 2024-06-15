@@ -1,0 +1,23 @@
+.selectDateButton {
+  align-items: center;
+  border: 1px solid var(--gray-200);
+  display: flex;
+  height: 56px;
+  margin-bottom: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  width: 311px;
+
+  label {
+    display: flex;
+    width: 100%;
+    height: inherit;
+    align-items: center;
+  }
+
+  input[type="radio"] {
+    accent-color: var(--primary-purple-700);
+    margin-right: 12px;
+    transform: scale(1.4);
+  }
+}
