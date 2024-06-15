@@ -10,9 +10,9 @@ const LoginPage = async () => {
         <div className={styles.staticLoginDetails}>
           <Image
             className={styles.swiftiLogo}
-            src="/swifti-logo.png" // Route of the image file
-            height={37} // Desired size with correct aspect ratio
-            width={48} // Desired size with correct aspect ratio
+            src="/swifti-logo.png"
+            height={37}
+            width={48}
             alt="Swifti Logo"
           />
           <h2>Login</h2>

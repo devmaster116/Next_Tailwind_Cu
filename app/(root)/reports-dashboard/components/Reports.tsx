@@ -27,6 +27,8 @@ import {
 } from "./utils/formatDate";
 import "./DatePicker.scss";
 import RadioButton from "./RadioButton";
+import Image from "next/image";
+import calendar from "../../../../public/icons/calendar.svg";
 
 const Reports = () => {
   const searchParams = useSearchParams();
@@ -190,7 +192,16 @@ const Reports = () => {
   return (
     <>
       <div className={styles.timeSelector}>
-        <button onClick={showModal}>{selectedOption || "Today"}</button>
+        <button onClick={showModal}>
+          <Image
+            src={calendar}
+            alt="Calendar Icon"
+            width={18}
+            height={20}
+            className={styles.calendarSvg}
+          />
+          {selectedOption || "Today"}
+        </button>
       </div>
       {isVisible &&
         (isReportVisible ? (
@@ -201,6 +212,14 @@ const Reports = () => {
           >
             <div className={styles.modalContentReports}>
               <div className={styles.modalContentHeader}>
+                <div className={styles.calendarSvg}>
+                  <Image
+                    src={calendar}
+                    alt="Calendar Icon"
+                    width={18}
+                    height={20}
+                  />
+                </div>
                 <span className={styles.closeButton} onClick={hideModal}>
                   &times;
                 </span>
