@@ -48,7 +48,14 @@ const Reports = () => {
   const [isReportVisible, setReportIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<string>(() => {
+    const storedOption = localStorage.getItem("selectedOption");
+    return storedOption || "Today";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("selectedOption", selectedOption);
+  }, [selectedOption]);
 
   const showModal = () => {
     setIsVisible(true);
