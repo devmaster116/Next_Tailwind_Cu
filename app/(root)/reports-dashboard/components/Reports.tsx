@@ -19,6 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   formatDate,
+  formatReadableDate,
   getTopFive,
   getYesterdayDate,
   getCurrentWeekRange,
@@ -74,7 +75,11 @@ const Reports = () => {
     if (startDate !== null && endDate !== null) {
       setReportStartDate(startDate);
       setReportEndDate(endDate);
-      setSelectedOption("Custom");
+      setSelectedOption(
+        `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
+          reportEndDate
+        )}`
+      );
       hideModal();
     }
 
@@ -125,6 +130,7 @@ const Reports = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const advancedReports = httpsCallable(functions, "advancedReporting");
     advancedReports({
       kitchenId: kitchenId,

@@ -9,6 +9,18 @@ export const formatDate = (date: Date | null): string => {
   return `${year}-${month}-${day}`;
 };
 
+export const formatReadableDate = (date: Date | null): string => {
+  if (!date) {
+    return "";
+  }
+
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "short" });
+  const year = date.getFullYear().toString().slice(-2);
+
+  return `${day} ${month} '${year}`;
+};
+
 export const getTopFive = (items: KitchenItem[]): KitchenItem[] => {
   const sortedItems = items.sort((a, b) => b.item_count - a.item_count);
   return sortedItems.slice(0, 5);
