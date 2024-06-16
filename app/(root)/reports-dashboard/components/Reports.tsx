@@ -60,6 +60,8 @@ const Reports = () => {
     return storedOption || "Today";
   });
 
+  const [customDate, setCustomDate] = useState<string>();
+
   useEffect(() => {
     localStorage.setItem("reportStartDate", reportStartDate.toISOString());
   }, [reportStartDate]);
@@ -70,7 +72,7 @@ const Reports = () => {
 
   useEffect(() => {
     localStorage.setItem("selectedOption", selectedOption);
-  }, [selectedOption]);
+  }, []);
 
   const showModal = () => {
     setIsVisible(true);
@@ -100,11 +102,6 @@ const Reports = () => {
     if (startDate !== null && endDate !== null) {
       setReportStartDate(startDate);
       setReportEndDate(endDate);
-      setSelectedOption(
-        `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-          reportEndDate
-        )}`
-      );
       hideModal();
     }
 
@@ -189,6 +186,13 @@ const Reports = () => {
         console.log("Failed to fetch overview reports", error);
       });
 
+    if (selectedOption === "Custom") {
+      setCustomDate(
+        `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
+          reportEndDate
+        )}`
+      );
+    }
     console.log("Main START date ==>", reportStartDate);
     console.log("Main END date ==>", reportEndDate);
   }, [reportEndDate]);
@@ -219,7 +223,7 @@ const Reports = () => {
             height={20}
             className={styles.calendarSvg}
           />
-          {selectedOption || "Today"}
+          {selectedOption === "Custom" ? customDate : selectedOption || "Today"}
         </button>
       </div>
       {isVisible &&
@@ -250,7 +254,10 @@ const Reports = () => {
                     key={option.value}
                     value={option.value}
                     label={option.label}
-                    checked={selectedOption === option.value}
+                    checked={
+                      option.value !== "Custom" &&
+                      selectedOption === option.value
+                    }
                     onChange={handleOptionChange}
                   />
                 ))}
