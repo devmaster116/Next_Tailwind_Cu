@@ -41,11 +41,18 @@ const Reports = () => {
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [reportEndDate, setReportEndDate] = useState(new Date());
-  const [reportStartDate, setReportStartDate] = useState(new Date());
+  const [reportStartDate, setReportStartDate] = useState<Date>(() => {
+    const savedStartDate = localStorage.getItem("reportStartDate");
+    return savedStartDate ? new Date(savedStartDate) : new Date();
+  });
+
+  const [reportEndDate, setReportEndDate] = useState<Date>(() => {
+    const savedEndDate = localStorage.getItem("reportEndDate");
+    return savedEndDate ? new Date(savedEndDate) : new Date();
+  });
 
   const [isVisible, setIsVisible] = useState(false);
-  const [isReportVisible, setReportIsVisible] = useState(true);
+  const [isReportVisible, setIsReportVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const [selectedOption, setSelectedOption] = useState<string>(() => {
@@ -54,11 +61,20 @@ const Reports = () => {
   });
 
   useEffect(() => {
+    localStorage.setItem("reportStartDate", reportStartDate.toISOString());
+  }, [reportStartDate]);
+
+  useEffect(() => {
+    localStorage.setItem("reportEndDate", reportEndDate.toISOString());
+  }, [reportEndDate]);
+
+  useEffect(() => {
     localStorage.setItem("selectedOption", selectedOption);
   }, [selectedOption]);
 
   const showModal = () => {
     setIsVisible(true);
+    setIsReportVisible(true);
     setTimeout(() => setIsAnimating(true), 0);
   };
 
@@ -97,7 +113,7 @@ const Reports = () => {
   };
 
   const handleCancelClick = () => {
-    setReportIsVisible(true);
+    setIsReportVisible(true);
   };
 
   function setReportDates(startDate: Date, endDate: Date): void {
@@ -108,34 +124,30 @@ const Reports = () => {
 
   const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-
     switch (value) {
       case "Today":
         const today = new Date();
         setReportDates(today, today);
-        setSelectedOption(event.target.value);
         break;
       case "Yesterday":
         const yesterday = getYesterdayDate();
         setReportDates(yesterday, yesterday);
-        setSelectedOption(event.target.value);
         break;
       case "This Week":
         const { startDate, endDate } = getCurrentWeekRange();
         setReportDates(startDate, endDate);
-        setSelectedOption(event.target.value);
         break;
       case "This Month":
         const { startMonthDate, endMonthDate } = getCurrentMonthRange();
         setReportDates(startMonthDate, endMonthDate);
-        setSelectedOption(event.target.value);
         break;
       case "Custom":
-        setReportIsVisible(false);
+        setIsReportVisible(false);
         break;
       default:
         console.log("No valid option selected");
     }
+    setSelectedOption(value);
   };
 
   useEffect(() => {
