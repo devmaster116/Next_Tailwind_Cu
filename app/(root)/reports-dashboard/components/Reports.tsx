@@ -266,7 +266,7 @@ const Reports = () => {
           </div>
         ) : (
           <div
-            className={`${styles.timeSelectorModal} ${
+            className={`${styles.datePickerModal} ${
               isAnimating ? styles.show : styles.hide
             }`}
           >
