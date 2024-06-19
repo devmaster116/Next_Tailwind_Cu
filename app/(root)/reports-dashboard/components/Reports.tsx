@@ -41,38 +41,16 @@ const Reports = () => {
 
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [reportStartDate, setReportStartDate] = useState<Date>(() => {
-    const savedStartDate = localStorage.getItem("reportStartDate");
-    return savedStartDate ? new Date(savedStartDate) : new Date();
-  });
-
-  const [reportEndDate, setReportEndDate] = useState<Date>(() => {
-    const savedEndDate = localStorage.getItem("reportEndDate");
-    return savedEndDate ? new Date(savedEndDate) : new Date();
-  });
+  const [reportEndDate, setReportEndDate] = useState(new Date());
+  const [reportStartDate, setReportStartDate] = useState(new Date());
 
   const [isVisible, setIsVisible] = useState(false);
   const [isReportVisible, setIsReportVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState<string>(() => {
-    const storedOption = localStorage.getItem("selectedOption");
-    return storedOption || "Today";
-  });
+  const [selectedOption, setSelectedOption] = useState<string>("Today");
 
   const [customDate, setCustomDate] = useState<string>();
-
-  useEffect(() => {
-    localStorage.setItem("reportStartDate", reportStartDate.toISOString());
-  }, [reportStartDate]);
-
-  useEffect(() => {
-    localStorage.setItem("reportEndDate", reportEndDate.toISOString());
-  }, [reportEndDate]);
-
-  useEffect(() => {
-    localStorage.setItem("selectedOption", selectedOption);
-  }, []);
 
   const showModal = () => {
     setIsVisible(true);
@@ -102,9 +80,17 @@ const Reports = () => {
     if (startDate !== null && endDate !== null) {
       setReportStartDate(startDate);
       setReportEndDate(endDate);
+      setSelectedOption("Custom");
       hideModal();
     }
 
+    if (selectedOption === "Custom") {
+      setCustomDate(
+        `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
+          reportEndDate
+        )}`
+      );
+    }
     console.log("Report Start Date:", startDate);
     console.log("Report End Date:", endDate);
   };
@@ -125,18 +111,22 @@ const Reports = () => {
       case "Today":
         const today = new Date();
         setReportDates(today, today);
+        setSelectedOption(value);
         break;
       case "Yesterday":
         const yesterday = getYesterdayDate();
         setReportDates(yesterday, yesterday);
+        setSelectedOption(value);
         break;
       case "This Week":
         const { startDate, endDate } = getCurrentWeekRange();
         setReportDates(startDate, endDate);
+        setSelectedOption(value);
         break;
       case "This Month":
         const { startMonthDate, endMonthDate } = getCurrentMonthRange();
         setReportDates(startMonthDate, endMonthDate);
+        setSelectedOption(value);
         break;
       case "Custom":
         setIsReportVisible(false);
@@ -144,7 +134,6 @@ const Reports = () => {
       default:
         console.log("No valid option selected");
     }
-    setSelectedOption(value);
   };
 
   useEffect(() => {
@@ -192,6 +181,8 @@ const Reports = () => {
           reportEndDate
         )}`
       );
+    } else {
+      setCustomDate(selectedOption);
     }
     console.log("Main START date ==>", reportStartDate);
     console.log("Main END date ==>", reportEndDate);
@@ -212,6 +203,7 @@ const Reports = () => {
     { value: "Custom", label: "Custom" },
   ];
   console.log("selected options", selectedOption);
+  console.log("Custom date", customDate);
   return (
     <>
       <div className={styles.timeSelector}>
@@ -223,7 +215,7 @@ const Reports = () => {
             height={20}
             className={styles.calendarSvg}
           />
-          {selectedOption === "Custom" ? customDate : selectedOption || "Today"}
+          {customDate ? customDate : selectedOption}
         </button>
       </div>
       {isVisible &&
