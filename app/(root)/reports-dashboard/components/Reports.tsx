@@ -70,16 +70,18 @@ const Reports = () => {
   }, [isAnimating, isVisible]);
 
   const onChange = (dates: [Date | null, Date | null]) => {
-    console.log("==== CLicking on change ====");
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
   };
 
   const handleApplyClick = () => {
-    if (startDate !== null && endDate !== null) {
+    if (startDate) {
+      const finalEndDate = endDate || startDate;
+
       setReportStartDate(startDate);
-      setReportEndDate(endDate);
+      setReportEndDate(finalEndDate);
+
       setSelectedOption("Custom");
       hideModal();
     }
@@ -91,8 +93,6 @@ const Reports = () => {
         )}`
       );
     }
-    console.log("Report Start Date:", startDate);
-    console.log("Report End Date:", endDate);
   };
 
   const handleCancelClick = () => {
