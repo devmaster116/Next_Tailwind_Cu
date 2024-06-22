@@ -29,10 +29,13 @@ import "./DatePicker.scss";
 import RadioButton from "./RadioButton";
 import Image from "next/image";
 import calendar from "../../../../public/icons/calendar.svg";
+import DataError from "./DataError";
 
 const Reports = () => {
   const searchParams = useSearchParams();
   const kitchenId = searchParams.get("kitchenId");
+
+  const [error, setError] = useState<boolean>(false);
 
   const [loading, setLoading] = useState(true);
   const [topCategories, setTopCategories] = useState<Categories[]>([]);
@@ -145,6 +148,8 @@ const Reports = () => {
       toReportDate: formatDate(reportEndDate),
     })
       .then(result => {
+        // Simulate an error by throwing an exception
+        throw new Error("Simulated error");
         /** @type {any} */
         const data = result.data as KitchenData;
 
@@ -156,7 +161,8 @@ const Reports = () => {
         setLoading(false);
       })
       .catch(error => {
-        setLoading(false);
+        console.error("Failed to advanced reports:", error);
+        setError(true);
       });
 
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
@@ -173,6 +179,7 @@ const Reports = () => {
       })
       .catch(error => {
         console.log("Failed to fetch overview reports", error);
+        setError(true);
       });
 
     if (selectedOption === "Custom") {
@@ -206,6 +213,7 @@ const Reports = () => {
     { value: "This Month", label: "This Month" },
     { value: "Custom", label: "Custom" },
   ];
+
   console.log("selected options", selectedOption);
   console.log("Custom date", customDate);
   return (
@@ -289,126 +297,137 @@ const Reports = () => {
             </div>
           </div>
         ))}
-      <div className={styles.salesDataContainer}>
-        <SalesData
-          title="Net Sales"
-          amount={Number(total_net_sales)}
-          isDollarAmount={true}
-          loading={loading}
-        />
-        <SalesData
-          title="Orders"
-          amount={total_orders}
-          isDollarAmount={false}
-          loading={loading}
-        />
-        <SalesData
-          title="Avg. Order"
-          amount={Number(
-            (total_net_sales / (total_orders - total_refunded_orders)).toFixed(
-              2
-            )
-          )}
-          isDollarAmount={true}
-          loading={loading}
-        />
-        <SalesData
-          title="Refunds"
-          amount={total_refunded_sum}
-          isDollarAmount={true}
-          loading={loading}
-        />
-      </div>
-      <div className={styles.report}>
-        <div className={styles.reportHeader}>
-          <div
-            className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
-          >
-            Top 5 Categories
+      {error ? (
+        <DataError />
+      ) : (
+        <>
+          <div className={styles.salesDataContainer}>
+            <SalesData
+              title="Net Sales"
+              amount={Number(total_net_sales)}
+              isDollarAmount={true}
+              loading={loading}
+            />
+            <SalesData
+              title="Orders"
+              amount={total_orders}
+              isDollarAmount={false}
+              loading={loading}
+            />
+            <SalesData
+              title="Avg. Order"
+              amount={Number(
+                (
+                  total_net_sales /
+                  (total_orders - total_refunded_orders)
+                ).toFixed(2)
+              )}
+              isDollarAmount={true}
+              loading={loading}
+            />
+            <SalesData
+              title="Refunds"
+              amount={total_refunded_sum}
+              isDollarAmount={true}
+              loading={loading}
+            />
           </div>
-          <div className={`${styles.reportItem} ${styles.countHeading}`}>
-            Count
-          </div>
-          <div className={styles.headerItem}>Gross</div>{" "}
-        </div>
-        {loading && <Skeleton />}
-        {!loading && (
-          <div className={styles.reportBody}>
-            {topCategories.length === 0 ? (
-              <div className={styles.reportRow}>
-                <div
-                  className={`${styles.reportItem} ${styles.reportItemName}`}
-                >
-                  <p className={styles.noDataText}>
-                    No sale completed{" "}
-                    {customDate
-                      ? `between ${customDate}`
-                      : selectedOption.toLocaleLowerCase()}
-                  </p>
-                </div>
+          <div className={styles.report}>
+            <div className={styles.reportHeader}>
+              <div
+                className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
+              >
+                Top 5 Categories
               </div>
-            ) : (
-              topCategories.map((category, i) => (
-                <div key={i} className={styles.reportRow}>
-                  <div
-                    className={`${styles.reportItem} ${styles.reportItemName}`}
-                  >
-                    {category.category_name}
+              <div className={`${styles.reportItem} ${styles.countHeading}`}>
+                Count
+              </div>
+              <div className={styles.headerItem}>Gross</div>{" "}
+            </div>
+            {loading && <Skeleton />}
+            {!loading && (
+              <div className={styles.reportBody}>
+                {topCategories.length === 0 ? (
+                  <div className={styles.reportRow}>
+                    <div
+                      className={`${styles.reportItem} ${styles.reportItemName}`}
+                    >
+                      <p className={styles.noDataText}>
+                        No sale completed{" "}
+                        {customDate
+                          ? `between ${customDate}`
+                          : selectedOption.toLocaleLowerCase()}
+                      </p>
+                    </div>
                   </div>
-                  <div className={styles.reportItem}>{category.item_count}</div>
-                  <div className={styles.reportItem}>
-                    ${category.total_price}
-                  </div>
-                </div>
-              ))
+                ) : (
+                  topCategories.map((category, i) => (
+                    <div key={i} className={styles.reportRow}>
+                      <div
+                        className={`${styles.reportItem} ${styles.reportItemName}`}
+                      >
+                        {category.category_name}
+                      </div>
+                      <div className={styles.reportItem}>
+                        {category.item_count}
+                      </div>
+                      <div className={styles.reportItem}>
+                        ${category.total_price}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
-      <div className={styles.report}>
-        <div className={styles.reportHeader}>
-          <div
-            className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
-          >
-            Top 5 Items
-          </div>
-          <div className={`${styles.reportItem} ${styles.countHeading}`}>
-            Count
-          </div>
-          <div className={styles.headerItem}>Gross</div>
-        </div>
-        {loading && <Skeleton />}
-        {!loading && (
-          <div className={styles.reportBody}>
-            {topDishes.length === 0 ? (
-              <div className={styles.reportRow}>
-                <div
-                  className={`${styles.reportItem} ${styles.reportItemName}`}
-                >
-                  <p className={styles.noDataText}>
-                    No sale completed{" "}
-                    {customDate
-                      ? `between ${customDate}`
-                      : selectedOption.toLowerCase()}
-                  </p>
-                </div>
+          <div className={styles.report}>
+            <div className={styles.reportHeader}>
+              <div
+                className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
+              >
+                Top 5 Items
               </div>
-            ) : (
-              topDishes.map((dish, i) => (
-                <div key={i} className={styles.reportRow}>
-                  <div
-                    className={`${styles.reportItem} ${styles.reportItemName}`}
-                  >
-                    {dish.dish_name}
+              <div className={`${styles.reportItem} ${styles.countHeading}`}>
+                Count
+              </div>
+              <div className={styles.headerItem}>Gross</div>
+            </div>
+            {loading && <Skeleton />}
+            {!loading && (
+              <div className={styles.reportBody}>
+                {topDishes.length === 0 ? (
+                  <div className={styles.reportRow}>
+                    <div
+                      className={`${styles.reportItem} ${styles.reportItemName}`}
+                    >
+                      <p className={styles.noDataText}>
+                        No sale completed{" "}
+                        {customDate
+                          ? `between ${customDate}`
+                          : selectedOption.toLowerCase()}
+                      </p>
+                    </div>
                   </div>
-                  <div className={styles.reportItem}>{dish.item_count}</div>
-                  <div className={styles.reportItem}>${dish.total_price}</div>
-                </div>
-              ))
+                ) : (
+                  topDishes.map((dish, i) => (
+                    <div key={i} className={styles.reportRow}>
+                      <div
+                        className={`${styles.reportItem} ${styles.reportItemName}`}
+                      >
+                        {dish.dish_name}
+                      </div>
+                      <div className={styles.reportItem}>{dish.item_count}</div>
+                      <div className={styles.reportItem}>
+                        ${dish.total_price}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </>
   );
 };
