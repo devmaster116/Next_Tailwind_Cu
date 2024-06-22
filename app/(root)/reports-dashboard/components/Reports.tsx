@@ -182,11 +182,15 @@ const Reports = () => {
         )}`
       );
     } else {
-      setCustomDate(selectedOption);
+      setCustomDate(undefined);
+      setSelectedOption(selectedOption);
     }
+
     console.log("Main START date ==>", reportStartDate);
     console.log("Main END date ==>", reportEndDate);
   }, [reportEndDate]);
+  console.log("Top dishes ===>", topDishes);
+  console.log("Top categories ===>", topCategories);
 
   const {
     total_net_sales,
@@ -330,17 +334,34 @@ const Reports = () => {
         {loading && <Skeleton />}
         {!loading && (
           <div className={styles.reportBody}>
-            {topCategories.map((category, i) => (
-              <div key={i} className={styles.reportRow}>
+            {topCategories.length === 0 ? (
+              <div className={styles.reportRow}>
                 <div
                   className={`${styles.reportItem} ${styles.reportItemName}`}
                 >
-                  {category.category_name}
+                  <p className={styles.noDataText}>
+                    No sale completed{" "}
+                    {customDate
+                      ? `between ${customDate}`
+                      : selectedOption.toLocaleLowerCase()}
+                  </p>
                 </div>
-                <div className={styles.reportItem}>{category.item_count}</div>
-                <div className={styles.reportItem}>${category.total_price}</div>
               </div>
-            ))}
+            ) : (
+              topCategories.map((category, i) => (
+                <div key={i} className={styles.reportRow}>
+                  <div
+                    className={`${styles.reportItem} ${styles.reportItemName}`}
+                  >
+                    {category.category_name}
+                  </div>
+                  <div className={styles.reportItem}>{category.item_count}</div>
+                  <div className={styles.reportItem}>
+                    ${category.total_price}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
@@ -359,17 +380,32 @@ const Reports = () => {
         {loading && <Skeleton />}
         {!loading && (
           <div className={styles.reportBody}>
-            {topDishes.map((dish, i) => (
-              <div key={i} className={styles.reportRow}>
+            {topDishes.length === 0 ? (
+              <div className={styles.reportRow}>
                 <div
                   className={`${styles.reportItem} ${styles.reportItemName}`}
                 >
-                  {dish.dish_name}
+                  <p className={styles.noDataText}>
+                    No sale completed{" "}
+                    {customDate
+                      ? `between ${customDate}`
+                      : selectedOption.toLowerCase()}
+                  </p>
                 </div>
-                <div className={styles.reportItem}>{dish.item_count}</div>
-                <div className={styles.reportItem}>${dish.total_price}</div>
               </div>
-            ))}
+            ) : (
+              topDishes.map((dish, i) => (
+                <div key={i} className={styles.reportRow}>
+                  <div
+                    className={`${styles.reportItem} ${styles.reportItemName}`}
+                  >
+                    {dish.dish_name}
+                  </div>
+                  <div className={styles.reportItem}>{dish.item_count}</div>
+                  <div className={styles.reportItem}>${dish.total_price}</div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
