@@ -26,13 +26,13 @@ const SalesData = ({
           <h3>{title}</h3>
           {loading && <SalesDataSkeleton />}
           {!loading && (
-            <h2>
+            <p>
               {isDollarAmount
                 ? !amount
                   ? `$${getDisplayAmount(amount)}.00`
                   : `$${getDisplayAmount(amount)}`
                 : `${getDisplayAmount(amount)}`}
-            </h2>
+            </p>
           )}
         </div>
       </div>

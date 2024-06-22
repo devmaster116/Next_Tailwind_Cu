@@ -1,4 +1,5 @@
 .logoutButton {
+  align-items: center;
   border-bottom: 1px solid var(--gray-100);
   color: var(--primary-purple-700);
   display: flex;
@@ -6,6 +7,5 @@
   font-size: 14px;
   height: 64px;
   justify-content: end;
-  padding: 22px 16px;
   width: 100%;
 }

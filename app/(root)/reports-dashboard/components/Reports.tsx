@@ -148,8 +148,6 @@ const Reports = () => {
       toReportDate: formatDate(reportEndDate),
     })
       .then(result => {
-        // Simulate an error by throwing an exception
-        throw new Error("Simulated error");
         /** @type {any} */
         const data = result.data as KitchenData;
 
