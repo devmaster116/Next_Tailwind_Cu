@@ -3,11 +3,15 @@ import Image from "next/image";
 import exclamation from "../../../../public/icons/exclamation.svg";
 import styles from "./DataError.module.scss";
 
+interface DataErrorProps {
+  errorMessage: string;
+}
+
 const handleRefresh = () => {
   window.location.reload(); // Refresh the page
 };
 
-const DataError = () => {
+const DataError = ({ errorMessage }: DataErrorProps) => {
   return (
     <div className={styles.errorContainer}>
       <div className={styles.errorMessage}>
@@ -20,7 +24,7 @@ const DataError = () => {
             className={styles.exclamationSvg}
           />
         </div>
-        <p className={styles.message1}>Error retrieving dashboard data</p>
+        <p className={styles.message1}>{errorMessage}</p>
         <p className={styles.message2}>
           Check your connectivity and try again.
         </p>
