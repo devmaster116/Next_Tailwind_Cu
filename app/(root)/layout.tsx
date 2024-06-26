@@ -14,7 +14,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body>
         <main className="layoutMain">
           <Image
-            src="/swifti-logo.png"
+            src="/images/swifti-logo.png"
             height={20}
             width={33}
             alt="Swifti Logo"

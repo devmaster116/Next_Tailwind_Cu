@@ -10,7 +10,7 @@ const LoginPage = async () => {
         <div className={styles.staticLoginDetails}>
           <Image
             className={styles.swiftiLogo}
-            src="/swifti-logo.png"
+            src="/images/swifti-logo.png"
             height={37}
             width={48}
             alt="Swifti Logo"
