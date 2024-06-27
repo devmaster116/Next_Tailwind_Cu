@@ -9,10 +9,11 @@
   width: 311px;
 
   label {
+    align-items: center;
+    cursor: pointer;
     display: flex;
     width: 100%;
     height: inherit;
-    align-items: center;
   }
 
   input[type="radio"] {

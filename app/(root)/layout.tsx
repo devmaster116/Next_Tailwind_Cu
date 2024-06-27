@@ -1,4 +1,4 @@
-import "../../app/globals.css";
+import "../../app/globals.scss";
 import type { Metadata } from "next";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Image from "next/image";
