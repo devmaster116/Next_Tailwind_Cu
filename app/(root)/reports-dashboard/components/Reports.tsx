@@ -147,9 +147,6 @@ const Reports = () => {
     const advancedReports = httpsCallable(functions, "advancedReporting");
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
 
-    console.log("Advanced ====>", advancedReports);
-    console.log("overviewRRRR ====>", overviewReports);
-
     advancedReports({
       kitchenId: kitchenId,
       fromReportDate: formatDate(reportStartDate),
@@ -178,7 +175,6 @@ const Reports = () => {
       .then(result => {
         /** @type {any} */
         const data = result.data as KitchenData;
-        console.log("data response ==>", data.response);
         setOrdersData(data.response);
       })
       .catch(error => {
@@ -200,12 +196,7 @@ const Reports = () => {
     Promise.allSettled([advancedReports, overviewReports]).finally(() => {
       setLoading(false);
     });
-
-    console.log("Main START date ==>", reportStartDate);
-    console.log("Main END date ==>", reportEndDate);
   }, [reportEndDate]);
-  console.log("Top dishes ===>", topDishes);
-  console.log("Top categories ===>", topCategories);
 
   const {
     total_net_sales,
@@ -222,8 +213,6 @@ const Reports = () => {
     { value: "Custom", label: "Custom" },
   ];
 
-  console.log("selected options", selectedOption);
-  console.log("Custom date", customDate);
   return (
     <>
       <div className={styles.timeSelector}>

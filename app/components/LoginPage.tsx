@@ -6,6 +6,7 @@ import styles from "./LoginPage.module.scss";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/environments/staging/firebaseConfig";
 import { useRouter } from "next/navigation";
+import Loading from "./Loading";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const LoginPage = () => {
   }, [loading, router]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

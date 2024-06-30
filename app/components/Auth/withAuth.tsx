@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, ComponentType } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../../environments/staging/firebaseConfig";
+import Loading from "../Loading";
 
 interface WithAuthProps {}
 
@@ -27,7 +28,7 @@ const withAuth = <P extends WithAuthProps>(
     }, [router]);
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <Loading />;
     }
 
     if (!authenticated) {
