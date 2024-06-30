@@ -67,6 +67,7 @@ const LoginDetails = () => {
           const kitchenId = userDocSnap.data().kitchenId;
           const queryParams = new URLSearchParams({ kitchenId });
           const url = `/reports-dashboard?${queryParams.toString()}`;
+          localStorage.setItem("kitchenId", kitchenId);
 
           router.push(url);
         } else {
