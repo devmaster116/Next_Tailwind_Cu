@@ -6,6 +6,7 @@ import { auth, db } from "@/environments/staging/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
+import { validateEmail } from "./Auth/utils/helper";
 
 const LoginDetails = () => {
   const router = useRouter();
@@ -14,11 +15,6 @@ const LoginDetails = () => {
   const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [loginMessage, setLoginMessage] = useState<string>("");
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const handleBlurEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -89,7 +85,7 @@ const LoginDetails = () => {
     <div className={styles.main}>
       <form onSubmit={handleSubmit}>
         <div>
-          <label className={styles.inputLabel} htmlFor="username">
+          <label className={styles.inputLabel} htmlFor="email">
             Email
           </label>
           <div className={styles.inputContainer}>
@@ -106,7 +102,7 @@ const LoginDetails = () => {
           </div>
         </div>
         <div>
-          <label className={styles.inputLabel} htmlFor="username">
+          <label className={styles.inputLabel} htmlFor="password">
             Password
           </label>
           <div className={styles.inputContainer}>
@@ -126,7 +122,7 @@ const LoginDetails = () => {
             )}
           </div>
         </div>
-        <Link href="/forgotpassword" className={styles.forgotPasswordLink}>
+        <Link href="/forgot-password" className={styles.forgotPasswordLink}>
           Forgot Password?
         </Link>
         <button className={styles.signInBtn} type="submit">
