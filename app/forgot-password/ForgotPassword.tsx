@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./ForgotPassword.module.scss";
 import { validateEmail } from "../components/Auth/utils/helper";
@@ -8,11 +9,13 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/environments/staging/firebaseConfig";
 
 const ForgotPassword = () => {
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
 
   const handleBlurEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    setError("");
     setEmail(value);
 
     if (validateEmail(value)) {
@@ -20,6 +23,13 @@ const ForgotPassword = () => {
     } else {
       setError("Please enter a valid email address.");
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail: string = e.target.value;
+    setEmail(newEmail);
+
+    setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,9 +49,13 @@ const ForgotPassword = () => {
       e.preventDefault();
       sendPasswordResetEmail(auth, email)
         .then(() => {
-          console.log("Sent successfully");
+          const queryParams = new URLSearchParams({ email });
+          router.push(`/email-sent?${queryParams.toString()}`);
         })
         .catch(error => {
+          setError(
+            `Sorry, the email ${email} was not found. Please try again.`
+          );
           console.log("Error:", error);
         });
     }
@@ -55,7 +69,7 @@ const ForgotPassword = () => {
             <div className={styles.outerCircle}>
               <div className={styles.innerCircle}>
                 <Image
-                  className={styles.keyIcon}
+                  className={styles.icon}
                   src="/icons/key.svg"
                   height={21}
                   width={21}
@@ -81,7 +95,7 @@ const ForgotPassword = () => {
                 type="email"
                 id="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={handleInputChange}
                 onBlur={handleBlurEmail}
                 placeholder="Enter your email"
                 className={`${styles.input} ${
@@ -91,7 +105,7 @@ const ForgotPassword = () => {
               {error && <label className={styles.errorLabel}>{error}</label>}
             </div>
           </div>
-          <button className={styles.resetPasswordBtn} type="submit">
+          <button className={styles.mainBtn} type="submit">
             Reset password
           </button>
         </form>
