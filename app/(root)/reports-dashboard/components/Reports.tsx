@@ -5,7 +5,6 @@ import {
   functions,
   httpsCallable,
 } from "@/environments/staging/firebaseConfig";
-import { useSearchParams } from "next/navigation";
 import {
   Dishes,
   Categories,
@@ -32,8 +31,7 @@ import calendar from "../../../../public/icons/calendar.svg";
 import DataError from "./DataError";
 
 const Reports = () => {
-  const searchParams = useSearchParams();
-  const kitchenId = searchParams.get("kitchenId");
+  const kitchenId = localStorage.getItem("kitchenId");
 
   const [advancedReportingError, setAdvancedReportingError] =
     useState<boolean>(false);

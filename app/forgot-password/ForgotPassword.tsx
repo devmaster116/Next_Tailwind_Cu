@@ -4,32 +4,18 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./ForgotPassword.module.scss";
-import { resetPassword, validateEmail } from "../components/Auth/utils/helper";
+import {
+  handleBlurEmail,
+  handleInputChange,
+  resetPassword,
+  validateEmail,
+} from "../components/Auth/utils/helper";
 import Link from "next/link";
 
 const ForgotPassword = () => {
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
-
-  const handleBlurEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setError("");
-    setEmail(value);
-
-    if (validateEmail(value)) {
-      setError("");
-    } else {
-      setError("Please enter a valid email address.");
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail: string = e.target.value;
-    setEmail(newEmail);
-
-    setError("");
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -95,8 +81,8 @@ const ForgotPassword = () => {
                 type="email"
                 id="email"
                 value={email}
-                onChange={handleInputChange}
-                onBlur={handleBlurEmail}
+                onChange={e => handleInputChange(e, setEmail, setError)}
+                onBlur={e => handleBlurEmail(e, setEmail, setError)}
                 placeholder="Enter your email"
                 className={`${styles.input} ${
                   error ? styles.invalidInput : ""

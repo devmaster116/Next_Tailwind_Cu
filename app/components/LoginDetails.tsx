@@ -6,7 +6,11 @@ import { auth, db } from "@/environments/staging/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
-import { validateEmail } from "./Auth/utils/helper";
+import {
+  handleBlurEmail,
+  handleInputChange,
+  validateEmail,
+} from "./Auth/utils/helper";
 
 const LoginDetails = () => {
   const router = useRouter();
@@ -15,17 +19,6 @@ const LoginDetails = () => {
   const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [loginMessage, setLoginMessage] = useState<string>("");
-
-  const handleBlurEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setEmail(value);
-
-    if (validateEmail(value)) {
-      setError("");
-    } else {
-      setError("Please enter a valid email address.");
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,11 +54,9 @@ const LoginDetails = () => {
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
           const kitchenId = userDocSnap.data().kitchenId;
-          const queryParams = new URLSearchParams({ kitchenId });
-          const url = `/reports-dashboard?${queryParams.toString()}`;
           localStorage.setItem("kitchenId", kitchenId);
 
-          router.push(url);
+          router.push("/reports-dashboard");
         } else {
           throw new Error("User document not found");
         }
@@ -93,8 +84,8 @@ const LoginDetails = () => {
               type="email"
               id="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              onBlur={handleBlurEmail}
+              onChange={e => handleInputChange(e, setEmail, setError)}
+              onBlur={e => handleBlurEmail(e, setEmail, setError)}
               placeholder="Enter your email"
               className={`${styles.input} ${error ? styles.invalidInput : ""}`}
             />
