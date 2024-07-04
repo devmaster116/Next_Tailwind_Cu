@@ -4,10 +4,25 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import styles from "../forgot-password/ForgotPassword.module.scss";
+import Link from "next/link";
+import { resetPassword } from "../components/Auth/utils/helper";
 
 const EmailSent = () => {
   const searchParams = useSearchParams();
   const userEmail = searchParams.get("email");
+  const [_, setError] = useState<string>("");
+
+  const handleResendEmail = () => {
+    resetPassword(
+      userEmail || "",
+      () => {
+        console.log("Email sent");
+      },
+      errorMessage => {
+        setError(errorMessage);
+      }
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -35,6 +50,22 @@ const EmailSent = () => {
         <button className={styles.mainBtn} type="submit">
           Open email app
         </button>
+        <div className={styles.resendEmail}>
+          <p>Didn't receive the email?</p>
+          <button onClick={handleResendEmail}>Click to resend</button>
+        </div>
+        <div className={styles.backToLogin}>
+          <Image
+            className={styles.icon}
+            src="/icons/arrow-left.svg"
+            height={12}
+            width={12}
+            alt="arrow left icon"
+          />
+          <Link href="/business-login" className={styles.link}>
+            Back to log in
+          </Link>
+        </div>
       </div>
     </div>
   );

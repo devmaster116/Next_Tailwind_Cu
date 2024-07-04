@@ -8,7 +8,7 @@ interface DataErrorProps {
 }
 
 const handleRefresh = () => {
-  window.location.reload(); // Refresh the page
+  window.location.reload();
 };
 
 const DataError = ({ errorMessage }: DataErrorProps) => {

@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "./ForgotPassword.module.scss";
-import { validateEmail } from "../components/Auth/utils/helper";
-import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "@/environments/staging/firebaseConfig";
+import { resetPassword, validateEmail } from "../components/Auth/utils/helper";
+import Link from "next/link";
 
 const ForgotPassword = () => {
   const router = useRouter();
@@ -47,17 +46,18 @@ const ForgotPassword = () => {
 
     if (valid) {
       e.preventDefault();
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
+      resetPassword(
+        email,
+        () => {
           const queryParams = new URLSearchParams({ email });
           router.push(`/email-sent?${queryParams.toString()}`);
-        })
-        .catch(error => {
+        },
+        () => {
           setError(
             `Sorry, the email ${email} was not found. Please try again.`
           );
-          console.log("Error:", error);
-        });
+        }
+      );
     }
   };
 
@@ -108,6 +108,18 @@ const ForgotPassword = () => {
           <button className={styles.mainBtn} type="submit">
             Reset password
           </button>
+          <div className={styles.backToLogin}>
+            <Image
+              className={styles.icon}
+              src="/icons/arrow-left.svg"
+              height={12}
+              width={12}
+              alt="arrow left icon"
+            />
+            <Link href="/business-login" className={styles.link}>
+              Back to log in
+            </Link>
+          </div>
         </form>
       </div>
     </div>
