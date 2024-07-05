@@ -1,0 +1,54 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cardIntro {
+  line-height: 1.5;
+  &.skeleton {
+    min-height: 40px;
+  }
+}
+
+.skeleton {
+  background-color: #e2e5e7;
+  background-image: linear-gradient(
+    90deg,
+    rgba(#fff, 0),
+    rgba(#fff, 0.5),
+    rgba(#fff, 0)
+  );
+  background-size: 40px 100%;
+  background-repeat: no-repeat;
+  background-position: left -40px top 0;
+  animation: shine 1s ease infinite;
+  display: flex;
+  border-radius: 8px;
+}
+
+.skeleton:nth-child(odd) {
+  background-color: var(--gray-200); /* White background for even rows */
+}
+
+.skeleton:nth-child(even) {
+  border-radius: unset;
+  background-color: #fff; /* Grey background for odd rows */
+}
+
+.skeleton:last-child {
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.skeleton:last-child {
+  border-bottom: none;
+}
+
+@keyframes shine {
+  to {
+    background-position: right -40px top 0;
+  }
+}

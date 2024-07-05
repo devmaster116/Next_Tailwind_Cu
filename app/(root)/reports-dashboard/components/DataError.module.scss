@@ -1,0 +1,55 @@
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  justify-content: center;
+
+  .errorMessage {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0px 12px 0px;
+    gap: 8px;
+  }
+
+  .exclamationSvgContainer {
+    width: 48px; /* Background width */
+    height: 48px; /* Background height */
+    background-color: var(--gray-100); /* Grey background color */
+    border-radius: 24px; /* Half of width/height to create a circular shape */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .exclamationSvg {
+    color: var(--gray-600);
+    width: 18px; /* Image width */
+    height: 20px; /* Image height */
+  }
+
+  .message1,
+  .message2 {
+    font-size: 14px;
+  }
+
+  .message1 {
+    font-weight: 600;
+  }
+
+  .message2 {
+    font-weight: 400;
+  }
+
+  .tryAgain {
+    border: 1px solid var(--gray-200);
+    color: var(--primary-purple-700);
+    font-weight: 600;
+    font-size: 14px;
+    height: 52px;
+    padding: 16px;
+    text-align: right;
+  }
+}

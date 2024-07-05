@@ -1,7 +1,18 @@
+const path = require("path");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  compiler: {
-    styledComponents: true,
+  sassOptions: {
+    includePaths: [path.join(__dirname, "styles")],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/business-login",
+        permanent: true,
+      },
+    ];
   },
 };
 

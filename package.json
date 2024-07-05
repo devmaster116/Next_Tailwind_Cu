@@ -4,17 +4,26 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/bigquery": "^7.7.0",
+    "bcryptjs": "^2.4.3",
+    "firebase": "^10.12.1",
     "next": "^14.2.3",
-    "styled-components": "^6.1.11"
+    "react": "^18.3.1",
+    "react-datepicker": "^6.9.0",
+    "react-dom": "^18.3.1",
+    "sass": "^1.77.2"
   },
   "devDependencies": {
+    "@types/firebase": "^3.2.1",
     "@types/node": "20.12.12",
     "@types/react": "18.3.2",
+    "@types/react-datepicker": "^6.2.0",
+    "eslint": "^9.3.0",
     "typescript": "5.4.5"
   }
 }
