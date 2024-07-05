@@ -47,9 +47,6 @@ const EmailSent = () => {
             We sent a password reset link to <span>{userEmail}</span>
           </p>
         </div>
-        <button className={styles.mainBtn} type="submit">
-          Open email app
-        </button>
         <div className={styles.resendEmail}>
           <p>Didn't receive the email?</p>
           <button onClick={handleResendEmail}>Click to resend</button>
