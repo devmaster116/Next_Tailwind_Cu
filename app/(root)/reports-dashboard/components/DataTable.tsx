@@ -68,7 +68,7 @@ const DataTable: React.FC<DataTableProps> = ({
                   {secondColumnSymbol === "$" ? (
                     <>
                       {secondColumnSymbol}
-                      {item[Object.keys(item)[1]]}
+                      {item[Object.keys(item)[1]].toFixed(2)}
                     </>
                   ) : (
                     <>
@@ -82,7 +82,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     {thirdColumnSymbol === "$" ? (
                       <>
                         {thirdColumnSymbol}
-                        {item[Object.keys(item)[2]]}
+                        {item[Object.keys(item)[2]].toFixed(2)}
                       </>
                     ) : (
                       <>

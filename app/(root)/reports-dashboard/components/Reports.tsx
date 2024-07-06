@@ -12,7 +12,6 @@ import {
   OrdersResponse,
 } from "@/app/src/types";
 import styles from "./Reports.module.scss";
-import Skeleton from "./Skeleton";
 import SalesData from "./SalesData";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -142,7 +141,6 @@ const Reports = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     const advancedReports = httpsCallable(functions, "advancedReporting");
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
 
@@ -160,9 +158,10 @@ const Reports = () => {
 
         const topDishes = getTopFive(data.dishes) as Dishes[];
         setTopDishes(topDishes);
+        setLoading(false);
       })
       .catch(error => {
-        console.error("Failed to advanced reports:", error);
+        console.error("Failed to fetch advanced reports:", error);
         setAdvancedReportingError(true);
       });
 
@@ -175,6 +174,7 @@ const Reports = () => {
         /** @type {any} */
         const data = result.data as KitchenData;
         setOrdersData(data.response);
+        setLoading(false);
       })
       .catch(error => {
         console.log("Failed to fetch overview reports:", error);
@@ -193,7 +193,7 @@ const Reports = () => {
     }
 
     Promise.allSettled([advancedReports, overviewReports]).finally(() => {
-      setLoading(false);
+      setLoading(true);
     });
   }, [reportEndDate]);
 
@@ -343,7 +343,7 @@ const Reports = () => {
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
                 dataObj={topCategories}
-                loading={false}
+                loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
               />
@@ -353,7 +353,7 @@ const Reports = () => {
                 thirdColumnTitle="Gross"
                 thirdColumnSymbol="$"
                 dataObj={topDishes}
-                loading={false}
+                loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
               />
