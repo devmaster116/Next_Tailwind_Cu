@@ -13,7 +13,6 @@ import {
 } from "@/app/src/types";
 import styles from "./Reports.module.scss";
 import SalesData from "./SalesData";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   formatDate,
@@ -29,6 +28,7 @@ import Image from "next/image";
 import calendar from "../../../../public/icons/calendar.svg";
 import DataError from "./DataError";
 import DataTable from "./DataTable";
+import DatePickerModal from "./DatePickerModal";
 
 const Reports = () => {
   const kitchenId = localStorage.getItem("kitchenId");
@@ -43,8 +43,6 @@ const Reports = () => {
   const [topDishes, setTopDishes] = useState<Dishes[]>([]);
   const [ordersData, setOrdersData] = useState<OrdersResponse[]>([]);
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
 
@@ -72,36 +70,6 @@ const Reports = () => {
       return () => clearTimeout(timer);
     }
   }, [isAnimating, isVisible]);
-
-  const onChange = (dates: [Date | null, Date | null]) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
-
-  const handleApplyClick = () => {
-    if (startDate) {
-      const finalEndDate = endDate || startDate;
-
-      setReportStartDate(startDate);
-      setReportEndDate(finalEndDate);
-
-      setSelectedOption("Custom");
-      hideModal();
-    }
-
-    if (selectedOption === "Custom") {
-      setCustomDate(
-        `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-          reportEndDate
-        )}`
-      );
-    }
-  };
-
-  const handleCancelClick = () => {
-    setIsReportVisible(true);
-  };
 
   function setReportDates(startDate: Date, endDate: Date): void {
     setReportStartDate(startDate);
@@ -265,33 +233,18 @@ const Reports = () => {
             </div>
           </div>
         ) : (
-          <div
-            className={`${styles.datePickerModal} ${
-              isAnimating ? styles.show : styles.hide
-            }`}
-          >
-            <div className={styles.modalContentDatePicker}>
-              <div className="customDatePickerWrapper">
-                <DatePicker
-                  selected={startDate}
-                  onChange={onChange}
-                  startDate={startDate}
-                  endDate={endDate}
-                  selectsRange
-                  inline
-                  calendarStartDay={1}
-                />
-                <div className={styles.dateConfirmation}>
-                  <button className={styles.cancel} onClick={handleCancelClick}>
-                    Cancel
-                  </button>
-                  <button className={styles.apply} onClick={handleApplyClick}>
-                    Apply
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <DatePickerModal
+            setIsReportVisible={setIsReportVisible}
+            reportStartDate={reportStartDate}
+            setReportStartDate={setReportStartDate}
+            reportEndDate={reportEndDate}
+            setReportEndDate={setReportEndDate}
+            setCustomDate={setCustomDate}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+            isAnimating={isAnimating}
+            setIsAnimating={setIsAnimating}
+          />
         ))}
       {advancedReportingError && overviewReportFunctionError ? (
         <DataError errorMessage="Error retrieving dashboard data" />
