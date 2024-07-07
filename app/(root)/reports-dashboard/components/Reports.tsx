@@ -12,7 +12,6 @@ import {
   OrdersResponse,
 } from "@/app/src/types";
 import styles from "./Reports.module.scss";
-import Skeleton from "./Skeleton";
 import SalesData from "./SalesData";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -29,6 +28,7 @@ import RadioButton from "./RadioButton";
 import Image from "next/image";
 import calendar from "../../../../public/icons/calendar.svg";
 import DataError from "./DataError";
+import DataTable from "./DataTable";
 
 const Reports = () => {
   const kitchenId = localStorage.getItem("kitchenId");
@@ -141,7 +141,6 @@ const Reports = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     const advancedReports = httpsCallable(functions, "advancedReporting");
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
 
@@ -159,9 +158,10 @@ const Reports = () => {
 
         const topDishes = getTopFive(data.dishes) as Dishes[];
         setTopDishes(topDishes);
+        setLoading(false);
       })
       .catch(error => {
-        console.error("Failed to advanced reports:", error);
+        console.error("Failed to fetch advanced reports:", error);
         setAdvancedReportingError(true);
       });
 
@@ -174,6 +174,7 @@ const Reports = () => {
         /** @type {any} */
         const data = result.data as KitchenData;
         setOrdersData(data.response);
+        setLoading(false);
       })
       .catch(error => {
         console.log("Failed to fetch overview reports:", error);
@@ -192,7 +193,7 @@ const Reports = () => {
     }
 
     Promise.allSettled([advancedReports, overviewReports]).finally(() => {
-      setLoading(false);
+      setLoading(true);
     });
   }, [reportEndDate]);
 
@@ -335,106 +336,27 @@ const Reports = () => {
             <DataError errorMessage="Error retrieving category and item data" />
           ) : (
             <>
-              <div className={styles.report}>
-                <div className={styles.reportHeader}>
-                  <div
-                    className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
-                  >
-                    Top 5 Categories
-                  </div>
-                  <div
-                    className={`${styles.reportItem} ${styles.countHeading}`}
-                  >
-                    Count
-                  </div>
-                  <div className={styles.headerItem}>Gross</div>{" "}
-                </div>
-                {loading && <Skeleton />}
-                {!loading && (
-                  <div className={styles.reportBody}>
-                    {topCategories.length === 0 ? (
-                      <div className={styles.reportRow}>
-                        <div
-                          className={`${styles.reportItem} ${styles.reportItemName}`}
-                        >
-                          <p className={styles.noDataText}>
-                            No sale completed{" "}
-                            {customDate
-                              ? `between ${customDate}`
-                              : selectedOption.toLocaleLowerCase()}
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      topCategories.map((category, i) => (
-                        <div key={i} className={styles.reportRow}>
-                          <div
-                            className={`${styles.reportItem} ${styles.reportItemName}`}
-                          >
-                            {category.category_name}
-                          </div>
-                          <div className={styles.reportItem}>
-                            {category.item_count}
-                          </div>
-                          <div className={styles.reportItem}>
-                            ${category.total_price}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className={styles.report}>
-                <div className={styles.reportHeader}>
-                  <div
-                    className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
-                  >
-                    Top 5 Items
-                  </div>
-                  <div
-                    className={`${styles.reportItem} ${styles.countHeading}`}
-                  >
-                    Count
-                  </div>
-                  <div className={styles.headerItem}>Gross</div>
-                </div>
-                {loading && <Skeleton />}
-                {!loading && (
-                  <div className={styles.reportBody}>
-                    {topDishes.length === 0 ? (
-                      <div className={styles.reportRow}>
-                        <div
-                          className={`${styles.reportItem} ${styles.reportItemName}`}
-                        >
-                          <p className={styles.noDataText}>
-                            No sale completed{" "}
-                            {customDate
-                              ? `between ${customDate}`
-                              : selectedOption.toLowerCase()}
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      topDishes.map((dish, i) => (
-                        <div key={i} className={styles.reportRow}>
-                          <div
-                            className={`${styles.reportItem} ${styles.reportItemName}`}
-                          >
-                            {dish.dish_name}
-                          </div>
-                          <div className={styles.reportItem}>
-                            {dish.item_count}
-                          </div>
-                          <div className={styles.reportItem}>
-                            ${dish.total_price}
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                )}
-              </div>
+              <DataTable
+                firstColumnTitle="Top 5 categories"
+                secondColumnTitle="Count"
+                thirdColumnTitle="Gross"
+                secondColumnSymbol=""
+                thirdColumnSymbol="$"
+                dataObj={topCategories}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+              <DataTable
+                firstColumnTitle="Top 5 items"
+                secondColumnTitle="Count"
+                thirdColumnTitle="Gross"
+                thirdColumnSymbol="$"
+                dataObj={topDishes}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
             </>
           )}
         </>
