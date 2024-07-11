@@ -21,8 +21,20 @@ export interface Dishes extends KitchenItem {
 }
 
 export interface OrdersResponse {
-  total_orders: number;
+  total_card_orders: number;
+  total_card_sum: number;
+  total_card_surcharge: number;
+  total_card_tip: number;
+  total_cash_orders: number;
+  total_cash_sum: number;
+  total_dine_in_orders: number;
+  total_holiday_surcharge: number;
   total_net_sales: number;
-  total_refunded_sum: number;
+  total_orders: number;
   total_refunded_orders: number;
+  total_refunded_sum: number;
+  total_revenue: number;
+  total_split_payment_orders: number;
+  total_split_payment_sum: number;
+  total_take_away_orders: number;
 }
