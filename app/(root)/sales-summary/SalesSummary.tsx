@@ -13,6 +13,8 @@ import {
 } from "../reports-dashboard/components/utils/formatDate";
 import DataTable from "../reports-dashboard/components/DataTable";
 import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
+import DataError from "../reports-dashboard/components/DataError";
+import SalesData from "../reports-dashboard/components/SalesData";
 
 const SalesSummary = () => {
   const [kitchenId, setKitchenId] = useState<string>("defaultKitchenId");
@@ -72,6 +74,16 @@ const SalesSummary = () => {
       setLoading(true);
     });
   }, [reportEndDate]);
+
+  const calculatePercentage = (
+    numerator: number,
+    denominator: number
+  ): string => {
+    if (denominator === 0) {
+      return "0.00";
+    }
+    return ((numerator / denominator) * 100).toFixed(2);
+  };
   console.log("Orders data ==>", reportsData);
 
   const {
@@ -105,7 +117,53 @@ const SalesSummary = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
+      {overviewReportFunctionError ? (
+        <DataError errorMessage="Error retrieving summary data" />
+      ) : (
+        <div className={styles.salesDataContainer}>
+          <SalesData
+            title="Net Sales"
+            amount={Number(total_net_sales)}
+            isDollarAmount={true}
+            loading={loading}
+          />
+          <SalesData
+            title="Orders"
+            amount={total_orders}
+            isDollarAmount={false}
+            loading={loading}
+          />
+          <SalesData
+            title="Avg. Order"
+            amount={Number(
+              total_net_sales / (total_orders - total_refunded_orders)
+            )}
+            isDollarAmount={true}
+            loading={loading}
+          />
+          <SalesData
+            title="Dine In / Take Away"
+            amount={Number(
+              (
+                total_dine_in_orders /
+                  (total_take_away_orders + total_dine_in_orders) || 0
+              ).toFixed(1)
+            )}
+            secondAmount={Number(
+              (
+                total_take_away_orders /
+                  (total_take_away_orders + total_dine_in_orders) || 0
+              ).toFixed(1)
+            )}
+            isPercentage={true}
+            loading={loading}
+          />
+        </div>
 
+        // total_take_away_orders /
+        //       (total_take_away_orders + total_dine_in_orders) || 0 * 100
+        //   )
+      )}
       <DataTable
         firstColumnTitle="Gross Sales"
         secondColumnTitle={`$${String(
@@ -160,17 +218,17 @@ const SalesSummary = () => {
         dataObj={[
           {
             title: "Take Away",
-            takeAway: `${total_take_away_orders || 0} - ${(
-              total_take_away_orders /
-                (total_take_away_orders + total_dine_in_orders) || 0 * 100
-            ).toFixed(2)}`,
+            takeAway: `${total_take_away_orders || 0} - ${calculatePercentage(
+              total_take_away_orders,
+              total_take_away_orders + total_dine_in_orders
+            )}`,
           },
           {
             title: "Dine In",
-            dine: `${total_dine_in_orders || 0} - ${(
-              total_dine_in_orders /
-                (total_take_away_orders + total_dine_in_orders) || 0 * 100
-            ).toFixed(2)}`,
+            dine: `${total_dine_in_orders || 0} - ${calculatePercentage(
+              total_dine_in_orders,
+              total_take_away_orders + total_dine_in_orders
+            )}`,
           },
         ]}
         loading={loading}
@@ -186,16 +244,18 @@ const SalesSummary = () => {
         dataObj={[
           {
             title: "Cash",
-            percentage: `${(
-              total_cash_sum / (total_cash_sum + total_card_sum) || 0 * 100
-            ).toFixed(2)}`,
+            percentage: calculatePercentage(
+              total_cash_sum,
+              total_cash_sum + total_card_sum
+            ),
             net: total_cash_sum || 0,
           },
           {
             title: "Card",
-            percentage: `${(
-              total_card_sum / (total_cash_sum + total_card_sum) || 0 * 100
-            ).toFixed(2)}`,
+            percentage: calculatePercentage(
+              total_card_sum,
+              total_cash_sum + total_card_sum
+            ),
             net: total_card_sum || 0,
           },
         ]}
@@ -205,23 +265,11 @@ const SalesSummary = () => {
       />
       <DataTable
         firstColumnTitle="Tips"
-        secondColumnTitle="%"
-        secondColumnSymbol="%"
-        thirdColumnTitle="Net"
-        thirdColumnSymbol="$"
+        secondColumnTitle="Net"
+        secondColumnSymbol="$"
         dataObj={[
-          // {
-          //   title: "Cash",
-          //   percentage: `${(
-          //     total_cash_sum / (total_cash_sum + total_card_tip) || 0 * 100
-          //   ).toFixed(2)}`,
-          //   net: total_cash_sum || 0,
-          // },
           {
             title: "Card",
-            percentage: `${(
-              total_card_tip / (total_cash_sum + total_card_tip) || 0 * 100
-            ).toFixed(2)}`,
             net: total_card_tip || 0,
           },
         ]}
@@ -240,30 +288,34 @@ const SalesSummary = () => {
         dataObj={[
           {
             title: "Take Away Order",
-            averageItem: `${(
-              total_cash_sum / (total_cash_sum + total_card_tip) || 0 * 100
-            ).toFixed(2)}`,
+            averageItem: calculatePercentage(
+              total_cash_sum,
+              total_cash_sum + total_card_sum
+            ),
             netAvg: total_cash_sum || 0,
           },
           {
             title: "Dine-In Bill",
-            averageItem: `${(
-              total_card_tip / (total_cash_sum + total_card_tip) || 0 * 100
-            ).toFixed(2)}`,
+            averageItem: calculatePercentage(
+              total_cash_sum,
+              total_cash_sum + total_card_sum
+            ),
             netAvg: total_card_tip || 0,
           },
           {
             title: "Online Order",
-            averageItem: `${(
-              total_card_tip / (total_cash_sum + total_card_tip) || 0 * 100
-            ).toFixed(2)}`,
+            averageItem: calculatePercentage(
+              total_cash_sum,
+              total_cash_sum + total_card_sum
+            ),
             netAvg: total_card_tip || 0,
           },
           {
             title: "Dine-In Per Cover",
-            averageItem: `${(
-              total_card_tip / (total_cash_sum + total_card_tip) || 0 * 100
-            ).toFixed(2)}`,
+            averageItem: calculatePercentage(
+              500,
+              total_cash_sum + total_card_sum
+            ),
             netAvg: total_card_tip || 0,
           },
         ]}
