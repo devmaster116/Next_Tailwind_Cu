@@ -4,7 +4,7 @@ import Image from "next/image";
 import LoginDetails from "../components/LoginDetails";
 import styles from "./LoginPage.module.scss";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/environments/staging/firebaseConfig";
+import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import Loading from "./Loading";
 

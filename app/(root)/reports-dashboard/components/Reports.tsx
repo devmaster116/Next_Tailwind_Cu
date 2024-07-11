@@ -4,7 +4,7 @@ import withAuth from "../../../components/Auth/withAuth";
 import {
   functions,
   httpsCallable,
-} from "@/environments/staging/firebaseConfig";
+} from "@/firebase/config";
 import {
   Dishes,
   Categories,

@@ -5,14 +5,14 @@ import { getFirestore } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDFfARCeYAuSuOg5iHZwEkQ2T2iCbKcLrc",
-  authDomain: "homebite-practice-v2.firebaseapp.com",
-  databaseURL: "https://homebite-practice-v2-default-rtdb.firebaseio.com",
-  projectId: "homebite-practice-v2",
-  storageBucket: "homebite-practice-v2.appspot.com",
-  messagingSenderId: "351662589375",
-  appId: "1:351662589375:web:8b4a19c6b81583a7d14d0a",
-  measurementId: "G-M5WTB7J5W8",
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  databaseURL: process.env.databaseURL,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+  measurementId: process.env.measurementId,
 };
 
 // const app = initializeApp(firebaseConfig);
