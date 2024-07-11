@@ -1,3 +1,20 @@
+.salesDataContainer {
+  display: flex;
+  grid-template-columns: repeat(2, 45%);
+  flex-wrap: wrap;
+  gap: 16px;
+
+  @media only screen and (min-width: 600px) {
+    margin-left: 60px;
+    margin-right: 60px;
+  }
+
+  @media only screen and (min-width: 961px) {
+    margin-left: 112px;
+    margin-right: 112px;
+  }
+}
+
 .separator {
   border: 1px solid var(--gray-100);
   margin: 20px 0px;

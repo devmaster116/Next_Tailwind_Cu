@@ -5,20 +5,36 @@ import SalesDataSkeleton from "./SalesDataSkeleton";
 interface SalesDataProps {
   title: string;
   amount: number;
-  isDollarAmount: boolean;
+  secondAmount?: number;
+  isDollarAmount?: boolean;
+  isPercentage?: boolean;
   loading: boolean;
 }
 
 const SalesData = ({
   title,
   amount,
-  isDollarAmount,
+  secondAmount,
+  isDollarAmount = false,
+  isPercentage = false,
   loading,
 }: SalesDataProps) => {
   const getDisplayAmount = (amount: number | undefined): number => {
     return isNaN(amount as number) || amount === undefined ? 0 : amount;
   };
 
+  function formatAmount(amount: number | undefined) {
+    const safeAmount = amount ?? 0;
+    if (isDollarAmount) {
+      return `$${getDisplayAmount(safeAmount).toFixed(2)}`;
+    }
+
+    if (isPercentage) {
+      return `${getDisplayAmount(safeAmount * 100)}%`;
+    }
+
+    return getDisplayAmount(safeAmount);
+  }
   return (
     <>
       <div className={styles.card}>
@@ -26,13 +42,12 @@ const SalesData = ({
           <h3>{title}</h3>
           {loading && <SalesDataSkeleton />}
           {!loading && (
-            <p>
-              {isDollarAmount
-                ? !amount
-                  ? `$${getDisplayAmount(amount)}.00`
-                  : `$${getDisplayAmount(amount)}`
-                : `${getDisplayAmount(amount)}`}
-            </p>
+            <div className={styles.cardInfoAmount}>
+              <p>{formatAmount(amount)} </p>
+              {secondAmount !== undefined && secondAmount !== null && (
+                <p> / {formatAmount(secondAmount)}</p>
+              )}
+            </div>
           )}
         </div>
       </div>
