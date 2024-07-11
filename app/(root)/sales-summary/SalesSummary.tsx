@@ -217,20 +217,24 @@ const SalesSummary = () => {
         firstColumnTitle="Order Type"
         secondColumnTitle="Count (%)"
         secondColumnSymbol="%"
+        thirdColumnTitle="Net"
+        thirdColumnSymbol="$"
         dataObj={[
           {
             title: "Take Away",
             takeAway: `${total_take_away_orders || 0} - ${calculatePercentage(
               total_take_away_orders,
-              total_take_away_orders + total_dine_in_orders
+              total_take_away_orders + total_dine_in_orders || 0
             )}`,
+            net: take_away_order_net_avg || 0,
           },
           {
             title: "Dine In",
             dine: `${total_dine_in_orders || 0} - ${calculatePercentage(
               total_dine_in_orders,
-              total_take_away_orders + total_dine_in_orders
+              total_take_away_orders + total_dine_in_orders || 0
             )}`,
+            net: dine_in_order_net_avg || 0,
           },
         ]}
         loading={loading}
