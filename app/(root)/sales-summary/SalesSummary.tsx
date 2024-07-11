@@ -277,7 +277,7 @@ const SalesSummary = () => {
         customDate={customDate}
         selectedOption={selectedOption}
       />
-      <div className={styles.separator}></div>
+      {/* <div className={styles.separator}></div>
       <h4>Averages</h4>
       <DataTable
         firstColumnTitle="Order Type"
@@ -322,7 +322,7 @@ const SalesSummary = () => {
         loading={loading}
         customDate={customDate}
         selectedOption={selectedOption}
-      />
+      /> */}
     </>
   );
 };
