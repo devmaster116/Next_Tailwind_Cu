@@ -84,18 +84,24 @@ const SalesSummary = () => {
     }
     return ((numerator / denominator) * 100).toFixed(2);
   };
-  console.log("Orders data ==>", reportsData);
 
   const {
+    dine_in_order_net_avg,
+    online_order_net_avg,
+    take_away_order_net_avg,
     total_card_orders,
+    total_card_refunded_sum,
     total_card_sum,
     total_card_surcharge,
     total_card_tip,
     total_cash_orders,
+    total_cash_refunded_sum,
     total_cash_sum,
+    total_completed_orders,
     total_dine_in_orders,
     total_holiday_surcharge,
     total_net_sales,
+    total_online_orders,
     total_orders,
     total_refunded_orders,
     total_refunded_sum,
@@ -159,10 +165,6 @@ const SalesSummary = () => {
             loading={loading}
           />
         </div>
-
-        // total_take_away_orders /
-        //       (total_take_away_orders + total_dine_in_orders) || 0 * 100
-        //   )
       )}
       <DataTable
         firstColumnTitle="Gross Sales"
@@ -246,7 +248,7 @@ const SalesSummary = () => {
             title: "Cash",
             percentage: calculatePercentage(
               total_cash_sum,
-              total_cash_sum + total_card_sum
+              total_cash_sum + total_card_sum || 0
             ),
             net: total_cash_sum || 0,
           },
@@ -254,7 +256,7 @@ const SalesSummary = () => {
             title: "Card",
             percentage: calculatePercentage(
               total_card_sum,
-              total_cash_sum + total_card_sum
+              total_cash_sum + total_card_sum || 0
             ),
             net: total_card_sum || 0,
           },
@@ -277,7 +279,7 @@ const SalesSummary = () => {
         customDate={customDate}
         selectedOption={selectedOption}
       />
-      {/* <div className={styles.separator}></div>
+      <div className={styles.separator}></div>
       <h4>Averages</h4>
       <DataTable
         firstColumnTitle="Order Type"
@@ -288,41 +290,24 @@ const SalesSummary = () => {
         dataObj={[
           {
             title: "Take Away Order",
-            averageItem: calculatePercentage(
-              total_cash_sum,
-              total_cash_sum + total_card_sum
-            ),
-            netAvg: total_cash_sum || 0,
+            averageItem: total_take_away_orders || 0,
+            netAvg: take_away_order_net_avg || 0,
           },
           {
-            title: "Dine-In Bill",
-            averageItem: calculatePercentage(
-              total_cash_sum,
-              total_cash_sum + total_card_sum
-            ),
-            netAvg: total_card_tip || 0,
+            title: "Dine-in Order",
+            averageItem: total_dine_in_orders || 0,
+            netAvg: dine_in_order_net_avg || 0,
           },
           {
             title: "Online Order",
-            averageItem: calculatePercentage(
-              total_cash_sum,
-              total_cash_sum + total_card_sum
-            ),
-            netAvg: total_card_tip || 0,
-          },
-          {
-            title: "Dine-In Per Cover",
-            averageItem: calculatePercentage(
-              500,
-              total_cash_sum + total_card_sum
-            ),
-            netAvg: total_card_tip || 0,
+            averageItem: total_online_orders || 0,
+            netAvg: online_order_net_avg || 0,
           },
         ]}
         loading={loading}
         customDate={customDate}
         selectedOption={selectedOption}
-      /> */}
+      />
     </>
   );
 };

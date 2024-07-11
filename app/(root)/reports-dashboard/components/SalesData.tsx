@@ -43,9 +43,12 @@ const SalesData = ({
           {loading && <SalesDataSkeleton />}
           {!loading && (
             <div className={styles.cardInfoAmount}>
-              <p>{formatAmount(amount)} </p>
+              <p>{formatAmount(amount)}</p>
               {secondAmount !== undefined && secondAmount !== null && (
-                <p> / {formatAmount(secondAmount)}</p>
+                <>
+                  <span>/</span>
+                  <p>{formatAmount(secondAmount)}</p>
+                </>
               )}
             </div>
           )}
