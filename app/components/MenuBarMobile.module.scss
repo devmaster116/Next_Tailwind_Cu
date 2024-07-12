@@ -1,0 +1,41 @@
+// MenuBarMobile.module.scss
+
+$bg-black: #000;
+$white: #fff;
+
+.menuBarMobile {
+  @media (min-width: 768px) {
+    display: none;
+  }
+  z-index: 20;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: $bg-black;
+  display: flex;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  & > * {
+    margin: auto 0;
+  }
+}
+
+.menuButton {
+  font-size: 2.5rem; /* equivalent to text-4xl */
+  display: flex;
+  color: $white;
+}
+
+.logoLink {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.userLink {
+  font-size: 2rem; /* equivalent to text-3xl */
+  display: flex;
+  color: $white;
+}
