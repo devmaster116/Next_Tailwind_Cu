@@ -1,21 +1,13 @@
 const path = require("path");
-const dotenv = require('dotenv');
+const { execSync } = require('child_process');
 
 
-// Get the current branch name
-const branch = require('child_process')
-  .execSync('git rev-parse --abbrev-ref HEAD')
-  .toString().trim();
 
-// Map branches to environment files
-const envFileMap = {
-  main: '.env.production',
-  release: '.env.staging',
-};
+// Run the custom script to prepare the environment
+execSync('node prepare-env.js', { stdio: 'inherit' });
 
-const envFile = envFileMap[branch] || '.env.staging';
-
-dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+// Load the temporary environment file
+require('dotenv').config({ path: path.resolve(process.cwd(), '.env.temp') });
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
