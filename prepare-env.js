@@ -22,7 +22,7 @@ const envFile = envFileMap[branch] || '.env.staging';
 require('dotenv').config({ path: path.resolve(process.cwd(), envFile) });
 
 console.log(`Using environment file: ${envFile}`);
-
+console.log(process.env)
 
 // Define the paths for the source and destination files
 const sourceFilePath = path.resolve(__dirname, envFile);
