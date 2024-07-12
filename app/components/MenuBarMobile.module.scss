@@ -13,20 +13,35 @@ $white: #fff;
   left: 0;
   right: 0;
   height: 60px;
-  background-color: $bg-black;
+  background-color: #fff;
   display: flex;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 
-  & > * {
-    margin: auto 0;
+  .menuBarInnerContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+
+    h2 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 }
 
 .menuButton {
-  font-size: 2.5rem; /* equivalent to text-4xl */
+  font-size: 2.5rem;
   display: flex;
-  color: $white;
+  color: var(--gray-500);
+  margin-left: 16px;
+  margin-right: auto;
+
+  .icon {
+    color: var(--gray-500);
+  }
 }
 
 .logoLink {
@@ -35,7 +50,7 @@ $white: #fff;
 }
 
 .userLink {
-  font-size: 2rem; /* equivalent to text-3xl */
+  font-size: 2rem;
   display: flex;
   color: $white;
 }

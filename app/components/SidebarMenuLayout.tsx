@@ -14,12 +14,11 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
   pageTitle,
   children,
 }) => {
-  // Concatenate page title (if exists) to site title
   let titleConcat = "Responsive Sidebar Example";
   if (pageTitle) titleConcat = `${pageTitle} | ${titleConcat}`;
 
-  // Mobile sidebar visibility state
   const [showSidebar, setShowSidebar] = useState(false);
+  const [menuPageName, setMenuPageName] = useState("");
 
   return (
     <>
@@ -28,8 +27,12 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
       </Head>
       <div className={styles.layoutContainer}>
         <div className={styles.mainContent}>
-          <MenuBarMobile setter={setShowSidebar} />
-          <Sidebar show={showSidebar} setter={setShowSidebar} />
+          <MenuBarMobile setter={setShowSidebar} pageTitle={menuPageName} />
+          <Sidebar
+            show={showSidebar}
+            setter={setShowSidebar}
+            setMenuPageName={setMenuPageName}
+          />
           <div className={styles.contentArea}>{children}</div>
         </div>
       </div>

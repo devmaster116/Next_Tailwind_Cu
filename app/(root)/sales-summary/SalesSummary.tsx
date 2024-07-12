@@ -50,7 +50,6 @@ const SalesSummary = () => {
       .then(result => {
         /** @type {any} */
         const data = result.data as KitchenData;
-        console.log("DATA ", data);
         setReportsData(data.response);
         setLoading(false);
       })
