@@ -18,7 +18,7 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
   if (pageTitle) titleConcat = `${pageTitle} | ${titleConcat}`;
 
   const [showSidebar, setShowSidebar] = useState(false);
-  const [menuPageName, setMenuPageName] = useState("");
+  const [menuPageName, setMenuPageName] = useState("Overview");
 
   return (
     <>

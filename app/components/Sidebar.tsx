@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
+import LogoutButton from "./Auth/LogoutButton";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -101,6 +102,9 @@ export default function Sidebar({
               />
             }
           />
+        </div>
+        <div className={styles.logoutBtn}>
+          <LogoutButton />
         </div>
       </div>
       {show ? <ModalOverlay /> : null}
