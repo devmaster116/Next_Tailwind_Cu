@@ -1,8 +1,9 @@
 .card {
-  padding: 20px 16px 20px 16px;
+  padding: 20px 16px;
   border: 1px solid var(--gray-200);
   border-radius: 12px;
   height: 104px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
   flex: 1 1 calc(50% - 16px);
 
   .cardInfo {

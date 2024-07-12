@@ -12,6 +12,7 @@ interface DataTableProps {
   loading: boolean;
   customDate?: string;
   selectedOption?: string;
+  fontSize?: string;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -24,6 +25,7 @@ const DataTable: React.FC<DataTableProps> = ({
   loading,
   customDate,
   selectedOption,
+  fontSize,
 }) => {
   return (
     <div className={styles.report}>
@@ -61,10 +63,18 @@ const DataTable: React.FC<DataTableProps> = ({
               <div key={i} className={styles.reportRow}>
                 <div
                   className={`${styles.reportItem} ${styles.reportItemName}`}
+                  style={
+                    { "--dynamic-font-size": fontSize } as React.CSSProperties
+                  }
                 >
                   {item[Object.keys(item)[0]]}
                 </div>
-                <div className={styles.reportItem}>
+                <div
+                  className={`${styles.reportItem}`}
+                  style={
+                    { "--dynamic-font-size": fontSize } as React.CSSProperties
+                  }
+                >
                   {secondColumnSymbol === "$" ? (
                     <>
                       {secondColumnSymbol}
@@ -78,7 +88,12 @@ const DataTable: React.FC<DataTableProps> = ({
                   )}
                 </div>
                 {thirdColumnTitle && (
-                  <div className={styles.reportItem}>
+                  <div
+                    className={`${styles.reportItem}`}
+                    style={
+                      { "--dynamic-font-size": fontSize } as React.CSSProperties
+                    }
+                  >
                     {thirdColumnSymbol === "$" ? (
                       <>
                         {thirdColumnSymbol}
