@@ -1,7 +1,9 @@
 // prepare-env.js
 const fs = require('fs');
 const path = require('path');
-// Get the current git branch
+
+
+
 // Get the current branch name
 const branch = require('child_process')
   .execSync('git rev-parse --abbrev-ref HEAD')
@@ -11,18 +13,12 @@ const branch = require('child_process')
   console.log(branch)
 // Map branches to environment files
 
-const envFileMap = {
-    main: '.env.prod',
-    master: '.env.prod',
-    release: '.env.staging',
-};
-
-const envFile = envFileMap[branch] || '.env.staging';
+const envFile = '.env.staging';
 // Load the environment variables from the selected file
 require('dotenv').config({ path: path.resolve(process.cwd(), envFile) });
 
 console.log(`Using environment file: ${envFile}`);
-
+// console.log(process.env)
 
 // Define the paths for the source and destination files
 const sourceFilePath = path.resolve(__dirname, envFile);
