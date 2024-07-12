@@ -53,78 +53,45 @@ export default function Sidebar({ show, setter }: SidebarProps) {
     <>
       <div className={className}>
         <div className={styles.logoContainer}>
-          <Link href="/">
-            <Image
-              src="/images/swifti-logo.png"
-              height={100}
-              width={160}
-              alt="Swifti Logo"
-            />
-          </Link>
+          <h4>Reports</h4>
         </div>
         <div className="flex flex-col">
-          <MenuItem
+          {/* <MenuItem
             name="Home"
             route="/"
             icon={
               <Image
                 className={styles.icon}
                 src="/icons/arrow-left.svg"
-                height={12}
-                width={12}
+                height={18}
+                width={18}
                 alt="arrow left icon"
+              />
+            }
+          /> */}
+          <MenuItem
+            name="Overview"
+            route="/reports-dashboard"
+            icon={
+              <Image
+                className={styles.icon}
+                src="/icons/home-line.svg"
+                height={18}
+                width={18}
+                alt="Home line icon"
               />
             }
           />
           <MenuItem
-            name="T-Shirts"
-            route="/t-shirts"
+            name="Sales Summary"
+            route="/sales-summary"
             icon={
               <Image
                 className={styles.icon}
-                src="/icons/calendar.svg"
-                height={12}
-                width={12}
-                alt="arrow left icon"
-              />
-            }
-          />
-          <MenuItem
-            name="Hats"
-            route="/hats"
-            icon={
-              <Image
-                className={styles.icon}
-                src="/icons/key.svg"
-                height={12}
-                width={12}
-                alt="arrow left icon"
-              />
-            }
-          />
-          <MenuItem
-            name="About Us"
-            route="/about"
-            icon={
-              <Image
-                className={styles.icon}
-                src="/icons/exclamation.svg"
-                height={12}
-                width={12}
-                alt="arrow left icon"
-              />
-            }
-          />
-          <MenuItem
-            name="Contact"
-            route="/contact"
-            icon={
-              <Image
-                className={styles.icon}
-                src="/icons/calendar.svg"
-                height={12}
-                width={12}
-                alt="arrow left icon"
+                src="/icons/bar-chart-square-02.svg"
+                height={18}
+                width={18}
+                alt="Bar chart icon"
               />
             }
           />
