@@ -12,8 +12,9 @@ const branch = require('child_process')
 // Map branches to environment files
 
 const envFileMap = {
-  main: '.env.prod',
-  release: '.env.staging',
+    main: '.env.prod',
+    master: '.env.prod',
+    release: '.env.staging',
 };
 
 const envFile = envFileMap[branch] || '.env.staging';
