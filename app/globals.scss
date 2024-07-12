@@ -109,26 +109,24 @@ body {
   }
 
   @media only screen and (min-width: 600px) {
-    margin: unset;
+    margin: 0px 60px;
+  }
+
+  @media only screen and (min-width: 961px) {
+    margin: 0px 112px 50px 112px;
   }
 }
 
 .layoutMain {
   align-items: center;
   background-color: #fff;
-  margin: 0px -16px;
   display: flex;
   padding: 16px 0px;
   height: 64px;
   border-bottom: 1px solid var(--gray-100);
-}
 
-.layoutMain h2 {
-  margin-left: 10px;
-}
-
-@media only screen and (min-width: 320px) {
-  .layoutMain {
+  @media only screen and (min-width: 320px) {
+    margin: 0 -16px;
     img,
     button {
       margin-left: 16px;
@@ -138,10 +136,9 @@ body {
       margin-right: 16px;
     }
   }
-}
 
-@media only screen and (min-width: 600px) {
-  .layoutMain {
+  @media only screen and (min-width: 600px) {
+    margin: 0 -78px;
     img,
     button {
       margin-left: 78px;
@@ -151,10 +148,9 @@ body {
       margin-right: 78px;
     }
   }
-}
 
-@media only screen and (min-width: 961px) {
-  .layoutMain {
+  @media only screen and (min-width: 961px) {
+    margin: 0 -128px;
     img {
       margin-left: 128px;
     }
@@ -163,6 +159,10 @@ body {
       margin-right: 128px;
     }
   }
+}
+
+.layoutMain h2 {
+  margin-left: 10px;
 }
 
 a {
@@ -176,6 +176,10 @@ h2 {
 
 h3 {
   font-size: 16px;
+}
+
+h4 {
+  font-size: 14px;
 }
 
 /* Reset all default button styles */
