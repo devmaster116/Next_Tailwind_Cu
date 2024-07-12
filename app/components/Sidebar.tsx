@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
@@ -13,9 +13,14 @@ interface MenuItemProps {
 interface SidebarProps {
   show: boolean;
   setter: React.Dispatch<React.SetStateAction<boolean>>;
+  setMenuPageName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Sidebar({ show, setter }: SidebarProps) {
+export default function Sidebar({
+  show,
+  setter,
+  setMenuPageName,
+}: SidebarProps) {
   const pathname = usePathname();
 
   const className = `${styles.sidebar} ${
@@ -31,6 +36,7 @@ export default function Sidebar({ show, setter }: SidebarProps) {
         href={route}
         onClick={() => {
           setter(oldVal => !oldVal);
+          setMenuPageName(name);
         }}
         className={`${styles.menuItem} ${colorClass}`}
       >
@@ -55,7 +61,7 @@ export default function Sidebar({ show, setter }: SidebarProps) {
         <div className={styles.logoContainer}>
           <h4>Reports</h4>
         </div>
-        <div className="flex flex-col">
+        <div>
           {/* <MenuItem
             name="Home"
             route="/"
