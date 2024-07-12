@@ -1,5 +1,3 @@
-// Sidebar.module.scss
-
 $bg-black: #000;
 $white: #fff;
 $text-white-50: rgba(255, 255, 255, 0.5);
@@ -7,7 +5,7 @@ $border-white-10: rgba(255, 255, 255, 0.1);
 $transition-duration: 0.5s;
 
 .sidebar {
-  background-color: $bg-black;
+  background-color: #fff;
   width: 250px;
   transition: margin-left $transition-duration ease-in-out;
   position: fixed;
@@ -16,13 +14,20 @@ $transition-duration: 0.5s;
   left: 0;
   z-index: 40;
 
+  h4 {
+    color: var(--gray-600);
+    font-weight: 700;
+    padding-left: 1.5rem;
+  }
+
   @media (min-width: 768px) {
     position: static;
   }
 }
 
 .sidebarShow {
-  margin-left: 0;
+  margin-left: -112px;
+  margin-right: 41px;
 }
 
 .sidebarHide {
@@ -61,14 +66,17 @@ $transition-duration: 0.5s;
 }
 
 .active {
-  color: $white;
+  color: var(--gray-900);
+  background-color: var(--gray-50);
+  font-weight: 700;
 }
 
 .inactive {
-  color: $text-white-50;
+  color: var(--gray-700);
+  font-weight: 600;
 
   &:hover {
-    color: $white;
+    color: var(--gray-500);
   }
 }
 
