@@ -1,6 +1,7 @@
 import "../../app/globals.scss";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Image from "next/image";
+import SidebarMenuLayout from "../components/SidebarMenuLayout";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -16,7 +17,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <h2>Swifti</h2>
           <LogoutButton />
         </main>
-        {children}
+        <SidebarMenuLayout>{children}</SidebarMenuLayout>
       </body>
     </html>
   );

@@ -1,0 +1,88 @@
+// Sidebar.module.scss
+
+$bg-black: #000;
+$white: #fff;
+$text-white-50: rgba(255, 255, 255, 0.5);
+$border-white-10: rgba(255, 255, 255, 0.1);
+$transition-duration: 0.5s;
+
+.sidebar {
+  background-color: $bg-black;
+  width: 250px;
+  transition: margin-left $transition-duration ease-in-out;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+
+  @media (min-width: 768px) {
+    position: static;
+  }
+}
+
+.sidebarShow {
+  margin-left: 0;
+}
+
+.sidebarHide {
+  margin-left: -250px;
+
+  @media (min-width: 768px) {
+    margin-left: -112px;
+    margin-right: 41px;
+  }
+}
+
+.logoContainer {
+  padding: 0.5rem;
+  display: flex;
+}
+
+.menuItem {
+  display: flex;
+  gap: 0.25rem;
+  padding-left: 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid $border-white-10;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.iconContainer {
+  font-size: 1.25rem;
+  display: flex;
+  width: 30px;
+
+  & > * {
+    margin: auto;
+  }
+}
+
+.active {
+  color: $white;
+}
+
+.inactive {
+  color: $text-white-50;
+
+  &:hover {
+    color: $white;
+  }
+}
+
+.modalOverlay {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 30;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
