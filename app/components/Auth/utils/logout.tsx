@@ -1,5 +1,5 @@
 import { signOut } from "firebase/auth";
-import { auth } from "../../../../environments/staging/firebaseConfig";
+import { auth } from "../../../../firebase/config";
 
 export const logout = async () => {
   try {

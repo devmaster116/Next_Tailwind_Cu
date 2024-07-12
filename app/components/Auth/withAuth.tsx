@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState, ComponentType } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../../environments/staging/firebaseConfig";
+import { auth } from "../../../firebase/config";
 import Loading from "../Loading";
 
 interface WithAuthProps {}

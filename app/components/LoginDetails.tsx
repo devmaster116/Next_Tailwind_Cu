@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./LoginDetails.module.scss";
 import Link from "next/link";
-import { auth, db } from "@/environments/staging/firebaseConfig";
+import { auth, db } from "@/firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
