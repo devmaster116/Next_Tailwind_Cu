@@ -1,8 +1,8 @@
-import { FirebaseOptions, getApp, getApps, initializeApp } from "firebase/app";
+import { FirebaseApp, FirebaseOptions, getApp, getApps, initializeApp } from "firebase/app";
 import "firebase/auth";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { Auth, getAuth } from "firebase/auth";
+import { Firestore, getFirestore } from "firebase/firestore";
+import { Functions, getFunctions, httpsCallable } from "firebase/functions";
 
 // Parse FIREBASE_CONFIG from environment variable
 const firebaseConfigString = process.env.FIREBASE_CONFIG ? process.env.FIREBASE_CONFIG  : process.env.LOCAL_FIREBASE_CONFIG;
@@ -17,10 +17,10 @@ if (firebaseConfigString) {
   }
 }
 
-let app;
-let auth;
-let functions;
-let db;
+let app: FirebaseApp;
+let auth: Auth;
+let functions: Functions;
+let db: Firestore;
 
 // Check if firebaseConfig is valid before initializing Firebase app
 if (firebaseConfig) {
