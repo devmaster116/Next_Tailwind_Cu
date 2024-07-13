@@ -1,0 +1,11 @@
+.salesDataContainer {
+  display: flex;
+  grid-template-columns: repeat(2, 45%);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.separator {
+  border: 1px solid var(--gray-100);
+  margin: 20px 0px;
+}
