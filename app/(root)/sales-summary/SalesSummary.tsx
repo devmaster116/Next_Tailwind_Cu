@@ -25,7 +25,7 @@ const SalesSummary = () => {
   const [customDate, setCustomDate] = useState<string>();
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
-
+    
   useEffect(() => {
     if (typeof window !== "undefined") {
       const id = localStorage.getItem("kitchenId");
@@ -224,7 +224,6 @@ const SalesSummary = () => {
           <h4>Breakdowns</h4>
         </>
       )}
-
       <DataTable
         firstColumnTitle="Order Type"
         secondColumnTitle="Count (%)"
