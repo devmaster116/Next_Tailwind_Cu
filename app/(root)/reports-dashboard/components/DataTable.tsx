@@ -36,9 +36,7 @@ const DataTable: React.FC<DataTableProps> = ({
           {firstColumnTitle}
         </div>
         {secondColumnTitle && (
-          <div className={`${styles.reportItem} ${styles.countHeading}`}>
-            {secondColumnTitle}
-          </div>
+          <div className={styles.headerItem}>{secondColumnTitle}</div>
         )}
         {thirdColumnTitle && (
           <div className={styles.headerItem}>{thirdColumnTitle}</div>

@@ -61,12 +61,10 @@
   border-bottom: none;
 }
 
-$default-font-size: 16px;
-
 .reportItem {
   align-self: center;
   flex: 1;
-  font-size: var(--dynamic-font-size, $default-font-size);
+  font-size: var(--dynamic-font-size, var(--default-font-size));
   font-weight: 500;
   padding: 10px;
   text-align: center;
