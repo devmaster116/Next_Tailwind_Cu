@@ -4,7 +4,7 @@ import styles from "./SalesSummary.module.scss";
 import {
   functions,
   httpsCallable,
-} from "@/environments/staging/firebaseConfig";
+} from "@/firebase/config";
 import { KitchenData, OrdersResponse } from "@/app/src/types";
 import "react-datepicker/dist/react-datepicker.css";
 import {
