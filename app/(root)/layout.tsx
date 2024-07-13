@@ -7,7 +7,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body>
-        <main className="layoutMain">
+        <header className="header">
           <Image
             src="/images/swifti-logo.png"
             height={20}
@@ -16,8 +16,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           />
           <h2>Swifti</h2>
           <LogoutButton />
+        </header>
+        <main className="main">
+          <SidebarMenuLayout>{children}</SidebarMenuLayout>
         </main>
-        <SidebarMenuLayout>{children}</SidebarMenuLayout>
+        <footer className="footer">
+          © {new Date().getFullYear()} Swifti. All rights reserved.
+        </footer>
       </body>
     </html>
   );

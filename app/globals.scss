@@ -111,7 +111,50 @@ body {
   margin: 0;
   height: 100%;
   background-color: var(--gray-25);
+}
 
+.header {
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  padding: 16px 0px;
+  height: 64px;
+  border-bottom: 1px solid var(--gray-100);
+
+  @media only screen and (min-width: 320px) {
+    img,
+    button {
+      margin-left: 16px;
+    }
+
+    button {
+      margin-right: 16px;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    img,
+    button {
+      margin-left: 60px;
+    }
+
+    button {
+      margin-right: 60px;
+    }
+  }
+
+  @media only screen and (min-width: 961px) {
+    img {
+      margin-left: 112px;
+    }
+
+    button {
+      margin-right: 112px;
+    }
+  }
+}
+
+.main {
   @media only screen and (min-width: 320px) {
     margin: 0px 16px 40px 15px;
   }
@@ -125,51 +168,24 @@ body {
   }
 }
 
-.layoutMain {
+.footer {
   align-items: center;
   background-color: #fff;
   display: flex;
-  padding: 16px 0px;
-  height: 64px;
-  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-500);
+  justify-content: center;
+  width: 100%;
 
-  @media only screen and (min-width: 320px) {
-    margin: 0 -16px;
-    img,
-    button {
-      margin-left: 16px;
-    }
-
-    button {
-      margin-right: 16px;
-    }
+  @media only screen and (min-width: 321px) {
+    height: 68px;
   }
 
   @media only screen and (min-width: 600px) {
-    margin: 0 -78px;
-    img,
-    button {
-      margin-left: 78px;
-    }
-
-    button {
-      margin-right: 78px;
-    }
-  }
-
-  @media only screen and (min-width: 961px) {
-    margin: 0 -128px;
-    img {
-      margin-left: 128px;
-    }
-
-    button {
-      margin-right: 128px;
-    }
+    height: 80px;
   }
 }
 
-.layoutMain h2 {
+.header h2 {
   margin-left: 10px;
 }
 
