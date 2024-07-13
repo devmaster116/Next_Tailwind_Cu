@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./SalesSummary.module.scss";
-import {
-  functions,
-  httpsCallable,
-} from "@/environments/staging/firebaseConfig";
+import { functions, httpsCallable } from "@/firebase/config";
 import { KitchenData, OrdersResponse } from "@/app/src/types";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -15,21 +12,19 @@ import DataTable from "../reports-dashboard/components/DataTable";
 import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
 import DataError from "../reports-dashboard/components/DataError";
 import SalesData from "../reports-dashboard/components/SalesData";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 const SalesSummary = () => {
   const [kitchenId, setKitchenId] = useState<string>("defaultKitchenId");
   const [overviewReportFunctionError, setOverviewReportFunctionError] =
     useState<boolean>(false);
-
   const [loading, setLoading] = useState(true);
   const [reportsData, setReportsData] = useState<OrdersResponse[]>([]);
-
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
-
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
-
   const [customDate, setCustomDate] = useState<string>();
+  const [selectedOption, setSelectedOption] = useState<string>("Today");
+  const { width } = useWindowSize();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -122,6 +117,9 @@ const SalesSummary = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
+      {width && width >= 600 && (
+        <h1 className={styles.pageTitle}>Sales Summary</h1>
+      )}
       {overviewReportFunctionError ? (
         <DataError errorMessage="Error retrieving summary data" />
       ) : (
@@ -210,8 +208,18 @@ const SalesSummary = () => {
         customDate={customDate}
         selectedOption={selectedOption}
       />
-      <div className={styles.separator}></div>
-      <h4>Breakdowns</h4>
+      {width && width >= 600 ? (
+        <div className={styles.hrContainer}>
+          <hr className={styles.hrLine} />
+          <h4 className={styles.hrText}>Breakdowns</h4>
+        </div>
+      ) : (
+        <>
+          <div className={styles.separator}></div>
+          <h4>Breakdowns</h4>
+        </>
+      )}
+
       <DataTable
         firstColumnTitle="Order Type"
         secondColumnTitle="Count (%)"
@@ -285,8 +293,17 @@ const SalesSummary = () => {
         customDate={customDate}
         selectedOption={selectedOption}
       />
-      <div className={styles.separator}></div>
-      <h4>Averages</h4>
+      {width && width >= 600 ? (
+        <div className={styles.hrContainer}>
+          <hr className={styles.hrLine} />
+          <h4 className={styles.hrText}>Averages</h4>
+        </div>
+      ) : (
+        <>
+          <div className={styles.separator}></div>
+          <h4>Averages</h4>
+        </>
+      )}
       <DataTable
         firstColumnTitle="Order Type"
         secondColumnTitle="Avg no. of items"

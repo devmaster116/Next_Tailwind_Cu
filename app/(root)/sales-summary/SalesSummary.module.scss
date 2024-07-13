@@ -13,3 +13,28 @@
   border: 1px solid var(--gray-100);
   margin: 20px 0px;
 }
+
+.hrContainer {
+  position: relative;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.hrLine {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 0;
+}
+
+.hrText {
+  position: relative;
+  display: inline-block;
+  padding: 0 10px;
+  background: #fff;
+  top: -0.6em;
+}
+
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+}
