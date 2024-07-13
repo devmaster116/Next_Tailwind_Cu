@@ -69,14 +69,18 @@ const SalesSummary = () => {
     });
   }, [reportEndDate]);
 
+  console.log("==>", reportsData);
+
   const calculatePercentage = (
     numerator: number,
-    denominator: number
+    denominator: number,
+    fixedTo?: number
   ): string => {
     if (denominator === 0) {
       return "0.00";
     }
-    return ((numerator / denominator) * 100).toFixed(2);
+
+    return ((numerator / denominator) * 100).toFixed(fixedTo ?? 2);
   };
 
   const {
@@ -212,6 +216,7 @@ const SalesSummary = () => {
         <div className={styles.hrContainer}>
           <hr className={styles.hrLine} />
           <h4 className={styles.hrText}>Breakdowns</h4>
+          <hr className={styles.hrLine} />
         </div>
       ) : (
         <>
@@ -223,25 +228,26 @@ const SalesSummary = () => {
       <DataTable
         firstColumnTitle="Order Type"
         secondColumnTitle="Count (%)"
-        secondColumnSymbol="%"
         thirdColumnTitle="Net"
         thirdColumnSymbol="$"
-        fontSize="18px"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Take Away",
-            takeAway: `${total_take_away_orders || 0} - ${calculatePercentage(
+            takeAway: `${total_take_away_orders || 0}  (${calculatePercentage(
               total_take_away_orders,
-              total_take_away_orders + total_dine_in_orders || 0
-            )}`,
+              total_take_away_orders + total_dine_in_orders || 0,
+              1
+            )}%)`,
             net: take_away_order_net_avg || 0,
           },
           {
             title: "Dine In",
-            dine: `${total_dine_in_orders || 0} - ${calculatePercentage(
+            dine: `${total_dine_in_orders || 0}  (${calculatePercentage(
               total_dine_in_orders,
-              total_take_away_orders + total_dine_in_orders || 0
-            )}`,
+              total_take_away_orders + total_dine_in_orders || 0,
+              1
+            )}%)`,
             net: dine_in_order_net_avg || 0,
           },
         ]}
@@ -252,25 +258,26 @@ const SalesSummary = () => {
       <DataTable
         firstColumnTitle="Payment Type"
         secondColumnTitle="%"
-        secondColumnSymbol="%"
         thirdColumnTitle="Net"
         thirdColumnSymbol="$"
-        fontSize="18px"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Cash",
-            percentage: calculatePercentage(
+            percentage: `${total_cash_orders || 0}  (${calculatePercentage(
               total_cash_sum,
-              total_cash_sum + total_card_sum || 0
-            ),
+              total_cash_sum + total_card_sum || 0,
+              1
+            )}%)`,
             net: total_cash_sum || 0,
           },
           {
             title: "Card",
-            percentage: calculatePercentage(
+            percentage: `${total_card_orders || 0}  (${calculatePercentage(
               total_card_sum,
-              total_cash_sum + total_card_sum || 0
-            ),
+              total_cash_sum + total_card_sum || 0,
+              1
+            )}%)`,
             net: total_card_sum || 0,
           },
         ]}
@@ -282,7 +289,7 @@ const SalesSummary = () => {
         firstColumnTitle="Tips"
         secondColumnTitle="Net"
         secondColumnSymbol="$"
-        fontSize="18px"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Card",
@@ -297,6 +304,7 @@ const SalesSummary = () => {
         <div className={styles.hrContainer}>
           <hr className={styles.hrLine} />
           <h4 className={styles.hrText}>Averages</h4>
+          <hr className={styles.hrLine} />
         </div>
       ) : (
         <>
@@ -310,7 +318,7 @@ const SalesSummary = () => {
         secondColumnSymbol=""
         thirdColumnTitle="Net Avg"
         thirdColumnSymbol="$"
-        fontSize="18px"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Take Away Order",
