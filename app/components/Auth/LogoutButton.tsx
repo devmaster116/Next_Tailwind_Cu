@@ -9,6 +9,7 @@ const LogoutButton: React.FC = () => {
 
   const handleLogout = async () => {
     await logout();
+    localStorage.removeItem("kitchenId");
     router.push("/business-login");
   };
 
