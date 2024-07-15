@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
 import LogoutButton from "./Auth/LogoutButton";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -56,13 +57,23 @@ export default function Sidebar({
     />
   );
 
+  const { width } = useWindowSize();
   return (
     <>
       <div className={className}>
-        <div className={styles.logoContainer}>
-          <h4>Reports</h4>
-        </div>
-        <div>
+        <div className="menuItemsContainer">
+          <div className={styles.logoContainer}>
+            {width && width <= 600 && (
+              <Image
+                src="/icons/swifti-2.svg"
+                height={20}
+                width={94}
+                alt="Swifti Logo"
+                className={styles.logo}
+              />
+            )}
+            <h4>Reports</h4>
+          </div>
           {/* <MenuItem
             name="Home"
             route="/"

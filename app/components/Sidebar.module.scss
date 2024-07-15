@@ -6,13 +6,17 @@ $transition-duration: 0.5s;
 
 .sidebar {
   background-color: #fff;
-  width: 250px;
+  width: 311px;
   transition: margin-left $transition-duration ease-in-out;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 3;
+
+  @media only screen and (min-width: 300px) {
+    z-index: 3;
+  }
+
   @media only screen and (min-width: 600px) {
     z-index: 0;
   }
@@ -20,7 +24,6 @@ $transition-duration: 0.5s;
   h4 {
     color: var(--gray-600);
     font-weight: 700;
-    padding-left: 1.5rem;
   }
 
   @media (min-width: 768px) {
@@ -30,13 +33,12 @@ $transition-duration: 0.5s;
 
 .sidebarShow {
   @media only screen and (min-width: 320px) {
-    margin-left: -16px;
     margin-right: 16px;
   }
 
   @media only screen and (min-width: 600px) {
-    margin-left: -78px;
-    margin-right: 78px;
+    margin-left: -60px;
+    margin-right: 60px;
   }
 
   @media only screen and (min-width: 961px) {
@@ -46,8 +48,7 @@ $transition-duration: 0.5s;
 }
 
 .sidebarHide {
-  margin-left: -250px;
-
+  margin-left: -311px;
   @media only screen and (min-width: 600px) {
     margin-left: -78px;
     margin-right: 41px;
@@ -60,19 +61,36 @@ $transition-duration: 0.5s;
 }
 
 .logoContainer {
-  padding: 0.5rem;
   display: flex;
+  flex-direction: column;
+
+  .logo {
+    margin: 16px 0px 0px 16px;
+  }
+
+  h4 {
+    margin: 20px 0px 6px 20px;
+  }
+}
+
+.reportsOptions {
+  @media only screen and (min-width: 600px) {
+    margin-top: 31px;
+  }
 }
 
 .menuItem {
   display: flex;
-  gap: 0.25rem;
-  padding-left: 1.5rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
   border-bottom: 1px solid $border-white-10;
   text-align: center;
-  font-size: 1rem;
+  font-size: 16px;
+  margin: 2px 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.menuItemsContainer {
+  padding-top: 24px;
 }
 
 .iconContainer {
