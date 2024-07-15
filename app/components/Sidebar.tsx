@@ -60,8 +60,8 @@ export default function Sidebar({
   const { width } = useWindowSize();
   return (
     <>
-      <div className={className}>
-        <div className="menuItemsContainer">
+      <div className={`${styles.sidebarContainer} ${className}`}>
+        <div className={styles.menuItemsContainer}>
           <div className={styles.logoContainer}>
             {width && width <= 600 && (
               <Image
@@ -73,49 +73,51 @@ export default function Sidebar({
               />
             )}
             <h4>Reports</h4>
+            <MenuItem
+              name="Overview"
+              route="/reports-dashboard"
+              icon={
+                <Image
+                  className={styles.icon}
+                  src="/icons/home-line.svg"
+                  height={18}
+                  width={18}
+                  alt="Home line icon"
+                />
+              }
+            />
+            <MenuItem
+              name="Sales Summary"
+              route="/sales-summary"
+              icon={
+                <Image
+                  className={styles.icon}
+                  src="/icons/bar-chart-square-02.svg"
+                  height={18}
+                  width={18}
+                  alt="Bar chart icon"
+                />
+              }
+            />
           </div>
-          {/* <MenuItem
-            name="Home"
-            route="/"
-            icon={
-              <Image
-                className={styles.icon}
-                src="/icons/arrow-left.svg"
-                height={18}
-                width={18}
-                alt="arrow left icon"
-              />
-            }
-          /> */}
-          <MenuItem
-            name="Overview"
-            route="/reports-dashboard"
-            icon={
-              <Image
-                className={styles.icon}
-                src="/icons/home-line.svg"
-                height={18}
-                width={18}
-                alt="Home line icon"
-              />
-            }
-          />
-          <MenuItem
-            name="Sales Summary"
-            route="/sales-summary"
-            icon={
-              <Image
-                className={styles.icon}
-                src="/icons/bar-chart-square-02.svg"
-                height={18}
-                width={18}
-                alt="Bar chart icon"
-              />
-            }
-          />
+          <div className={styles.logoutBtn}>
+            <LogoutButton />
+          </div>
         </div>
-        <div className={styles.logoutBtn}>
-          <LogoutButton />
+        <div className={styles.sidebarFooter}>
+          <div className={styles.businessLogo}>
+            <Image
+              src="/icons/swifti-2.svg"
+              height={20}
+              width={40}
+              alt="Swifti Logo"
+              className={styles.logo}
+            />
+          </div>
+          <div className={styles.businessDetails}>
+            <h4>Banh Mi Brother</h4>
+            <p>ghassan.zakaria@gmail.com</p>
+          </div>
         </div>
       </div>
       {show ? <ModalOverlay /> : null}

@@ -60,6 +60,41 @@ $transition-duration: 0.5s;
   }
 }
 
+.sidebarContainer {
+  display: flex;
+  flex-direction: column;
+
+  .sidebarFooter {
+    align-items: center;
+    display: flex;
+    height: 88px;
+    border-top: 1px solid var(--gray-200);
+
+    .businessDetails {
+      h4 {
+        font-weight: 600;
+        color: var(--gray-700);
+      }
+
+      p {
+        font-weight: 400;
+        color: var(--gray-600);
+      }
+    }
+
+    .businessLogo {
+      margin: 0px 12px 0px 16px;
+      @media only screen and (min-width: 600px) {
+        display: none;
+      }
+    }
+
+    @media only screen and (min-width: 600px) {
+      display: none;
+    }
+  }
+}
+
 .logoContainer {
   display: flex;
   flex-direction: column;
@@ -90,7 +125,16 @@ $transition-duration: 0.5s;
 }
 
 .menuItemsContainer {
-  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  .innerMenuItemsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 }
 
 .iconContainer {
@@ -137,7 +181,8 @@ $transition-duration: 0.5s;
   display: flex;
 
   button {
-    place-content: center;
+    place-content: normal;
+    margin-left: 16px;
 
     @media only screen and (min-width: 600px) {
       display: none;
