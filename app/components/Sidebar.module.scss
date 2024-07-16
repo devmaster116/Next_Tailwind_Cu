@@ -83,7 +83,13 @@ $transition-duration: 0.5s;
     }
 
     .businessLogo {
+      box-shadow: 0px 1px 2px 0px #1018280d;
+      border: 0.5px solid var(--gray-200);
+      border-radius: 8px;
+      display: flex;
+      padding: 11px 6px;
       margin: 0px 12px 0px 16px;
+
       @media only screen and (min-width: 600px) {
         display: none;
       }
@@ -124,16 +130,14 @@ $transition-duration: 0.5s;
   border-radius: 6px;
 }
 
-.menuItemsContainer {
+.innerContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
 
-  .innerMenuItemsContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  .menuItems {
+    margin-top: 11px;
   }
 }
 

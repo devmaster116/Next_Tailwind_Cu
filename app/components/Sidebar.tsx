@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
 import LogoutButton from "./Auth/LogoutButton";
-import useWindowSize from "@/app/hooks/useWindowSize";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -23,7 +22,16 @@ export default function Sidebar({
   setter,
   setMenuPageName,
 }: SidebarProps) {
+  const [kitchenName, setKitchenName] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setKitchenName(localStorage.getItem("kitchenName"));
+      setUserEmail(localStorage.getItem("userEmail"));
+    }
+  }, []);
 
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
@@ -57,48 +65,40 @@ export default function Sidebar({
     />
   );
 
-  const { width } = useWindowSize();
   return (
     <>
       <div className={`${styles.sidebarContainer} ${className}`}>
-        <div className={styles.menuItemsContainer}>
+        <div className={styles.innerContainer}>
           <div className={styles.logoContainer}>
-            {width && width <= 600 && (
-              <Image
-                src="/icons/swifti-2.svg"
-                height={20}
-                width={94}
-                alt="Swifti Logo"
-                className={styles.logo}
-              />
-            )}
             <h4>Reports</h4>
-            <MenuItem
-              name="Overview"
-              route="/reports-dashboard"
-              icon={
-                <Image
-                  className={styles.icon}
-                  src="/icons/home-line.svg"
-                  height={18}
-                  width={18}
-                  alt="Home line icon"
-                />
-              }
-            />
-            <MenuItem
-              name="Sales Summary"
-              route="/sales-summary"
-              icon={
-                <Image
-                  className={styles.icon}
-                  src="/icons/bar-chart-square-02.svg"
-                  height={18}
-                  width={18}
-                  alt="Bar chart icon"
-                />
-              }
-            />
+            <div className={styles.menuItems}>
+              <MenuItem
+                name="Overview"
+                route="/reports-dashboard"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/home-line.svg"
+                    height={18}
+                    width={18}
+                    alt="Home line icon"
+                  />
+                }
+              />
+              <MenuItem
+                name="Sales Summary"
+                route="/sales-summary"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/bar-chart-square-02.svg"
+                    height={18}
+                    width={18}
+                    alt="Bar chart icon"
+                  />
+                }
+              />
+            </div>
           </div>
           <div className={styles.logoutBtn}>
             <LogoutButton />
@@ -107,16 +107,16 @@ export default function Sidebar({
         <div className={styles.sidebarFooter}>
           <div className={styles.businessLogo}>
             <Image
-              src="/icons/swifti-2.svg"
-              height={20}
-              width={40}
+              src="/images/swifti-logo.png"
+              height={18}
+              width={28}
               alt="Swifti Logo"
               className={styles.logo}
             />
           </div>
           <div className={styles.businessDetails}>
-            <h4>Banh Mi Brother</h4>
-            <p>ghassan.zakaria@gmail.com</p>
+            <h4>{kitchenName}</h4>
+            <p>{userEmail}</p>
           </div>
         </div>
       </div>
