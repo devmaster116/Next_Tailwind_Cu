@@ -3,9 +3,34 @@
   grid-template-columns: repeat(2, 45%);
   flex-wrap: wrap;
   gap: 16px;
+  @media only screen and (min-width: 600px) {
+    flex-wrap: nowrap;
+  }
 }
 
 .separator {
   border: 1px solid var(--gray-100);
   margin: 20px 0px;
+}
+
+.hrContainer {
+  display: flex;
+  align-items: center;
+  margin: 32px 0;
+}
+
+.hrLine {
+  flex-grow: 1;
+  border: 0;
+  height: 1px;
+  background-color: var(--gray-200);
+}
+
+.hrText {
+  font-size: 20px;
+  padding: 0 8px;
+}
+
+.pageTitle {
+  margin: 16px 0px 20px 0px;
 }

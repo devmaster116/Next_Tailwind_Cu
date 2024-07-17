@@ -1,0 +1,23 @@
+.layoutContainer {
+  min-height: 100vh;
+}
+
+.mainContent {
+  display: flex;
+  flex-grow: 1;
+
+  @media (min-width: 768px) {
+    width: 100%; /* Full width on larger screens */
+  }
+}
+
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100vw; /* Adjust this to ensure proper width for the content area */
+
+  @media (min-width: 768px) {
+    width: 100%; /* Full width on larger screens */
+  }
+}

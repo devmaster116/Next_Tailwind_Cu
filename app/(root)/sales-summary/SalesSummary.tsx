@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./SalesSummary.module.scss";
-import {
-  functions,
-  httpsCallable,
-} from "@/firebase/config";
+import { functions, httpsCallable } from "@/firebase/config";
 import { KitchenData, OrdersResponse } from "@/app/src/types";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -15,22 +12,20 @@ import DataTable from "../reports-dashboard/components/DataTable";
 import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
 import DataError from "../reports-dashboard/components/DataError";
 import SalesData from "../reports-dashboard/components/SalesData";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 const SalesSummary = () => {
   const [kitchenId, setKitchenId] = useState<string>("defaultKitchenId");
   const [overviewReportFunctionError, setOverviewReportFunctionError] =
     useState<boolean>(false);
-
   const [loading, setLoading] = useState(true);
   const [reportsData, setReportsData] = useState<OrdersResponse[]>([]);
-
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
-
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
-
   const [customDate, setCustomDate] = useState<string>();
-
+  const [selectedOption, setSelectedOption] = useState<string>("Today");
+  const { width } = useWindowSize();
+    
   useEffect(() => {
     if (typeof window !== "undefined") {
       const id = localStorage.getItem("kitchenId");
@@ -50,7 +45,6 @@ const SalesSummary = () => {
       .then(result => {
         /** @type {any} */
         const data = result.data as KitchenData;
-        console.log("DATA ", data);
         setReportsData(data.response);
         setLoading(false);
       })
@@ -75,14 +69,18 @@ const SalesSummary = () => {
     });
   }, [reportEndDate]);
 
+  console.log("==>", reportsData);
+
   const calculatePercentage = (
     numerator: number,
-    denominator: number
+    denominator: number,
+    fixedTo?: number
   ): string => {
     if (denominator === 0) {
       return "0.00";
     }
-    return ((numerator / denominator) * 100).toFixed(2);
+
+    return ((numerator / denominator) * 100).toFixed(fixedTo ?? 2);
   };
 
   const {
@@ -123,6 +121,9 @@ const SalesSummary = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
+      {width && width >= 600 && (
+        <h1 className={styles.pageTitle}>Sales Summary</h1>
+      )}
       {overviewReportFunctionError ? (
         <DataError errorMessage="Error retrieving summary data" />
       ) : (
@@ -211,29 +212,41 @@ const SalesSummary = () => {
         customDate={customDate}
         selectedOption={selectedOption}
       />
-      <div className={styles.separator}></div>
-      <h4>Breakdowns</h4>
+      {width && width >= 600 ? (
+        <div className={styles.hrContainer}>
+          <hr className={styles.hrLine} />
+          <h4 className={styles.hrText}>Breakdowns</h4>
+          <hr className={styles.hrLine} />
+        </div>
+      ) : (
+        <>
+          <div className={styles.separator}></div>
+          <h4>Breakdowns</h4>
+        </>
+      )}
       <DataTable
         firstColumnTitle="Order Type"
         secondColumnTitle="Count (%)"
-        secondColumnSymbol="%"
         thirdColumnTitle="Net"
         thirdColumnSymbol="$"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Take Away",
-            takeAway: `${total_take_away_orders || 0} - ${calculatePercentage(
+            takeAway: `${total_take_away_orders || 0}  (${calculatePercentage(
               total_take_away_orders,
-              total_take_away_orders + total_dine_in_orders || 0
-            )}`,
+              total_take_away_orders + total_dine_in_orders || 0,
+              1
+            )}%)`,
             net: take_away_order_net_avg || 0,
           },
           {
             title: "Dine In",
-            dine: `${total_dine_in_orders || 0} - ${calculatePercentage(
+            dine: `${total_dine_in_orders || 0}  (${calculatePercentage(
               total_dine_in_orders,
-              total_take_away_orders + total_dine_in_orders || 0
-            )}`,
+              total_take_away_orders + total_dine_in_orders || 0,
+              1
+            )}%)`,
             net: dine_in_order_net_avg || 0,
           },
         ]}
@@ -244,24 +257,26 @@ const SalesSummary = () => {
       <DataTable
         firstColumnTitle="Payment Type"
         secondColumnTitle="%"
-        secondColumnSymbol="%"
         thirdColumnTitle="Net"
         thirdColumnSymbol="$"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Cash",
-            percentage: calculatePercentage(
+            percentage: `${total_cash_orders || 0}  (${calculatePercentage(
               total_cash_sum,
-              total_cash_sum + total_card_sum || 0
-            ),
+              total_cash_sum + total_card_sum || 0,
+              1
+            )}%)`,
             net: total_cash_sum || 0,
           },
           {
             title: "Card",
-            percentage: calculatePercentage(
+            percentage: `${total_card_orders || 0}  (${calculatePercentage(
               total_card_sum,
-              total_cash_sum + total_card_sum || 0
-            ),
+              total_cash_sum + total_card_sum || 0,
+              1
+            )}%)`,
             net: total_card_sum || 0,
           },
         ]}
@@ -273,6 +288,7 @@ const SalesSummary = () => {
         firstColumnTitle="Tips"
         secondColumnTitle="Net"
         secondColumnSymbol="$"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Card",
@@ -283,14 +299,25 @@ const SalesSummary = () => {
         customDate={customDate}
         selectedOption={selectedOption}
       />
-      <div className={styles.separator}></div>
-      <h4>Averages</h4>
+      {width && width >= 600 ? (
+        <div className={styles.hrContainer}>
+          <hr className={styles.hrLine} />
+          <h4 className={styles.hrText}>Averages</h4>
+          <hr className={styles.hrLine} />
+        </div>
+      ) : (
+        <>
+          <div className={styles.separator}></div>
+          <h4>Averages</h4>
+        </>
+      )}
       <DataTable
         firstColumnTitle="Order Type"
         secondColumnTitle="Avg no. of items"
         secondColumnSymbol=""
         thirdColumnTitle="Net Avg"
         thirdColumnSymbol="$"
+        fontSize={width && width >= 600 ? "18px" : "16px"}
         dataObj={[
           {
             title: "Take Away Order",
