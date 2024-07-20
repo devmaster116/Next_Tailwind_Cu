@@ -53,7 +53,7 @@ const Reports = () => {
       fromReportDate: formatDate(reportStartDate),
       toReportDate: formatDate(reportEndDate),
     })
-      .then(result => {
+      .then((result) => {
         /** @type {any} */
         const data = result.data as KitchenData;
 
@@ -64,7 +64,7 @@ const Reports = () => {
         setTopDishes(topDishes);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Failed to fetch advanced reports:", error);
         setAdvancedReportingError(true);
       });
@@ -74,13 +74,13 @@ const Reports = () => {
       fromReportDate: formatDate(reportStartDate),
       toReportDate: formatDate(reportEndDate),
     })
-      .then(result => {
+      .then((result) => {
         /** @type {any} */
         const data = result.data as KitchenData;
         setOrdersData(data.response);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("Failed to fetch overview reports:", error);
         setOverviewReportFunctionError(true);
       });
@@ -135,13 +135,8 @@ const Reports = () => {
                 loading={loading}
               />
               <SalesData
-                title="Avg. Order"
-                amount={Number(
-                  (
-                    total_net_sales /
-                    (total_orders - total_refunded_orders)
-                  ).toFixed(2)
-                )}
+                title="Avg. Net Sale"
+                amount={Number((total_net_sales / total_orders).toFixed(2))}
                 isDollarAmount={true}
                 loading={loading}
               />
