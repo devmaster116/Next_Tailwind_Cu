@@ -54,8 +54,17 @@ const LoginDetails = () => {
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
           const kitchenId = userDocSnap.data().kitchenId;
-          localStorage.setItem("kitchenId", kitchenId);
+          const userEmail = userDocSnap.data().email;
+          const docRef = doc(db, "kitchens", kitchenId);
+          const docSnap = await getDoc(docRef);
 
+          if (docSnap.exists()) {
+            const kitchenName = docSnap.data().kitchenName;
+            localStorage.setItem("kitchenName", kitchenName);
+          }
+
+          localStorage.setItem("kitchenId", kitchenId);
+          localStorage.setItem("userEmail", userEmail);
           router.push("/reports-dashboard");
         } else {
           throw new Error("User document not found");

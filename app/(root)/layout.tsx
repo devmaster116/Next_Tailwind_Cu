@@ -1,12 +1,20 @@
 import "../../app/globals.scss";
 import LogoutButton from "../components/Auth/LogoutButton";
 import Image from "next/image";
+import SidebarMenuLayout from "../components/SidebarMenuLayout";
+import { Urbanist } from "next/font/google";
+
+const urbanist = Urbanist({
+  weight: ["400", "600"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
+    <html lang="en" className={urbanist.className}>
       <body>
-        <main className="layoutMain">
+        <header className="header">
           <Image
             src="/images/swifti-logo.png"
             height={20}
@@ -15,8 +23,13 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           />
           <h2>Swifti</h2>
           <LogoutButton />
+        </header>
+        <main className="main">
+          <SidebarMenuLayout>{children}</SidebarMenuLayout>
         </main>
-        {children}
+        <footer className="footer">
+          © {new Date().getFullYear()} Swifti. All rights reserved.
+        </footer>
       </body>
     </html>
   );

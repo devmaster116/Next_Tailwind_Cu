@@ -1,10 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import withAuth from "../../../components/Auth/withAuth";
-import {
-  functions,
-  httpsCallable,
-} from "@/firebase/config";
+import { functions, httpsCallable } from "@/firebase/config";
 import {
   Dishes,
   Categories,
@@ -19,9 +16,11 @@ import "./DatePicker.scss";
 import DataError from "./DataError";
 import DataTable from "./DataTable";
 import DateRangeSelectorModal from "./utils/DateRangeSelectorModal";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 const Reports = () => {
   const kitchenId = localStorage.getItem("kitchenId");
+  const { width } = useWindowSize();
 
   const [advancedReportingError, setAdvancedReportingError] =
     useState<boolean>(false);
@@ -114,6 +113,7 @@ const Reports = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
+      {width && width >= 600 && <h1 className={styles.pageTitle}>Overview</h1>}
       {advancedReportingError && overviewReportFunctionError ? (
         <DataError errorMessage="Error retrieving dashboard data" />
       ) : (
