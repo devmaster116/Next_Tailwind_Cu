@@ -13,6 +13,7 @@ interface DataTableProps {
   customDate?: string;
   selectedOption?: string;
   fontSize?: string;
+  negative?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -26,6 +27,7 @@ const DataTable: React.FC<DataTableProps> = ({
   customDate,
   selectedOption,
   fontSize,
+  negative = false,
 }) => {
   return (
     <div className={styles.report}>
@@ -77,8 +79,10 @@ const DataTable: React.FC<DataTableProps> = ({
                 >
                   {secondColumnSymbol === "$" ? (
                     <>
+                      {negative && "("}
                       {secondColumnSymbol}
-                      {item[Object.keys(item)[1]].toFixed(2)}
+                      {item[Object.keys(item)[1]]?.toFixed(2)}
+                      {negative && ")"}
                     </>
                   ) : (
                     <>
