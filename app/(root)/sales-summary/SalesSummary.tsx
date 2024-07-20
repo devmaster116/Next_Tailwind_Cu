@@ -26,16 +26,10 @@ const SalesSummary = () => {
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
     
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const id = localStorage.getItem("kitchenId");
-      if (id) {
-        setKitchenId(id);
-      }
-    }
-  }, []);
 
   useEffect(() => {
+    const kitchenId = localStorage?.getItem("kitchenId") ? localStorage?.getItem("kitchenId") : null;
+
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
     overviewReports({
       kitchenId: kitchenId,
@@ -141,9 +135,9 @@ const SalesSummary = () => {
             loading={loading}
           />
           <SalesData
-            title="Avg. Order"
+            title="Avg. Net Sale"
             amount={Number(
-              total_net_sales / (total_orders - total_refunded_orders)
+              total_net_sales / (total_orders )
             )}
             isDollarAmount={true}
             loading={loading}
@@ -170,12 +164,10 @@ const SalesSummary = () => {
       <DataTable
         firstColumnTitle="Gross Sales"
         secondColumnTitle={`$${String(
-          total_net_sales +
-            total_card_surcharge +
-            total_card_tip +
-            total_refunded_sum || 0
+          total_revenue || 0
         )}`}
         secondColumnSymbol="$"
+        negative={true}
         dataObj={[
           {
             title: "Card Surcharges (Paid by customer)",
@@ -189,6 +181,10 @@ const SalesSummary = () => {
             title: "Refunds",
             refund: total_refunded_sum || 0,
           },
+          {
+            title: "GST (10%)",
+            refund: total_net_sales/11 || 0,
+          },
         ]}
         loading={loading}
         customDate={customDate}
@@ -199,10 +195,6 @@ const SalesSummary = () => {
         secondColumnTitle={`$${String(total_net_sales || 0)}`}
         secondColumnSymbol="$"
         dataObj={[
-          {
-            title: "Includes GST 10%",
-            sales: total_net_sales / 11 || 0,
-          },
           {
             title: "Includes PH Surcharge 15%",
             tips: total_card_tip || 0,
