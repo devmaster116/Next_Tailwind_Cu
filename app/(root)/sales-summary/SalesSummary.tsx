@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./SalesSummary.module.scss";
+import "../reports-dashboard/components/DatePicker.scss";
 import { functions, httpsCallable } from "@/firebase/config";
 import { KitchenData, OrdersResponse } from "@/app/src/types";
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,7 +17,6 @@ import useWindowSize from "@/app/hooks/useWindowSize";
 import withAuth from "@/app/components/Auth/withAuth";
 
 const SalesSummary = () => {
-  const [kitchenId, setKitchenId] = useState<string>("defaultKitchenId");
   const [overviewReportFunctionError, setOverviewReportFunctionError] =
     useState<boolean>(false);
   const [loading, setLoading] = useState(true);
@@ -26,10 +26,11 @@ const SalesSummary = () => {
   const [customDate, setCustomDate] = useState<string>();
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
-    
 
   useEffect(() => {
-    const kitchenId = localStorage?.getItem("kitchenId") ? localStorage?.getItem("kitchenId") : null;
+    const kitchenId = localStorage?.getItem("kitchenId")
+      ? localStorage?.getItem("kitchenId")
+      : null;
 
     const overviewReports = httpsCallable(functions, "overviewReportFunction");
     overviewReports({
@@ -72,7 +73,7 @@ const SalesSummary = () => {
     fixedTo?: number
   ): string => {
     if (denominator === 0) {
-      return "0.00";
+      return "0";
     }
 
     return ((numerator / denominator) * 100).toFixed(fixedTo ?? 2);
@@ -83,24 +84,17 @@ const SalesSummary = () => {
     online_order_net_avg,
     take_away_order_net_avg,
     total_card_orders,
-    total_card_refunded_sum,
     total_card_sum,
     total_card_surcharge,
     total_card_tip,
     total_cash_orders,
-    total_cash_refunded_sum,
     total_cash_sum,
-    total_completed_orders,
     total_dine_in_orders,
-    total_holiday_surcharge,
     total_net_sales,
     total_online_orders,
     total_orders,
-    total_refunded_orders,
     total_refunded_sum,
     total_revenue,
-    total_split_payment_orders,
-    total_split_payment_sum,
     total_take_away_orders,
   } = reportsData[0] || {};
 
@@ -137,9 +131,7 @@ const SalesSummary = () => {
           />
           <SalesData
             title="Avg. Net Sale"
-            amount={Number(
-              total_net_sales / (total_orders )
-            )}
+            amount={Number(total_net_sales / total_orders)}
             isDollarAmount={true}
             loading={loading}
           />
@@ -164,9 +156,7 @@ const SalesSummary = () => {
       )}
       <DataTable
         firstColumnTitle="Gross Sales"
-        secondColumnTitle={`$${String(
-          total_revenue || 0
-        )}`}
+        secondColumnTitle={`$${String(total_revenue || 0)}`}
         secondColumnSymbol="$"
         negative={true}
         dataObj={[
@@ -184,12 +174,13 @@ const SalesSummary = () => {
           },
           {
             title: "GST (10%)",
-            refund: total_net_sales/11 || 0,
+            refund: total_net_sales / 11 || 0,
           },
         ]}
         loading={loading}
         customDate={customDate}
         selectedOption={selectedOption}
+        hideRow={true}
       />
       <DataTable
         firstColumnTitle="Net Sales"
@@ -204,6 +195,7 @@ const SalesSummary = () => {
         loading={loading}
         customDate={customDate}
         selectedOption={selectedOption}
+        hideRow={true}
       />
       {width && width >= 600 ? (
         <div className={styles.hrContainer}>
