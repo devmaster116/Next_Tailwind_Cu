@@ -1,0 +1,78 @@
+// styles/LoadingSkeleton.module.scss
+
+// Define keyframes for shimmer effect
+@keyframes shimmer {
+    0% {
+      background-position: -200px 0;
+    }
+    100% {
+      background-position: 200px 0;
+    }
+  }
+  
+  // Container styling
+  .container {
+    padding: 16px;
+    background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  margin-top: 20px;
+  width: 100%;
+    .subscriptionStatus {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+  
+    .icon, .text, .title, .addOns, .price, .footer {
+      background: linear-gradient(90deg, #e0e0e0 25%, #f6f6f6 50%, #e0e0e0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+  
+    .icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+  
+    .text {
+      width: 150px;
+      height: 16px;
+      border-radius: 4px;
+    }
+  
+    .title {
+      width: 100px;
+      height: 16px;
+      border-radius: 4px;
+      margin: 8px 0;
+    }
+  
+    .details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .addOns {
+      width: 100px;
+      height: 16px;
+      border-radius: 4px;
+    }
+  
+    .price {
+      width: 80px;
+      height: 16px;
+      border-radius: 4px;
+    }
+  
+    .footer {
+      width: 200px;
+      height: 16px;
+      border-radius: 4px;
+    }
+  }
+  

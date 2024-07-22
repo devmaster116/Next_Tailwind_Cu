@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export interface KitchenData {
   kitchen: string;
   kitchenId: string;
@@ -45,3 +47,31 @@ export interface OrdersResponse {
   total_split_payment_sum: number;
   total_take_away_orders: number;
 }
+
+// Manually entered subscription details for MVP. Used to create subscription checkout page from admin console
+export type ChosenSubscriptionDetails = {
+  activeProducts: string[];
+  addonNames: string[];
+  products: SubscriptionProduct[];
+}
+
+export type ActiveSubscribtionDetails = {
+  activeProducts: string[];
+  addonNames: string[];
+  cancel_at_period_end: boolean;
+  current_period_end: Timestamp;
+  current_period_start: Timestamp;
+  customerId: string;
+  subscriptionId: string;
+  subscriptionStatus: string;
+  products: SubscriptionProduct[];
+};
+
+export type SubscriptionProduct = {
+  amount: number;
+  lookup_key: string;
+  priceId: string;
+  productId: string;
+  productName: string;
+  quantity: number;
+};

@@ -100,10 +100,30 @@ export default function Sidebar({
               />
             </div>
           </div>
-          <div className={styles.logoutBtn}>
-            <LogoutButton />
+
+          <div className={styles.logoContainer}>
+            <h4>Account and Billing</h4>
+            <div className={styles.menuItems}>
+              <MenuItem
+                name="Subscriptions"
+                route="/subscriptions"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/card.svg"
+                    height={18}
+                    width={18}
+                    alt="Subscriptions icon"
+                  />
+                }
+              />
+            </div>
           </div>
         </div>
+
+        <div className={styles.logoutBtn}>
+            <LogoutButton />
+          </div>
         <div className={styles.sidebarFooter}>
           <div className={styles.businessLogo}>
             <Image

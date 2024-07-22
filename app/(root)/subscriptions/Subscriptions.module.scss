@@ -1,0 +1,135 @@
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+}
+.parentContainer {
+  background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  margin-top: 20px;
+  max-width: 553px;
+}
+
+.subscriptionActiveStatusContainer {
+  background: #ECFDF3;
+  padding: 2px 10px 2px 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  border-radius: 16px;
+  align-items: center;
+}
+
+.subscriotionActiveText{
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #027A48;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
+}
+
+.subscriptionCancelledStatusContainer {
+  background: #F2F4F7;
+  padding: 2px 10px 2px 8px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 16px;
+}
+
+.subscriotionCancelledText{
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #344054;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
+}
+
+.subscriptioninActiveStatusContainer {
+  background: #FFF1F3;
+  padding: 2px 10px 2px 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  border-radius: 16px;
+  align-items: center;
+}
+
+.subscriotionInactiveText{
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #C01048;
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
+  
+}
+
+.TitleText {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 8px;
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+  }
+}
+
+.headerText {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+.bodyText {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+.totalAmountContainer {
+  border-top: 0.5px solid var(--gray-100);
+  padding-top: 8px;
+}
+
+.billedOnText {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin-top: 4px;
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
+}
+
+.button {
+  border-top: 1px solid var(--gray-200);
+  // margin-top: 8px;
+  padding: 16px;
+  color: var(--primary-purple-700);
+  font-weight: 600;
+ font-size: 16px;
+ 
+  &:hover {
+    color:var(--primary-purple-600)
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+
+}

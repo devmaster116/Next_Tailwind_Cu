@@ -1,0 +1,115 @@
+// components/Navbar.module.scss
+
+.navbar {
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  padding: 16px 0px;
+  height: 64px;
+  border-bottom: 1px solid var(--gray-100);
+width: 100%;
+  @media only screen and (max-width: 599px) {
+    img,
+    button,
+    h2 {
+      display: none;
+    }
+  }
+
+  @media only screen and (min-width: 600px) {
+    img,
+    button {
+      margin-left: 60px;
+    }
+
+    button {
+      margin-right: 60px;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: center;
+//   max-width: 1200px;
+  margin: 0 auto;
+  margin-right: 50px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logoContainer {
+  display: flex;
+  gap: 8px;
+}
+
+.businessDetailsContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+.businessDetailsContent {
+  align-items: end;
+  justify-content: flex-end;
+  text-align: end;
+}
+.userImageContainer {
+  // padding: 8px;
+  background: #f2f4f7;
+  border-radius: 200px;
+  height: 40px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 55px;
+  background-color: #fff;
+  color: #333;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  min-width: 240px;
+  
+}
+
+.dropdownItem {
+  display: flex;
+  padding: 10px;
+  text-align: left;
+  border: none;
+  background: none;
+  color: #333;
+  cursor: pointer;
+  width: 100%;
+  align-items: center;
+    justify-content: flex-start;
+  gap: 8px;
+  margin-left: 0px;
+}
+
+.dropdownItem:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdownText{
+    font-size: 14px;
+    line-height: 20px;
+    color: #344054;
+    font-weight: 500;
+}

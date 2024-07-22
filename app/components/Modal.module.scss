@@ -1,0 +1,78 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  padding: 24px;
+}
+
+.modalContent {
+  padding-bottom: 32px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #475467;
+}
+.titleText{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    padding-bottom: 4px;
+}
+.modalFooter {
+  display: flex;
+  justify-content: center;
+//   border-top: 1px solid #eee;
+  gap: 12px;
+}
+
+.closeButton {
+  padding: 10px;
+  background: white;
+  color: white;
+  border: none;
+  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  color: #344054;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.confirmButton {
+  padding: 10px;
+  background: #d92d20;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  color: white;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.closeButton:hover {
+  background: var(--gray-200)
+}
+
+.confirmButton:hover {
+    background: var(--error-300);
+}
