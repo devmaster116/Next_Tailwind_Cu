@@ -59,8 +59,10 @@ const LoginDetails = () => {
           const docSnap = await getDoc(docRef);
 
           if (docSnap.exists()) {
-            const kitchenName = docSnap.data().kitchenName;
+            const kitchenName = docSnap?.data()?.kitchenName ? docSnap?.data()?.kitchenName : null;
+            const stripeCustomerId = docSnap?.data()?.stripe_customer_id ? docSnap?.data()?.stripe_customer_id : null;
             localStorage.setItem("kitchenName", kitchenName);
+            localStorage.setItem("stripeCustomerId", stripeCustomerId);
           }
 
           localStorage.setItem("kitchenId", kitchenId);

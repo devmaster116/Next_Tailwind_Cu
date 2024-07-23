@@ -13,6 +13,7 @@ import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRa
 import DataError from "../reports-dashboard/components/DataError";
 import SalesData from "../reports-dashboard/components/SalesData";
 import useWindowSize from "@/app/hooks/useWindowSize";
+import withAuth from "@/app/components/Auth/withAuth";
 
 const SalesSummary = () => {
   const [kitchenId, setKitchenId] = useState<string>("defaultKitchenId");
@@ -335,4 +336,4 @@ const SalesSummary = () => {
   );
 };
 
-export default SalesSummary;
+export default withAuth(SalesSummary);

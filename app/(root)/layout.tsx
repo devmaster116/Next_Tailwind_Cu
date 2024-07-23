@@ -1,8 +1,7 @@
 import "../../app/globals.scss";
-import LogoutButton from "../components/Auth/LogoutButton";
-import Image from "next/image";
 import SidebarMenuLayout from "../components/SidebarMenuLayout";
 import { Urbanist } from "next/font/google";
+import Navbar from "../components/Navbar";
 
 const urbanist = Urbanist({
   weight: ["400", "600"],
@@ -14,16 +13,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" className={urbanist.className}>
       <body>
-        <header className="header">
-          <Image
-            src="/images/swifti-logo.png"
-            height={20}
-            width={33}
-            alt="Swifti Logo"
-          />
-          <h2>Swifti</h2>
-          <LogoutButton />
-        </header>
+        <Navbar/>
         <main className="main">
           <SidebarMenuLayout>{children}</SidebarMenuLayout>
         </main>
