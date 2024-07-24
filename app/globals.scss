@@ -217,3 +217,15 @@ button {
   margin: 0;
   outline: none;
 }
+
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100vw; /* Adjust this to ensure proper width for the content area */
+  min-height: calc(100vh - 190px);
+  @media (min-width: 768px) {
+    min-height: calc(100vh - 190px);
+    width: 100%; /* Full width on larger screens */
+  }
+}

@@ -13,9 +13,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedKitchenId = localStorage.getItem("kitchenId");
     onAuthStateChanged(auth, user => {
-      if (user && storedKitchenId) {
+      if (user) {
         router.push(`/reports-dashboard`);
       } else {
         setLoading(false);
