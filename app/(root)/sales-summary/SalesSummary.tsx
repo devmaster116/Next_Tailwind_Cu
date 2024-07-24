@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./SalesSummary.module.scss";
+import "../reports-dashboard/components/DatePicker.scss";
 import { functions, httpsCallable } from "@/firebase/config";
 import { KitchenData, OrdersResponse } from "@/app/src/types";
 import "react-datepicker/dist/react-datepicker.css";
@@ -28,7 +29,6 @@ const SalesSummary = () => {
 
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
-
   const { kitchen } = useKitchen();
 
   const kitchenId = kitchen?.kitchenId ?? null;
@@ -83,7 +83,7 @@ const SalesSummary = () => {
     fixedTo?: number
   ): string => {
     if (denominator === 0) {
-      return "0.00";
+      return "0";
     }
 
     return ((numerator / denominator) * 100).toFixed(fixedTo ?? 2);
@@ -94,24 +94,17 @@ const SalesSummary = () => {
     online_order_net_avg,
     take_away_order_net_avg,
     total_card_orders,
-    total_card_refunded_sum,
     total_card_sum,
     total_card_surcharge,
     total_card_tip,
     total_cash_orders,
-    total_cash_refunded_sum,
     total_cash_sum,
-    total_completed_orders,
     total_dine_in_orders,
-    total_holiday_surcharge,
     total_net_sales,
     total_online_orders,
     total_orders,
-    total_refunded_orders,
     total_refunded_sum,
     total_revenue,
-    total_split_payment_orders,
-    total_split_payment_sum,
     total_take_away_orders,
   } = reportsData[0] || {};
 
