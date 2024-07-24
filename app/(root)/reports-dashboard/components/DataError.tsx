@@ -5,13 +5,14 @@ import styles from "./DataError.module.scss";
 
 interface DataErrorProps {
   errorMessage: string;
+  errorDescription?: string
 }
 
 const handleRefresh = () => {
   window.location.reload();
 };
 
-const DataError = ({ errorMessage }: DataErrorProps) => {
+const DataError = ({ errorMessage, errorDescription="" }: DataErrorProps) => {
   return (
     <div className={styles.errorContainer}>
       <div className={styles.errorMessage}>
@@ -26,7 +27,7 @@ const DataError = ({ errorMessage }: DataErrorProps) => {
         </div>
         <p className={styles.message1}>{errorMessage}</p>
         <p className={styles.message2}>
-          Check your connectivity and try again.
+          {errorDescription ? errorDescription : "Check your connectivity and try again."}
         </p>
       </div>
       <div className={styles.tryAgain}>

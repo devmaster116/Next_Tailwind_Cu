@@ -24,10 +24,9 @@ import { continueStripeSubscription } from "@/app/api-calls/continueStripeSubscr
 import { createSubscriptionCheckoutSession } from "@/app/api-calls/createSubscriptionCheckoutSession";
 import LoadingSkeleton from "./components/LoadingSkeleton";
 import withAuth from "@/app/components/Auth/withAuth";
+import { useKitchen } from "../../context/KitchenContext";
 
 const Subscriptions = () => {
-  const [kitchenId, setKitchenId] = useState<string | null>(null);
-  const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
   const [chosenSubscriptionDetails, setChosenSubscriptionDetails] =
@@ -42,16 +41,12 @@ const Subscriptions = () => {
   const [isContinueSubscriptionModalOpen, setIsContinueSubscriptionModalOpen] =
     useState(false);
 
-  const { width, height } = useWindowSize();
+  const { width } = useWindowSize();
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const id = localStorage.getItem("kitchenId");
-      if (id) {
-        setKitchenId(id);
-      }
-    }
-  }, []);
+  const { kitchen } = useKitchen();
+
+  const kitchenId = kitchen?.kitchenId ?? null;
+  const stripeCustomerId = kitchen?.stripeCustomerId ? kitchen.stripeCustomerId : null;
 
   // Chosen subscription details
   const chosenSubscribedProducts = chosenSubscriptionDetails?.products
@@ -120,7 +115,7 @@ const Subscriptions = () => {
   const notify = (message: string) => toast(message);
   const handleStartSubscription = async () => {
     if (stripeCustomerId === null) {
-      setError("Stripe Customer ID is missing.");
+      setError("Stripe Customer ID is missing. Stripe account needs to be created. Please contact us.");
     }
     if (
       stripeCustomerId &&
@@ -146,6 +141,7 @@ const Subscriptions = () => {
       }
     }
   };
+
   const handleUpdatePaymentMethodSubscription = async () => {
     if (stripeCustomerId) {
       try {
@@ -163,6 +159,7 @@ const Subscriptions = () => {
       }
     }
   };
+
   const handleCancelSubscription = async () => {
     if (subscriptionID) {
       try {
@@ -202,18 +199,9 @@ const Subscriptions = () => {
 
   // Get Current subscription details
   useEffect(() => {
-    const id = localStorage?.getItem("kitchenId")
-      ? localStorage?.getItem("kitchenId")
-      : null;
 
-    const customerId = localStorage?.getItem("stripeCustomerId")
-      ? localStorage.getItem("stripeCustomerId")
-      : null;
-
-    setKitchenId(id);
-    setStripeCustomerId(customerId);
-    if (id) {
-      const configDocRef = doc(db, "configs", id);
+    if (kitchenId) {
+      const configDocRef = doc(db, "configs", kitchenId);
 
       getDoc(configDocRef)
         .then((configDocSnap) => {
