@@ -141,7 +141,6 @@ const Subscriptions = () => {
       }
     }
   };
-
   const handleUpdatePaymentMethodSubscription = async () => {
     if (stripeCustomerId) {
       try {
@@ -159,7 +158,6 @@ const Subscriptions = () => {
       }
     }
   };
-
   const handleCancelSubscription = async () => {
     if (subscriptionID) {
       try {
