@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
 import LogoutButton from "./Auth/LogoutButton";
+import { useUser } from "../context/UserContext";
+import { useKitchen } from "../context/KitchenContext";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -22,16 +24,11 @@ export default function Sidebar({
   setter,
   setMenuPageName,
 }: SidebarProps) {
-  const [kitchenName, setKitchenName] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setKitchenName(localStorage.getItem("kitchenName"));
-      setUserEmail(localStorage.getItem("userEmail"));
-    }
-  }, []);
+  const { user, setUser } = useUser();
+  const { kitchen, setKitchen } = useKitchen();
 
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
@@ -135,8 +132,8 @@ export default function Sidebar({
             />
           </div>
           <div className={styles.businessDetails}>
-            <h4>{kitchenName}</h4>
-            <p>{userEmail}</p>
+            <h4>{kitchen?.kitchenName}</h4>
+            <p>{user?.email}</p>
           </div>
         </div>
       </div>

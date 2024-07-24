@@ -11,6 +11,7 @@ import {
   handleInputChange,
   validateEmail,
 } from "./Auth/utils/helper";
+import { useUser } from "../context/UserContext";
 
 const LoginDetails = () => {
   const router = useRouter();
@@ -19,6 +20,7 @@ const LoginDetails = () => {
   const [password, setPassword] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [loginMessage, setLoginMessage] = useState<string>("");
+  const { user, setUser } = useUser();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,24 +51,20 @@ const LoginDetails = () => {
           password
         );
 
-        const userId = userCredential.user.uid;
+        const userId:string= userCredential.user.uid as string;
+       
         const userDocRef = doc(db, "users", userId);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
           const kitchenId = userDocSnap.data().kitchenId;
           const userEmail = userDocSnap.data().email;
-          const docRef = doc(db, "kitchens", kitchenId);
-          const docSnap = await getDoc(docRef);
 
-          if (docSnap.exists()) {
-            const kitchenName = docSnap?.data()?.kitchenName ? docSnap?.data()?.kitchenName : null;
-            const stripeCustomerId = docSnap?.data()?.stripe_customer_id ? docSnap?.data()?.stripe_customer_id : null;
-            localStorage.setItem("kitchenName", kitchenName);
-            localStorage.setItem("stripeCustomerId", stripeCustomerId);
-          }
+          setUser({
+            uid: userId,
+            email: userEmail,
+            kitchenId: kitchenId
+          })
 
-          localStorage.setItem("kitchenId", kitchenId);
-          localStorage.setItem("userEmail", userEmail);
           router.push("/reports-dashboard");
         } else {
           throw new Error("User document not found");

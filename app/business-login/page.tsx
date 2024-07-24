@@ -1,12 +1,18 @@
 import React from "react";
 import LoginPage from "../components/LoginPage";
 import BusinessLoginLayout from "./layout";
+import { UserProvider } from "../context/UserContext";
+import { KitchenProvider } from "../context/KitchenContext";
 
 const Page = () => {
   return (
-    <BusinessLoginLayout>
-      <LoginPage />
-    </BusinessLoginLayout>
+    <UserProvider>
+      <KitchenProvider>
+        <BusinessLoginLayout>
+          <LoginPage />
+        </BusinessLoginLayout>
+      </KitchenProvider>
+    </UserProvider>
   );
 };
 

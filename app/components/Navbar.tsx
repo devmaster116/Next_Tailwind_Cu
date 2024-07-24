@@ -7,11 +7,15 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { logout } from "./Auth/utils/logout";
 import LightLoader from "./LightLoader";
+import { useUser } from "../context/UserContext";
+import { useKitchen } from "../context/KitchenContext";
 
 const Navbar = () => {
-  const [kitchenName, setKitchenName] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+
+  const { user, setUser } = useUser();
+  const { kitchen, setKitchen } = useKitchen();
 
   const [loading, setLoading] = useState(false)
 
@@ -22,6 +26,8 @@ const Navbar = () => {
     setLoading(true)
     await logout();
     setLoading(false)
+    setUser(null)
+    setKitchen(null)
     localStorage.removeItem("kitchenId");
     localStorage.removeItem("stripeCustomerId");
     localStorage.removeItem("userEmail");
@@ -35,12 +41,6 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setKitchenName(localStorage.getItem("kitchenName"));
-      setUserEmail(localStorage.getItem("userEmail"));
-    }
-  }, []);
 
   useEffect(() => {
     // Add event listener for clicks outside the dropdown
@@ -70,8 +70,8 @@ const Navbar = () => {
         </div>
         <div className={styles.businessDetailsContainer}>
           <div className={styles.businessDetailsContent}>
-            <h4>{kitchenName}</h4>
-            <p>{userEmail}</p>
+            <h4>{kitchen?.kitchenName}</h4>
+            <p>{user?.email}</p>
           </div>
           <div
             className={styles.userImageContainer}
