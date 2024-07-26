@@ -1,14 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./SalesSummary.module.scss";
 import "../reports-dashboard/components/DatePicker.scss";
-import { functions, httpsCallable } from "@/firebase/config";
-import { KitchenData, OrdersResponse } from "@/app/src/types";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  formatDate,
-  formatReadableDate,
-} from "../reports-dashboard/components/utils/formatDate";
 import DataTable from "../reports-dashboard/components/DataTable";
 import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
 import DataError from "../reports-dashboard/components/DataError";
@@ -19,8 +13,6 @@ import { useKitchen } from "../../context/KitchenContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
 
 const SalesSummary = () => {
-  const [overviewReportFunctionError, setOverviewReportFunctionError] =
-    useState<boolean>(false);
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
 
@@ -30,11 +22,23 @@ const SalesSummary = () => {
 
   const kitchenId = kitchen?.kitchenId ?? null;
 
-  const { loading, error, customDate, setCustomDate, ordersData } =
-    useFetchReports(kitchenId, reportStartDate, reportEndDate, selectedOption, {
+  const {
+    loading,
+    error,
+    customDate,
+    setCustomDate,
+    ordersData,
+    overviewReportFunctionError,
+  } = useFetchReports(
+    kitchenId,
+    reportStartDate,
+    reportEndDate,
+    selectedOption,
+    {
       fetchAdvancedReports: false,
       fetchOverviewReports: true,
-    });
+    }
+  );
 
   const calculatePercentage = (
     numerator: number,
