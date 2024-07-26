@@ -16,16 +16,13 @@ import SalesData from "../reports-dashboard/components/SalesData";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import withAuth from "@/app/components/Auth/withAuth";
 import { useKitchen } from "../../context/KitchenContext";
+import useFetchReports from "@/app/hooks/useFetchReports";
 
 const SalesSummary = () => {
   const [overviewReportFunctionError, setOverviewReportFunctionError] =
     useState<boolean>(false);
-  const [loading, setLoading] = useState(true);
-  const [reportsData, setReportsData] = useState<OrdersResponse[]>([]);
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
-  const [customDate, setCustomDate] = useState<string>();
-  const [error, setError] = useState<boolean>(false);
 
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
@@ -33,49 +30,11 @@ const SalesSummary = () => {
 
   const kitchenId = kitchen?.kitchenId ?? null;
 
-  useEffect(() => {
-    if (kitchenId !== null) {
-      const overviewReports = httpsCallable(
-        functions,
-        "overviewReportFunction"
-      );
-      overviewReports({
-        kitchenId: kitchenId,
-        fromReportDate: formatDate(reportStartDate),
-        toReportDate: formatDate(reportEndDate),
-      })
-        .then((result) => {
-          /** @type {any} */
-          const data = result.data as KitchenData;
-          setReportsData(data.response);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.log("Failed to fetch overview reports:", error);
-          setOverviewReportFunctionError(true);
-        });
-
-      if (selectedOption === "Custom") {
-        setCustomDate(
-          `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-            reportEndDate
-          )}`
-        );
-      } else {
-        setCustomDate(undefined);
-        setSelectedOption(selectedOption);
-      }
-
-      Promise.allSettled([overviewReports]).finally(() => {
-        setLoading(true);
-      });
-    } else {
-      setError(true);
-      setLoading(false);
-    }
-  }, [reportEndDate]);
-
-  // console.log("==>", reportsData);
+  const { loading, error, customDate, setCustomDate, ordersData } =
+    useFetchReports(kitchenId, reportStartDate, reportEndDate, selectedOption, {
+      fetchAdvancedReports: false,
+      fetchOverviewReports: true,
+    });
 
   const calculatePercentage = (
     numerator: number,
@@ -89,25 +48,43 @@ const SalesSummary = () => {
     return ((numerator / denominator) * 100).toFixed(fixedTo ?? 2);
   };
 
-  const {
-    dine_in_order_net_avg,
-    online_order_net_avg,
-    take_away_order_net_avg,
-    total_card_orders,
-    total_card_sum,
-    total_card_surcharge,
-    total_card_tip,
-    total_cash_orders,
-    total_cash_sum,
-    total_dine_in_orders,
-    total_net_sales,
-    total_online_orders,
-    total_orders,
-    total_refunded_sum,
-    total_revenue,
-    total_take_away_orders,
-  } = reportsData[0] || {};
+  let dine_in_order_net_avg = 0;
+  let online_order_net_avg = 0;
+  let take_away_order_net_avg = 0;
+  let total_card_orders = 0;
+  let total_card_sum = 0;
+  let total_card_surcharge = 0;
+  let total_card_tip = 0;
+  let total_cash_orders = 0;
+  let total_cash_sum = 0;
+  let total_dine_in_orders = 0;
+  let total_net_sales = 0;
+  let total_online_orders = 0;
+  let total_orders = 0;
+  let total_refunded_sum = 0;
+  let total_revenue = 0;
+  let total_take_away_orders = 0;
 
+  if (ordersData?.length > 0) {
+    ({
+      dine_in_order_net_avg,
+      online_order_net_avg,
+      take_away_order_net_avg,
+      total_card_orders,
+      total_card_sum,
+      total_card_surcharge,
+      total_card_tip,
+      total_cash_orders,
+      total_cash_sum,
+      total_dine_in_orders,
+      total_net_sales,
+      total_online_orders,
+      total_orders,
+      total_refunded_sum,
+      total_revenue,
+      total_take_away_orders,
+    } = ordersData[0]);
+  }
   return (
     <>
       <DateRangeSelectorModal
