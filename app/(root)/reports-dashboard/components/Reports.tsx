@@ -11,6 +11,7 @@ import DateRangeSelectorModal from "./utils/DateRangeSelectorModal";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { useKitchen } from "../../../context/KitchenContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
+import { getTopFive } from "./utils/formatDate";
 
 const Reports = () => {
   const { width } = useWindowSize();
@@ -28,10 +29,10 @@ const Reports = () => {
     customDate,
     setCustomDate,
     ordersData,
-    topDishes,
-    topCategories,
+    allDishes,
+    allCategories,
     advancedReportingError,
-    overviewReportFunctionError
+    overviewReportFunctionError,
   } = useFetchReports(
     kitchenId,
     reportStartDate,
@@ -120,7 +121,7 @@ const Reports = () => {
                     thirdColumnTitle="Gross"
                     secondColumnSymbol=""
                     thirdColumnSymbol="$"
-                    dataObj={topCategories}
+                    dataObj={getTopFive(allCategories)}
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}
@@ -130,7 +131,7 @@ const Reports = () => {
                     secondColumnTitle="Count"
                     thirdColumnTitle="Gross"
                     thirdColumnSymbol="$"
-                    dataObj={topDishes}
+                    dataObj={getTopFive(allDishes)}
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}

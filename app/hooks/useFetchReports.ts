@@ -25,8 +25,8 @@ const useFetchReports = (
   selectedOption: string,
   options: UseFetchReportsOptions = {}
 ) => {
-  const [topCategories, setTopCategories] = useState<Categories[]>([]);
-  const [topDishes, setTopDishes] = useState<Dishes[]>([]);
+  const [allCategories, setAllCategories] = useState<Categories[]>([]);
+  const [allDishes, setAllDishes] = useState<Dishes[]>([]);
   const [ordersData, setOrdersData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -53,10 +53,10 @@ const useFetchReports = (
           })
             .then(result => {
               const data = result.data as KitchenData;
-              const topCategories = getTopFive(data.categories) as Categories[];
-              setTopCategories(topCategories);
-              const topDishes = getTopFive(data.dishes) as Dishes[];
-              setTopDishes(topDishes);
+              const allCategories = data.categories as Categories[];
+              setAllCategories(allCategories);
+              const allDishes = data.dishes as Dishes[];
+              setAllDishes(allDishes);
             })
             .catch(error => {
               console.error("Failed to fetch advanced reports:", error);
@@ -102,8 +102,8 @@ const useFetchReports = (
   }, [reportEndDate]);
 
   return {
-    topCategories,
-    topDishes,
+    allCategories,
+    allDishes,
     ordersData,
     loading,
     error,
