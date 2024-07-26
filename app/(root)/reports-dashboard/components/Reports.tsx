@@ -16,12 +16,7 @@ const Reports = () => {
   const { width } = useWindowSize();
 
   const { kitchen } = useKitchen();
-
   const kitchenId = kitchen?.kitchenId ?? null;
-  const [advancedReportingError, setAdvancedReportingError] =
-    useState<boolean>(false);
-  const [overviewReportFunctionError, setOverviewReportFunctionError] =
-    useState<boolean>(false);
 
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const [reportEndDate, setReportEndDate] = useState(new Date());
@@ -35,6 +30,8 @@ const Reports = () => {
     ordersData,
     topDishes,
     topCategories,
+    advancedReportingError,
+    overviewReportFunctionError
   } = useFetchReports(
     kitchenId,
     reportStartDate,
