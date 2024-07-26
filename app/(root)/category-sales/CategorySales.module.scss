@@ -1,0 +1,13 @@
+.salesDataContainer {
+  display: flex;
+  grid-template-columns: repeat(2, 45%);
+  flex-wrap: wrap;
+  gap: 16px;
+  @media only screen and (min-width: 600px) {
+    flex-wrap: nowrap;
+  }
+}
+
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+}
