@@ -1,125 +1,55 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import withAuth from "../../../components/Auth/withAuth";
-import { functions, httpsCallable } from "@/firebase/config";
-import {
-  Dishes,
-  Categories,
-  KitchenData,
-  OrdersResponse,
-} from "@/app/src/types";
 import styles from "./Reports.module.scss";
 import SalesData from "./SalesData";
 import "react-datepicker/dist/react-datepicker.css";
-import { formatDate, formatReadableDate, getTopFive } from "./utils/formatDate";
 import "./DatePicker.scss";
 import DataError from "./DataError";
 import DataTable from "./DataTable";
 import DateRangeSelectorModal from "./utils/DateRangeSelectorModal";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { useKitchen } from "../../../context/KitchenContext";
+import useFetchReports from "@/app/hooks/useFetchReports";
 
 const Reports = () => {
   const { width } = useWindowSize();
 
   const { kitchen } = useKitchen();
-
   const kitchenId = kitchen?.kitchenId ?? null;
-  const [advancedReportingError, setAdvancedReportingError] =
-    useState<boolean>(false);
-  const [overviewReportFunctionError, setOverviewReportFunctionError] =
-    useState<boolean>(false);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<boolean>(false);
-
-  const [topCategories, setTopCategories] = useState<Categories[]>([]);
-  const [topDishes, setTopDishes] = useState<Dishes[]>([]);
-  const [ordersData, setOrdersData] = useState<OrdersResponse[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("Today");
-
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
-  const [customDate, setCustomDate] = useState<string>();
+
+  const {
+    loading,
+    error,
+    customDate,
+    setCustomDate,
+    ordersData,
+    topDishes,
+    topCategories,
+    advancedReportingError,
+    overviewReportFunctionError
+  } = useFetchReports(
+    kitchenId,
+    reportStartDate,
+    reportEndDate,
+    selectedOption,
+    {
+      fetchAdvancedReports: true,
+      fetchOverviewReports: true,
+    }
+  );
 
   let total_net_sales = 0;
   let total_orders = 0;
   let total_refunded_sum = 0;
-  let total_refunded_orders = 0;
 
   if (ordersData?.length > 0) {
-    ({
-      total_net_sales,
-      total_orders,
-      total_refunded_sum,
-      total_refunded_orders,
-    } = ordersData[0]);
+    ({ total_net_sales, total_orders, total_refunded_sum } = ordersData[0]);
   }
-
-  useEffect(() => {
-    if (kitchenId !== null) {
-      const advancedReports = httpsCallable(functions, "advancedReporting");
-      const overviewReports = httpsCallable(
-        functions,
-        "overviewReportFunction"
-      );
-
-      advancedReports({
-        kitchenId: kitchenId,
-        fromReportDate: formatDate(reportStartDate),
-        toReportDate: formatDate(reportEndDate),
-      })
-        .then((result) => {
-          /** @type {any} */
-          const data = result.data as KitchenData;
-
-          const topCategories = getTopFive(data.categories) as Categories[];
-          setTopCategories(topCategories);
-
-          const topDishes = getTopFive(data.dishes) as Dishes[];
-          setTopDishes(topDishes);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch advanced reports:", error);
-          setAdvancedReportingError(true);
-        });
-
-      overviewReports({
-        kitchenId: kitchenId,
-        fromReportDate: formatDate(reportStartDate),
-        toReportDate: formatDate(reportEndDate),
-      })
-        .then((result) => {
-          /** @type {any} */
-          const data = result.data as KitchenData;
-          setOrdersData(data.response);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.log("Failed to fetch overview reports:", error);
-          setOverviewReportFunctionError(true);
-        });
-
-      if (selectedOption === "Custom") {
-        setCustomDate(
-          `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-            reportEndDate
-          )}`
-        );
-      } else {
-        setCustomDate(undefined);
-        setSelectedOption(selectedOption);
-      }
-
-      Promise.allSettled([advancedReports, overviewReports]).finally(() => {
-        setLoading(true);
-      });
-    } else {
-      setError(true);
-      setLoading(false);
-    }
-  }, [reportEndDate]);
 
   return (
     <>

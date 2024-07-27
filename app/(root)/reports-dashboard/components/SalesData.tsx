@@ -26,7 +26,7 @@ const SalesData = ({
   function formatAmount(amount: number | undefined) {
     const safeAmount = amount ?? 0;
     if (isDollarAmount) {
-      return `$${getDisplayAmount(safeAmount).toFixed(2)}`;
+      return safeAmount ? `$${getDisplayAmount(safeAmount).toFixed(2)}` : "$0";
     }
 
     if (isPercentage) {

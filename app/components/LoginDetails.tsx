@@ -6,6 +6,7 @@ import { auth, db } from "@/firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
+import { Oval } from "react-loader-spinner";
 import {
   handleBlurEmail,
   handleInputChange,
@@ -21,6 +22,7 @@ const LoginDetails = () => {
   const [passwordError, setPasswordError] = useState<string>("");
   const [loginMessage, setLoginMessage] = useState<string>("");
   const { user, setUser } = useUser();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,6 +45,7 @@ const LoginDetails = () => {
     }
 
     if (valid) {
+      setLoading(true);
       e.preventDefault();
       try {
         const userCredential = await signInWithEmailAndPassword(
@@ -51,8 +54,8 @@ const LoginDetails = () => {
           password
         );
 
-        const userId:string= userCredential.user.uid as string;
-       
+        const userId: string = userCredential.user.uid as string;
+
         const userDocRef = doc(db, "users", userId);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
@@ -62,8 +65,8 @@ const LoginDetails = () => {
           setUser({
             uid: userId,
             email: userEmail,
-            kitchenId: kitchenId
-          })
+            kitchenId: kitchenId,
+          });
 
           router.push("/reports-dashboard");
         } else {
@@ -71,6 +74,8 @@ const LoginDetails = () => {
         }
       } catch (error) {
         setLoginMessage("Your password or email are incorrect. Try again.");
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -97,6 +102,7 @@ const LoginDetails = () => {
               onBlur={e => handleBlurEmail(e, setEmail, setError)}
               placeholder="Enter your email"
               className={`${styles.input} ${error ? styles.invalidInput : ""}`}
+              disabled={loading}
             />
             {error && <label className={styles.errorLabel}>{error}</label>}
           </div>
@@ -113,6 +119,7 @@ const LoginDetails = () => {
               className={`${styles.input} ${
                 passwordError || loginMessage ? styles.invalidInput : ""
               }`}
+              disabled={loading}
             />
             {!password && (
               <label className={styles.errorLabel}>{passwordError}</label>
@@ -126,7 +133,22 @@ const LoginDetails = () => {
           Forgot Password?
         </Link>
         <button className={styles.signInBtn} type="submit">
-          Sign in
+          {loading ? (
+            <Oval
+              height={27}
+              width={31}
+              color="#eaecf0"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+              ariaLabel="oval-loading"
+              secondaryColor="#d0d5dd"
+              strokeWidth={2}
+              strokeWidthSecondary={2}
+            />
+          ) : (
+            "Sign in"
+          )}
         </button>
         <div className={styles.signUpContainer}>
           <p>Don't have an account?</p>

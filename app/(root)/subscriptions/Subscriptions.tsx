@@ -12,7 +12,6 @@ import {
   ChosenSubscriptionDetails,
 } from "@/app/src/types";
 import { capitalizeFirstLetter } from "../reports-dashboard/components/utils/CapitalizeFirstLetter";
-import { Oval } from "react-loader-spinner";
 import LightLoader from "@/app/components/LightLoader";
 import Modal from "@/app/components/Modal";
 import { getDaySuffix } from "../reports-dashboard/components/utils/DateSuffix";

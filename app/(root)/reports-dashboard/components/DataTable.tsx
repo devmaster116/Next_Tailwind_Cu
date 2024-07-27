@@ -14,6 +14,7 @@ interface DataTableProps {
   selectedOption?: string;
   fontSize?: string;
   negative?: boolean;
+  hideRow?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -28,9 +29,14 @@ const DataTable: React.FC<DataTableProps> = ({
   selectedOption,
   fontSize,
   negative = false,
+  hideRow = false,
 }) => {
   return (
-    <div className={styles.report}>
+    <div
+      className={`${styles.report} ${
+        firstColumnTitle === "Net Sales" ? styles.netSalesReport : ""
+      } ${firstColumnTitle === "Gross Sales" ? styles.grossSalesReport : ""}`}
+    >
       <div className={styles.reportHeader}>
         <div
           className={`${styles.headerItem} ${styles.headerItemTopCategories}`}
@@ -61,58 +67,72 @@ const DataTable: React.FC<DataTableProps> = ({
               </div>
             </div>
           ) : (
-            dataObj.map((item, i) => (
-              <div key={i} className={styles.reportRow}>
-                <div
-                  className={`${styles.reportItem} ${styles.reportItemName}`}
-                  style={
-                    { "--dynamic-font-size": fontSize } as React.CSSProperties
-                  }
-                >
-                  {item[Object.keys(item)[0]]}
-                </div>
-                <div
-                  className={`${styles.reportItem}`}
-                  style={
-                    { "--dynamic-font-size": fontSize } as React.CSSProperties
-                  }
-                >
-                  {secondColumnSymbol === "$" ? (
-                    <>
-                      {negative && "("}
-                      {secondColumnSymbol}
-                      {item[Object.keys(item)[1]]?.toFixed(2)}
-                      {negative && ")"}
-                    </>
-                  ) : (
-                    <>
-                      {item[Object.keys(item)[1]]}
-                      {secondColumnSymbol}
-                    </>
-                  )}
-                </div>
-                {thirdColumnTitle && (
+            dataObj.map((item, i) =>
+              hideRow && !item[Object.keys(item)[1]] ? (
+                <div></div>
+              ) : (
+                <div key={i} className={styles.reportRow}>
+                  <div
+                    className={`${styles.reportItem} ${styles.reportItemName}`}
+                    style={
+                      {
+                        "--dynamic-font-size": fontSize,
+                      } as React.CSSProperties
+                    }
+                  >
+                    {item[Object.keys(item)[0]]}
+                  </div>
                   <div
                     className={`${styles.reportItem}`}
                     style={
-                      { "--dynamic-font-size": fontSize } as React.CSSProperties
+                      {
+                        "--dynamic-font-size": fontSize,
+                      } as React.CSSProperties
                     }
                   >
-                    {thirdColumnSymbol === "$" ? (
+                    {secondColumnSymbol === "$" ? (
                       <>
-                        {thirdColumnSymbol}
-                        {item[Object.keys(item)[2]].toFixed(2)}
+                        {negative && "("}
+                        {secondColumnSymbol}
+                        {item[Object.keys(item)[1]]
+                          ? item[Object.keys(item)[1]].toFixed(2)
+                          : 0}
+                        {negative && ")"}
                       </>
                     ) : (
                       <>
-                        {item[Object.keys(item)[2]]}
-                        {thirdColumnSymbol}
+                        {item[Object.keys(item)[1]]}
+                        {secondColumnSymbol}
                       </>
                     )}
                   </div>
-                )}
-              </div>
-            ))
+                  {thirdColumnTitle && (
+                    <div
+                      className={`${styles.reportItem}`}
+                      style={
+                        {
+                          "--dynamic-font-size": fontSize,
+                        } as React.CSSProperties
+                      }
+                    >
+                      {thirdColumnSymbol === "$" ? (
+                        <>
+                          {thirdColumnSymbol}
+                          {item[Object.keys(item)[2]]
+                            ? item[Object.keys(item)[2]].toFixed(2)
+                            : 0}
+                        </>
+                      ) : (
+                        <>
+                          {item[Object.keys(item)[2]]}
+                          {thirdColumnSymbol}
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            )
           )}
         </div>
       )}

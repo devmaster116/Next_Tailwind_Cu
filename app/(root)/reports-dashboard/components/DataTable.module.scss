@@ -4,7 +4,7 @@
   border-radius: 12px;
   box-shadow: 0px 1px 2px 0px #1018280d;
   margin-top: 20px;
-  padding: 0px 8px 16px 8px;
+  padding: 0px 8px 8px 8px;
   width: 100%;
 }
 
@@ -13,6 +13,7 @@
   background-color: #fff;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
+  padding: 8px;
 
   .countHeading {
     font-weight: 700;
@@ -22,10 +23,13 @@
 
 .headerItem {
   flex: 1;
-  padding: 10px;
   font-size: 14px;
   font-weight: 700;
   text-align: right;
+
+  @media only screen and (min-width: 600px) {
+    font-size: 16px;
+  }
 }
 
 .headerItemTopCategories {
@@ -41,11 +45,16 @@
 .reportRow {
   display: flex;
   border-radius: 8px;
+  padding: 8px;
 }
 
 .reportRow:nth-child(even) {
   background-color: #fff;
   border-radius: unset;
+}
+
+.reportRow:nth-child(even):last-child {
+  padding-bottom: 0px;
 }
 
 .reportRow:nth-child(odd) {
@@ -66,7 +75,6 @@
   flex: 1;
   font-size: var(--dynamic-font-size, var(--default-font-size));
   font-weight: 500;
-  padding: 10px;
   text-align: center;
   color: var(--gray-600);
 
@@ -82,5 +90,28 @@
   .noDataText {
     font-size: 14px;
     text-align: left;
+  }
+}
+
+.netSalesReport {
+  margin-top: 0px;
+  border-top: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.grossSalesReport {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.netSalesReport,
+.grossSalesReport {
+  .headerItem {
+    font-size: 16px;
+
+    @media only screen and (min-width: 600px) {
+      font-size: 18px;
+    }
   }
 }
