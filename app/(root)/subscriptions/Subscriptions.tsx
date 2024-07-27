@@ -130,7 +130,9 @@ const Subscriptions = () => {
         );
         setLoading(false);
         // Automatically open the fetched URL in a new tab
-        window.open(url, "_blank", "noopener,noreferrer");
+        // window.open(url, "_blank", "noopener,noreferrer");
+        window.location.replace(url);
+
       } catch (err: any) {
         setLoading(false);
 
@@ -147,7 +149,9 @@ const Subscriptions = () => {
         const url = await createPortalSession(stripeCustomerId);
         setLoading(false);
         // Automatically open the fetched URL in a new tab
-        window.open(url, "_blank", "noopener,noreferrer");
+        // window.open(url, "_blank", "noopener,noreferrer");
+        window.location.replace(url);
+
       } catch (err: any) {
         setLoading(false);
 
