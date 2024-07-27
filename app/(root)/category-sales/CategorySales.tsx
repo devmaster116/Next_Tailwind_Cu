@@ -13,12 +13,14 @@ import { Categories } from "@/app/src/types";
 import DataTable from "../reports-dashboard/components/DataTable";
 import "../reports-dashboard/components/DatePicker.scss";
 import { getCategoryStats } from "./utils/commonUtils";
+import NoSalesMessage from "../reports-dashboard/components/NoSalesMessage";
 
 const CategorySales = () => {
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
 
   const [selectedOption, setSelectedOption] = useState<string>("Today");
+  const [noSales, setNoSales] = useState<boolean>(false);
   const { width } = useWindowSize();
   const { kitchen } = useKitchen();
 
@@ -55,13 +57,31 @@ const CategorySales = () => {
   });
 
   useEffect(() => {
-    if (!loading && allCategories && allCategories.length > 0) {
-      try {
-        const stats = getCategoryStats(allCategories);
-        console.log("stats ==>", stats);
-        setCategoryStats(stats);
-      } catch (error) {
-        console.error("Error getting category stats:", error);
+    if (loading) {
+      setNoSales(false);
+      setCategoryStats({
+        mostPopular: null,
+        highestNetSale: null,
+        leastPopular: null,
+        lowestNetSale: null,
+      });
+    } else {
+      if (allCategories && allCategories.length > 0) {
+        setNoSales(false);
+        try {
+          const stats = getCategoryStats(allCategories);
+          setCategoryStats(stats);
+        } catch (error) {
+          console.error("Error getting category stats:", error);
+        }
+      } else {
+        setCategoryStats({
+          mostPopular: null,
+          highestNetSale: null,
+          leastPopular: null,
+          lowestNetSale: null,
+        });
+        setNoSales(true);
       }
     }
   }, [loading, allCategories]);
@@ -92,47 +112,57 @@ const CategorySales = () => {
         <>
           {advancedReportingError ? (
             <DataError errorMessage="Error retrieving category data" />
+          ) : !noSales ? (
+            <>
+              <div className={styles.salesDataContainer}>
+                <SalesData
+                  title="Most Popular"
+                  item={categoryStats.mostPopular?.category_name}
+                  isDollarAmount={false}
+                  loading={loading}
+                />
+                <SalesData
+                  title="Highest Net Sale"
+                  item={categoryStats.highestNetSale?.category_name}
+                  isDollarAmount={false}
+                  loading={loading}
+                />
+                <SalesData
+                  title="Least Popular"
+                  item={categoryStats.leastPopular?.category_name}
+                  isDollarAmount={false}
+                  loading={loading}
+                />
+                <SalesData
+                  title="Lowest Net Sale"
+                  item={categoryStats.lowestNetSale?.category_name}
+                  isDollarAmount={false}
+                  loading={loading}
+                />
+              </div>
+
+              <DataTable
+                firstColumnTitle="Category Name"
+                secondColumnTitle="Count"
+                thirdColumnTitle="Net"
+                secondColumnSymbol=""
+                thirdColumnSymbol="$"
+                dataObj={allCategories}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+            </>
           ) : (
-            <div className={styles.salesDataContainer}>
-              <SalesData
-                title="Most Popular"
-                item={categoryStats.mostPopular?.category_name}
-                isDollarAmount={false}
-                loading={loading}
-              />
-              <SalesData
-                title="Highest Net Sale"
-                item={categoryStats.highestNetSale?.category_name}
-                isDollarAmount={false}
-                loading={loading}
-              />
-              <SalesData
-                title="Least Popular"
-                item={categoryStats.leastPopular?.category_name}
-                isDollarAmount={false}
-                loading={loading}
-              />
-              <SalesData
-                title="Lowest Net Sale"
-                item={categoryStats.lowestNetSale?.category_name}
-                isDollarAmount={false}
-                loading={loading}
-              />
-            </div>
-          )}
-          <>
-            <DataTable
-              firstColumnTitle="Category Name"
-              secondColumnTitle="Count"
-              thirdColumnTitle="Net"
-              secondColumnSymbol=""
-              thirdColumnSymbol="$"
-              dataObj={allCategories}
-              loading={loading}
-              customDate={customDate}
-              selectedOption={selectedOption}
+            <NoSalesMessage
+              message="No sales in selected period"
+              messageDescription={`${
+                customDate
+                  ? `between ${customDate}`
+                  : `No sale completed ${selectedOption?.toLowerCase()}.`
+              }`}
             />
-          </>
+          )}
         </>
       )}
     </>
