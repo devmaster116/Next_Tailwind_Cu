@@ -1,0 +1,12 @@
+.salesDataContainer {
+  display: flex;
+  gap: 16px;
+
+  @media only screen and (max-width: 600px) {
+    display: grid;
+  }
+}
+
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+}
