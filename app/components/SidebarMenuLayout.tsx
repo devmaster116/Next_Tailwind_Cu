@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import Head from "next/head";
 import Sidebar from "./Sidebar";
 import MenuBarMobile from "./MenuBarMobile";
@@ -18,7 +18,22 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
   if (pageTitle) titleConcat = `${pageTitle} | ${titleConcat}`;
 
   const [showSidebar, setShowSidebar] = useState(false);
-  const [menuPageName, setMenuPageName] = useState("Overview");
+  const [menuPageName, setMenuPageName] = useState("");
+
+  useEffect(() => {
+    const storedMenuPageName = localStorage.getItem("menuPageName");
+    if (storedMenuPageName) {
+      setMenuPageName(storedMenuPageName);
+    } else {
+      setMenuPageName("Overview");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (menuPageName) {
+      localStorage.setItem("menuPageName", menuPageName);
+    }
+  }, [menuPageName]);
 
   return (
     <>
