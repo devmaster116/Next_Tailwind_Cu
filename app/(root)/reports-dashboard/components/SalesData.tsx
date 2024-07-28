@@ -37,6 +37,7 @@ const SalesData = ({
 
     return getDisplayAmount(safeAmount);
   }
+
   return (
     <>
       <div className={styles.card}>
@@ -45,7 +46,11 @@ const SalesData = ({
           {loading && <SalesDataSkeleton />}
           {!loading && (
             <div className={styles.cardInfoAmount}>
-              <p>{amount ? formatAmount(amount) : item}</p>
+              <p>
+                {amount || amount === 0 || Number.isNaN(amount)
+                  ? formatAmount(amount)
+                  : item}
+              </p>
               {secondAmount !== undefined && secondAmount !== null && (
                 <>
                   <span>/</span>
