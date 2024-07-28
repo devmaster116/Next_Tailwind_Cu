@@ -131,7 +131,6 @@ $transition-duration: 0.5s;
 }
 
 .innerContainer {
-  // display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
@@ -153,8 +152,12 @@ $transition-duration: 0.5s;
 
 .active {
   color: var(--gray-900);
-  background-color: var(--gray-50);
+  background-color: var(--primary-purple-50);
   font-weight: 700;
+
+  div {
+    color: var(--primary-purple-700);
+  }
 }
 
 .inactive {
