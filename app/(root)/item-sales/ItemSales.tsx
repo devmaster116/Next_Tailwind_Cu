@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./CategorySales.module.scss";
+import styles from "./ItemSales.module.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import withAuth from "@/app/components/Auth/withAuth";
 import useFetchReports from "@/app/hooks/useFetchReports";
@@ -9,13 +9,13 @@ import useWindowSize from "@/app/hooks/useWindowSize";
 import { useKitchen } from "@/app/context/KitchenContext";
 import DataError from "../reports-dashboard/components/DataError";
 import SalesData from "../reports-dashboard/components/SalesData";
-import { Categories } from "@/app/src/types";
+import { Dishes } from "@/app/src/types";
 import DataTable from "../reports-dashboard/components/DataTable";
 import "../reports-dashboard/components/DatePicker.scss";
-import { getCategoryStats } from "./utils/commonUtils";
+import { getDishStats } from "./utils/commonUtils";
 import NoSalesMessage from "../reports-dashboard/components/NoSalesMessage";
 
-const CategorySales = () => {
+const ItemSales = () => {
   const [reportEndDate, setReportEndDate] = useState(new Date());
   const [reportStartDate, setReportStartDate] = useState(new Date());
 
@@ -31,7 +31,7 @@ const CategorySales = () => {
     error,
     customDate,
     setCustomDate,
-    allCategories,
+    allDishes,
     advancedReportingError,
   } = useFetchReports(
     kitchenId,
@@ -44,47 +44,39 @@ const CategorySales = () => {
     }
   );
 
-  const [categoryStats, setCategoryStats] = useState<{
-    mostPopular: Categories | null;
-    highestNetSale: Categories | null;
-    leastPopular: Categories | null;
-    lowestNetSale: Categories | null;
+  const [dishStats, setDishesStats] = useState<{
+    mostPopular: Dishes | null;
+    highestNetSale: Dishes | null;
   }>({
     mostPopular: null,
     highestNetSale: null,
-    leastPopular: null,
-    lowestNetSale: null,
   });
 
   useEffect(() => {
     if (loading) {
       setNoSales(false);
-      setCategoryStats({
+      setDishesStats({
         mostPopular: null,
         highestNetSale: null,
-        leastPopular: null,
-        lowestNetSale: null,
       });
     } else {
-      if (allCategories && allCategories.length > 0) {
+      if (allDishes && allDishes.length > 0) {
         setNoSales(false);
         try {
-          const stats = getCategoryStats(allCategories);
-          setCategoryStats(stats);
+          const stats = getDishStats(allDishes);
+          setDishesStats(stats);
         } catch (error) {
-          console.error("Error getting category stats:", error);
+          console.error("Error getting dish stats:", error);
         }
       } else {
-        setCategoryStats({
+        setDishesStats({
           mostPopular: null,
           highestNetSale: null,
-          leastPopular: null,
-          lowestNetSale: null,
         });
         setNoSales(true);
       }
     }
-  }, [loading, allCategories]);
+  }, [loading, allDishes]);
 
   return (
     <>
@@ -99,55 +91,43 @@ const CategorySales = () => {
         setSelectedOption={setSelectedOption}
       />
       {width && width >= 600 && (
-        <h1 className={styles.pageTitle}>Category Sales</h1>
+        <h1 className={styles.pageTitle}>Item Sales</h1>
       )}
       {error ? (
         <>
           <DataError
-            errorMessage="Error retrieving category data"
+            errorMessage="Error retrieving item sales data"
             errorDescription="Check your connectivity and try again."
           />
         </>
       ) : (
         <>
           {advancedReportingError ? (
-            <DataError errorMessage="Error retrieving category data" />
+            <DataError errorMessage="Error retrieving item data" />
           ) : !noSales ? (
             <>
               <div className={styles.salesDataContainer}>
                 <SalesData
                   title="Most Popular"
-                  item={categoryStats.mostPopular?.category_name}
+                  item={dishStats.mostPopular?.dish_name}
                   isDollarAmount={false}
                   loading={loading}
                 />
                 <SalesData
                   title="Highest Net Sale"
-                  item={categoryStats.highestNetSale?.category_name}
-                  isDollarAmount={false}
-                  loading={loading}
-                />
-                <SalesData
-                  title="Least Popular"
-                  item={categoryStats.leastPopular?.category_name}
-                  isDollarAmount={false}
-                  loading={loading}
-                />
-                <SalesData
-                  title="Lowest Net Sale"
-                  item={categoryStats.lowestNetSale?.category_name}
+                  item={dishStats.highestNetSale?.dish_name}
                   isDollarAmount={false}
                   loading={loading}
                 />
               </div>
 
               <DataTable
-                firstColumnTitle="Category Name"
+                firstColumnTitle="Item Name"
                 secondColumnTitle="Count"
                 thirdColumnTitle="Net"
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
-                dataObj={allCategories}
+                dataObj={allDishes}
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
@@ -169,4 +149,4 @@ const CategorySales = () => {
   );
 };
 
-export default withAuth(CategorySales);
+export default withAuth(ItemSales);

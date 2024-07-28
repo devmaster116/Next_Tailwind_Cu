@@ -107,6 +107,19 @@ export default function Sidebar({
                   />
                 }
               />
+              <MenuItem
+                name="Item Sales"
+                route="/item-sales"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/bar-chart-circle-01.svg"
+                    height={18}
+                    width={18}
+                    alt="Bar chart circle icon"
+                  />
+                }
+              />
             </div>
           </div>
 
