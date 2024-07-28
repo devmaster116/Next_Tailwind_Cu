@@ -104,8 +104,8 @@ const CategorySales = () => {
       {error ? (
         <>
           <DataError
-            errorMessage="Error retrieving dashboard data"
-            errorDescription="Please try again later"
+            errorMessage="Error retrieving category data"
+            errorDescription="Check your connectivity and try again."
           />
         </>
       ) : (
