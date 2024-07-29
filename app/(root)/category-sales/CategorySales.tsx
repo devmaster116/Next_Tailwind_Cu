@@ -21,7 +21,6 @@ const CategorySales = () => {
 
   const [selectedOption, setSelectedOption] = useState<string>("Today");
   const [noSales, setNoSales] = useState<boolean>(false);
-  const { width } = useWindowSize();
   const { kitchen } = useKitchen();
 
   const kitchenId = kitchen?.kitchenId ?? null;
@@ -98,9 +97,7 @@ const CategorySales = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
-      {width && width >= 600 && (
-        <h1 className={styles.pageTitle}>Category Sales</h1>
-      )}
+      <h1 className={styles.pageTitle}>Category Sales</h1>
       {error ? (
         <>
           <DataError

@@ -30,7 +30,7 @@ $transition-duration: 0.5s;
     font-weight: 700;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 961px) {
     position: static;
   }
 }
@@ -100,7 +100,7 @@ $transition-duration: 0.5s;
       }
     }
 
-    @media only screen and (min-width: 600px) {
+    @media only screen and (min-width: 961px) {
       display: none;
     }
   }
@@ -184,7 +184,7 @@ $transition-duration: 0.5s;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
 
-  @media (min-width: 768px) {
+  @media (min-width: 961px) {
     display: none;
   }
 }
