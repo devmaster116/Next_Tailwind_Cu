@@ -18,6 +18,10 @@ $transition-duration: 0.5s;
   }
 
   @media only screen and (min-width: 600px) {
+    z-index: 3;
+  }
+
+  @media only screen and (min-width: 961px) {
     z-index: 0;
   }
 
@@ -26,7 +30,7 @@ $transition-duration: 0.5s;
     font-weight: 700;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 961px) {
     position: static;
   }
 }
@@ -37,7 +41,7 @@ $transition-duration: 0.5s;
   }
 
   @media only screen and (min-width: 600px) {
-    margin-left: -60px;
+    margin-left: 0px;
     margin-right: 60px;
   }
 
@@ -49,8 +53,9 @@ $transition-duration: 0.5s;
 
 .sidebarHide {
   margin-left: -311px;
+
   @media only screen and (min-width: 600px) {
-    margin-left: -78px;
+    margin-left: -311px;
     margin-right: 41px;
   }
 
@@ -95,7 +100,7 @@ $transition-duration: 0.5s;
       }
     }
 
-    @media only screen and (min-width: 600px) {
+    @media only screen and (min-width: 961px) {
       display: none;
     }
   }
@@ -131,7 +136,6 @@ $transition-duration: 0.5s;
 }
 
 .innerContainer {
-  // display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
@@ -153,8 +157,12 @@ $transition-duration: 0.5s;
 
 .active {
   color: var(--gray-900);
-  background-color: var(--gray-50);
+  background-color: var(--primary-purple-50);
   font-weight: 700;
+
+  div {
+    color: var(--primary-purple-700);
+  }
 }
 
 .inactive {
@@ -176,7 +184,7 @@ $transition-duration: 0.5s;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
 
-  @media (min-width: 768px) {
+  @media (min-width: 961px) {
     display: none;
   }
 }

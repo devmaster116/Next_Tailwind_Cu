@@ -101,9 +101,7 @@ const SalesSummary = () => {
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
-      {width && width >= 600 && (
-        <h1 className={styles.pageTitle}>Sales Summary</h1>
-      )}
+      <h1 className={styles.pageTitle}>Sales Summary</h1>
 
       {error ? (
         <>

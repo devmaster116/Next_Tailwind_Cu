@@ -4,7 +4,8 @@ import SalesDataSkeleton from "./SalesDataSkeleton";
 
 interface SalesDataProps {
   title: string;
-  amount: number;
+  amount?: number;
+  item?: string;
   secondAmount?: number;
   isDollarAmount?: boolean;
   isPercentage?: boolean;
@@ -14,6 +15,7 @@ interface SalesDataProps {
 const SalesData = ({
   title,
   amount,
+  item,
   secondAmount,
   isDollarAmount = false,
   isPercentage = false,
@@ -35,6 +37,7 @@ const SalesData = ({
 
     return getDisplayAmount(safeAmount);
   }
+
   return (
     <>
       <div className={styles.card}>
@@ -43,7 +46,11 @@ const SalesData = ({
           {loading && <SalesDataSkeleton />}
           {!loading && (
             <div className={styles.cardInfoAmount}>
-              <p>{formatAmount(amount)}</p>
+              <p>
+                {amount || amount === 0 || Number.isNaN(amount)
+                  ? formatAmount(amount)
+                  : item}
+              </p>
               {secondAmount !== undefined && secondAmount !== null && (
                 <>
                   <span>/</span>

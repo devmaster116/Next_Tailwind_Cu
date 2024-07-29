@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
@@ -24,11 +24,10 @@ export default function Sidebar({
   setter,
   setMenuPageName,
 }: SidebarProps) {
-
   const pathname = usePathname();
 
-  const { user, setUser } = useUser();
-  const { kitchen, setKitchen } = useKitchen();
+  const { user } = useUser();
+  const { kitchen } = useKitchen();
 
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
@@ -88,10 +87,36 @@ export default function Sidebar({
                 icon={
                   <Image
                     className={styles.icon}
-                    src="/icons/bar-chart-square-02.svg"
+                    src="/icons/line-chart-up-01.svg"
                     height={18}
                     width={18}
-                    alt="Bar chart icon"
+                    alt="Line chart icon"
+                  />
+                }
+              />
+              <MenuItem
+                name="Category Sales"
+                route="/category-sales"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/bar-chart-square-03.svg"
+                    height={18}
+                    width={18}
+                    alt="Bar chart square icon"
+                  />
+                }
+              />
+              <MenuItem
+                name="Item Sales"
+                route="/item-sales"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/bar-chart-circle-01.svg"
+                    height={18}
+                    width={18}
+                    alt="Bar chart circle icon"
                   />
                 }
               />
@@ -119,8 +144,8 @@ export default function Sidebar({
         </div>
 
         <div className={styles.logoutBtn}>
-            <LogoutButton />
-          </div>
+          <LogoutButton />
+        </div>
         <div className={styles.sidebarFooter}>
           <div className={styles.businessLogo}>
             <Image

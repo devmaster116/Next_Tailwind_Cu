@@ -236,9 +236,7 @@ const Subscriptions = () => {
 
   return (
     <>
-      {width && width >= 600 && (
-        <h1 className={styles.pageTitle}>Subscriptions</h1>
-      )}
+      <h1 className={styles.pageTitle}>Subscriptions</h1>
       {loading && (
         <>
           <LightLoader />
