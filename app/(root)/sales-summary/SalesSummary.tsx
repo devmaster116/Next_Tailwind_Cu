@@ -211,7 +211,6 @@ const SalesSummary = () => {
             secondColumnTitle="Count (%)"
             thirdColumnTitle="Net"
             thirdColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Take Away",
@@ -243,7 +242,6 @@ const SalesSummary = () => {
             secondColumnTitle="%"
             thirdColumnTitle="Net"
             thirdColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Cash",
@@ -272,7 +270,6 @@ const SalesSummary = () => {
             firstColumnTitle="Tips"
             secondColumnTitle="Net"
             secondColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Card",
@@ -301,7 +298,6 @@ const SalesSummary = () => {
             secondColumnSymbol=""
             thirdColumnTitle="Net Avg"
             thirdColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Take Away Order",

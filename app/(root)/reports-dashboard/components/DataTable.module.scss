@@ -18,6 +18,7 @@
   .countHeading {
     font-weight: 700;
     text-align: center;
+    color: var(--gray-600);
   }
 }
 
@@ -26,6 +27,7 @@
   font-size: 14px;
   font-weight: 700;
   text-align: right;
+  color: var(--gray-600);
 
   @media only screen and (min-width: 600px) {
     font-size: 16px;
@@ -33,8 +35,26 @@
 }
 
 .headerItemTopCategories {
-  text-align: left;
+  color: var(--gray-800);
   flex: 2;
+  font-weight: 700;
+  text-align: left;
+}
+
+.headerItemCenter {
+  align-self: center;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+
+  @media only screen and (min-width: 600px) {
+    font-size: 16px;
+  }
+
+  &:last-of-type {
+    text-align: right;
+  }
 }
 
 .reportBody {
@@ -73,10 +93,13 @@
 .reportItem {
   align-self: center;
   flex: 1;
-  font-size: var(--dynamic-font-size, var(--default-font-size));
+  font-size: 16px;
   font-weight: 500;
   text-align: center;
-  color: var(--gray-600);
+
+  @media only screen and (min-width: 600px) {
+    font-size: 18px;
+  }
 
   &:last-of-type {
     text-align: right;
@@ -86,6 +109,8 @@
 .reportItemName {
   flex: 2;
   text-align: left;
+  color: var(--gray-600);
+  font-weight: 500;
 
   .noDataText {
     font-size: 14px;
@@ -107,11 +132,21 @@
 
 .netSalesReport,
 .grossSalesReport {
-  .headerItem {
+  .headerItem,
+  .headerItemCenter {
     font-size: 16px;
 
     @media only screen and (min-width: 600px) {
       font-size: 18px;
+    }
+  }
+
+  .reportItem {
+    font-size: 14px;
+    padding-left: 16px;
+
+    @media only screen and (min-width: 600px) {
+      font-size: 16px;
     }
   }
 }
