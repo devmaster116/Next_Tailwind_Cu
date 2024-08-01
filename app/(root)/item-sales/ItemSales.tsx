@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import withAuth from "@/app/components/Auth/withAuth";
 import useFetchReports from "@/app/hooks/useFetchReports";
 import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
-import useWindowSize from "@/app/hooks/useWindowSize";
 import { useKitchen } from "@/app/context/KitchenContext";
 import DataError from "../reports-dashboard/components/DataError";
 import SalesData from "../reports-dashboard/components/SalesData";
@@ -14,12 +13,18 @@ import DataTable from "../reports-dashboard/components/DataTable";
 import "../reports-dashboard/components/DatePicker.scss";
 import { getDishStats } from "./utils/commonUtils";
 import NoSalesMessage from "../reports-dashboard/components/NoSalesMessage";
+import { useReportDate } from "@/app/context/ReportDateContext";
 
 const ItemSales = () => {
-  const [reportEndDate, setReportEndDate] = useState(new Date());
-  const [reportStartDate, setReportStartDate] = useState(new Date());
-
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
+    const {
+      reportStartDate,
+      setReportStartDate,
+      reportEndDate,
+      setReportEndDate,
+      selectedOption,
+      setSelectedOption,
+    } = useReportDate();
+  
   const [noSales, setNoSales] = useState<boolean>(false);
   const { kitchen } = useKitchen();
 

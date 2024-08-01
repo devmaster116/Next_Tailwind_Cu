@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { functions, httpsCallable } from "@/firebase/config";
 import {
   formatDate,
   formatReadableDate,
-  getTopFive,
 } from "../(root)/reports-dashboard/components/utils/formatDate";
 import { Categories, Dishes } from "../src/types";
 
@@ -125,18 +124,33 @@ const useFetchReports = (
     }
   }, [reportEndDate]);
 
-  return {
-    allCategories,
-    allDishes,
-    ordersData,
-    dishByOrderType,
-    loading,
-    error,
-    advancedReportingError,
-    overviewReportFunctionError,
-    customDate,
-    setCustomDate,
-  };
+  const memoizedData = useMemo(
+    () => ({
+      allCategories,
+      allDishes,
+      ordersData,
+      dishByOrderType,
+      loading,
+      error,
+      advancedReportingError,
+      overviewReportFunctionError,
+      customDate,
+      setCustomDate,
+    }),
+    [
+      allCategories,
+      allDishes,
+      ordersData,
+      dishByOrderType,
+      loading,
+      error,
+      advancedReportingError,
+      overviewReportFunctionError,
+      customDate,
+    ]
+  );
+
+  return memoizedData;
 };
 
 export default useFetchReports;

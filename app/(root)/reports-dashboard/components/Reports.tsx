@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import withAuth from "../../../components/Auth/withAuth";
 import styles from "./Reports.module.scss";
 import SalesData from "./SalesData";
@@ -12,6 +12,7 @@ import useWindowSize from "@/app/hooks/useWindowSize";
 import { useKitchen } from "../../../context/KitchenContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
 import { getTopFive } from "./utils/formatDate";
+import { useReportDate } from "@/app/context/ReportDateContext";
 
 const Reports = () => {
   const { width } = useWindowSize();
@@ -19,9 +20,14 @@ const Reports = () => {
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
 
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
-  const [reportEndDate, setReportEndDate] = useState(new Date());
-  const [reportStartDate, setReportStartDate] = useState(new Date());
+  const {
+    reportStartDate,
+    setReportStartDate,
+    reportEndDate,
+    setReportEndDate,
+    selectedOption,
+    setSelectedOption,
+  } = useReportDate();
 
   const {
     loading,
