@@ -221,7 +221,7 @@ const SalesSummary = () => {
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: take_away_order_net_avg || 0,
+                net: total_net_sales / total_take_away_orders || 0,
               },
               {
                 title: "Dine In",
@@ -230,7 +230,7 @@ const SalesSummary = () => {
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: dine_in_order_net_avg || 0,
+                net: total_net_sales / total_dine_in_orders || 0,
               },
             ]}
             loading={loading}
