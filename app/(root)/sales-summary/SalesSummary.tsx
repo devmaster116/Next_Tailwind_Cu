@@ -10,17 +10,23 @@ import SalesData from "../reports-dashboard/components/SalesData";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import withAuth from "@/app/components/Auth/withAuth";
 import { useKitchen } from "../../context/KitchenContext";
+import { useReportDate } from "../../context/ReportDateContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
 
 const SalesSummary = () => {
-  const [reportEndDate, setReportEndDate] = useState(new Date());
-  const [reportStartDate, setReportStartDate] = useState(new Date());
-
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
   const { kitchen } = useKitchen();
 
   const kitchenId = kitchen?.kitchenId ?? null;
+
+  const {
+    reportStartDate,
+    setReportStartDate,
+    reportEndDate,
+    setReportEndDate,
+    selectedOption,
+    setSelectedOption,
+  } = useReportDate();
 
   const {
     loading,
