@@ -327,19 +327,19 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
             dataObj={[
               {
                 title: "Take Away Order",
-                averageItem: total_take_away_orders || 0,
+                averageItem: Math.round(takeAwayItemCount/total_take_away_orders) || 0,
                 netAvg: take_away_order_net_avg || 0,
               },
               {
                 title: "Dine-in Order",
-                averageItem: total_dine_in_orders || 0,
+                averageItem: Math.round(dineInItemCount/total_dine_in_orders) || 0,
                 netAvg: dine_in_order_net_avg || 0,
               },
-              {
-                title: "Online Order",
-                averageItem: total_online_orders || 0,
-                netAvg: online_order_net_avg || 0,
-              },
+              // {
+              //   title: "Online Order",
+              //   averageItem: total_online_orders || 0,
+              //   netAvg: online_order_net_avg || 0,
+              // },
             ]}
             loading={loading}
             customDate={customDate}
