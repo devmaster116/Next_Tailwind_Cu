@@ -28,6 +28,7 @@ const useFetchReports = (
   selectedOption: string,
   options: UseFetchReportsOptions = {}
 ) => {
+  const [dishByOrderType, setDishByOrderType] = useState<any>(null);
   const {
     allCategories,
     setAllCategories,
@@ -70,6 +71,10 @@ const useFetchReports = (
         const overviewReports = httpsCallable(
           functions,
           "overviewReportFunction"
+        );
+        const dishesCountByOrderType = httpsCallable(
+          functions,
+          "getDishesCountByOrderType"
         );
 
         setLoading(true);
