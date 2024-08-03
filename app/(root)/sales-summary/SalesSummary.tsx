@@ -45,10 +45,9 @@ const SalesSummary = () => {
     {
       fetchAdvancedReports: false,
       fetchOverviewReports: true,
-      fetchDishesCountByOrderType: true
+      fetchDishesCountByOrderType: true,
     }
   );
-
 
   const calculatePercentage = (
     numerator: number,
@@ -81,16 +80,8 @@ const SalesSummary = () => {
   let total_refunded_sum = 0;
   let total_revenue = 0;
   let total_take_away_orders = 0;
-
-  // Extract details dynamically
-const takeAwayItemDetails = dishDetailsByOrderTypeParser(dishByOrderType, "Take Away");
-const dineInItemDetails = dishDetailsByOrderTypeParser(dishByOrderType, "Dine In");
-
-const takeAwayItemCount = takeAwayItemDetails ? takeAwayItemDetails.itemCount : 0;
-const takeAwayItemTotal = takeAwayItemDetails ? takeAwayItemDetails.totalPrice : 0;
-const dineInItemCount = dineInItemDetails ? dineInItemDetails.itemCount : 0;
-const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
-
+  let total_split_payment_orders = 0;
+  let total_split_payment_sum = 0;
 
   if (ordersData?.length > 0) {
     ({
@@ -113,8 +104,37 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
       total_refunded_sum,
       total_revenue,
       total_take_away_orders,
+      total_split_payment_orders,
+      total_split_payment_sum
     } = ordersData[0]);
   }
+
+  // Extract details dynamically
+  const takeAwayItemDetails = dishDetailsByOrderTypeParser(
+    dishByOrderType,
+    "Take Away"
+  );
+  const dineInItemDetails = dishDetailsByOrderTypeParser(
+    dishByOrderType,
+    "Dine In"
+  );
+
+  const takeAwayItemCount = takeAwayItemDetails
+    ? takeAwayItemDetails.itemCount
+    : 0;
+
+  const dineInItemCount = dineInItemDetails ? dineInItemDetails.itemCount : 0;
+
+  const takeAwayAverageItems =
+    takeAwayItemCount && total_take_away_orders
+      ? Math.round(takeAwayItemCount / total_take_away_orders)
+      : 0;
+
+  const dineInAverageItems =
+    dineInItemCount && total_dine_in_orders
+      ? Math.round(dineInItemCount / total_dine_in_orders)
+      : 0;
+
   return (
     <>
       <DateRangeSelectorModal
@@ -199,7 +219,7 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
               },
               {
                 title: "GST",
-                refund: (total_net_sales) * 0.1 || 0,
+                refund: total_net_sales * 0.1 || 0,
               },
             ]}
             loading={loading}
@@ -247,7 +267,7 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: total_take_away_sum ? total_take_away_sum/1.1 : 0,
+                net: total_take_away_sum ? total_take_away_sum / 1.1 : 0,
               },
               {
                 title: "Dine In",
@@ -256,7 +276,7 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: total_dine_in_sum? total_dine_in_sum/1.1 : 0,
+                net: total_dine_in_sum ? total_dine_in_sum / 1.1 : 0,
               },
             ]}
             loading={loading}
@@ -273,19 +293,28 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
                 title: "Cash",
                 percentage: `${total_cash_orders || 0}  (${calculatePercentage(
                   total_cash_sum,
-                  total_cash_sum + total_card_sum || 0,
+                  total_cash_sum + total_card_sum + total_split_payment_sum || 0,
                   1
                 )}%)`,
-                net: total_cash_sum || 0,
+                net: total_cash_sum/1.1 || 0,
               },
               {
                 title: "Card",
                 percentage: `${total_card_orders || 0}  (${calculatePercentage(
                   total_card_sum,
-                  total_cash_sum + total_card_sum || 0,
+                  total_cash_sum + total_card_sum + total_split_payment_sum || 0,
                   1
                 )}%)`,
-                net: total_card_sum || 0,
+                net: total_card_sum/1.1 || 0,
+              },
+              {
+                title: "Split",
+                percentage: `${total_split_payment_orders || 0}  (${calculatePercentage(
+                  total_split_payment_sum,
+                  total_cash_sum + total_card_sum + total_split_payment_sum|| 0,
+                  1
+                )}%)`,
+                net: total_split_payment_sum/1.1 || 0,
               },
             ]}
             loading={loading}
@@ -327,12 +356,12 @@ const dineInItemTotal = dineInItemDetails ? dineInItemDetails.totalPrice : 0;
             dataObj={[
               {
                 title: "Take Away Order",
-                averageItem: Math.round(takeAwayItemCount/total_take_away_orders) || 0,
+                averageItem: takeAwayAverageItems,
                 netAvg: take_away_order_net_avg || 0,
               },
               {
                 title: "Dine-in Order",
-                averageItem: Math.round(dineInItemCount/total_dine_in_orders) || 0,
+                averageItem: dineInAverageItems,
                 netAvg: dine_in_order_net_avg || 0,
               },
               // {
