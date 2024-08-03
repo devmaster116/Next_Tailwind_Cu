@@ -82,6 +82,8 @@ const SalesSummary = () => {
   let total_take_away_orders = 0;
   let total_split_payment_orders = 0;
   let total_split_payment_sum = 0;
+  let total_take_away_card_surcharge = 0
+  let total_dine_in_card_surcharge = 0
 
   if (ordersData?.length > 0) {
     ({
@@ -105,7 +107,9 @@ const SalesSummary = () => {
       total_revenue,
       total_take_away_orders,
       total_split_payment_orders,
-      total_split_payment_sum
+      total_split_payment_sum,
+      total_take_away_card_surcharge,
+      total_dine_in_card_surcharge
     } = ordersData[0]);
   }
 
@@ -267,7 +271,7 @@ const SalesSummary = () => {
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: total_take_away_sum ? total_take_away_sum / 1.1 : 0,
+                net: total_take_away_sum  ? (total_take_away_sum - total_take_away_card_surcharge) / 1.1 : 0,
               },
               {
                 title: "Dine In",
@@ -276,7 +280,7 @@ const SalesSummary = () => {
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: total_dine_in_sum ? total_dine_in_sum / 1.1 : 0,
+                net: total_dine_in_sum  ? (total_dine_in_sum - total_dine_in_card_surcharge) / 1.1 : 0,
               },
             ]}
             loading={loading}
@@ -305,7 +309,7 @@ const SalesSummary = () => {
                   total_cash_sum + total_card_sum + total_split_payment_sum || 0,
                   1
                 )}%)`,
-                net: total_card_sum/1.1 || 0,
+                net: (total_card_sum - total_card_surcharge)/1.1 || 0,
               },
               {
                 title: "Split",
