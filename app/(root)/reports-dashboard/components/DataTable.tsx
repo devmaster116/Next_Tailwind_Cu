@@ -12,7 +12,6 @@ interface DataTableProps {
   loading: boolean;
   customDate?: string;
   selectedOption?: string;
-  fontSize?: string;
   negative?: boolean;
   hideRow?: boolean;
 }
@@ -27,7 +26,6 @@ const DataTable: React.FC<DataTableProps> = ({
   loading,
   customDate,
   selectedOption,
-  fontSize,
   negative = false,
   hideRow = false,
 }) => {
@@ -44,7 +42,7 @@ const DataTable: React.FC<DataTableProps> = ({
           {firstColumnTitle}
         </div>
         {secondColumnTitle && (
-          <div className={`${styles.reportItem} ${styles.countHeading}`}>
+          <div className={`${styles.headerItemCenter} ${styles.countHeading}`}>
             {secondColumnTitle}
           </div>
         )}
@@ -74,22 +72,10 @@ const DataTable: React.FC<DataTableProps> = ({
                 <div key={i} className={styles.reportRow}>
                   <div
                     className={`${styles.reportItem} ${styles.reportItemName}`}
-                    style={
-                      {
-                        "--dynamic-font-size": fontSize,
-                      } as React.CSSProperties
-                    }
                   >
                     {item[Object.keys(item)[0]]}
                   </div>
-                  <div
-                    className={`${styles.reportItem}`}
-                    style={
-                      {
-                        "--dynamic-font-size": fontSize,
-                      } as React.CSSProperties
-                    }
-                  >
+                  <div className={`${styles.reportItem}`}>
                     {secondColumnSymbol === "$" ? (
                       <>
                         {negative && "("}
@@ -107,14 +93,7 @@ const DataTable: React.FC<DataTableProps> = ({
                     )}
                   </div>
                   {thirdColumnTitle && (
-                    <div
-                      className={`${styles.reportItem}`}
-                      style={
-                        {
-                          "--dynamic-font-size": fontSize,
-                        } as React.CSSProperties
-                      }
-                    >
+                    <div className={`${styles.reportItem}`}>
                       {thirdColumnSymbol === "$" ? (
                         <>
                           {thirdColumnSymbol}

@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { functions, httpsCallable } from "@/firebase/config";
 import {
   formatDate,
   formatReadableDate,
-  getTopFive,
 } from "../(root)/reports-dashboard/components/utils/formatDate";
 import { Categories, Dishes } from "../src/types";
 
 interface KitchenData {
   categories: any[];
   dishes: any[];
+  dishByOrderType: any[];
   response: any;
 }
 
 interface UseFetchReportsOptions {
   fetchAdvancedReports?: boolean;
   fetchOverviewReports?: boolean;
+  fetchDishesCountByOrderType?: boolean
 }
 
 const useFetchReports = (
@@ -28,6 +29,8 @@ const useFetchReports = (
   const [allCategories, setAllCategories] = useState<Categories[]>([]);
   const [allDishes, setAllDishes] = useState<Dishes[]>([]);
   const [ordersData, setOrdersData] = useState<any>(null);
+  const [dishByOrderType, setDishByOrderType] = useState<any>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [advancedReportingError, setAdvancedReportingError] = useState(false);
@@ -41,6 +44,10 @@ const useFetchReports = (
       const overviewReports = httpsCallable(
         functions,
         "overviewReportFunction"
+      );
+      const dishesCountByOrderType = httpsCallable(
+        functions,
+        "getDishesCountByOrderType"
       );
 
       setLoading(true);
@@ -80,6 +87,22 @@ const useFetchReports = (
             })
         : Promise.resolve();
 
+        const fetchGetDishesCountByOrderType = options.fetchDishesCountByOrderType
+        ? dishesCountByOrderType({
+            kitchenId: kitchenId,
+            fromReportDate: formatDate(reportStartDate),
+            toReportDate: formatDate(reportEndDate),
+          })
+            .then(result => {
+              const data = result.data as KitchenData;
+              setDishByOrderType(data.dishByOrderType);
+            })
+            .catch(error => {
+              console.log("Failed to fetch GetDishesCountByOrderType reports:", error);
+              setOverviewReportFunctionError(true);
+            })
+        : Promise.resolve();
+
       if (selectedOption === "Custom") {
         setCustomDate(
           `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
@@ -90,7 +113,7 @@ const useFetchReports = (
         setCustomDate(undefined);
       }
 
-      Promise.allSettled([fetchAdvancedReports, fetchOverviewReports]).finally(
+      Promise.allSettled([fetchAdvancedReports, fetchOverviewReports, fetchGetDishesCountByOrderType]).finally(
         () => {
           setLoading(false);
         }
@@ -101,17 +124,33 @@ const useFetchReports = (
     }
   }, [reportEndDate]);
 
-  return {
-    allCategories,
-    allDishes,
-    ordersData,
-    loading,
-    error,
-    advancedReportingError,
-    overviewReportFunctionError,
-    customDate,
-    setCustomDate,
-  };
+  const memoizedData = useMemo(
+    () => ({
+      allCategories,
+      allDishes,
+      ordersData,
+      dishByOrderType,
+      loading,
+      error,
+      advancedReportingError,
+      overviewReportFunctionError,
+      customDate,
+      setCustomDate,
+    }),
+    [
+      allCategories,
+      allDishes,
+      ordersData,
+      dishByOrderType,
+      loading,
+      error,
+      advancedReportingError,
+      overviewReportFunctionError,
+      customDate,
+    ]
+  );
+
+  return memoizedData;
 };
 
 export default useFetchReports;

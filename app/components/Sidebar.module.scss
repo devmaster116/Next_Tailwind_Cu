@@ -94,10 +94,6 @@ $transition-duration: 0.5s;
       display: flex;
       padding: 11px 6px;
       margin: 0px 12px 0px 16px;
-
-      @media only screen and (min-width: 600px) {
-        display: none;
-      }
     }
 
     @media only screen and (min-width: 961px) {
@@ -196,7 +192,7 @@ $transition-duration: 0.5s;
     place-content: normal;
     margin-left: 16px;
 
-    @media only screen and (min-width: 600px) {
+    @media only screen and (min-width: 961px) {
       display: none;
     }
   }

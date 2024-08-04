@@ -10,17 +10,24 @@ import SalesData from "../reports-dashboard/components/SalesData";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import withAuth from "@/app/components/Auth/withAuth";
 import { useKitchen } from "../../context/KitchenContext";
+import { useReportDate } from "../../context/ReportDateContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
+import { dishDetailsByOrderTypeParser } from "./utils/dishDetailsByOrderTypeParser";
 
 const SalesSummary = () => {
-  const [reportEndDate, setReportEndDate] = useState(new Date());
-  const [reportStartDate, setReportStartDate] = useState(new Date());
-
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
   const { width } = useWindowSize();
   const { kitchen } = useKitchen();
 
   const kitchenId = kitchen?.kitchenId ?? null;
+
+  const {
+    reportStartDate,
+    setReportStartDate,
+    reportEndDate,
+    setReportEndDate,
+    selectedOption,
+    setSelectedOption,
+  } = useReportDate();
 
   const {
     loading,
@@ -28,6 +35,7 @@ const SalesSummary = () => {
     customDate,
     setCustomDate,
     ordersData,
+    dishByOrderType,
     overviewReportFunctionError,
   } = useFetchReports(
     kitchenId,
@@ -37,6 +45,7 @@ const SalesSummary = () => {
     {
       fetchAdvancedReports: false,
       fetchOverviewReports: true,
+      fetchDishesCountByOrderType: true,
     }
   );
 
@@ -57,17 +66,24 @@ const SalesSummary = () => {
   let take_away_order_net_avg = 0;
   let total_card_orders = 0;
   let total_card_sum = 0;
+  let total_take_away_sum = 0;
+  let total_dine_in_sum = 0;
   let total_card_surcharge = 0;
   let total_card_tip = 0;
   let total_cash_orders = 0;
   let total_cash_sum = 0;
   let total_dine_in_orders = 0;
+  let total_holiday_surcharge = 0;
   let total_net_sales = 0;
   let total_online_orders = 0;
   let total_orders = 0;
   let total_refunded_sum = 0;
   let total_revenue = 0;
   let total_take_away_orders = 0;
+  let total_split_payment_orders = 0;
+  let total_split_payment_sum = 0;
+  let total_take_away_card_surcharge = 0
+  let total_dine_in_card_surcharge = 0
 
   if (ordersData?.length > 0) {
     ({
@@ -76,19 +92,53 @@ const SalesSummary = () => {
       take_away_order_net_avg,
       total_card_orders,
       total_card_sum,
+      total_take_away_sum,
+      total_dine_in_sum,
       total_card_surcharge,
       total_card_tip,
       total_cash_orders,
       total_cash_sum,
       total_dine_in_orders,
+      total_holiday_surcharge,
       total_net_sales,
       total_online_orders,
       total_orders,
       total_refunded_sum,
       total_revenue,
       total_take_away_orders,
+      total_split_payment_orders,
+      total_split_payment_sum,
+      total_take_away_card_surcharge,
+      total_dine_in_card_surcharge
     } = ordersData[0]);
   }
+
+  // Extract details dynamically
+  const takeAwayItemDetails = dishDetailsByOrderTypeParser(
+    dishByOrderType,
+    "Take Away"
+  );
+  const dineInItemDetails = dishDetailsByOrderTypeParser(
+    dishByOrderType,
+    "Dine In"
+  );
+
+  const takeAwayItemCount = takeAwayItemDetails
+    ? takeAwayItemDetails.itemCount
+    : 0;
+
+  const dineInItemCount = dineInItemDetails ? dineInItemDetails.itemCount : 0;
+
+  const takeAwayAverageItems =
+    takeAwayItemCount && total_take_away_orders
+      ? Math.round(takeAwayItemCount / total_take_away_orders)
+      : 0;
+
+  const dineInAverageItems =
+    dineInItemCount && total_dine_in_orders
+      ? Math.round(dineInItemCount / total_dine_in_orders)
+      : 0;
+
   return (
     <>
       <DateRangeSelectorModal
@@ -172,8 +222,8 @@ const SalesSummary = () => {
                 refund: total_refunded_sum || 0,
               },
               {
-                title: "GST (10%)",
-                refund: total_net_sales / 11 || 0,
+                title: "GST",
+                refund: total_net_sales * 0.1 || 0,
               },
             ]}
             loading={loading}
@@ -186,8 +236,8 @@ const SalesSummary = () => {
             secondColumnSymbol="$"
             dataObj={[
               {
-                title: "Includes PH Surcharge 15%",
-                tips: total_card_tip || 0,
+                title: "Includes PH Surcharge",
+                tips: total_holiday_surcharge || 0,
               },
             ]}
             loading={loading}
@@ -211,7 +261,6 @@ const SalesSummary = () => {
             secondColumnTitle="Count (%)"
             thirdColumnTitle="Net"
             thirdColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Take Away",
@@ -222,7 +271,7 @@ const SalesSummary = () => {
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: take_away_order_net_avg || 0,
+                net: total_take_away_sum  ? (total_take_away_sum - total_take_away_card_surcharge) / 1.1 : 0,
               },
               {
                 title: "Dine In",
@@ -231,7 +280,7 @@ const SalesSummary = () => {
                   total_take_away_orders + total_dine_in_orders || 0,
                   1
                 )}%)`,
-                net: dine_in_order_net_avg || 0,
+                net: total_dine_in_sum  ? (total_dine_in_sum - total_dine_in_card_surcharge) / 1.1 : 0,
               },
             ]}
             loading={loading}
@@ -243,25 +292,33 @@ const SalesSummary = () => {
             secondColumnTitle="%"
             thirdColumnTitle="Net"
             thirdColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Cash",
                 percentage: `${total_cash_orders || 0}  (${calculatePercentage(
                   total_cash_sum,
-                  total_cash_sum + total_card_sum || 0,
+                  total_cash_sum + total_card_sum + total_split_payment_sum || 0,
                   1
                 )}%)`,
-                net: total_cash_sum || 0,
+                net: total_cash_sum/1.1 || 0,
               },
               {
                 title: "Card",
                 percentage: `${total_card_orders || 0}  (${calculatePercentage(
                   total_card_sum,
-                  total_cash_sum + total_card_sum || 0,
+                  total_cash_sum + total_card_sum + total_split_payment_sum || 0,
                   1
                 )}%)`,
-                net: total_card_sum || 0,
+                net: (total_card_sum - total_card_surcharge)/1.1 || 0,
+              },
+              {
+                title: "Split",
+                percentage: `${total_split_payment_orders || 0}  (${calculatePercentage(
+                  total_split_payment_sum,
+                  total_cash_sum + total_card_sum + total_split_payment_sum|| 0,
+                  1
+                )}%)`,
+                net: total_split_payment_sum/1.1 || 0,
               },
             ]}
             loading={loading}
@@ -272,7 +329,6 @@ const SalesSummary = () => {
             firstColumnTitle="Tips"
             secondColumnTitle="Net"
             secondColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Card",
@@ -301,23 +357,22 @@ const SalesSummary = () => {
             secondColumnSymbol=""
             thirdColumnTitle="Net Avg"
             thirdColumnSymbol="$"
-            fontSize={width && width >= 600 ? "18px" : "16px"}
             dataObj={[
               {
                 title: "Take Away Order",
-                averageItem: total_take_away_orders || 0,
+                averageItem: takeAwayAverageItems,
                 netAvg: take_away_order_net_avg || 0,
               },
               {
                 title: "Dine-in Order",
-                averageItem: total_dine_in_orders || 0,
+                averageItem: dineInAverageItems,
                 netAvg: dine_in_order_net_avg || 0,
               },
-              {
-                title: "Online Order",
-                averageItem: total_online_orders || 0,
-                netAvg: online_order_net_avg || 0,
-              },
+              // {
+              //   title: "Online Order",
+              //   averageItem: total_online_orders || 0,
+              //   netAvg: online_order_net_avg || 0,
+              // },
             ]}
             loading={loading}
             customDate={customDate}
