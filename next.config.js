@@ -47,7 +47,8 @@ const nextConfig = {
   },
   env: {
     FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
-    LOCAL_FIREBASE_CONFIG: localFirebaseConfig
+    LOCAL_FIREBASE_CONFIG: localFirebaseConfig,
+    ENVIRONMENT: process.env.ENVIRONMENT
   },
 };
 

@@ -1,0 +1,67 @@
+.inputContainer {
+  position: relative;
+
+  .input {
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: 16px;
+    gap: 8px;
+    height: 44px;
+    margin-bottom: 6px;
+    padding: 10px 14px;
+    width: 100%;
+
+    &::-webkit-input-placeholder {
+      color: var(--gray-500);
+      font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    &::-moz-placeholder {
+      color: var(--gray-500);
+      font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    &:-ms-input-placeholder {
+      color: var(--gray-500);
+      font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    &:-moz-placeholder {
+      color: var(--gray-500);
+      font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
+      font-size: 16px;
+      font-weight: 400;
+    }
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    & {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+  }
+
+  .invalidInput {
+    border: 1px solid #f04438;
+  }
+
+  .errorLabel {
+    color: #f04438;
+  }
+
+  .inputErrorIcon {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+  }
+}

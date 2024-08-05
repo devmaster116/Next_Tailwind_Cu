@@ -5,7 +5,7 @@ import { auth, db } from "../../../firebase/config";
 import Loading from "../Loading";
 import { useUser } from "../../context/UserContext";
 import { useKitchen } from "../../context/KitchenContext";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 interface WithAuthProps {}
 
@@ -25,15 +25,35 @@ const withAuth = <P extends WithAuthProps>(
           // If there is no user stored in context then retrieve user again
           if (user === null) {
             const userDocRef = doc(db, "users", authUser?.uid);
+
             getDoc(userDocRef).then((userDocSnap) => {
               if (userDocSnap.exists()) {
                 const kitchenId = userDocSnap.data().kitchenId;
                 const userEmail = userDocSnap.data().email;
+                const owner = userDocSnap.data().owner ? true : false;
+                const secondaryContact = userDocSnap.data().secondaryContact
+                  ? true
+                  : false;
+
+                // Add timestamp for login to user object
+                setDoc(
+                  userDocRef,
+                  {
+                    lastPortalLogin: new Date(),
+                    emailVerified: authUser?.emailVerified,
+                  },
+                  {
+                    merge: true,
+                  }
+                );
 
                 setUser({
                   uid: authUser?.uid,
                   email: userEmail,
-                  kitchenId: kitchenId,
+                  kitchenId,
+                  owner,
+                  secondaryContact,
+                  emailVerified: authUser?.emailVerified,
                 });
 
                 const docRef = doc(db, "kitchens", kitchenId);
@@ -42,7 +62,7 @@ const withAuth = <P extends WithAuthProps>(
                     const kitchenName = kitchenDocSnap?.data()?.kitchenName
                       ? kitchenDocSnap?.data()?.kitchenName
                       : null;
-                    const stripeCustomerId = kitchenDocSnap?.data()
+                    const stripe_customer_id = kitchenDocSnap?.data()
                       ?.stripe_customer_id
                       ? kitchenDocSnap?.data()?.stripe_customer_id
                       : null;
@@ -69,9 +89,9 @@ const withAuth = <P extends WithAuthProps>(
 
                     setKitchen({
                       kitchenId,
-                      stripeCustomerId,
+                      stripe_customer_id,
                       kitchenName,
-                      kitchenAddress,
+                      fullAddress: kitchenAddress,
                       email,
                       phoneNumber,
                       abn,

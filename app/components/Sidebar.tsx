@@ -127,6 +127,19 @@ export default function Sidebar({
             <h4>Account and Billing</h4>
             <div className={styles.menuItems}>
               <MenuItem
+                name="Business Details"
+                route="/business-details"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/business-details.svg"
+                    height={18}
+                    width={18}
+                    alt="Business Details icon"
+                  />
+                }
+              />
+              <MenuItem
                 name="Subscriptions"
                 route="/subscriptions"
                 icon={

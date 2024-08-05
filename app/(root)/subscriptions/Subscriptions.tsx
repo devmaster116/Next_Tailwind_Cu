@@ -45,7 +45,7 @@ const Subscriptions = () => {
   const { kitchen } = useKitchen();
 
   const kitchenId = kitchen?.kitchenId ?? null;
-  const stripeCustomerId = kitchen?.stripeCustomerId ? kitchen.stripeCustomerId : null;
+  const stripeCustomerId = kitchen?.stripe_customer_id ? kitchen.stripe_customer_id : null;
 
   // Chosen subscription details
   const chosenSubscribedProducts = chosenSubscriptionDetails?.products
