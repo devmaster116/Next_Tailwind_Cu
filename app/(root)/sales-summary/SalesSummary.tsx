@@ -44,11 +44,6 @@ const SalesSummary = () => {
     reportStartDate,
     reportEndDate,
     selectedOption,
-    {
-      fetchAdvancedReports: false,
-      fetchOverviewReports: true,
-      fetchDishesCountByOrderType: true,
-    }
   );
 
   useEffect(() => {

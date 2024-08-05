@@ -42,10 +42,6 @@ const CategorySales = () => {
     reportStartDate,
     reportEndDate,
     selectedOption,
-    {
-      fetchAdvancedReports: true,
-      fetchOverviewReports: false,
-    }
   );
 
   const [categoryStats, setCategoryStats] = useState<{
