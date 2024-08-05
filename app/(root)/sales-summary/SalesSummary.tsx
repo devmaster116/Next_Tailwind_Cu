@@ -42,11 +42,6 @@ const SalesSummary = () => {
     reportStartDate,
     reportEndDate,
     selectedOption,
-    {
-      fetchAdvancedReports: false,
-      fetchOverviewReports: true,
-      fetchDishesCountByOrderType: true,
-    }
   );
 
   const calculatePercentage = (

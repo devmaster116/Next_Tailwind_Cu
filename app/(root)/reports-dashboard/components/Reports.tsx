@@ -44,10 +44,6 @@ const Reports = () => {
     reportStartDate,
     reportEndDate,
     selectedOption,
-    {
-      fetchAdvancedReports: true,
-      fetchOverviewReports: true,
-    }
   );
 
   let total_net_sales = 0;
