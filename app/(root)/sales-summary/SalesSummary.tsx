@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SalesSummary.module.scss";
 import "../reports-dashboard/components/DatePicker.scss";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,10 +13,12 @@ import { useKitchen } from "../../context/KitchenContext";
 import { useReportDate } from "../../context/ReportDateContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
 import { dishDetailsByOrderTypeParser } from "./utils/dishDetailsByOrderTypeParser";
+import NoSalesMessage from "../reports-dashboard/components/NoSalesMessage";
 
 const SalesSummary = () => {
   const { width } = useWindowSize();
   const { kitchen } = useKitchen();
+  const [noSales, setNoSales] = useState<boolean>(false);
 
   const kitchenId = kitchen?.kitchenId ?? null;
 
@@ -42,12 +44,19 @@ const SalesSummary = () => {
     reportStartDate,
     reportEndDate,
     selectedOption,
-    {
-      fetchAdvancedReports: false,
-      fetchOverviewReports: true,
-      fetchDishesCountByOrderType: true,
-    }
   );
+
+  useEffect(() => {
+    if (loading) {
+      setNoSales(false);
+    } else {
+      if (ordersData && ordersData.length > 0) {
+        setNoSales(false);
+      } else {
+        setNoSales(true);
+      }
+    }
+  }, [loading, ordersData]);
 
   const calculatePercentage = (
     numerator: number,
@@ -82,8 +91,8 @@ const SalesSummary = () => {
   let total_take_away_orders = 0;
   let total_split_payment_orders = 0;
   let total_split_payment_sum = 0;
-  let total_take_away_card_surcharge = 0
-  let total_dine_in_card_surcharge = 0
+  let total_take_away_card_surcharge = 0;
+  let total_dine_in_card_surcharge = 0;
 
   if (ordersData?.length > 0) {
     ({
@@ -109,7 +118,7 @@ const SalesSummary = () => {
       total_split_payment_orders,
       total_split_payment_sum,
       total_take_away_card_surcharge,
-      total_dine_in_card_surcharge
+      total_dine_in_card_surcharge,
     } = ordersData[0]);
   }
 
@@ -152,7 +161,6 @@ const SalesSummary = () => {
         setSelectedOption={setSelectedOption}
       />
       <h1 className={styles.pageTitle}>Sales Summary</h1>
-
       {error ? (
         <>
           <DataError
@@ -164,220 +172,243 @@ const SalesSummary = () => {
         <>
           {overviewReportFunctionError ? (
             <DataError errorMessage="Error retrieving summary data" />
-          ) : (
-            <div className={styles.salesDataContainer}>
-              <SalesData
-                title="Net Sales"
-                amount={Number(total_net_sales)}
-                isDollarAmount={true}
-                loading={loading}
-              />
-              <SalesData
-                title="Orders"
-                amount={total_orders}
-                isDollarAmount={false}
-                loading={loading}
-              />
-              <SalesData
-                title="Avg. Net Sale"
-                amount={Number(total_net_sales / total_orders)}
-                isDollarAmount={true}
-                loading={loading}
-              />
-              <SalesData
-                title="Dine In / Take Away"
-                amount={Number(
-                  (
-                    total_dine_in_orders /
-                      (total_take_away_orders + total_dine_in_orders) || 0
-                  ).toFixed(1)
-                )}
-                secondAmount={Number(
-                  (
-                    total_take_away_orders /
-                      (total_take_away_orders + total_dine_in_orders) || 0
-                  ).toFixed(1)
-                )}
-                isPercentage={true}
-                loading={loading}
-              />
-            </div>
-          )}
-          <DataTable
-            firstColumnTitle="Gross Sales"
-            secondColumnTitle={`$${String(total_revenue || 0)}`}
-            secondColumnSymbol="$"
-            negative={true}
-            dataObj={[
-              {
-                title: "Card Surcharges (Paid by customer)",
-                card: total_card_surcharge || 0,
-              },
-              {
-                title: "Tips",
-                tips: total_card_tip || 0,
-              },
-              {
-                title: "Refunds",
-                refund: total_refunded_sum || 0,
-              },
-              {
-                title: "GST",
-                refund: total_net_sales * 0.1 || 0,
-              },
-            ]}
-            loading={loading}
-            customDate={customDate}
-            selectedOption={selectedOption}
-          />
-          <DataTable
-            firstColumnTitle="Net Sales"
-            secondColumnTitle={`$${String(total_net_sales || 0)}`}
-            secondColumnSymbol="$"
-            dataObj={[
-              {
-                title: "Includes PH Surcharge",
-                tips: total_holiday_surcharge || 0,
-              },
-            ]}
-            loading={loading}
-            customDate={customDate}
-            selectedOption={selectedOption}
-          />
-          {width && width >= 600 ? (
-            <div className={styles.hrContainer}>
-              <hr className={styles.hrLine} />
-              <h4 className={styles.hrText}>Breakdowns</h4>
-              <hr className={styles.hrLine} />
-            </div>
-          ) : (
+          ) : !noSales ? (
             <>
-              <div className={styles.separator}></div>
-              <h4>Breakdowns</h4>
+              <div className={styles.salesDataContainer}>
+                <SalesData
+                  title="Net Sales"
+                  amount={Number(total_net_sales)}
+                  isDollarAmount={true}
+                  loading={loading}
+                />
+                <SalesData
+                  title="Orders"
+                  amount={total_orders}
+                  isDollarAmount={false}
+                  loading={loading}
+                />
+                <SalesData
+                  title="Avg. Net Sale"
+                  amount={Number(total_net_sales / total_orders)}
+                  isDollarAmount={true}
+                  loading={loading}
+                />
+                <SalesData
+                  title="Dine In / Take Away"
+                  amount={Number(
+                    (
+                      total_dine_in_orders /
+                        (total_take_away_orders + total_dine_in_orders) || 0
+                    ).toFixed(1)
+                  )}
+                  secondAmount={Number(
+                    (
+                      total_take_away_orders /
+                        (total_take_away_orders + total_dine_in_orders) || 0
+                    ).toFixed(1)
+                  )}
+                  isPercentage={true}
+                  loading={loading}
+                />
+              </div>
+              <DataTable
+                firstColumnTitle="Gross Sales"
+                secondColumnTitle={`$${String(total_revenue || 0)}`}
+                secondColumnSymbol="$"
+                negative={true}
+                dataObj={[
+                  {
+                    title: "Card Surcharges (Paid by customer)",
+                    card: total_card_surcharge || 0,
+                  },
+                  {
+                    title: "Tips",
+                    tips: total_card_tip || 0,
+                  },
+                  {
+                    title: "Refunds",
+                    refund: total_refunded_sum || 0,
+                  },
+                  {
+                    title: "GST",
+                    refund: total_net_sales * 0.1 || 0,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+              <DataTable
+                firstColumnTitle="Net Sales"
+                secondColumnTitle={`$${String(total_net_sales || 0)}`}
+                secondColumnSymbol="$"
+                dataObj={[
+                  {
+                    title: "Includes PH Surcharge",
+                    tips: total_holiday_surcharge || 0,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+              {width && width >= 600 ? (
+                <div className={styles.hrContainer}>
+                  <hr className={styles.hrLine} />
+                  <h4 className={styles.hrText}>Breakdowns</h4>
+                  <hr className={styles.hrLine} />
+                </div>
+              ) : (
+                <>
+                  <div className={styles.separator}></div>
+                  <h4>Breakdowns</h4>
+                </>
+              )}
+              <DataTable
+                firstColumnTitle="Order Type"
+                secondColumnTitle="Count (%)"
+                thirdColumnTitle="Net"
+                thirdColumnSymbol="$"
+                dataObj={[
+                  {
+                    title: "Take Away",
+                    takeAway: `${
+                      total_take_away_orders || 0
+                    }  (${calculatePercentage(
+                      total_take_away_orders,
+                      total_take_away_orders + total_dine_in_orders || 0,
+                      1
+                    )}%)`,
+                    net: total_take_away_sum
+                      ? (total_take_away_sum - total_take_away_card_surcharge) /
+                        1.1
+                      : 0,
+                  },
+                  {
+                    title: "Dine In",
+                    dine: `${total_dine_in_orders || 0}  (${calculatePercentage(
+                      total_dine_in_orders,
+                      total_take_away_orders + total_dine_in_orders || 0,
+                      1
+                    )}%)`,
+                    net: total_dine_in_sum
+                      ? (total_dine_in_sum - total_dine_in_card_surcharge) / 1.1
+                      : 0,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+              <DataTable
+                firstColumnTitle="Payment Type"
+                secondColumnTitle="%"
+                thirdColumnTitle="Net"
+                thirdColumnSymbol="$"
+                dataObj={[
+                  {
+                    title: "Cash",
+                    percentage: `${
+                      total_cash_orders || 0
+                    }  (${calculatePercentage(
+                      total_cash_sum,
+                      total_cash_sum +
+                        total_card_sum +
+                        total_split_payment_sum || 0,
+                      1
+                    )}%)`,
+                    net: total_cash_sum / 1.1 || 0,
+                  },
+                  {
+                    title: "Card",
+                    percentage: `${
+                      total_card_orders || 0
+                    }  (${calculatePercentage(
+                      total_card_sum,
+                      total_cash_sum +
+                        total_card_sum +
+                        total_split_payment_sum || 0,
+                      1
+                    )}%)`,
+                    net: (total_card_sum - total_card_surcharge) / 1.1 || 0,
+                  },
+                  {
+                    title: "Split",
+                    percentage: `${
+                      total_split_payment_orders || 0
+                    }  (${calculatePercentage(
+                      total_split_payment_sum,
+                      total_cash_sum +
+                        total_card_sum +
+                        total_split_payment_sum || 0,
+                      1
+                    )}%)`,
+                    net: total_split_payment_sum / 1.1 || 0,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+              <DataTable
+                firstColumnTitle="Tips"
+                secondColumnTitle="Net"
+                secondColumnSymbol="$"
+                dataObj={[
+                  {
+                    title: "Card",
+                    net: total_card_tip || 0,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
+              {width && width >= 600 ? (
+                <div className={styles.hrContainer}>
+                  <hr className={styles.hrLine} />
+                  <h4 className={styles.hrText}>Averages</h4>
+                  <hr className={styles.hrLine} />
+                </div>
+              ) : (
+                <>
+                  <div className={styles.separator}></div>
+                  <h4>Averages</h4>
+                </>
+              )}
+              <DataTable
+                firstColumnTitle="Order Type"
+                secondColumnTitle="Avg no. of items"
+                secondColumnSymbol=""
+                thirdColumnTitle="Net Avg"
+                thirdColumnSymbol="$"
+                dataObj={[
+                  {
+                    title: "Take Away Order",
+                    averageItem: takeAwayAverageItems,
+                    netAvg: take_away_order_net_avg || 0,
+                  },
+                  {
+                    title: "Dine-in Order",
+                    averageItem: dineInAverageItems,
+                    netAvg: dine_in_order_net_avg || 0,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+              />
             </>
-          )}
-          <DataTable
-            firstColumnTitle="Order Type"
-            secondColumnTitle="Count (%)"
-            thirdColumnTitle="Net"
-            thirdColumnSymbol="$"
-            dataObj={[
-              {
-                title: "Take Away",
-                takeAway: `${
-                  total_take_away_orders || 0
-                }  (${calculatePercentage(
-                  total_take_away_orders,
-                  total_take_away_orders + total_dine_in_orders || 0,
-                  1
-                )}%)`,
-                net: total_take_away_sum  ? (total_take_away_sum - total_take_away_card_surcharge) / 1.1 : 0,
-              },
-              {
-                title: "Dine In",
-                dine: `${total_dine_in_orders || 0}  (${calculatePercentage(
-                  total_dine_in_orders,
-                  total_take_away_orders + total_dine_in_orders || 0,
-                  1
-                )}%)`,
-                net: total_dine_in_sum  ? (total_dine_in_sum - total_dine_in_card_surcharge) / 1.1 : 0,
-              },
-            ]}
-            loading={loading}
-            customDate={customDate}
-            selectedOption={selectedOption}
-          />
-          <DataTable
-            firstColumnTitle="Payment Type"
-            secondColumnTitle="%"
-            thirdColumnTitle="Net"
-            thirdColumnSymbol="$"
-            dataObj={[
-              {
-                title: "Cash",
-                percentage: `${total_cash_orders || 0}  (${calculatePercentage(
-                  total_cash_sum,
-                  total_cash_sum + total_card_sum + total_split_payment_sum || 0,
-                  1
-                )}%)`,
-                net: total_cash_sum/1.1 || 0,
-              },
-              {
-                title: "Card",
-                percentage: `${total_card_orders || 0}  (${calculatePercentage(
-                  total_card_sum,
-                  total_cash_sum + total_card_sum + total_split_payment_sum || 0,
-                  1
-                )}%)`,
-                net: (total_card_sum - total_card_surcharge)/1.1 || 0,
-              },
-              {
-                title: "Split",
-                percentage: `${total_split_payment_orders || 0}  (${calculatePercentage(
-                  total_split_payment_sum,
-                  total_cash_sum + total_card_sum + total_split_payment_sum|| 0,
-                  1
-                )}%)`,
-                net: total_split_payment_sum/1.1 || 0,
-              },
-            ]}
-            loading={loading}
-            customDate={customDate}
-            selectedOption={selectedOption}
-          />
-          <DataTable
-            firstColumnTitle="Tips"
-            secondColumnTitle="Net"
-            secondColumnSymbol="$"
-            dataObj={[
-              {
-                title: "Card",
-                net: total_card_tip || 0,
-              },
-            ]}
-            loading={loading}
-            customDate={customDate}
-            selectedOption={selectedOption}
-          />
-          {width && width >= 600 ? (
-            <div className={styles.hrContainer}>
-              <hr className={styles.hrLine} />
-              <h4 className={styles.hrText}>Averages</h4>
-              <hr className={styles.hrLine} />
-            </div>
           ) : (
-            <>
-              <div className={styles.separator}></div>
-              <h4>Averages</h4>
-            </>
+            <NoSalesMessage
+              message="No sales in selected period"
+              messageDescription={`${
+                customDate
+                  ? `between ${customDate}`
+                  : `No sale completed ${selectedOption?.toLowerCase()}.`
+              }`}
+            />
           )}
-          <DataTable
-            firstColumnTitle="Order Type"
-            secondColumnTitle="Avg no. of items"
-            secondColumnSymbol=""
-            thirdColumnTitle="Net Avg"
-            thirdColumnSymbol="$"
-            dataObj={[
-              {
-                title: "Take Away Order",
-                averageItem: takeAwayAverageItems,
-                netAvg: take_away_order_net_avg || 0,
-              },
-              {
-                title: "Dine-in Order",
-                averageItem: dineInAverageItems,
-                netAvg: dine_in_order_net_avg || 0,
-              },
-              // {
-              //   title: "Online Order",
-              //   averageItem: total_online_orders || 0,
-              //   netAvg: online_order_net_avg || 0,
-              // },
-            ]}
-            loading={loading}
-            customDate={customDate}
-            selectedOption={selectedOption}
-          />
         </>
       )}
     </>

@@ -42,10 +42,6 @@ const ItemSales = () => {
     reportStartDate,
     reportEndDate,
     selectedOption,
-    {
-      fetchAdvancedReports: true,
-      fetchOverviewReports: false,
-    }
   );
 
   const [dishStats, setDishesStats] = useState<{
