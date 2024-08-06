@@ -124,6 +124,25 @@ export default function Sidebar({
           </div>
 
           <div className={styles.logoContainer}>
+            <h4>POS Access Management</h4>
+            <div className={styles.menuItems}>
+              <MenuItem
+                name="Permissions"
+                route="/permissions"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/permissions.svg"
+                    height={18}
+                    width={18}
+                    alt="Business Details icon"
+                  />
+                }
+              />
+             
+            </div>
+          </div>
+          <div className={styles.logoContainer}>
             <h4>Account and Billing</h4>
             <div className={styles.menuItems}>
               <MenuItem

@@ -1,0 +1,287 @@
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+  margin-top: 40px;
+
+}
+
+.parentContainer {
+  background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  margin-top: 40px;
+  max-width: 553px;
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 12px;
+  }
+}
+.buttonPrimary{
+  background-color: var( --primary-purple-600) !important;
+  color: #fff !important;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media only screen and (max-width: 600px) {
+    
+  }
+}
+
+.subContainer {
+  border-bottom: 1px solid var(--gray-200);
+  padding: 15px;
+}
+
+.editText {
+  color: var(--primary-purple-700);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.titleTextContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button_container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ownerShipButton {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #344054;
+  background-color: #f2f4f7;
+  padding: 4px 12px 4px 10px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+
+  &:disabled {
+    cursor: auto;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.commonTitle {
+  font-size: 16px;
+  font-weight: 700;
+  padding-top: 32px;
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+    font-weight: 700;
+    padding-top: 24px;
+  }
+}
+
+.titleText {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 8px;
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.headerText {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+.bodyText {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+  }
+}
+
+.emailVerificationText {
+  color: var(--gray-400);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  pointer-events: none;
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+.button {
+  padding: 16px;
+  color: var(--primary-purple-700);
+  font-weight: 600;
+  font-size: 16px;
+
+  &:hover {
+    color: var(--primary-purple-600);
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+@mixin input-styles($border-color) {
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  font-size: 16px;
+  gap: 8px;
+  height: 44px;
+  margin-bottom: 6px;
+  padding: 10px 14px 10px 14px;
+  width: 100%;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width:680px ;
+  margin: auto;
+}
+
+.deleteModalTitle {
+  font-size: 18px;
+  font-weight: 600;
+  list-style: 28px;
+  color: #353435;
+}
+
+.deleteMessage {
+  font-size: 14px;
+  font-weight: 400;
+  list-style: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.description {
+  font-size: 14px;
+  font-weight: 400;
+  list-style: 20px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #344054;
+}
+
+
+.permissionItem {
+  list-style: none;
+  margin-bottom: 10px;
+}
+
+.permissionItem label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+.readOnlyInput {
+  padding: 15px;
+  height: 48px;
+  border-radius: 8px;
+opacity: 1;
+/* Gray/50 */
+background: var(--gray-50);
+box-sizing: border-box;
+/* Gray/300 */
+border: 1px solid var(--gray-300);
+/* Shadow/xs */
+box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.disabled{
+  pointer-events: not-allowed;
+  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.5);
+}
