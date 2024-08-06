@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import withAuth from "../../../components/Auth/withAuth";
-import styles from "./Reports.module.scss";
+import styles from "./Overview.module.scss";
 import SalesData from "./SalesData";
 import "react-datepicker/dist/react-datepicker.css";
 import "./DatePicker.scss";
@@ -14,7 +14,7 @@ import useFetchReports from "@/app/hooks/useFetchReports";
 import { getTopFive } from "./utils/formatDate";
 import { useReportDate } from "@/app/context/ReportDateContext";
 
-const Reports = () => {
+const Overview = () => {
   const { width } = useWindowSize();
 
   const { kitchen } = useKitchen();
@@ -43,7 +43,7 @@ const Reports = () => {
     kitchenId,
     reportStartDate,
     reportEndDate,
-    selectedOption,
+    selectedOption
   );
 
   let total_net_sales = 0;
@@ -148,4 +148,4 @@ const Reports = () => {
   );
 };
 
-export default withAuth(Reports);
+export default withAuth(Overview);

@@ -1,19 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import styles from "./SalesSummary.module.scss";
-import "../reports-dashboard/components/DatePicker.scss";
+import "../overview/components/DatePicker.scss";
 import "react-datepicker/dist/react-datepicker.css";
-import DataTable from "../reports-dashboard/components/DataTable";
-import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
-import DataError from "../reports-dashboard/components/DataError";
-import SalesData from "../reports-dashboard/components/SalesData";
+import DataTable from "../overview/components/DataTable";
+import DateRangeSelectorModal from "../overview/components/utils/DateRangeSelectorModal";
+import DataError from "../overview/components/DataError";
+import SalesData from "../overview/components/SalesData";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import withAuth from "@/app/components/Auth/withAuth";
 import { useKitchen } from "../../context/KitchenContext";
 import { useReportDate } from "../../context/ReportDateContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
 import { dishDetailsByOrderTypeParser } from "./utils/dishDetailsByOrderTypeParser";
-import NoSalesMessage from "../reports-dashboard/components/NoSalesMessage";
+import NoSalesMessage from "../overview/components/NoSalesMessage";
 
 const SalesSummary = () => {
   const { width } = useWindowSize();
@@ -43,7 +43,7 @@ const SalesSummary = () => {
     kitchenId,
     reportStartDate,
     reportEndDate,
-    selectedOption,
+    selectedOption
   );
 
   useEffect(() => {

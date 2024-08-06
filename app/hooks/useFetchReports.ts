@@ -3,7 +3,7 @@ import { functions, httpsCallable } from "@/firebase/config";
 import {
   formatDate,
   formatReadableDate,
-} from "../(root)/reports-dashboard/components/utils/formatDate";
+} from "../(root)/overview/components/utils/formatDate";
 import { Categories, Dishes } from "../src/types";
 import { useReportDataContext } from "../context/ReportDataContext";
 import { useReportDate } from "../context/ReportDateContext";
