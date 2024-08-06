@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import styles from "../Reports.module.scss";
+import styles from "../Overview.module.scss";
 import Image from "next/image";
 import RadioButton from "../RadioButton";
 import {

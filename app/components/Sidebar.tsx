@@ -70,7 +70,7 @@ export default function Sidebar({
             <div className={styles.menuItems}>
               <MenuItem
                 name="Overview"
-                route="/reports-dashboard"
+                route="/overview"
                 icon={
                   <Image
                     className={styles.icon}

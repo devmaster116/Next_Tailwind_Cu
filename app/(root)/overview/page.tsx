@@ -1,10 +1,10 @@
 import React from "react";
-import Reports from "./components/Reports";
+import Overview from "./components/Overview";
 
 const Page = () => {
   return (
     <div>
-      <Reports />
+      <Overview />
     </div>
   );
 };
