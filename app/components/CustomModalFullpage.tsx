@@ -12,6 +12,7 @@ const CustomModalFullPage = ({
   type,
   updateButtonText,
   onUpdateClick,
+  onDeleteClick,
 }: {
   show: boolean;
   onClose: MouseEventHandler;
@@ -22,12 +23,12 @@ const CustomModalFullPage = ({
   onUpdateClick: MouseEventHandler;
   type?: string;
   updateButtonText?: string;
+  onDeleteClick: MouseEventHandler;
 }) => {
   const [deleteModal,setDeleteModal]=useState(false)
   if (!show) {
     return null;
   }
-  console.log("teh clcikc",onUpdateClick)
 
   return (
     <>
@@ -96,7 +97,7 @@ const CustomModalFullPage = ({
                 />
               </button>
               <div className={styles.titleText}>{title}</div>
-              <div className="flex">
+              <div style={{display:"flex"}}>
               <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
                 Delete </button>
               <button className={styles.updateBtn} onClick={onUpdateClick} >
@@ -124,7 +125,8 @@ const CustomModalFullPage = ({
           onClose={() => setDeleteModal(false)}
           type="delete"
           title=""
-          onUpdateClick={()=>{}}
+          onUpdateClick={onDeleteClick}
+          
           content={
             <>
               <h3 className={styles.deleteModalTitle}>Delete Admin User</h3>

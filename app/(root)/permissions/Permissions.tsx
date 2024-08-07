@@ -8,7 +8,8 @@ import LoadingSkeleton from "./components/LoadingSkeleton";
 import StaffRoles from "./components/StaffRoles";
 import CustomModalFullPage from "@/app/components/CustomModalFullpage";
 import Input from "@/app/components/Input";
-import { fetchPermissions } from "./fetch-permissions";
+import { fetchPermissions,addRoleToExistingDocument,fetchRoles, subscribeRoles } from "./data-fetching";
+
 import { Kitchen, User } from "@/app/src/types";
 import {
   addDoc,
@@ -33,8 +34,7 @@ import { useKitchen } from "../../context/KitchenContext";
 import { useUser } from "../../context/UserContext";
 import styles from "./Permission.module.scss";
 import { FirebaseError } from "firebase/app";
-
-const initialPermissions: Permission[] = [
+const initialPermissions: any[] = [
   { label: "Basic transacting", enabled: false },
   { label: "Enhanced transacting", enabled: false },
   { label: "Enhanced cash draw access", enabled: false },
@@ -76,16 +76,27 @@ const Permissions = () => {
   const [ownerDetials,setOwnerDetails]=useState<any>()
 
 
-  const handleEditRole = (role: any) => {
-    setRoleToEdit(role);
-    setSelectedPermissions(
-      role.permissions.map((p: any) => permissions.findIndex(permission => permission.label === p.name))
-    );
 
-    console.log("selectedPermissions",selectedPermissions)
+  console.log("the roles ",roles)
+
+  const handleEditRole = (role:any) => {
+    setRoleToEdit({
+      ...role,
+      originalName: role.name, 
+    });
+    setSelectedPermissions(
+      role.permissions.map((p:any) =>
+        permissions.findIndex((permission) => permission.label === p.name)
+      )
+    );
     setEditRoleModalOpen(true);
   };
-
+  const handleRoleNameChange = (e:any) => {
+    setRoleToEdit((prev:any) => ({
+      ...prev,
+      name: e.target.value,
+    }));
+  };
   const handleDeleteRole = async () => {
     if (!roleToEdit) return;
 
@@ -108,33 +119,49 @@ const Permissions = () => {
 
   const handleEditSubmit = async () => {
     if (!roleToEdit) return;
-
+  
     try {
-      const updatedPermissions = selectedPermissions.map(index => ({
-        name: permissions[index].label,
-        description: permissions[index].description,
-      }));
-
+      const updatedPermissions = selectedPermissions.map(index => {
+        const permission = permissions[index];
+        return permission ? {
+          name: permission.label,
+          description: permission.description,
+        } : null;
+      }).filter(Boolean);
+  
+      const combinedDescriptions = updatedPermissions.map((permission:any) => permission.name).join(", ");
+  
       const updatedRole = {
         ...roleToEdit,
-        permissions: updatedPermissions
+        permissions: updatedPermissions,
+        description: combinedDescriptions || "No description", // Update the role description
       };
-
+  
       const roleDocRef = doc(db, "roles", "be34pww7m5fy9yw9arvtcnmpkpbl");
       const roleSnapshot = await getDoc(roleDocRef);
+  
       if (roleSnapshot.exists()) {
         const rolesData = roleSnapshot.data().roles || [];
         const updatedRoles = rolesData.map((r: any) =>
-          r.name === roleToEdit.name ? updatedRole : r
+          r.name === roleToEdit.originalName ? updatedRole : r
         );
+  
+        // Update the roles document
         await updateDoc(roleDocRef, { roles: updatedRoles });
+        setRoles(updatedRoles);
+        console.log("Role updated successfully:", updatedRole);
+      } else {
+        console.error("Roles document not found");
       }
+  
+      // Close the modal and clear role to edit
       setEditRoleModalOpen(false);
       setRoleToEdit(null);
     } catch (error) {
       console.error("Error updating role:", error);
     }
   };
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewRoleName(e.target.value);
@@ -149,142 +176,97 @@ const Permissions = () => {
   
 
   useEffect(() => {
-    const loadPermissions = async () => {
-      setLoading(true);
-      try {
-        const fetchedPermissions = await fetchPermissions();
-        console.log("Fetched permissions", fetchedPermissions);
-        setPermissions(
-          fetchedPermissions.map((permission) => ({
-            label: permission.name,
-            description: permission.description,
-            enabled: false,
-          }))
-        );
-      } catch (error) {
-        console.error("Failed to load permissions:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const unsubscribePermissions = fetchPermissions((fetchedPermissions:any) => {
+      setPermissions(
+        fetchedPermissions.map((permission:any) => ({
+          label: permission.name,
+          description: permission.description,
+          enabled: false,
+        }))
+      );
+    });
 
-    loadPermissions();
+    const unsubscribeRoles = subscribeRoles(({ rolesList, ownerDetails }:any) => {
+      setRoles(rolesList);
+      setOwnerDetails(ownerDetails);
+    });
+
+    return () => {
+      unsubscribePermissions();
+      unsubscribeRoles();
+    };
   }, []);
 
 
 
+
+
   useEffect(() => {
-    const fetchRoles = async () => {
-      const rolesCollection = collection(db, 'roles');
-      const rolesSnapshot = await getDocs(rolesCollection);
-  
-      const rolesList: any[] = [];
-      let ownerDetails: any = {}; // Initialize as an empty object
-  
-      rolesSnapshot.docs.forEach(doc => {
-        const data = doc.data();
-        if (Array.isArray(data.roles)) {
-          data.roles.forEach((role: { name: string; description: string; permissions: any[] }) => {
-            const roleData = {
-              name: role.name,
-              description: role.description,
-              staff: data.staff || 0,
-              permissions: role.permissions || []
-            };
-  
-            rolesList.push(roleData);
-  
-            if (role.name.toLowerCase() === "owner") {
-              ownerDetails = roleData;
-            }
-          });
-        }
-      });
-  
-      const permissionNamesSet = new Set(permissions.map(p => p.label));
-  
-      const filteredPermissions = (ownerDetails.permissions || []).filter(permission => 
-        permissionNamesSet.has(permission.name)
-      );
-  
-      console.log("The owner details", ownerDetails);
-  
-      setRoles(rolesList);
-      setOwnerDetails({
-        ...ownerDetails,
-        permissions: filteredPermissions
-      });
+    const fetchRolesData = async () => {
+      try {
+        const { rolesList, ownerDetails } = await fetchRoles(permissions);
+        setRoles(rolesList);
+        setOwnerDetails(ownerDetails);
+      } catch (error) {
+        console.error("Failed to fetch roles:", error);
+      }
     };
-  
-    fetchRoles();
+
+    fetchRolesData();
   }, [permissions]);
   
-  const addRoleToExistingDocument = async (newRole: any) => {
-    try {
-      const docRef = doc(db, "roles", "be34pww7m5fy9yw9arvtcnmpkpbl");
-      const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        const docData = docSnap.data();
-        const existingRoles = docData.roles || [];
-        const updatedRoles = [...existingRoles, newRole];
-
-        await updateDoc(docRef, { roles: updatedRoles });
-        console.log("Role added successfully!");
-      } else {
-        console.log("No such document!");
-      }
-    } catch (error) {
-      console.error("Error adding role:", error);
-    }
-  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     setErrors({});
-
+    
     if (!newRoleName.trim()) {
-        setErrors((prevErrors) => ({ ...prevErrors, businessName: "Role name is required" }));
-        return;
+      setErrors((prevErrors) => ({ ...prevErrors, businessName: "Role name is required" }));
+      return;
     }
-
+    
     if (selectedPermissions.length === 0) {
-        setErrors((prevErrors) => ({ ...prevErrors, permissions: "At least one permission is required" }));
-        return;
+      setErrors((prevErrors) => ({ ...prevErrors, permissions: "At least one permission is required" }));
+      return;
     }
-
+    
     try {
-        // Check if role name already exists in the database
-        const roleDocRef = doc(db, "roles", "be34pww7m5fy9yw9arvtcnmpkpbl");
-        const roleSnapshot = await getDoc(roleDocRef);
-        if (roleSnapshot.exists()) {
-            const rolesData = roleSnapshot.data().roles || [];
-            const roleExists = rolesData.some((role: any) => role.name.toLowerCase() === newRoleName.trim().toLowerCase());
-
-            if (roleExists) {
-                setErrors((prevErrors) => ({ ...prevErrors, businessName: "Role name already exists" }));
-                return;
-            }
+      const roleDocRef = doc(db, "roles", "be34pww7m5fy9yw9arvtcnmpkpbl");
+      const roleSnapshot = await getDoc(roleDocRef);
+      
+      if (roleSnapshot.exists()) {
+        const rolesData = roleSnapshot.data().roles || [];
+        const roleExists = rolesData.some((role: any) => role.name.toLowerCase() === newRoleName.trim().toLowerCase());
+        if (roleExists) {
+          setErrors((prevErrors) => ({ ...prevErrors, businessName: "Role name already exists" }));
+          return;
         }
-
-        const newRole = {
-            name: newRoleName,
-            permissions: selectedPermissions.map((index) => ({
-                name: permissions[index].label,
-                description: permissions[index].description,
-            })),
-        };
-
-        await addRoleToExistingDocument(newRole);
-
-        setAddNewRoleModalOpen(false);
-        setNewRoleName("");
-        setSelectedPermissions([]);
+      }
+      
+      const selectedPermissionDetails = selectedPermissions.map(index => permissions[index]);
+      const combinedDescriptions = selectedPermissionDetails.map(permission => permission.label).join(", ");
+  console.log("the secelted degails",selectedPermissionDetails)
+      const newRole = {
+        name: newRoleName,
+        description: combinedDescriptions || "No description",
+        permissions: selectedPermissions.map((index) => ({
+          id: permissions[index].id,
+          name: permissions[index].label,
+          description: permissions[index].description || "No description available", // Ensure description is set
+        })),
+      };
+      
+      await addRoleToExistingDocument(newRole);
+  
+      setAddNewRoleModalOpen(false);
+      setNewRoleName("");
+      setSelectedPermissions([]);
     } catch (error) {
-        console.error("Error saving role:", error);
+      console.error("Error saving role:", error);
     }
-};
+  };
+  
 
   const plusIcon = (
     <svg
@@ -317,7 +299,7 @@ const Permissions = () => {
             className={styles.buttonPrimary}
             onClick={() => setAddNewRoleModalOpen(true)}
           >
-            <span style={{ marginRight: "10px", verticalAlign: "middle" }}>{plusIcon}</span>
+            <span style={{ marginRight: "10px" }}>{plusIcon}</span>
             New Role{" "}
           </button>
         </div>
@@ -329,8 +311,10 @@ const Permissions = () => {
               setAddNewRoleModalOpen(false);
             }}
             type="add"
-            title={"Add New Role"}
+            title={newRoleName ? newRoleName :"Add New Role"}
             onUpdateClick={handleSubmit}
+            onDeleteClick={() => {}}
+
             content={
               <>
                 <form className={styles.formContainer}>
@@ -372,7 +356,8 @@ const Permissions = () => {
                       
                     ))}
                   </ul>
-                  {errors.permissions}
+                  <p style={{ color: "#F04438",textAlign:'center' }}> {errors.permissions}</p>
+                 
 
                 
                 </form>
@@ -388,8 +373,10 @@ const Permissions = () => {
     show={true}
     onClose={() => setOwnerRoleModal(null)}
     type="view"
-    title="Owner Role Details"
+    title="Owner"
     onUpdateClick={() => {}}
+    onDeleteClick={() => {}}
+
     content={
       <div className={styles.formContainer}>
         {/* <h2>Role: {ownerDetials.name}</h2> */}
@@ -434,10 +421,28 @@ const Permissions = () => {
             updateButtonText="Update Role"
             
             onUpdateClick={handleEditSubmit}
+            onDeleteClick={handleDeleteRole}
+
             content={
               <div className={styles.formContainer}>
+
                 <h2>Role Name </h2>
-                <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} />
+
+                <Input
+
+                value={roleToEdit.name}
+
+                handleInputChange={handleRoleNameChange}
+
+                error={errors.roleName}
+
+                loading={loading}
+
+                placeholder="Enter Role Name"
+
+                />
+                
+                {/* <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} /> */}
 
                 <h2 className={styles.ownerpermission}>POS Role Permissions</h2>
                 <ul className={styles.internalContainer}>

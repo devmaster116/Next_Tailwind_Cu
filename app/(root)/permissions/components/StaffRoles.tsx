@@ -15,7 +15,11 @@ interface RoleInfo {
 
 
 
-const StaffRoles: React.FC = ({viewModal,roles, onEditRole}) => {
+const StaffRoles: React.FC<{
+  viewModal: any;
+  roles: any[];
+  onEditRole: (role: any) => void;
+}> = ({ viewModal, roles, onEditRole }) => {
   return (
     <div className={styles.table}>
     <div className={styles.header}>
