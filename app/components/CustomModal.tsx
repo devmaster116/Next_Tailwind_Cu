@@ -11,6 +11,8 @@ const CustomModal = ({
   type,
   updateButtonText,
   onUpdateClick,
+  cancelButtonText,
+  confirmButtonText,
 }: {
   show: boolean;
   onClose: MouseEventHandler;
@@ -57,6 +59,8 @@ const CustomModal = ({
             <div className={styles.modalContent}>{content}</div>
             <CustomModalFooter
               updateButtonText={updateButtonText}
+              confirmButtonText={confirmButtonText}
+              cancelButtonText={cancelButtonText}
               type="delete"
               onUpdateClick={onUpdateClick}
               onClose={onClose}

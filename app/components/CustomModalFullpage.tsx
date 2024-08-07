@@ -126,13 +126,16 @@ const CustomModalFullPage = ({
           type="delete"
           title=""
           onUpdateClick={onDeleteClick}
+          confirmButtonText="Delete Role"
+          cancelButtonText="Keep Role"
           
           content={
             <>
-              <h3 className={styles.deleteModalTitle}>Delete Admin User</h3>
+              <h3 className={styles.deleteModalTitle}>Deleting ‘{title}’ role</h3>
               <p className={styles.deleteMessage}>
                 Are you sure you want to delete the role?
               </p>
+              <br/>
               <p className={styles.description}>
                 Confirming this means they wont have access to the portal
                 anymore.
