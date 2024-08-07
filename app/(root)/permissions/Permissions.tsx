@@ -317,7 +317,7 @@ const Permissions = () => {
             className={styles.buttonPrimary}
             onClick={() => setAddNewRoleModalOpen(true)}
           >
-            <span style={{ marginRight: "10px" }}>{plusIcon}</span>
+            <span style={{ marginRight: "10px", verticalAlign: "middle" }}>{plusIcon}</span>
             New Role{" "}
           </button>
         </div>
@@ -344,14 +344,14 @@ const Permissions = () => {
                     placeholder="Enter New Role Name"
                   />
 
-                  <h2>POS Role Permissions</h2>
+                  <h2  className={styles.ownerpermission}>POS Role Permissions</h2>
                   <ul>
                     {permissions.map((permission, index) => (
                       <li key={index} className={styles.permissionItem}>
-                        <label>
+                      <label className={styles.permissionsSection}>
                           <div>
-                            <p>{permission.label}</p>
-                            <p>{permission.description}</p>
+                            <p className={styles.name}>{permission.label}</p>
+                            <p className={styles.description}>{permission.description}</p>
                           </div>
 
                           <div className={styles.switch}>
@@ -393,18 +393,17 @@ const Permissions = () => {
     content={
       <div className={styles.formContainer}>
         {/* <h2>Role: {ownerDetials.name}</h2> */}
-        <h2>Role: {ownerDetials.name}</h2>
+        <h2 className={styles.roleHeading}>Role Name</h2>
         <input type="text"  value={ownerDetials.name} className={styles.readOnlyInput} readOnly/>
-        <h3>Description: {ownerDetials.description}</h3>
-        <h4>Staff: {ownerDetials.staff}</h4>
-        <h2>POS Role Permissions</h2>
+        <p className={styles.warningMsg}>This role name cannot be change</p>
+        <h2 className={styles.ownerpermission}>Owners have full access. Permissions can’t be changed. </h2>
         <ul className={styles.disabled}>
           {(ownerDetials.permissions || []).map((permission: any, index: any) => (
             <li key={index} className={styles.permissionItem}>
-              <label>
+              <label className={styles.permissionsSection}>
                 <div>
-                  <p>{permission.name}</p>
-                  <p>{permission.description}</p>
+                  <p className={styles.name}>{permission.name}</p>
+                  <p className={styles.description}>{permission.description}</p>
                 </div>
                 <div className={styles.switch}>
                   <input
@@ -437,19 +436,17 @@ const Permissions = () => {
             onUpdateClick={handleEditSubmit}
             content={
               <div className={styles.formContainer}>
-                <h2>Role: {roleToEdit.name}</h2>
+                <h2>Role Name </h2>
                 <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} />
 
-                <h3>Description: {roleToEdit.description}</h3>
-                <h4>Staff: {roleToEdit.staff}</h4>
-                <h2>POS Role Permissions</h2>
-                <ul>
+                <h2 className={styles.ownerpermission}>POS Role Permissions</h2>
+                <ul className={styles.internalContainer}>
                   {permissions.map((permission, index) => (
                     <li key={index} className={styles.permissionItem}>
-                      <label>
+                      <label className={styles.permissionsSection}>
                         <div>
-                          <p>{permission.label}</p>
-                          <p>{permission.description}</p>
+                          <p className={styles.name}>{permission.label}</p>
+                          <p className={styles.description}>{permission.description}</p>
                         </div>
                         <div className={styles.switch}>
                           <input

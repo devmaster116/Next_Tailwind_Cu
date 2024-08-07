@@ -1,6 +1,9 @@
 .pageTitle {
   margin: 16px 0px 20px 0px;
   margin-top: 40px;
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 
 }
 
@@ -27,7 +30,7 @@
   align-items: center;
   justify-content: center;
   @media only screen and (max-width: 600px) {
-    font-size: 14px;
+    width: 100%;
   }
 }
 .pageHeader {
@@ -36,6 +39,7 @@
   align-items: center;
 
   @media only screen and (max-width: 600px) {
+    margin-block:20px ;
     
   }
 }
@@ -176,6 +180,56 @@
   gap: 20px;
   max-width:680px ;
   margin: auto;
+  .roleHeading{
+    font-size: 16px;
+  }
+  .warningMsg{
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0px;
+  }
+  .ownerpermission{
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #344054;
+    }
+  .permissionsSection{
+    .name{
+      font-size: 18px;
+      color: var(--gray-700);
+    }
+    .description{
+      font-size: 16px;
+      color: var(--gray-600);
+
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    gap: 6px;
+    .roleHeading{
+      font-size: 14px;
+    }
+    .warningMsg{
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: 0px;
+      margin-bottom: 24px;
+    }
+    .ownerpermission{
+      font-size: 14px;
+    }
+    .permissionsSection{
+      .name{
+        font-size: 16px;
+      }
+      .description{
+        font-size: 14px;
+      }
+    }
+  }
 }
 
 .deleteModalTitle {
@@ -227,6 +281,9 @@
   display: inline-block;
   width: 34px;
   height: 20px;
+  min-width: 34px;
+  min-height: 20px;
+  margin-left:1rem ;
 }
 
 .switch input {

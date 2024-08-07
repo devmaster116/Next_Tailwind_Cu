@@ -36,20 +36,22 @@ const CustomModalFullPage = ({
         <div className={styles.modalOverlay}>
           <div className={styles.modal} onClick={e => e.stopPropagation()}>
             <div className={styles.titleDiv}>
-            <button className={styles.titleAddCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={10}
-                  width={10}
-                  alt="Close Button"
-                />
-              </button>
-              <div className={styles.titleText}>{title}</div>
-              <button onClick={onUpdateClick} className={styles.updateBtn} >
-                New Role </button>
+              <button className={styles.titleAddCloseBtn} onClick={onClose}>
+                  <Image
+                    className={styles.icon}
+                    src="/icons/close.svg"
+                    height={10}
+                    width={10}
+                    alt="Close Button"
+                  />
+                </button>
+                <div className={styles.titleText}>{title}</div>
+                <button onClick={onUpdateClick} className={styles.updateBtn}>Save</button>
             </div>
             <div className={styles.modalContent}>{content}</div>
+            <div className={styles.modalFooter}>
+              <button onClick={onUpdateClick} className={styles.updateBtn}>Save</button>
+            </div>
             
           </div>
         </div>
@@ -72,6 +74,10 @@ const CustomModalFullPage = ({
                 Done </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
+            <div className={styles.modalFooter}>
+            <button  className={styles.updateBtn}  onClick={onClose}>
+                Done </button>
+            </div>
             
           </div>
         </div>
@@ -91,7 +97,7 @@ const CustomModalFullPage = ({
               </button>
               <div className={styles.titleText}>{title}</div>
               <div className="flex">
-              <button className={styles.confirmButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
+              <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
                 Delete </button>
               <button className={styles.updateBtn} onClick={onUpdateClick} >
                 Update </button>
@@ -100,6 +106,13 @@ const CustomModalFullPage = ({
               
             </div>
             <div className={styles.modalContent}>{content}</div>
+            <div className={styles.modalFooterEdit}>
+              <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
+                  Delete </button>
+                <button className={styles.updateBtn} onClick={onUpdateClick} >
+                  Update </button>
+            </div>
+            
             
           </div>
         </div>

@@ -26,6 +26,7 @@
   min-height: 100vh;
   max-height: 100vh;
   height: 100vh;
+  overflow-y: scroll;
 
   @media only screen and (max-width: 600px) {
     width: 343px;
@@ -74,10 +75,11 @@
   line-height: 20px;
   color: #475467;
   padding: 0px 10px;
-  
+
 
   @media only screen and (max-width: 600px) {
     padding: 0px;
+    padding-block: 80px;
   }
 }
 
@@ -139,6 +141,28 @@
   font-weight: 600;
   line-height: 24px;
 }
+.closeButton:hover {
+  background: var(--gray-200);
+}
+
+
+.deleteButton {
+  padding: 10px;
+  background: var(--error-50);
+  color: var(--error-700);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  &:hover{
+    background: var(--gray-200);
+  }
+}
+
+
+
 
 .confirmButton {
   padding: 10px;
@@ -172,17 +196,7 @@
     border-radius: 6px;
     height: 44px;
     width: 44px;
-    @media only screen and (max-width: 600px) {
-      display: none;
-    }
   }
-}
-
-.titleDiv {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   .titleAddCloseBtn {
     // padding: 10px;
     border: 2px solid #dee1e6;
@@ -190,7 +204,61 @@
     height: 44px;
     width: 44px;
   }
+  @media only screen and (max-width: 600px) {
+    justify-content: flex-start;
+    position: fixed;
+    top: 0%;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    z-index: 10001;
+    background-color: #fff;
+    .titleText{
+      margin: auto;
+    }
+    .updateBtn{
+      display: none;
+    }
+    .deleteButton{display: none;}
+  }
 }
+.modalFooter{
+  display: none;
+  @media only screen and (max-width: 600px) {
+    position: fixed;
+    display: block;
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    button{
+      width: 100%;
+    }
+  }
+}
+.modalFooterEdit{
+  display: none;
+  @media only screen and (max-width: 600px) {
+    position: fixed;
+    display: block;
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    padding: 20px;
+    button{
+      width: 100%;
+    }
+   
+  }
+}
+
+
 
 .titleDivDeleteModal {
   display: flex;

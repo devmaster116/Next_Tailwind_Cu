@@ -26,6 +26,18 @@
         .actions{
             width: 20%;
         }
+        .roleandAccess{
+            display: none;
+        }
+        @media only screen and (max-width: 600px) {
+            .role,.access,.staff,.actions{
+                display: none;
+            }
+            .roleandAccess{
+                display: block;
+            }
+            
+        }
     }
      .row {
         display: flex;
@@ -51,10 +63,58 @@
         .staff{
             width: 10%;
             text-align: center;
+            span{
+                display: none;
+            }
 
         }
         .actions{
             width: 20%;
+        }
+        .mobileRow{
+            display: none;
+        }
+        @media only screen and (max-width: 600px) {
+            padding: 20px;
+            .role,.staff,.actions,.access{
+                display: none;
+            }
+             .mobileRow{
+                width: 80%;
+                display: block;
+                .nameAndStaff{
+                    display: flex;
+                    width: 100%;
+                }
+                .role{
+                    width: fit-content;
+                    margin-right: 10px;
+                    font-size: 16px;
+                    display: block;
+
+                }
+                .access{
+                    font-size: 14px;
+                    display: block;
+                    width: 100%;
+
+                }
+                .staff{
+                    display: block;
+                    background-color: var(--gray-100);
+                    width: fit-content;
+                    border-radius: 16px;
+                    padding: 2px 8px;
+                    height: fit-content;
+                    font-size: 12px;
+                    font-weight: 500;
+                    span{
+                        display: inline-block;
+                    }
+                }
+            }
+           
+
         }
     }
     .header {
@@ -72,3 +132,4 @@
        
     }
 }
+
