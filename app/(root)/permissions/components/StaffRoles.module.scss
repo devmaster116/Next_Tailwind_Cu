@@ -2,29 +2,36 @@
     width: 100%;
     border: 1px solid var(--gray-200);
     border-radius: 12px;
+    background-color: #fff;
 
     .header{
         display: flex;
-        justify-content: space-between;
         border-bottom: 1px solid var(--gray-200);
         padding: 15px;
+        padding-inline: 30px;
         text-align: left;
         font-weight: 700;
+        width: 100%;
+        gap: 10px;
         color: var(--gray-600);
         .role {
             width: 20%;
+            min-width: 20%;
            
         }
         .access{
             width: 50%;
+            min-width: 50%;
+
             
         }
         .staff{
             width: 10%;
-            text-align: center;
+            min-width: 10%;
         }
         .actions{
             width: 20%;
+            min-width: 20%;
         }
         .roleandAccess{
             display: none;
@@ -41,28 +48,30 @@
     }
      .row {
         display: flex;
-        justify-content: space-between;
         border-bottom: 1px solid var(--gray-200);
         padding: 30px;
         text-align: left;
+        gap: 10px;
         &:last-child{
             border-bottom: none;
         }
         .role {
             width: 20%;
+            min-width: 20%;
             font-weight: 600;
             font-size: 18px;
             color: var(--gray-900);
         }
         .access{
             width: 50%;
+            min-width: 50%;
             font-weight: 400;
             font-size: 18px;
             color: var(--gray-600);
         }
         .staff{
             width: 10%;
-            text-align: center;
+            min-height: 10%;
             span{
                 display: none;
             }
@@ -70,6 +79,7 @@
         }
         .actions{
             width: 20%;
+            min-width: 20%;
         }
         .mobileRow{
             display: none;

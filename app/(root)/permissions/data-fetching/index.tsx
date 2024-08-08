@@ -24,18 +24,26 @@ export const fetchPermissions = (callback: (permissions: any[]) => void) => {
     console.error("Error fetching permissions:", error);
   });
 };
-export const subscribeRoles = (callback:any) => {
-  const roleDocRef = doc(db, "roles", "be34pww7m5fy9yw9arvtcnmpkpbl");
+
+
+export const subscribeRoles = (kitchenId: string | null, callback: (data: { rolesList: any[], ownerDetails: any }) => void) => {
+  if (!kitchenId) {
+    console.error("Kitchen ID is required but was not provided.");
+    return;
+  }
+
+  const roleDocRef = doc(db, "roles", kitchenId);
 
   const unsubscribe = onSnapshot(roleDocRef, (docSnapshot) => {
     const data = docSnapshot.data();
     const rolesList = data?.roles || [];
-    const ownerDetails = data?.owner || {};
+    const ownerDetails = data?.owner  ||{};
     callback({ rolesList, ownerDetails });
   });
 
   return unsubscribe;
 };
+
 
   export const fetchRoles = async (permissions: any[]) => {
     const rolesCollection = collection(db, 'roles');
@@ -74,9 +82,9 @@ export const subscribeRoles = (callback:any) => {
   };
 
   
-export const addRoleToExistingDocument = async (newRole: any) => {
+export const addRoleToExistingDocument = async (newRole: any,kitchenId:string) => {
   try {
-    const docRef = doc(db, "roles", "be34pww7m5fy9yw9arvtcnmpkpbl");
+    const docRef = doc(db, "roles",kitchenId );
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {

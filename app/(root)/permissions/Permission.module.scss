@@ -199,10 +199,12 @@
     .name{
       font-size: 18px;
       color: var(--gray-700);
+      font-weight: 600;
     }
     .description{
       font-size: 16px;
       color: var(--gray-600);
+      font-weight: 400;
 
     }
   }
@@ -264,13 +266,17 @@
 .permissionItem {
   list-style: none;
   margin-bottom: 10px;
-}
+  border-bottom: 1px solid var(--gray-200);
+  &:last-child {
+    border-bottom: none;
+  }
+  }
 
 .permissionItem label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding-block: 20px;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
