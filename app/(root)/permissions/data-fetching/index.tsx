@@ -1,7 +1,6 @@
 import { db } from "@/firebase/config";
 import { FirebaseError } from "firebase/app";
 import { collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc } from "firebase/firestore";
-
 export const fetchPermissions = (callback: (permissions: any[]) => void) => {
   const q = query(collection(db, "permissions"));
   
@@ -9,10 +8,11 @@ export const fetchPermissions = (callback: (permissions: any[]) => void) => {
     const permissions: any[] = [];
     querySnapshot.forEach((doc:any) => {
       const data = doc.data();
+      console.log(`Fetching permissions from document ID: ${doc.id}`,data);
       if (Array.isArray(data.permissions)) {
         data.permissions.forEach((permission:any) => {
           permissions.push({
-            id: doc.id,
+            id: permission.id,
             name: permission.name,
             description: permission.description,
           });
@@ -20,6 +20,7 @@ export const fetchPermissions = (callback: (permissions: any[]) => void) => {
       }
     });
     callback(permissions);
+    console
   }, (error) => {
     console.error("Error fetching permissions:", error);
   });

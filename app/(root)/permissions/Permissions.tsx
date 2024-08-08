@@ -41,15 +41,7 @@ import styles from "./Permission.module.scss";
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
 
-const initialPermissions: any[] = [
-  { label: "Basic transacting", enabled: false },
-  { label: "Enhanced transacting", enabled: false },
-  { label: "Enhanced cash draw access", enabled: false },
-  { label: "Manage menu", enabled: false },
-  { label: "Reporting", enabled: false },
-  { label: "POS Configuration", enabled: false },
-  { label: "Online Ordering Control", enabled: false },
-];
+
 
 const Permissions = () => {
   const [loading, setLoading] = useState(false);
@@ -77,7 +69,7 @@ const Permissions = () => {
   }
 
   const [addNewRoleModalOpen, setAddNewRoleModalOpen] = useState(false);
-  const [permissions, setPermissions] = useState(initialPermissions);
+  const [permissions, setPermissions] = useState <any[]>([])
   const [newRoleName, setNewRoleName] = useState("");
   const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]); // Track selected permissions by index
   const [roles, setRoles] = useState<RoleInfo[]>([]);
@@ -88,7 +80,6 @@ const Permissions = () => {
 
   const [ownerDetials, setOwnerDetails] = useState<any>();
 
-  console.log("the roles ", roles);
 
   const handleEditRole = (role: any) => {
     setRoleToEdit({
@@ -225,20 +216,19 @@ const Permissions = () => {
       return;
     }
 
-    const unsubscribePermissions = fetchPermissions(
-      (fetchedPermissions: any) => {
-        setPermissions(
-          fetchedPermissions.map((permission: any) => ({
-            label: permission.name,
-            description: permission.description,
-            enabled: false,
-          }))
-        );
-      }
-    );
+    const unsubscribePermissions = fetchPermissions((fetchedPermissions: any) => {
+      setPermissions(
+        fetchedPermissions.map((permission: any) => ({
+          id: permission.id,
+          label: permission.name,
+          description: permission.description,
+          enabled: false,
+        }))
+      );
+    });
 
     const unsubscribeRoles = subscribeRoles(
-      kitchenId, // Pass kitchenId to subscribeRoles
+      kitchenId,
       ({ rolesList, ownerDetails }: any) => {
         setRoles(rolesList);
         setOwnerDetails(ownerDetails);
@@ -246,10 +236,10 @@ const Permissions = () => {
     );
 
     return () => {
-      if(unsubscribePermissions)unsubscribePermissions();
-      if(unsubscribeRoles)unsubscribeRoles();
+      if (unsubscribePermissions) unsubscribePermissions();
+      if (unsubscribeRoles) unsubscribeRoles();
     };
-  }, [kitchenId]); 
+  }, [kitchenId]);
 
   useEffect(() => {
     const fetchRolesData = async () => {
@@ -318,20 +308,19 @@ const Permissions = () => {
       const combinedDescriptions = selectedPermissionDetails
         .map((permission) => permission.label)
         .join(", ");
-      console.log("the secelted degails", selectedPermissionDetails);
+
       const newRole = {
-        id: `role_${uuidv4()}`, 
+        id: `role_${uuidv4()}`,
         name: newRoleName,
         description: combinedDescriptions || "No description",
-        permissions: selectedPermissions.map((index) => ({
-          id: permissions[index].id,
-          name: permissions[index].label,
-          description:
-            permissions[index].description || "No description available", // Ensure description is set
+        permissions: selectedPermissionDetails.map((permission) => ({
+          id: permission.id,
+          name: permission.label,
+          description: permission.description || "No description available",
         })),
       };
 
-      await addRoleToExistingDocument(newRole,kitchenId);
+      await addRoleToExistingDocument(newRole, kitchenId);
 
       setAddNewRoleModalOpen(false);
       setNewRoleName("");
@@ -341,7 +330,6 @@ const Permissions = () => {
       console.error("Error saving role:", error);
     }
   };
-
   const plusIcon = (
     <svg
       width="14"
