@@ -385,7 +385,7 @@ const Permissions = () => {
             content={
               <>
                 <form className={styles.formContainer}>
-                  <label>Role Name</label>
+                  <label className={styles.ownerpermission}>Role Name</label>
                   <Input
                     value={newRoleName}
                     handleInputChange={(e) => setNewRoleName(e.target.value)}
@@ -508,7 +508,7 @@ const Permissions = () => {
             onDeleteClick={handleDeleteRole}
             content={
               <div className={styles.formContainer}>
-                <h2>Role Name </h2>
+                <h2  className={styles.ownerpermission}>Role Name </h2>
 
                 <Input
                   value={roleToEdit.name}
