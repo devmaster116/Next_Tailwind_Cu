@@ -80,6 +80,7 @@
         .actions{
             width: 20%;
             min-width: 20%;
+            text-align: end;
         }
         .mobileRow{
             display: none;
@@ -135,7 +136,10 @@
     .button {
         border: none;
         color: var(--primary-purple-700);
+        width: 100%;
         cursor: pointer;
+        font-weight: 600;
+        text-align: right;
         &:hover{
             text-decoration: underline;
         }

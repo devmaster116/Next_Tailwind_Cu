@@ -27,7 +27,7 @@ const StaffRoles: React.FC<{
         <div className={styles.role}>Role</div>
         <div className={styles.access}>Access</div>
         <div className={styles.staff}>Staff</div>
-        <div className={styles.actions}>Action</div>
+        <div className={styles.actions}></div>
     </div>
     {roles.map((item :any, index:any) => (
         <div key={index} className={styles.row}>
@@ -41,7 +41,7 @@ const StaffRoles: React.FC<{
               </div>
             <div className={styles.access} >{item.description}</div>
             </div>
-            <div className={styles.action} >
+            <div className={styles.actions} >
                 <button className={styles.button}  onClick={() => item.name === 'Owner' ? viewModal() : onEditRole(item)} >
                 {item.name === 'Owner' ? 'View' : 'Edit'}
                 </button>

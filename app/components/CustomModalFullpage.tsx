@@ -99,7 +99,7 @@ const CustomModalFullPage = ({
               <div className={styles.titleText}>{title}</div>
               <div style={{display:"flex"}}>
               <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
-                Delete </button>
+                Delete Role </button>
               <button className={styles.updateBtn} onClick={onUpdateClick} >
                 Update </button>
 
@@ -109,7 +109,7 @@ const CustomModalFullPage = ({
             <div className={styles.modalContent}>{content}</div>
             <div className={styles.modalFooterEdit}>
               <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
-                  Delete </button>
+                  Delete Role </button>
                 <button className={styles.updateBtn} onClick={onUpdateClick} >
                   Update </button>
             </div>
