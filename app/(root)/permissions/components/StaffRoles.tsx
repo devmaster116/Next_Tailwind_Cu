@@ -33,7 +33,7 @@ const StaffRoles: React.FC<{
         <div key={index} className={styles.row}>
             <div className={styles.role}>{item.name}</div>
             <div className={styles.access} >{item.description}</div>
-            <div className={styles.staff} >{item.staff} <span>Staff</span></div>
+            <div className={styles.staff} >{item.staff ? item.staff: 0} <span>Staff</span></div>
             <div className={styles.mobileRow}>
               <div className={styles.nameAndStaff}>
               <div className={styles.role}>{item.name}</div>
