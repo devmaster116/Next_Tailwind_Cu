@@ -174,6 +174,7 @@ const Permissions = () => {
             ? {
                 name: permission.label,
                 description: permission.description,
+            id: permission.id
               }
             : null;
         })
