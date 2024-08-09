@@ -136,8 +136,27 @@ const Permissions = () => {
       errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [errors.permissions]);
+
   const handleEditSubmit = async () => {
     if (!roleToEdit) return;
+    setErrors({}); // Clear previous errors
+  
+    if (!roleToEdit.name.trim()) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        roleName: "Role name is required",
+      }));
+      return;
+    }
+  
+    if (editSelectedPermissions.length === 0) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        permissions: "At least one permission is required",
+      }));
+      return;
+    }
+  
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
       setErrors((prevErrors) => ({
@@ -146,7 +165,7 @@ const Permissions = () => {
       }));
       return;
     }
-
+  
     try {
       const updatedPermissions = editSelectedPermissions
         .map((index) => {
@@ -159,26 +178,26 @@ const Permissions = () => {
             : null;
         })
         .filter(Boolean);
-
+  
       const combinedDescriptions = updatedPermissions
         .map((permission: any) => permission.name)
         .join(", ");
-
+  
       const updatedRole = {
         ...roleToEdit,
         permissions: updatedPermissions,
         description: combinedDescriptions || "No description", // Update the role description
       };
-
+  
       const roleDocRef = doc(db, "roles", kitchenId);
       const roleSnapshot = await getDoc(roleDocRef);
-
+  
       if (roleSnapshot.exists()) {
         const rolesData = roleSnapshot.data().roles || [];
         const updatedRoles = rolesData.map((r: any) =>
           r.id === roleToEdit.id ? updatedRole : r // Use ID to identify the role to update
         );
-
+  
         // Update the roles document
         await updateDoc(roleDocRef, { roles: updatedRoles });
         setRoles(updatedRoles);
@@ -186,7 +205,7 @@ const Permissions = () => {
       } else {
         console.error("Roles document not found");
       }
-
+  
       // Close the modal and clear role to edit
       setEditRoleModalOpen(false);
       setRoleToEdit(null);
@@ -195,6 +214,67 @@ const Permissions = () => {
       console.error("Error updating role:", error);
     }
   };
+  
+  // const handleEditSubmit = async () => {
+  //   if (!roleToEdit) return;
+  //   if (!kitchenId) {
+  //     console.error("Kitchen ID is required but was not provided.");
+  //     setErrors((prevErrors) => ({
+  //       ...prevErrors,
+  //       kitchenId: "Kitchen ID is required",
+  //     }));
+  //     return;
+  //   }
+    
+
+  //   try {
+  //     const updatedPermissions = editSelectedPermissions
+  //       .map((index) => {
+  //         const permission = permissions[index];
+  //         return permission
+  //           ? {
+  //               name: permission.label,
+  //               description: permission.description,
+  //             }
+  //           : null;
+  //       })
+  //       .filter(Boolean);
+
+  //     const combinedDescriptions = updatedPermissions
+  //       .map((permission: any) => permission.name)
+  //       .join(", ");
+
+  //     const updatedRole = {
+  //       ...roleToEdit,
+  //       permissions: updatedPermissions,
+  //       description: combinedDescriptions || "No description", // Update the role description
+  //     };
+
+  //     const roleDocRef = doc(db, "roles", kitchenId);
+  //     const roleSnapshot = await getDoc(roleDocRef);
+
+  //     if (roleSnapshot.exists()) {
+  //       const rolesData = roleSnapshot.data().roles || [];
+  //       const updatedRoles = rolesData.map((r: any) =>
+  //         r.id === roleToEdit.id ? updatedRole : r // Use ID to identify the role to update
+  //       );
+
+  //       // Update the roles document
+  //       await updateDoc(roleDocRef, { roles: updatedRoles });
+  //       setRoles(updatedRoles);
+  //       console.log("Role updated successfully:", updatedRole);
+  //     } else {
+  //       console.error("Roles document not found");
+  //     }
+
+  //     // Close the modal and clear role to edit
+  //     setEditRoleModalOpen(false);
+  //     setRoleToEdit(null);
+  //     setEditSelectedPermissions([]);
+  //   } catch (error) {
+  //     console.error("Error updating role:", error);
+  //   }
+  // };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewRoleName(e.target.value);
@@ -532,6 +612,9 @@ const Permissions = () => {
                     loading={loading}
                     placeholder="Enter Role Name"
                   />
+                  {/* {errors.roleName && (
+    <p style={{ color: "#F04438" }}>{errors.roleName}</p>
+  )} */}
                   <div>
                   <button className={`${styles.deleteButtonMobile}`}  onClick={()=>{setDeleteModal(true)}}>Delete Role</button>
                 </div>
@@ -564,6 +647,9 @@ const Permissions = () => {
                     </li>
                   ))}
                 </ul>
+                <p ref={errorRef} style={{ color: "#F04438", textAlign: "center" }}>
+  {errors.permissions}
+</p>
               </div>
             }
           />
