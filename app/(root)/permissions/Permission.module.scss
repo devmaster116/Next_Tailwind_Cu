@@ -1,3 +1,4 @@
+
 .pageTitle {
   margin: 16px 0px 20px 0px;
   margin-top: 40px;
@@ -253,7 +254,7 @@
   }
   .ownerpermission{
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 24px;
     letter-spacing: 0px;
     color: #344054;
@@ -278,6 +279,7 @@
     gap: 6px;
     .roleHeading{
       font-size: 14px;
+      line-height: 20px;
     }
     .warningMsg{
       font-size: 14px;
@@ -287,6 +289,7 @@
     }
     .ownerpermission{
       font-size: 14px;
+      line-height: 20px;
     }
     .permissionsSection{
       -webkit-tap-highlight-color: transparent;

@@ -75,6 +75,7 @@ const Permissions = () => {
   const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]); // Track selected permissions by index
   const [roles, setRoles] = useState<RoleInfo[]>([]);
   const errorRef = useRef<HTMLParagraphElement | null>(null);
+  const roleNameInputRef = useRef<HTMLInputElement | null>(null);
   const [editSelectedPermissions, setEditSelectedPermissions] = useState<
     number[]
   >([]);
@@ -146,6 +147,9 @@ const Permissions = () => {
         ...prevErrors,
         roleName: "Role name is required",
       }));
+      if (roleNameInputRef.current) {
+        roleNameInputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       return;
     }
   
@@ -297,6 +301,9 @@ const Permissions = () => {
         ...prevErrors,
         businessName: "Role name is required",
       }));
+      if (roleNameInputRef.current) {
+        roleNameInputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       return;
     }
 
@@ -404,7 +411,7 @@ const Permissions = () => {
               setSelectedPermissions([]);
             }}
             type="add"
-            title={newRoleName ? newRoleName : "Add New Role"}
+            title={"Add New Role"}
             onUpdateClick={handleSubmit}
             onDeleteClick={() => {}}
             content={
@@ -418,7 +425,8 @@ const Permissions = () => {
                     // handleBlurField={handleBlurField} // If needed
                     error={errors.businessName}
                     loading={loading}
-                    placeholder="Enter New Role Name"
+                    placeholder="Enter Role Name"
+                    ref={roleNameInputRef}
                   />
 
                   </div>
@@ -552,6 +560,8 @@ const Permissions = () => {
                     error={errors.roleName}
                     loading={loading}
                     placeholder="Enter Role Name"
+                    ref={roleNameInputRef}
+
                   />
                   {/* {errors.roleName && (
     <p style={{ color: "#F04438" }}>{errors.roleName}</p>

@@ -98,8 +98,15 @@
                 display: none;
             }
              .mobileRow{
-                width: 80%;
+                width: 100%;
                 display: block;
+                .mobileRowHeader{
+                    display: flex;
+                    margin-bottom: 4px;
+                    .actions{
+                        display: block;
+                    }
+                }
                 .nameAndStaff{
                     display: flex;
                     width: 100%;
@@ -109,14 +116,13 @@
                     margin-right: 8px;
                     font-size: 16px;
                     display: block;
-                    margin-bottom: 4pxs;
+                    margin-bottom: 4px;
 
                 }
                 .access{
                     font-size: 14px;
                     display: block;
                     width: 100%;
-
                 }
                 .staff{
                     display: block;
@@ -127,6 +133,7 @@
                     height: fit-content;
                     font-size: 12px;
                     font-weight: 500;
+                    color: var(--gray-700);
                     span{
                         display: inline-block;
                     }
@@ -134,10 +141,9 @@
                 
             }
             .actions{
-                display: block;
-            }
-           
+                display: none;
 
+            }
         }
     }
     .header {

@@ -26,6 +26,15 @@ const CustomModalFullPage = ({
   onDeleteClick: MouseEventHandler;
 }) => {
   const [deleteModal,setDeleteModal]=useState(false)
+  const [isExiting, setIsExiting] = useState(false);
+  const handleClose = (e: React.MouseEvent) => {
+    setIsExiting(true);
+    setTimeout(() => {
+      setIsExiting(false);
+      onClose(e); // Calls the parent onClose to actually hide the modal
+    }, 500); // Duration of the exit animation
+  };
+
   if (!show) {
     return null;
   }
@@ -34,16 +43,19 @@ const CustomModalFullPage = ({
     <>
   
       {type === "add" && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal} onClick={e => e.stopPropagation()}>
-            <div className={styles.titleDiv}>
-              <button className={styles.titleAddCloseBtn} onClick={onClose}>
+          <div
+            className={`${styles.modalOverlay} `}
+          >
+          <div className={`${styles.modal} ${isExiting ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
+              <div className={styles.titleDiv}>
+              <button className={styles.titleAddCloseBtn} onClick={handleClose}>
                   <Image
                     className={styles.icon}
                     src="/icons/close.svg"
                     height={12}
                     width={12}
                     alt="Close Button"
+                    style={{ filter: 'invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)' }}
                   />
                 </button>
                 <div className={styles.titleText}>{title}</div>
@@ -58,25 +70,28 @@ const CustomModalFullPage = ({
         </div>
       )}
       {type === "view" && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+         <div
+         className={`${styles.modalOverlay} `}
+       >
+       <div className={`${styles.modal} ${isExiting ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
             <div className={styles.titleDiv}>
-            <button className={styles.titleAddCloseBtn} onClick={onClose}>
+            <button className={styles.titleAddCloseBtn} onClick={handleClose}>
                 <Image
                   className={styles.icon}
                   src="/icons/close.svg"
                   height={10}
                   width={10}
                   alt="Close Button"
+                  style={{ filter: 'invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)' }}
                 />
               </button>
               <div className={styles.titleText}>{title}</div>
-              <button  className={styles.updateBtn}  onClick={onClose}>
+              <button  className={styles.updateBtn}  onClick={handleClose}>
                 Done </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
             <div className={styles.modalFooter}>
-            <button  className={styles.updateBtn}  onClick={onClose}>
+            <button  className={styles.updateBtn}  onClick={handleClose}>
                 Done </button>
             </div>
             
@@ -84,16 +99,17 @@ const CustomModalFullPage = ({
         </div>
       )}
       {type === "edit" && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+        <div className={`${styles.modalOverlay} `}>
+          <div className={`${styles.modal} ${isExiting ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
             <div className={styles.titleDiv}>
-            <button className={styles.titleAddCloseBtn} onClick={onClose}>
+            <button className={styles.titleAddCloseBtn} onClick={handleClose}>
                 <Image
                   className={styles.icon}
                   src="/icons/close.svg"
                   height={10}
                   width={10}
                   alt="Close Button"
+                  style={{ filter: 'invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)' }}
                 />
               </button>
               <div className={styles.titleText}>{title}</div>

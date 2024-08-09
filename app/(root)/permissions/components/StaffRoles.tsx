@@ -35,10 +35,19 @@ const StaffRoles: React.FC<{
             <div className={styles.access} >{item.description}</div>
             <div className={styles.staff} >{item.staff ? item.staff: 0} <span>Staff</span></div>
             <div className={styles.mobileRow}>
-              <div className={styles.nameAndStaff}>
-              <div className={styles.role}>{item.name}</div>
-              <div className={styles.staff} >{item.staff ? item.staff: 0} <span>Staff</span></div>
+              <div className={styles.mobileRowHeader}>
+                <div className={styles.nameAndStaff}>
+                  <div className={styles.role}>{item.name}</div>
+                  <div className={styles.staff} >{item.staff ? item.staff: 0} <span>Staff</span></div>
+                </div>
+                <div className={styles.actions} >
+                <button className={styles.button}  onClick={() => item.name === 'Owner' ? viewModal() : onEditRole(item)} >
+                {item.name === 'Owner' ? 'View' : 'Edit'}
+                </button>
+            </div>
+
               </div>
+             
             <div className={styles.access} >{item.description}</div>
             </div>
             <div className={styles.actions} >
