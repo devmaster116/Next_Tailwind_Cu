@@ -215,67 +215,7 @@ const Permissions = () => {
     }
   };
   
-  // const handleEditSubmit = async () => {
-  //   if (!roleToEdit) return;
-  //   if (!kitchenId) {
-  //     console.error("Kitchen ID is required but was not provided.");
-  //     setErrors((prevErrors) => ({
-  //       ...prevErrors,
-  //       kitchenId: "Kitchen ID is required",
-  //     }));
-  //     return;
-  //   }
-    
-
-  //   try {
-  //     const updatedPermissions = editSelectedPermissions
-  //       .map((index) => {
-  //         const permission = permissions[index];
-  //         return permission
-  //           ? {
-  //               name: permission.label,
-  //               description: permission.description,
-  //             }
-  //           : null;
-  //       })
-  //       .filter(Boolean);
-
-  //     const combinedDescriptions = updatedPermissions
-  //       .map((permission: any) => permission.name)
-  //       .join(", ");
-
-  //     const updatedRole = {
-  //       ...roleToEdit,
-  //       permissions: updatedPermissions,
-  //       description: combinedDescriptions || "No description", // Update the role description
-  //     };
-
-  //     const roleDocRef = doc(db, "roles", kitchenId);
-  //     const roleSnapshot = await getDoc(roleDocRef);
-
-  //     if (roleSnapshot.exists()) {
-  //       const rolesData = roleSnapshot.data().roles || [];
-  //       const updatedRoles = rolesData.map((r: any) =>
-  //         r.id === roleToEdit.id ? updatedRole : r // Use ID to identify the role to update
-  //       );
-
-  //       // Update the roles document
-  //       await updateDoc(roleDocRef, { roles: updatedRoles });
-  //       setRoles(updatedRoles);
-  //       console.log("Role updated successfully:", updatedRole);
-  //     } else {
-  //       console.error("Roles document not found");
-  //     }
-
-  //     // Close the modal and clear role to edit
-  //     setEditRoleModalOpen(false);
-  //     setRoleToEdit(null);
-  //     setEditSelectedPermissions([]);
-  //   } catch (error) {
-  //     console.error("Error updating role:", error);
-  //   }
-  // };
-
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewRoleName(e.target.value);
   };
