@@ -87,7 +87,7 @@ const Permissions = () => {
 
   const [ownerDetials, setOwnerDetails] = useState<any>();
 
-  const handleCloseModal = (modalStateSetter) => {
+  const handleCloseModal = (modalStateSetter:any) => {
     setIsExiting(true);
     setTimeout(() => {
       modalStateSetter(false);
