@@ -3,11 +3,12 @@
     border: 1px solid var(--gray-200);
     border-radius: 12px;
     background-color: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
 
     .header{
         display: flex;
         border-bottom: 1px solid var(--gray-200);
-        padding: 15px;
+        padding: 12px 24px;
         padding-inline: 30px;
         text-align: left;
         font-weight: 700;
@@ -37,11 +38,16 @@
             display: none;
         }
         @media only screen and (max-width: 600px) {
+            padding: 12px 16px;
             .role,.access,.staff,.actions{
                 display: none;
             }
             .roleandAccess{
                 display: block;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 700;
+
             }
             
         }
@@ -49,9 +55,10 @@
      .row {
         display: flex;
         border-bottom: 1px solid var(--gray-200);
-        padding: 30px;
+        padding: 16px 24px;
         text-align: left;
         gap: 10px;
+        min-height: 72px;
         &:last-child{
             border-bottom: none;
         }
@@ -86,7 +93,7 @@
             display: none;
         }
         @media only screen and (max-width: 600px) {
-            padding: 20px;
+            padding: 16px 12px;
             .role,.staff,.actions,.access{
                 display: none;
             }
@@ -99,9 +106,10 @@
                 }
                 .role{
                     width: fit-content;
-                    margin-right: 10px;
+                    margin-right: 8px;
                     font-size: 16px;
                     display: block;
+                    margin-bottom: 4pxs;
 
                 }
                 .access{

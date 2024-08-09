@@ -41,13 +41,13 @@ const CustomModalFullPage = ({
                   <Image
                     className={styles.icon}
                     src="/icons/close.svg"
-                    height={10}
-                    width={10}
+                    height={12}
+                    width={12}
                     alt="Close Button"
                   />
                 </button>
                 <div className={styles.titleText}>{title}</div>
-                <button onClick={onUpdateClick} className={styles.updateBtn}>Save</button>
+                <button onClick={onUpdateClick} className={styles.saveBtn}>Save</button>
             </div>
             <div className={styles.modalContent}>{content}</div>
             <div className={styles.modalFooter}>
@@ -98,7 +98,7 @@ const CustomModalFullPage = ({
               </button>
               <div className={styles.titleText}>{title}</div>
               <div style={{display:"flex"}}>
-              <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
+              <button className={styles.deleteButton} style={{marginRight:"20px"}}  onClick={()=>{setDeleteModal(true)}}>
                 Delete Role </button>
               <button className={styles.updateBtn} onClick={onUpdateClick} >
                 Update </button>
@@ -108,10 +108,9 @@ const CustomModalFullPage = ({
             </div>
             <div className={styles.modalContent}>{content}</div>
             <div className={styles.modalFooterEdit}>
-              <button className={styles.deleteButton} style={{marginRight:"10px"}}  onClick={()=>{setDeleteModal(true)}}>
-                  Delete Role </button>
+              
                 <button className={styles.updateBtn} onClick={onUpdateClick} >
-                  Update </button>
+                Update Role Permissions  </button>
             </div>
             
             

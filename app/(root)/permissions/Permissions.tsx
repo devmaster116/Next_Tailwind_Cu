@@ -7,6 +7,7 @@ import LightLoader from "@/app/components/LightLoader";
 import LoadingSkeleton from "./components/LoadingSkeleton";
 import StaffRoles from "./components/StaffRoles";
 import CustomModalFullPage from "@/app/components/CustomModalFullpage";
+import CustomModal from "@/app/components/CustomModal";
 import Input from "@/app/components/Input";
 import {
   fetchPermissions,
@@ -77,6 +78,8 @@ const Permissions = () => {
   const [editSelectedPermissions, setEditSelectedPermissions] = useState<
     number[]
   >([]);
+  const [deleteModal,setDeleteModal]=useState(false)
+
 
   const [ownerDetials, setOwnerDetails] = useState<any>();
 
@@ -107,6 +110,7 @@ const Permissions = () => {
         ...prevErrors,
         kitchenId: "Kitchen ID is required",
       }));
+
       return;
     }
 
@@ -361,7 +365,7 @@ const Permissions = () => {
             className={styles.buttonPrimary}
             onClick={() => setAddNewRoleModalOpen(true)}
           >
-            <span style={{ marginRight: "10px" }}>{plusIcon}</span>
+            <span style={{ marginRight: "8px" }}>{plusIcon}</span>
             New Role{" "}
           </button>
         </div>
@@ -385,6 +389,7 @@ const Permissions = () => {
             content={
               <>
                 <form className={styles.formContainer}>
+                  <div className={styles.inputLabelsection}>
                   <label className={styles.ownerpermission}>Role Name</label>
                   <Input
                     value={newRoleName}
@@ -395,10 +400,14 @@ const Permissions = () => {
                     placeholder="Enter New Role Name"
                   />
 
-                  <h2 className={styles.ownerpermission}>
+                  </div>
+                  
+                  
+                  <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}>
                     POS Role Permissions
                   </h2>
-                  <ul>
+                  
+                  <ul className={styles.mobilePadding}>
                     {permissions.map((permission, index) => (
                       <li key={index} className={styles.permissionItem}>
                         <label className={styles.permissionsSection}>
@@ -449,20 +458,26 @@ const Permissions = () => {
             content={
               <div className={styles.formContainer}>
                 {/* <h2>Role: {ownerDetials.name}</h2> */}
-                <h2 className={styles.roleHeading}>Role Name</h2>
+                <div className={styles.inputLabelsection}>
+                <h2 className={styles.ownerpermission}>Role Name</h2>
                 <input
                   type="text"
                   value={ownerDetials.name}
                   className={styles.readOnlyInput}
                   readOnly
+                   style={{width:'100%',}}
+                   disabled
                 />
                 <p className={styles.warningMsg}>
                   This role name cannot be change
                 </p>
-                <h2 className={styles.ownerpermission}>
+                </div>
+                {/* <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}> */}
+
+                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider} ${styles.ownerPermissionMobile}`}>
                   Owners have full access. Permissions can’t be changed.{" "}
                 </h2>
-                <ul className={styles.disabled}>
+                <ul className={`${styles.disabled} ${styles.mobilePadding}`}>
                   {(ownerDetials.permissions || []).map(
                     (permission: any, index: any) => (
                       <li key={index} className={styles.permissionItem}>
@@ -508,20 +523,24 @@ const Permissions = () => {
             onDeleteClick={handleDeleteRole}
             content={
               <div className={styles.formContainer}>
-                <h2  className={styles.ownerpermission}>Role Name </h2>
-
-                <Input
-                  value={roleToEdit.name}
-                  handleInputChange={handleRoleNameChange}
-                  error={errors.roleName}
-                  loading={loading}
-                  placeholder="Enter Role Name"
-                />
+                <div className={styles.inputLabelsection}>
+                  <h2  className={styles.ownerpermission}>Role Name </h2>
+                  <Input
+                    value={roleToEdit.name}
+                    handleInputChange={handleRoleNameChange}
+                    error={errors.roleName}
+                    loading={loading}
+                    placeholder="Enter Role Name"
+                  />
+                  <div>
+                  <button className={`${styles.deleteButtonMobile}`}  onClick={()=>{setDeleteModal(true)}}>Delete Role</button>
+                </div>
+                </div>
 
                 {/* <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} /> */}
 
-                <h2 className={styles.ownerpermission}>POS Role Permissions</h2>
-                <ul className={styles.internalContainer}>
+                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}>POS Role Permissions</h2>
+                <ul className={` ${styles.mobilePadding} ${styles.internalContainer}`}>
                   {permissions.map((permission, index) => (
                     <li key={index} className={styles.permissionItem}>
                       <label className={styles.permissionsSection}>
@@ -549,6 +568,32 @@ const Permissions = () => {
             }
           />
         )}
+
+         {deleteModal && roleToEdit && (
+          <CustomModal
+          show={deleteModal}
+          onClose={() => setDeleteModal(false)}
+          type="delete"
+          title=""
+          onUpdateClick={handleDeleteRole}
+          confirmButtonText="Delete Role"
+          cancelButtonText="Keep Role"
+          
+          content={
+            <>
+              <h3 className={styles.deleteModalTitle}>Deleting ‘{roleToEdit.name}’ role</h3>
+              <p className={styles.deleteMessage}>
+                Are you sure you want to delete the role?
+              </p>
+              <br/>
+              <p className={styles.description}>
+                Confirming this means they wont have access to the portal
+                anymore.
+              </p>
+            </>
+          }
+          />
+      )}
 
         {loading && (
           <>
