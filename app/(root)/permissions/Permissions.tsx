@@ -21,10 +21,12 @@ import {
   addDoc,
   collection,
   doc,
+  FieldValue,
   getDoc,
   getDocs,
   query,
   updateDoc,
+  arrayRemove,
   where,
 } from "firebase/firestore";
 import { auth, db } from "@/firebase/config";
@@ -52,6 +54,7 @@ const Permissions = () => {
   const [roleToEdit, setRoleToEdit] = useState<any>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [ownerRoleModal, setOwnerRoleModal] = useState<any>();
+  const [isExiting, setIsExiting] = useState(false);
   const [formState, setFormState] = useState<{ [key: string]: string }>({
     businessName: "",
     businessAddress: "",
@@ -84,6 +87,18 @@ const Permissions = () => {
 
   const [ownerDetials, setOwnerDetails] = useState<any>();
 
+  const handleCloseModal = (modalStateSetter) => {
+    setIsExiting(true);
+    setTimeout(() => {
+      modalStateSetter(false);
+      setIsExiting(false);
+      setErrors({});
+      setSelectedPermissions([]);
+      setEditSelectedPermissions([]);
+      setRoleToEdit(null);
+    }, 500);
+  };
+
 
   const handleEditRole = (role: any) => {
     setRoleToEdit({
@@ -104,6 +119,7 @@ const Permissions = () => {
     }));
   };
   const handleDeleteRole = async () => {
+    console.log('deleted triggered')
     if (!roleToEdit) return;
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
@@ -210,11 +226,14 @@ const Permissions = () => {
       } else {
         console.error("Roles document not found");
       }
+      handleCloseModal(setEditRoleModalOpen);
+     
   
+
       // Close the modal and clear role to edit
-      setEditRoleModalOpen(false);
-      setRoleToEdit(null);
-      setEditSelectedPermissions([]);
+      // setEditRoleModalOpen(false);
+      // setRoleToEdit(null);
+      // setEditSelectedPermissions([]);
     } catch (error) {
       console.error("Error updating role:", error);
     }
@@ -354,10 +373,8 @@ const Permissions = () => {
 
       await addRoleToExistingDocument(newRole, kitchenId);
 
-      setAddNewRoleModalOpen(false);
-      setNewRoleName("");
-      setErrors({});
-      setSelectedPermissions([]);
+      handleCloseModal(setAddNewRoleModalOpen);
+     
     } catch (error) {
       console.error("Error saving role:", error);
     }
@@ -405,13 +422,10 @@ const Permissions = () => {
         {addNewRoleModalOpen && (
           <CustomModalFullPage
             show={addNewRoleModalOpen}
-            onClose={() => {
-              setAddNewRoleModalOpen(false);
-              setErrors({});
-              setSelectedPermissions([]);
-            }}
+            onClose={() => handleCloseModal(setAddNewRoleModalOpen)}
             type="add"
             title={"Add New Role"}
+            isExiting={isExiting}
             onUpdateClick={handleSubmit}
             onDeleteClick={() => {}}
             content={
@@ -480,6 +494,7 @@ const Permissions = () => {
           <CustomModalFullPage
             show={true}
             onClose={() => setOwnerRoleModal(null)}
+            isExiting={isExiting}
             type="view"
             title="Owner"
             onUpdateClick={() => {}}
@@ -540,11 +555,8 @@ const Permissions = () => {
         {editRoleModalOpen && roleToEdit && (
           <CustomModalFullPage
             show={editRoleModalOpen}
-            onClose={() => {
-              setEditRoleModalOpen(false);
-              setRoleToEdit(null);
-              setEditSelectedPermissions([]);
-            }}
+            onClose={() => handleCloseModal(setEditRoleModalOpen)}
+            isExiting={isExiting}
             type="edit"
             title={roleToEdit.name}
             updateButtonText="Update Role"

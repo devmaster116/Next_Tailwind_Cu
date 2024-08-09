@@ -1,21 +1,21 @@
+
+
+
+
 @keyframes slideUp {
   from {
     transform: translateY(100%);
-    opacity: 0;
   }
   to {
     transform: translateY(0);
-    opacity: 1;
   }
 }
 @keyframes slideDown {
   from {
     transform: translateY(0);
-    opacity: 1;
   }
   to {
     transform: translateY(100%);
-    opacity: 0;
   }
 }
 .modalOverlay {
@@ -115,11 +115,19 @@
   font-weight: 600;
   line-height: 32px;
   color: var(--gray-800);
+  position: absolute; /* Position relative to parent .titleDiv */
+  top: 50%; /* Vertical center */
+  left: 50%; /* Horizontal center */
+  transform: translate(-50%, -50%); /* Center the element */
 
   @media only screen and (max-width: 600px) {
+    position: relative;
     padding-left: 0px;
     font-size: 18px;
     line-height: 28px;
+    top: 0;
+    left: 0;
+    transform: none;
   }
 }
 

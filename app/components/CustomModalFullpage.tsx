@@ -13,6 +13,7 @@ const CustomModalFullPage = ({
   updateButtonText,
   onUpdateClick,
   onDeleteClick,
+  isExiting,
 }: {
   show: boolean;
   onClose: MouseEventHandler;
@@ -24,13 +25,15 @@ const CustomModalFullPage = ({
   type?: string;
   updateButtonText?: string;
   onDeleteClick: MouseEventHandler;
+  isExiting: boolean;
 }) => {
   const [deleteModal,setDeleteModal]=useState(false)
-  const [isExiting, setIsExiting] = useState(false);
+    const [isExitings, setIsExitings] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const handleClose = (e: React.MouseEvent) => {
-    setIsExiting(true);
+    setIsExitings(true);
     setTimeout(() => {
-      setIsExiting(false);
+      setIsExitings(false);
       onClose(e); // Calls the parent onClose to actually hide the modal
     }, 500); // Duration of the exit animation
   };
@@ -48,7 +51,7 @@ const CustomModalFullPage = ({
           >
           <div className={`${styles.modal} ${isExiting ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
               <div className={styles.titleDiv}>
-              <button className={styles.titleAddCloseBtn} onClick={handleClose}>
+              <button className={styles.titleAddCloseBtn} onClick={onClose}>
                   <Image
                     className={styles.icon}
                     src="/icons/close.svg"
@@ -73,7 +76,7 @@ const CustomModalFullPage = ({
          <div
          className={`${styles.modalOverlay} `}
        >
-       <div className={`${styles.modal} ${isExiting ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
+       <div className={`${styles.modal} ${isExitings ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
             <div className={styles.titleDiv}>
             <button className={styles.titleAddCloseBtn} onClick={handleClose}>
                 <Image
@@ -102,7 +105,7 @@ const CustomModalFullPage = ({
         <div className={`${styles.modalOverlay} `}>
           <div className={`${styles.modal} ${isExiting ? styles.exit : ""}`} onClick={e => e.stopPropagation()}>
             <div className={styles.titleDiv}>
-            <button className={styles.titleAddCloseBtn} onClick={handleClose}>
+            <button className={styles.titleAddCloseBtn} onClick={onClose}>
                 <Image
                   className={styles.icon}
                   src="/icons/close.svg"
@@ -116,6 +119,7 @@ const CustomModalFullPage = ({
               <div style={{display:"flex"}}>
               <button className={styles.deleteButton} style={{marginRight:"20px"}}  onClick={()=>{setDeleteModal(true)}}>
                 Delete Role </button>
+              {/* <button className={styles.updateBtn} onClick={onUpdateClick} > */}
               <button className={styles.updateBtn} onClick={onUpdateClick} >
                 Update </button>
 
