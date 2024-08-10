@@ -69,9 +69,11 @@ const Permissions = () => {
 
   interface RoleInfo {
     id: string; // Use ID to uniquely identify roles
-    role: string;
+    roles: string[];
     access: string;
     staff: number;
+    name: string;
+    permissions: Permission[];
   }
 
 interface Permission {
@@ -149,6 +151,7 @@ interface Permission {
         const updatedRoles = rolesData.filter(
           (r: any) => r.id !== roleToEdit.id // Use ID to identify the role to delete
         );
+        
         await updateDoc(roleDocRef, { roles: updatedRoles });
       }
       setEditRoleModalOpen(false);
@@ -231,7 +234,6 @@ interface Permission {
         const updatedRoles = rolesData.map((r: any) =>
           r.id === roleToEdit.id ? updatedRole : r // Use ID to identify the role to update
         );
-
         // Update the roles document
         await updateDoc(roleDocRef, { roles: updatedRoles });
         setRoles(updatedRoles);
@@ -305,10 +307,10 @@ interface Permission {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "roles"), (snapShot) => {
-      const ownerData = []
+      const ownerData: RoleInfo[] = []
 
       snapShot.docs.forEach(data => {
-        ownerData.push(data.data())
+        ownerData.push(data.data() as RoleInfo)
       })
 
       setOwnerDetails(ownerData[0]?.roles[0])
