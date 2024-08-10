@@ -466,7 +466,7 @@ interface Permission {
                     <label className={styles.ownerpermission}>Role Name</label>
                     <Input
                       value={newRoleName}
-                      handleInputChange={(e) => setNewRoleName(e.target.value)}
+                      handleInputChange={(e) => {e.preventDefault();setNewRoleName(e.target.value);}}
                       // handleBlurField={handleBlurField} // If needed
                       error={errors.businessName}
                       loading={loading}
