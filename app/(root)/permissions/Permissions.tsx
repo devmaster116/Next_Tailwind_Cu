@@ -96,6 +96,7 @@ const Permissions = () => {
       setSelectedPermissions([]);
       setEditSelectedPermissions([]);
       setRoleToEdit(null);
+      // setNewRoleName("");
     }, 500);
   };
 
@@ -174,6 +175,9 @@ const Permissions = () => {
         ...prevErrors,
         permissions: "At least one permission is required",
       }));
+      if (errorRef.current) {
+        errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       return;
     }
   
@@ -331,6 +335,9 @@ const Permissions = () => {
         ...prevErrors,
         permissions: "At least one permission is required",
       }));
+      if (errorRef.current) {
+        errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       return;
     }
 
@@ -513,7 +520,7 @@ const Permissions = () => {
                    disabled
                 />
                 <p className={styles.warningMsg}>
-                  This role name cannot be change
+                  This role name cannot be change.
                 </p>
                 </div>
                 {/* <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}> */}
