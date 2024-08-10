@@ -233,8 +233,10 @@ const BusinessDetails = () => {
 
       console.error("Error adding user:", err);
       const newErrors: { [key: string]: string } = {};
-      newErrors.addingUser = err?.message ? err.message : "An Error Occurred. Please try again later or contact us if issue persists."
-      setErrors(newErrors)
+      newErrors.addingUser = err?.message
+        ? err.message
+        : "An Error Occurred. Please try again later or contact us if issue persists.";
+      setErrors(newErrors);
     }
   };
 
@@ -391,7 +393,8 @@ const BusinessDetails = () => {
       !validateRequired(formState?.ownerMobile) ||
       !validateMobileNumber(formState?.ownerMobile)
     ) {
-      newErrors.ownerMobile = "Enter a valid mobile number containing 10 digits.";
+      newErrors.ownerMobile =
+        "Enter a valid mobile number containing 10 digits.";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -470,7 +473,8 @@ const BusinessDetails = () => {
       !validateRequired(formState?.secondaryContacts) ||
       !validateMobileNumber(formState?.secondaryContacts)
     ) {
-      newErrors.secondaryContacts = "Enter a valid mobile number containing 10 digits.";
+      newErrors.secondaryContacts =
+        "Enter a valid mobile number containing 10 digits.";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -504,7 +508,8 @@ const BusinessDetails = () => {
       !validateRequired(newUser?.mobileNumber) ||
       !validateMobileNumber(newUser?.mobileNumber)
     ) {
-      newErrors.mobileNumber = "Enter a valid mobile number containing 10 digits.";
+      newErrors.mobileNumber =
+        "Enter a valid mobile number containing 10 digits.";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -708,25 +713,25 @@ const BusinessDetails = () => {
                       </p>
                     </div>
                   </div>
-                  <div className={styles.button}>
-                    {isTransferOwnership ? (
-                      <button
-                        className={styles.ownerShipButton}
-                        onClick={() => setTransferOwnerShipModalOpen(true)}
-                        disabled={isTransferOwnership ? true : false}
-                      >
-                        <Image
-                          className={styles.icon}
-                          src="/icons/refresh.svg"
-                          height={18}
-                          width={18}
-                          alt="Business Details icon"
-                        />
-                        <span>Transfer Of Ownership Processing</span>
-                      </button>
-                    ) : (
-                      <>
-                        {user?.owner && (
+                  {user?.owner && (
+                    <div className={styles.button}>
+                      {isTransferOwnership ? (
+                        <button
+                          className={styles.ownerShipButton}
+                          onClick={() => setTransferOwnerShipModalOpen(true)}
+                          disabled={isTransferOwnership ? true : false}
+                        >
+                          <Image
+                            className={styles.icon}
+                            src="/icons/refresh.svg"
+                            height={18}
+                            width={18}
+                            alt="Business Details icon"
+                          />
+                          <span>Transfer Of Ownership Processing</span>
+                        </button>
+                      ) : (
+                        <>
                           <button
                             className={styles.button_container}
                             onClick={() => setTransferOwnerShipModalOpen(true)}
@@ -741,10 +746,10 @@ const BusinessDetails = () => {
                             />
                             <span>Transfer of ownership</span>
                           </button>
-                        )}
-                      </>
-                    )}
-                  </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -778,7 +783,7 @@ const BusinessDetails = () => {
                   <div className={styles.subContainer}>
                     <div className={styles.titleTextContainer}>
                       <p className={styles.titleText}>Name</p>
-                      {(user?.secondaryContact) && (
+                      {user?.secondaryContact && (
                         <p
                           className={styles.editText}
                           onClick={() => setSecondaryContactNameModalOpen(true)}
@@ -830,21 +835,29 @@ const BusinessDetails = () => {
             })}
 
           {secondaryData && secondaryData.length <= 0 && (
-            <div className={styles.button}>
-              <button
-                className={styles.button_container}
-                onClick={() => handleContactModal("secondaryContact")}
-              >
-                <Image
-                  className={styles.icon}
-                  src="/icons/plus.svg"
-                  height={18}
-                  width={18}
-                  alt="Create a Secondary Contact"
-                />
-                <span>Create a Secondary Contact</span>
-              </button>
-            </div>
+            <>
+              {user?.owner ? (
+                <div className={styles.button}>
+                  <button
+                    className={styles.button_container}
+                    onClick={() => handleContactModal("secondaryContact")}
+                  >
+                    <Image
+                      className={styles.icon}
+                      src="/icons/plus.svg"
+                      height={18}
+                      width={18}
+                      alt="Create a Secondary Contact"
+                    />
+                    <span>Create a Secondary Contact</span>
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.subContainer}>
+                  <p className={styles.bodyText}>Not provided</p>
+                </div>
+              )}
+            </>
           )}
         </div>
         <p className={styles.commonTitle}>Additional Admin User</p>
@@ -1312,9 +1325,7 @@ const BusinessDetails = () => {
                     />
                   </div>
                   {errors?.addingUser && (
-                    <p className={styles.errorLabel}>
-                    {errors.addingUser}
-                    </p>
+                    <p className={styles.errorLabel}>{errors.addingUser}</p>
                   )}
                 </form>
               </>
