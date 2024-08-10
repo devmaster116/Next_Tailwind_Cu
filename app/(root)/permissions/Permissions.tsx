@@ -53,7 +53,7 @@ const Permissions = () => {
   const [editRoleModalOpen, setEditRoleModalOpen] = useState(false);
   const [roleToEdit, setRoleToEdit] = useState<any>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [ownerRoleModal, setOwnerRoleModal] = useState<any>();
+  const [ownerRoleModal, setOwnerRoleModal] = useState<boolean>(false);
   const [isExiting, setIsExiting] = useState(false);
   const [formState, setFormState] = useState<{ [key: string]: string }>({
     businessName: "",
@@ -96,7 +96,7 @@ const Permissions = () => {
       setSelectedPermissions([]);
       setEditSelectedPermissions([]);
       setRoleToEdit(null);
-      // setNewRoleName("");
+      setNewRoleName("");
     }, 500);
   };
 
@@ -119,8 +119,8 @@ const Permissions = () => {
       name: e.target.value,
     }));
   };
+
   const handleDeleteRole = async () => {
-    console.log('deleted triggered')
     if (!roleToEdit) return;
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
@@ -144,11 +144,14 @@ const Permissions = () => {
       }
       setEditRoleModalOpen(false);
       setRoleToEdit(null);
+      setDeleteModal(false)
     } catch (error) {
       console.error("Error deleting role:", error);
     }
   };
-
+  console.log(ownerRoleModal)
+  console.log(ownerDetials)
+  console.log(ownerDetials?.name)
   useEffect(() => {
     if (errors.permissions && errorRef.current) {
       errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -500,7 +503,7 @@ const Permissions = () => {
         {ownerRoleModal && ownerDetials && ownerDetials.name && (
           <CustomModalFullPage
             show={true}
-            onClose={() => setOwnerRoleModal(null)}
+            onClose={() => setOwnerRoleModal(false)}
             isExiting={isExiting}
             type="view"
             title="Owner"
@@ -637,14 +640,13 @@ const Permissions = () => {
           
           content={
             <>
-              <h3 className={styles.deleteModalTitle}>Deleting ‘{roleToEdit.name}’ role</h3>
+              <p className={styles.deleteModalTitle}>Deleting ‘{roleToEdit.name}’ role123</p>
               <p className={styles.deleteMessage}>
                 Are you sure you want to delete the role?
               </p>
               <br/>
               <p className={styles.description}>
-                Confirming this means they wont have access to the portal
-                anymore.
+              Confirming this means you can’t get this role but you can always recreate it if you wish.
               </p>
             </>
           }
