@@ -182,9 +182,12 @@ const BusinessDetails = () => {
   };
 
   const getUserDetails = async () => {
+    if (kitchenId === null) {
+      throw new Error("kitchenId is null");
+    }
     setUserLoading(true);
     try {
-      const userDetails = await getUserDetailsAPI();
+      const userDetails = await getUserDetailsAPI(kitchenId);
       const filteredUserData = userDetails.filter(
         (user: User) => !user.owner && !user.secondaryContact
       );
@@ -222,20 +225,29 @@ const BusinessDetails = () => {
       } else {
         getUserDetails();
       }
-    } catch (err) {
-      console.error("Error adding user:", err);
-    } finally {
       setNewUserAddModalOpen(false);
       setLoading(false);
       handleErrors();
+    } catch (err: any) {
+      setLoading(false);
+
+      console.error("Error adding user:", err);
+      const newErrors: { [key: string]: string } = {};
+      newErrors.addingUser = err?.message
+        ? err.message
+        : "An Error Occurred. Please try again later or contact us if issue persists.";
+      setErrors(newErrors);
     }
   };
 
   const deleteUser = async () => {
+    if (kitchenId === null) {
+      throw new Error("kitchenId is null");
+    }
     setLoading(true);
     try {
       const email = deleteId;
-      await deleteUserAPI(email);
+      await deleteUserAPI(email, kitchenId);
       await getUserDetails();
     } catch (err) {
       console.error("Error deleting user:", err);
@@ -381,7 +393,8 @@ const BusinessDetails = () => {
       !validateRequired(formState?.ownerMobile) ||
       !validateMobileNumber(formState?.ownerMobile)
     ) {
-      newErrors.ownerMobile = "Enter a valid AU(+61) mobile number.";
+      newErrors.ownerMobile =
+        "Enter a valid mobile number containing 10 digits.";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -460,7 +473,8 @@ const BusinessDetails = () => {
       !validateRequired(formState?.secondaryContacts) ||
       !validateMobileNumber(formState?.secondaryContacts)
     ) {
-      newErrors.secondaryContacts = "Enter a valid AU(+61) mobile number.";
+      newErrors.secondaryContacts =
+        "Enter a valid mobile number containing 10 digits.";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -494,7 +508,8 @@ const BusinessDetails = () => {
       !validateRequired(newUser?.mobileNumber) ||
       !validateMobileNumber(newUser?.mobileNumber)
     ) {
-      newErrors.mobileNumber = "Enter a valid AU(+61) mobile number.";
+      newErrors.mobileNumber =
+        "Enter a valid mobile number containing 10 digits.";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -646,7 +661,11 @@ const BusinessDetails = () => {
                                   </p>
                                 ) : (
                                   <p
-                                    className={verificationEmailSent?styles.emailVerificationText :styles.editText}
+                                    className={
+                                      verificationEmailSent
+                                        ? styles.emailVerificationText
+                                        : styles.editText
+                                    }
                                     onClick={() =>
                                       sendEmailVerificationAPI(
                                         currentUser
@@ -727,10 +746,10 @@ const BusinessDetails = () => {
                             />
                             <span>Transfer of ownership</span>
                           </button>
-                        )}
-                      </>
-                    )}
-                  </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -764,7 +783,7 @@ const BusinessDetails = () => {
                   <div className={styles.subContainer}>
                     <div className={styles.titleTextContainer}>
                       <p className={styles.titleText}>Name</p>
-                      {(user?.owner || user?.secondaryContact) && (
+                      {user?.secondaryContact && (
                         <p
                           className={styles.editText}
                           onClick={() => setSecondaryContactNameModalOpen(true)}
@@ -816,21 +835,29 @@ const BusinessDetails = () => {
             })}
 
           {secondaryData && secondaryData.length <= 0 && (
-            <div className={styles.button}>
-              <button
-                className={styles.button_container}
-                onClick={() => handleContactModal("secondaryContact")}
-              >
-                <Image
-                  className={styles.icon}
-                  src="/icons/plus.svg"
-                  height={18}
-                  width={18}
-                  alt="Create a Secondary Contact"
-                />
-                <span>Create a Secondary Contact</span>
-              </button>
-            </div>
+            <>
+              {user?.owner ? (
+                <div className={styles.button}>
+                  <button
+                    className={styles.button_container}
+                    onClick={() => handleContactModal("secondaryContact")}
+                  >
+                    <Image
+                      className={styles.icon}
+                      src="/icons/plus.svg"
+                      height={18}
+                      width={18}
+                      alt="Create a Secondary Contact"
+                    />
+                    <span>Create a Secondary Contact</span>
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.subContainer}>
+                  <p className={styles.bodyText}>Not provided</p>
+                </div>
+              )}
+            </>
           )}
         </div>
         <p className={styles.commonTitle}>Additional Admin User</p>
@@ -1032,7 +1059,7 @@ const BusinessDetails = () => {
                 <form className={styles.formContainer}>
                   <Input
                     value={formState.ownerMobile}
-                    maxLength={12}
+                    maxLength={10}
                     type="number"
                     handleInputChange={(e) =>
                       handleInputChangeField(
@@ -1048,7 +1075,7 @@ const BusinessDetails = () => {
                         setFormState,
                         setErrors,
                         validateRequired,
-                        "Enter a valid AU(+61) mobile number.",
+                        "Enter a valid mobile number containing 10 digits.",
                         "ownerMobile"
                       )
                     }
@@ -1163,7 +1190,7 @@ const BusinessDetails = () => {
                 <form className={styles.formContainer}>
                   <Input
                     value={formState.secondaryContacts}
-                    maxLength={12}
+                    maxLength={10}
                     type="number"
                     handleInputChange={(e) =>
                       handleInputChangeField(
@@ -1179,7 +1206,7 @@ const BusinessDetails = () => {
                         setFormState,
                         setErrors,
                         validateRequired,
-                        "Enter a valid AU(+61) mobile number.",
+                        "Enter a valid mobile number containing 10 digits.",
                         "secondaryContacts"
                       )
                     }
@@ -1272,7 +1299,7 @@ const BusinessDetails = () => {
                     <p className={styles.label}>Mobile Number</p>
                     <Input
                       value={newUser.mobileNumber}
-                      maxLength={12}
+                      maxLength={10}
                       type="number"
                       handleInputChange={(e) =>
                         handleInputChangeField(
@@ -1288,7 +1315,7 @@ const BusinessDetails = () => {
                           setNewUser,
                           setErrors,
                           validateRequired,
-                          "Enter a valid AU(+61) mobile number.",
+                          "Enter a valid mobile number containing 10 digits.",
                           "mobileNumber"
                         )
                       }
@@ -1297,6 +1324,9 @@ const BusinessDetails = () => {
                       placeholder="Enter mobile number"
                     />
                   </div>
+                  {errors?.addingUser && (
+                    <p className={styles.errorLabel}>{errors.addingUser}</p>
+                  )}
                 </form>
               </>
             }
@@ -1374,7 +1404,7 @@ const BusinessDetails = () => {
                   <div>
                     <p className={styles.label}>New Owner Mobile Number</p>
                     <Input
-                      maxLength={12}
+                      maxLength={10}
                       type="number"
                       value={ownerShipDetails.ownerMobileNumber}
                       handleInputChange={(e) =>

@@ -12,10 +12,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import {
-  createUserWithEmailAndPassword,
   sendEmailVerification,
   updateEmail,
-  updateProfile,
   User as FirebaseUser,
 } from "firebase/auth";
 import { db, auth } from "@/firebase/config";
@@ -95,10 +93,11 @@ export const getOwnerAPI = async (
   }
 };
 
-export const getUserDetailsAPI = async (): Promise<User[]> => {
+export const getUserDetailsAPI = async (kitchenId: string): Promise<User[]> => {
   try {
     const usersCollection = collection(db, "users");
-    const querySnapshot = await getDocs(usersCollection);
+    const q = query(usersCollection, where("kitchenId", "==", kitchenId));
+    const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
       console.log("No users found.");
@@ -190,7 +189,6 @@ export const getSecondaryContactDataAPI = async (
 export const addUserAPI = async (
   newUser: Omit<User, "uid" | "createdAt">
 ): Promise<void> => {
-  const password = generateRandomPassword();
   try {
     const usersCollection = collection(db, "users");
     const userQuery = query(
@@ -200,36 +198,15 @@ export const addUserAPI = async (
     const querySnapshot = await getDocs(userQuery);
 
     if (!querySnapshot.empty) {
-      console.log("User already exists with this email.");
-      return;
+      throw Error("User already exists with this email.");
     }
-
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      newUser.email,
-      password
-    );
-    const user = userCredential.user;
-
-    await sendEmailVerification(user)
-      .then(() => {
-        console.log("Verification email sent");
-      })
-      .catch((err) => {
-        console.error(
-          "Error creating user or sending verification email:",
-          err
-        );
-      });
-
-    await updateProfile(user, { displayName: newUser.displayName });
 
     const userDocData = {
       ...newUser,
       createdAt: new Date(),
     };
 
-    const userDocRef = doc(usersCollection, user.uid);
+    const userDocRef = doc(usersCollection);
     await setDoc(userDocRef, userDocData);
   } catch (err) {
     console.error("Error adding user data:", err);
@@ -237,10 +214,17 @@ export const addUserAPI = async (
   }
 };
 
-export const deleteUserAPI = async (email: string): Promise<void> => {
+export const deleteUserAPI = async (
+  email: string,
+  kitchenId: string
+): Promise<void> => {
   try {
     const usersCollection = collection(db, "users");
-    const userQuery = query(usersCollection, where("email", "==", email));
+    const userQuery = query(
+      usersCollection,
+      where("email", "==", email),
+      where("kitchenId", "==", kitchenId)
+    );
     const querySnapshot = await getDocs(userQuery);
 
     if (querySnapshot.empty) {
@@ -271,9 +255,7 @@ const validateUpdateData = (data: Partial<DocumentData>): void => {
   }
 };
 
-export const sendEmailVerificationAPI = async (
-  currentUser: FirebaseUser
-) => {
+export const sendEmailVerificationAPI = async (currentUser: FirebaseUser) => {
   await sendEmailVerification(currentUser).then(() => {
     console.log("Verification email sent");
     return;
