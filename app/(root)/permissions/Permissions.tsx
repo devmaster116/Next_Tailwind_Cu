@@ -16,7 +16,7 @@ import {
   subscribeRoles,
 } from "./data-fetching";
 
-import { Kitchen, User } from "@/app/src/types";
+import { Kitchen, RoleInfo, User } from "@/app/src/types";
 import {
   addDoc,
   collection,
@@ -66,22 +66,6 @@ const Permissions = () => {
     secondaryContactEmail: "",
     secondaryContacts: "",
   });
-
-  interface RoleInfo {
-    id: string; // Use ID to uniquely identify roles
-    roles: string[];
-    access: string;
-    staff: number;
-    name: string;
-    permissions: Permission[];
-  }
-
-interface Permission {
-  id: string;
-  label: string;
-  description: string;
-  enabled: boolean;
-}
 
   const [addNewRoleModalOpen, setAddNewRoleModalOpen] = useState(false);
   const [permissions, setPermissions] = useState<any[]>([])
