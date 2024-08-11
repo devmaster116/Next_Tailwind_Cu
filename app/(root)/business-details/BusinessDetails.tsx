@@ -713,25 +713,25 @@ const BusinessDetails = () => {
                       </p>
                     </div>
                   </div>
-                  <div className={styles.button}>
-                    {isTransferOwnership ? (
-                      <button
-                        className={styles.ownershipButton}
-                        onClick={() => setTransferOwnerShipModalOpen(true)}
-                        disabled={isTransferOwnership ? true : false}
-                      >
-                        <Image
-                          className={styles.icon}
-                          src="/icons/refresh.svg"
-                          height={18}
-                          width={18}
-                          alt="Business Details icon"
-                        />
-                        <span>Transfer Of Ownership Processing</span>
-                      </button>
-                    ) : (
-                      <>
-                        {user?.owner && (
+                  {user?.owner && (
+                    <div className={styles.button}>
+                      {isTransferOwnership ? (
+                        <button
+                          className={styles.ownerShipButton}
+                          onClick={() => setTransferOwnerShipModalOpen(true)}
+                          disabled={isTransferOwnership ? true : false}
+                        >
+                          <Image
+                            className={styles.icon}
+                            src="/icons/refresh.svg"
+                            height={18}
+                            width={18}
+                            alt="Business Details icon"
+                          />
+                          <span>Transfer Of Ownership Processing</span>
+                        </button>
+                      ) : (
+                        <>
                           <button
                             className={styles.button_container}
                             onClick={() => setTransferOwnerShipModalOpen(true)}
