@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styles from './StaffRoles.module.scss';
-import { db } from '@/firebase/config';
-import { collection, getDocs } from 'firebase/firestore';
-
-
-interface RoleInfo {
-  name: string;
-  description: string;
-  staff: number;
-}
-interface StaffRolesProps {
-  viewModal: () => void;
-  roles: RoleInfo[];
-  onEditRole: (role: RoleInfo) => void;
-}
 
 
 
 
 
-const StaffRoles: React.FC<StaffRolesProps> = ({ viewModal, roles, onEditRole }) => {
+  const StaffRoles: React.FC<{
+    viewModal: any;
+    roles: any[];
+    onEditRole: (role: any) => void;
+  }> = ({ viewModal, roles, onEditRole }) => {
   return (
     <div className={styles.table}>
     <div className={styles.header}>
