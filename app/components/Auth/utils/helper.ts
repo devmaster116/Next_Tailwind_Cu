@@ -6,6 +6,11 @@ export const validateEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
+export const validateMobileNumber = (mobileNumber: string): boolean => {
+  const mobileNumberRegex = /^04\d{8}$/;
+  return mobileNumberRegex.test(mobileNumber);
+};
+
 export const handleBlurEmail = (
   e: React.ChangeEvent<HTMLInputElement>,
   setEmail: (email: string) => void,
@@ -44,4 +49,71 @@ export const resetPassword = async (
     onError(error);
     console.log("Error:", error);
   }
+};
+
+export const handleInputChangeField = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  setState: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
+  setError: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
+  fieldName: string
+) => {
+  const newValue: string = e.target.value;
+  setState(prevState => ({ ...prevState, [fieldName]: newValue }));
+  setError(prevState => ({ ...prevState, [fieldName]: "" }));
+};
+
+export const handleBlurField = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  setState: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
+  setError: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
+  validate: (value: string) => boolean,
+  errorMessage: string,
+  fieldName: string
+) => {
+  const { value } = e.target;
+  if (!validate(value)) {
+    setError(prevState => ({ ...prevState, [fieldName]: errorMessage }));
+  } else {
+    setState(prevState => ({ ...prevState, [fieldName]: value }));
+    setError(prevState => ({ ...prevState, [fieldName]: "" }));
+  }
+};
+
+export const formatDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZoneName: "short",
+    timeZone: "Asia/Kolkata",
+  };
+
+  const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+
+  const timeZoneOffset = "+05:30";
+
+  const parts = formattedDate.split(" ");
+
+  if (parts.length < 5) {
+    throw new Error("Unexpected date format");
+  }
+
+  const monthDayYear = `${parts[0]} ${parts[1]} ${parts[2]}`;
+  const time = `${parts[4]} ${parts[5]}`;
+
+  return `${monthDayYear} at ${time} UTC${timeZoneOffset}`;
+};
+
+export const generateRandomPassword = (): string => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    password += characters[randomIndex];
+  }
+  return password;
 };

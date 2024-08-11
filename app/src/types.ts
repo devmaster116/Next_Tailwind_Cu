@@ -53,7 +53,7 @@ export type ChosenSubscriptionDetails = {
   activeProducts: string[];
   addonNames: string[];
   products: SubscriptionProduct[];
-}
+};
 
 export type ActiveSubscribtionDetails = {
   activeProducts: string[];
@@ -75,3 +75,65 @@ export type SubscriptionProduct = {
   productName: string;
   quantity: number;
 };
+
+interface HoursSchedule {
+  from: string;
+  to: string;
+}
+
+interface DaySchedule {
+  [key: string]: HoursSchedule;
+}
+
+interface Hours {
+  schedule: DaySchedule[];
+}
+
+interface DateCreated {
+  seconds: number;
+  nanoseconds: number;
+}
+
+interface TakeAwayConfig {
+  enabled: boolean;
+}
+
+export interface Kitchen {
+  activeAccount?: boolean;
+  dishes?: Record<string, any>;
+  hours?: Hours;
+  kitchenId: string;
+  phoneNumber: string;
+  isTransferOwnershipReview?: boolean;
+  orderIdInitials?: string;
+  dateCreated?: DateCreated;
+  fullAddress: string;
+  stripe_customer_id: string;
+  orderWaitTime?: number;
+  orderCount: string;
+  email: string;
+  tier?: string;
+  kitchenSlug?: string;
+  abn: string;
+  kitchenName: string;
+  isBetaTrialEnabled?: boolean;
+  kitchenOrderStatus?: string;
+  takeAwayConfig?: TakeAwayConfig;
+  subscriptionId?: string | null;
+  DocumentData?: any;
+}
+
+export interface User {
+  uid: string;
+  email: string;
+  userType?: string;
+  secondaryContact: boolean;
+  createdAt?: Timestamp | string;
+  displayName?: string;
+  kitchenId: string | null;
+  setupComplete?: boolean;
+  owner: boolean;
+  mobileNumber?: string;
+  isTransferOwnershipReview?: boolean | null;
+  emailVerified?: boolean;
+}

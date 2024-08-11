@@ -4,27 +4,27 @@ import styles from "./ItemSales.module.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import withAuth from "@/app/components/Auth/withAuth";
 import useFetchReports from "@/app/hooks/useFetchReports";
-import DateRangeSelectorModal from "../reports-dashboard/components/utils/DateRangeSelectorModal";
+import DateRangeSelectorModal from "../overview/components/utils/DateRangeSelectorModal";
 import { useKitchen } from "@/app/context/KitchenContext";
-import DataError from "../reports-dashboard/components/DataError";
-import SalesData from "../reports-dashboard/components/SalesData";
+import DataError from "../overview/components/DataError";
+import SalesData from "../overview/components/SalesData";
 import { Dishes } from "@/app/src/types";
-import DataTable from "../reports-dashboard/components/DataTable";
-import "../reports-dashboard/components/DatePicker.scss";
+import DataTable from "../overview/components/DataTable";
+import "../overview/components/DatePicker.scss";
 import { getDishStats } from "./utils/commonUtils";
-import NoSalesMessage from "../reports-dashboard/components/NoSalesMessage";
+import NoSalesMessage from "../overview/components/NoSalesMessage";
 import { useReportDate } from "@/app/context/ReportDateContext";
 
 const ItemSales = () => {
-    const {
-      reportStartDate,
-      setReportStartDate,
-      reportEndDate,
-      setReportEndDate,
-      selectedOption,
-      setSelectedOption,
-    } = useReportDate();
-  
+  const {
+    reportStartDate,
+    setReportStartDate,
+    reportEndDate,
+    setReportEndDate,
+    selectedOption,
+    setSelectedOption,
+  } = useReportDate();
+
   const [noSales, setNoSales] = useState<boolean>(false);
   const { kitchen } = useKitchen();
 
@@ -41,7 +41,7 @@ const ItemSales = () => {
     kitchenId,
     reportStartDate,
     reportEndDate,
-    selectedOption,
+    selectedOption
   );
 
   const [dishStats, setDishesStats] = useState<{

@@ -11,10 +11,10 @@ import {
   ActiveSubscribtionDetails,
   ChosenSubscriptionDetails,
 } from "@/app/src/types";
-import { capitalizeFirstLetter } from "../reports-dashboard/components/utils/CapitalizeFirstLetter";
+import { capitalizeFirstLetter } from "../overview/components/utils/CapitalizeFirstLetter";
 import LightLoader from "@/app/components/LightLoader";
 import Modal from "@/app/components/Modal";
-import { getDaySuffix } from "../reports-dashboard/components/utils/DateSuffix";
+import { getDaySuffix } from "../overview/components/utils/DateSuffix";
 import { createPortalSession } from "@/app/api-calls/createPortalSession";
 import { cancelStripeSubscription } from "@/app/api-calls/cancelStripeSubscription";
 import { ToastContainer, toast } from "react-toastify";
@@ -45,7 +45,7 @@ const Subscriptions = () => {
   const { kitchen } = useKitchen();
 
   const kitchenId = kitchen?.kitchenId ?? null;
-  const stripeCustomerId = kitchen?.stripeCustomerId ? kitchen.stripeCustomerId : null;
+  const stripeCustomerId = kitchen?.stripe_customer_id ? kitchen.stripe_customer_id : null;
 
   // Chosen subscription details
   const chosenSubscribedProducts = chosenSubscriptionDetails?.products

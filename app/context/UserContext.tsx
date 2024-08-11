@@ -1,11 +1,6 @@
-'use client';
+"use client";
 import { createContext, useState, ReactNode, useContext } from "react";
-
-interface User {
-  uid: string;
-  email: string;
-  kitchenId: string;
-}
+import { User } from "../src/types";
 
 interface UserContextType {
   user: User | null;

@@ -59,16 +59,7 @@ const LoginDetails = () => {
         const userDocRef = doc(db, "users", userId);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
-          const kitchenId = userDocSnap.data().kitchenId;
-          const userEmail = userDocSnap.data().email;
-
-          setUser({
-            uid: userId,
-            email: userEmail,
-            kitchenId: kitchenId,
-          });
-
-          router.push("/reports-dashboard");
+          router.push("/overview");
         } else {
           throw new Error("User document not found");
         }

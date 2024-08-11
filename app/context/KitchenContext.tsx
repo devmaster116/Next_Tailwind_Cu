@@ -1,21 +1,7 @@
-'use client';
+"use client";
 
 import { createContext, useState, ReactNode, useContext } from "react";
-
-
-
-interface Kitchen {
-  kitchenId: string;
-  kitchenName: string;
-  stripeCustomerId: string
-//   imageUrl: string;
-kitchenAddress: string;
-  email: string;
-  phoneNumber: string;
-  abn: string;
-  orderCount: number;
-  orderIdInitials: string;
-}
+import { Kitchen } from "../src/types";
 
 interface KitchenContextType {
   kitchen: Kitchen | null;

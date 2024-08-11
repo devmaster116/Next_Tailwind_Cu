@@ -15,7 +15,7 @@ const LoginPage = () => {
   useEffect(() => {
     onAuthStateChanged(auth, user => {
       if (user) {
-        router.push(`/reports-dashboard`);
+        router.push(`/overview`);
       } else {
         setLoading(false);
       }

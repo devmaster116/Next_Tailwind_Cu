@@ -70,7 +70,7 @@ export default function Sidebar({
             <div className={styles.menuItems}>
               <MenuItem
                 name="Overview"
-                route="/reports-dashboard"
+                route="/overview"
                 icon={
                   <Image
                     className={styles.icon}
@@ -126,6 +126,19 @@ export default function Sidebar({
           <div className={styles.logoContainer}>
             <h4>Account and Billing</h4>
             <div className={styles.menuItems}>
+              <MenuItem
+                name="Business Details"
+                route="/business-details"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/business-details.svg"
+                    height={18}
+                    width={18}
+                    alt="Business Details icon"
+                  />
+                }
+              />
               <MenuItem
                 name="Subscriptions"
                 route="/subscriptions"

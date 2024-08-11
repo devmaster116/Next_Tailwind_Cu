@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Reports.module.scss";
+import styles from "./Overview.module.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatReadableDate } from "./utils/formatDate";
