@@ -56,8 +56,9 @@ export const subscribeRoles = (kitchenId: string | null, callback: (data: { role
     rolesSnapshot.docs.forEach(doc => {
       const data = doc.data();
       if (Array.isArray(data.roles)) {
-        data.roles.forEach((role: { name: string; description: string; permissions: any[] }) => {
+        data.roles.forEach((role: { id: string; name: string; description: string; permissions: any[] }) => {
           const roleData = {
+            id:role.id,
             name: role.name,
             description: role.description,
             staff: data.staff || 0,
