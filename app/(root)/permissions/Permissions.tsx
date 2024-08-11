@@ -331,8 +331,7 @@ interface Permission {
     fetchRolesData();
   }, [permissions]);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     setErrors({});
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
@@ -439,7 +438,7 @@ interface Permission {
           <h1 className={styles.pageTitle}>POS Permissions</h1>
           <button
             className={styles.buttonPrimary}
-            onClick={() => setAddNewRoleModalOpen(true)}
+            onClick={() =>{ setAddNewRoleModalOpen(true);setNewRoleName("");}}
           >
             <span style={{ marginRight: "8px" }}>{plusIcon}</span>
             New Role{" "}
@@ -461,18 +460,27 @@ interface Permission {
             onDeleteClick={() => { }}
             content={
               <>
-                <form className={styles.formContainer}>
+                <div className={styles.formContainer}>
                   <div className={styles.inputLabelsection}>
                     <label className={styles.ownerpermission}>Role Name</label>
                     <Input
                       value={newRoleName}
-                      handleInputChange={(e) => {e.preventDefault();setNewRoleName(e.target.value);}}
-                      // handleBlurField={handleBlurField} // If needed
+                      handleInputChange={(e) => setNewRoleName(e.target.value)}
+                       //handleBlurField={handleBlurField} // If needed
                       error={errors.businessName}
                       loading={loading}
                       placeholder="Enter Role Name"
                       ref={roleNameInputRef}
                     />
+                     {/* <Input
+                    value={roleToEdit.name}
+                    handleInputChange={handleRoleNameChange}
+                    error={errors.roleName}
+                    loading={loading}
+                    placeholder="Enter Role Name"
+                    ref={roleNameInputRef}
+
+                  /> */}
 
                   </div>
 
@@ -514,7 +522,7 @@ interface Permission {
                     {" "}
                     {errors.permissions}
                   </p>
-                </form>
+                </div>
               </>
             }
           />
