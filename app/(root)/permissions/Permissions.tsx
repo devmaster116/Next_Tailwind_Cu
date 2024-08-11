@@ -155,6 +155,7 @@ interface Permission {
         await updateDoc(roleDocRef, { roles: updatedRoles });
       }
       setEditRoleModalOpen(false);
+      setDeleteModal(false);
       setRoleToEdit(null);
     } catch (error) {
       console.error("Error deleting role:", error);
