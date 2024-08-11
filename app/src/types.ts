@@ -137,3 +137,19 @@ export interface User {
   isTransferOwnershipReview?: boolean | null;
   emailVerified?: boolean;
 }
+
+export interface RoleInfo {
+  id: string; // Use ID to uniquely identify roles
+  roles: string[];
+  access: string;
+  staff: number;
+  name: string;
+  permissions: Permission[];
+}
+
+export interface Permission {
+id: string;
+label: string;
+description: string;
+enabled: boolean;
+}

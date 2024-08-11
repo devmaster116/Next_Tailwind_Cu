@@ -2,21 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styles from './StaffRoles.module.scss';
 import { db } from '@/firebase/config';
 import { collection, getDocs } from 'firebase/firestore';
+import { RoleInfo } from '@/app/src/types';
 
 
-interface RoleInfo {
-  name: string;
-  description: string;
-  staff: number;
-}
 interface StaffRolesProps {
   viewModal: () => void;
   roles: RoleInfo[];
   onEditRole: (role: RoleInfo) => void;
 }
-
-
-
 
 
 const StaffRoles: React.FC<StaffRolesProps> = ({ viewModal, roles, onEditRole }) => {
