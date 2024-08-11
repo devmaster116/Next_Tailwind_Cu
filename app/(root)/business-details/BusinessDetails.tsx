@@ -697,7 +697,7 @@ const BusinessDetails = () => {
                   <div className={styles.button}>
                     {isTransferOwnership ? (
                       <button
-                        className={styles.ownerShipButton}
+                        className={styles.ownershipButton}
                         onClick={() => setTransferOwnerShipModalOpen(true)}
                         disabled={isTransferOwnership ? true : false}
                       >

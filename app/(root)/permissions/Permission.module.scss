@@ -61,7 +61,7 @@
     
   }
 }
-.mobiledivider {
+.mobileDivider {
  border-bottom:none ;
   @media only screen and (max-width: 600px) {
   border-bottom: 1px solid #EAECF0;
@@ -99,7 +99,7 @@
   font-weight: 600;
 }
 
-.ownerShipButton {
+.ownershipButton {
   display: flex;
   gap: 8px;
   align-items: center;

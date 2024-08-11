@@ -485,7 +485,7 @@ interface Permission {
                   </div>
 
 
-                  <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}>
+                  <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}>
                     POS Role Permissions
                   </h2>
 
@@ -557,7 +557,7 @@ interface Permission {
                 </div>
                 {/* <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}> */}
 
-                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider} ${styles.ownerPermissionMobile}`}>
+                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider} ${styles.ownerPermissionMobile}`}>
                   Owners have full access. Permissions can’t be changed.{" "}
                 </h2>
                 <ul className={`${styles.disabled} ${styles.mobilePadding}`}>
@@ -624,7 +624,7 @@ interface Permission {
 
                 {/* <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} /> */}
 
-                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}>POS Role Permissions</h2>
+                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}>POS Role Permissions</h2>
                 <ul className={` ${styles.mobilePadding} ${styles.internalContainer}`}>
                   {permissions.map((permission, index) => (
                     <li key={index} className={styles.permissionItem}>
