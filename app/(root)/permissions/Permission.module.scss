@@ -419,6 +419,7 @@ input:checked + .slider:before {
   padding: 15px;
   height: 48px;
   border-radius: 8px;
+  font-size: 18px;
 opacity: 1;
 /* Gray/50 */
 background: var(--gray-50);
@@ -431,6 +432,11 @@ box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
 &:disabled, &:read-only {
   background: var(--gray-50);
 }
+@media only screen and (max-width: 600px) {
+  font-size: 16px;
+}
+
+
 }
 
 .disabled{

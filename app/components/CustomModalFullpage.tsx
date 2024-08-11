@@ -150,7 +150,7 @@ const CustomModalFullPage = ({
               </div>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={styles.modalFooterEdit}>
+            <div className={`${styles.modalFooterEdit} ${styles.modalFooter}`}>
               <button className={styles.updateBtn} onClick={onUpdateClick}>
                 Update Role Permissions{" "}
               </button>
