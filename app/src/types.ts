@@ -100,6 +100,7 @@ interface TakeAwayConfig {
 
 export interface Kitchen {
   activeAccount?: boolean;
+  accessManagementEnabled: boolean;
   dishes?: Record<string, any>;
   hours?: Hours;
   kitchenId: string;

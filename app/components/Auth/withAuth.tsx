@@ -6,6 +6,7 @@ import Loading from "../Loading";
 import { useUser } from "../../context/UserContext";
 import { useKitchen } from "../../context/KitchenContext";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { Kitchen } from "@/app/src/types";
 
 interface WithAuthProps {}
 
@@ -59,47 +60,10 @@ const withAuth = <P extends WithAuthProps>(
                 const docRef = doc(db, "kitchens", kitchenId);
                 getDoc(docRef).then((kitchenDocSnap) => {
                   if (kitchenDocSnap.exists()) {
-                    const kitchenName = kitchenDocSnap?.data()?.kitchenName
-                      ? kitchenDocSnap?.data()?.kitchenName
-                      : null;
-                    const stripe_customer_id = kitchenDocSnap?.data()
-                      ?.stripe_customer_id
-                      ? kitchenDocSnap?.data()?.stripe_customer_id
-                      : null;
-
-                    const kitchenAddress = kitchenDocSnap?.data()?.fullAddress
-                      ? kitchenDocSnap?.data()?.fullAddress
-                      : null;
-                    const email = kitchenDocSnap?.data()?.email
-                      ? kitchenDocSnap?.data()?.email
-                      : null;
-                    const phoneNumber = kitchenDocSnap?.data()?.phoneNumber
-                      ? kitchenDocSnap?.data()?.phoneNumber
-                      : null;
-                    const abn = kitchenDocSnap?.data()?.abn
-                      ? kitchenDocSnap?.data()?.abn
-                      : null;
-                    const orderCount = kitchenDocSnap?.data()?.orderCount
-                      ? kitchenDocSnap?.data()?.orderCount
-                      : 0;
-                    const orderIdInitials = kitchenDocSnap?.data()
-                      ?.orderIdInitials
-                      ? kitchenDocSnap?.data()?.orderIdInitials
-                      : null;
-
-                    setKitchen({
-                      kitchenId,
-                      stripe_customer_id,
-                      kitchenName,
-                      fullAddress: kitchenAddress,
-                      email,
-                      phoneNumber,
-                      abn,
-                      orderCount,
-                      orderIdInitials,
-                    });
+                    setKitchen(
+                      kitchenDocSnap?.data() as Kitchen
+                    );
                   }
-
                   setAuthenticated(true);
                 });
               }
