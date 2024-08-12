@@ -8,7 +8,7 @@ import Image from "next/image";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import {
-  ActiveSubscribtionDetails,
+  ActiveSubscriptionDetails,
   ChosenSubscriptionDetails,
 } from "@/app/src/types";
 import { capitalizeFirstLetter } from "../overview/components/utils/CapitalizeFirstLetter";
@@ -32,7 +32,7 @@ const Subscriptions = () => {
     useState<ChosenSubscriptionDetails>();
 
   const [activeSubscriptionDetails, setActiveSubscriptionDetails] =
-    useState<ActiveSubscribtionDetails | null>(null);
+    useState<ActiveSubscriptionDetails | null>(null);
 
   const [isCancelSubscriptionModalOpen, setIsCancelSubscriptionModalOpen] =
     useState(false);
@@ -221,7 +221,7 @@ const Subscriptions = () => {
             setActiveSubscriptionDetails(activeSubscriptionDetailsDB);
           } else {
             setChosenSubscriptionDetails({} as ChosenSubscriptionDetails);
-            setActiveSubscriptionDetails({} as ActiveSubscribtionDetails);
+            setActiveSubscriptionDetails({} as ActiveSubscriptionDetails);
           }
         })
         .catch((err) => {
