@@ -120,7 +120,7 @@ const Overview = () => {
                   <DataTable
                     firstColumnTitle="Top 5 categories"
                     secondColumnTitle="Count"
-                    thirdColumnTitle="Gross"
+                    thirdColumnTitle="Net"
                     secondColumnSymbol=""
                     thirdColumnSymbol="$"
                     dataObj={getTopFive(allCategories)}
@@ -131,7 +131,7 @@ const Overview = () => {
                   <DataTable
                     firstColumnTitle="Top 5 items"
                     secondColumnTitle="Count"
-                    thirdColumnTitle="Gross"
+                    thirdColumnTitle="Net"
                     thirdColumnSymbol="$"
                     dataObj={getTopFive(allDishes)}
                     loading={loading}
