@@ -189,7 +189,7 @@ const BusinessDetails = () => {
     try {
       const userDetails = await getUserDetailsAPI(kitchenId);
       const filteredUserData = userDetails.filter(
-        (user: User) => !user.owner && !user.secondaryContact
+        (user: User) => !user.owner && !user.secondaryContact && user.userType === "admin"
       );
       setUserData(filteredUserData);
     } catch (err) {
@@ -754,22 +754,10 @@ const BusinessDetails = () => {
               );
             })}
 
-          {ownerData && ownerData.length <= 0 && (
-            <div className={styles.button}>
-              <button
-                className={styles.button_container}
-                onClick={() => handleContactModal("owner")}
-              >
-                <Image
-                  className={styles.icon}
-                  src="/icons/plus.svg"
-                  height={18}
-                  width={18}
-                  alt="Create a Secondary Contact"
-                />
-                <span>Create a Owner</span>
-              </button>
-            </div>
+          {ownerData && ownerData?.length === 0 && (
+            <div className={styles.subContainer}>
+            <p className={styles.bodyText}>Not provided</p>
+          </div>
           )}
         </div>
         <p className={styles.commonTitle}>Secondary contact</p>
