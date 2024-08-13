@@ -15,8 +15,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
   return (
     <div className={styles.table}>
       <div className={styles.header}>
-          <div className={styles.headerItem}>Name/Nickname</div>
-          <div className={styles.headerItem }> Role </div>
+          <div className={styles.headerName}>Name/Nickname</div>
+          <div className={styles.headerRole }> Role </div>
     
       </div>
       <div className={styles.body}>

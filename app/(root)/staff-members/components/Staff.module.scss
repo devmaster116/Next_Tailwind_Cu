@@ -16,10 +16,16 @@
         line-height: 24px;
         border-bottom: 1px solid var(--gray-200);
         color: var(--gray-800);
-        .headerItem {
+        .headerName, .headerRole {
             display: flex;
             flex: 1 1 0;
         }
+        @media only screen and (max-width: 600px) {
+            .headerName {
+                flex:2 1 0;
+            }
+        }
+      
     }
 
     .body {
@@ -36,11 +42,13 @@
                 display: flex;
                 flex: 1 1 0;
                 gap: 8px;
-    
+                @media only screen and (max-width: 600px) {
+                    flex:2 1 0;
+                  }
                 .avatar {
                     display: flex;
-                    align-items: center;
                     justify-content: center;
+                    align-items: center;
                     min-width: 48px;
                     min-height: 48px;
                     font-weight: 500;
@@ -52,6 +60,17 @@
                     color:black;
                     background-color: var(--gray-200);
                 }
+                @media only screen and (max-width: 600px) {
+                    .avatar {
+                        min-width: 40px;
+                        min-height: 40px;
+                        width: 40px;
+                        height: 40px;
+                        color: var(--gray-600);
+                        font-size: 16px;
+                        line-height: 24px;
+                    }
+                }
                 .content {
                     display: flex;
                     flex-direction: column;
@@ -60,13 +79,22 @@
                         font-weight: 600;
                         font-size: 18px;
                         line-height: 28px;
-                        color: black
+                        color: black;
+                        @media only screen and (max-width: 600px) {
+                            color: var(--gray-900);
+                            font-size: 16px;
+                            line-height: 24px;
+                          }
                     }
                     .nickName{
                         font-weight: 400;
                         font-size: 16px;
                         line-height: 24px;
                         color: var(--gray-600);
+                        @media only screen and (max-width: 600px) {
+                            font-size: 14px;
+                            line-height: 20px;
+                          }
                     }
                 }
             }
@@ -77,10 +105,17 @@
                 font-size: 18px;
                 line-height: 28px;
                 color: var(--gray-700);
+                @media only screen and (max-width: 600px) {
+                    font-size: 16px;
+                    line-height: 24px;
+                  }
             }
         }
         .row:hover {
             background-color: var(--gray-200);
+            .avatar {
+                color: black;
+            }
         }
     }
 
