@@ -153,3 +153,21 @@ label: string;
 description: string;
 enabled: boolean;
 }
+
+// ==== type for config
+
+export interface ConfigStaffMember {
+  displayName: string
+  firstName: string
+  lastName: string
+  id: string
+  passcode: string
+  roleID: string
+  roleName: string
+}
+export interface IConfig {
+  enabled: boolean
+  idleTime: number
+  passcodeEnabled: boolean
+  staffMembers: ConfigStaffMember[]
+}

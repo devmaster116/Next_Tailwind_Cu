@@ -139,7 +139,19 @@ export default function Sidebar({
                   />
                 }
               />
-             
+               <MenuItem
+                name="Staff Members"
+                route="/staff-members"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/permissions.svg"
+                    height={18}
+                    width={18}
+                    alt="Business Details icon"
+                  />
+                }
+              />
             </div>
           </div>
           <div className={styles.logoContainer}>

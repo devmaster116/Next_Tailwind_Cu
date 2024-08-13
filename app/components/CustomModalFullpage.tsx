@@ -78,6 +78,40 @@ const CustomModalFullPage = ({
           </div>
         </div>
       )}
+      {type === "next" && (
+        <div className={`${styles.modalOverlay} `}>
+          <div
+            className={`${styles.modal} ${isExiting ? styles.exit : ""}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.titleDiv}>
+              <button className={styles.titleAddCloseBtn} onClick={onClose}>
+                <Image
+                  className={styles.icon}
+                  src="/icons/close.svg"
+                  height={12}
+                  width={12}
+                  alt="Close Button"
+                  style={{
+                    filter:
+                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
+                  }}
+                />
+              </button>
+              <div className={styles.titleText}>{title}</div>
+              <button onClick={onUpdateClick} className={styles.saveBtn}>
+                Next
+              </button>
+            </div>
+            <div className={styles.modalContent}>{content}</div>
+            <div className={styles.modalFooter}>
+              <button onClick={onUpdateClick} className={styles.updateBtn}>
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {type === "view" && (
         <div className={`${styles.modalOverlay} `}>
           <div
