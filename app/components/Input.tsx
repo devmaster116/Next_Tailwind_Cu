@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styles from "./input.module.scss";
 import Image from "next/image";
 
@@ -13,7 +13,8 @@ type InputProps = {
   type?: string | undefined;
 };
 
-const Input: React.FC<InputProps> = ({
+const Input = forwardRef<HTMLInputElement, InputProps>((
+  {
   value,
   handleInputChange,
   handleBlurField,
@@ -22,7 +23,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   maxLength,
   type,
-}) => {
+},ref) => {
   return (
     <div className={styles.inputContainer}>
       <input
@@ -35,6 +36,7 @@ const Input: React.FC<InputProps> = ({
         className={`${styles.input} ${error ? styles.invalidInput : ""}`}
         disabled={loading}
         maxLength={maxLength}
+        ref={ref}
       />
       {error && (
         <div className={styles.inputErrorIcon}>
@@ -50,6 +52,7 @@ const Input: React.FC<InputProps> = ({
       {error && <p className={styles.errorLabel}>{error}</p>}
     </div>
   );
-};
+});
+Input.displayName = 'Input';
 
 export default Input;
