@@ -41,7 +41,7 @@ export default function Sidebar({
       <Link
         href={route}
         onClick={() => {
-          setter(oldVal => !oldVal);
+          setter((oldVal) => !oldVal);
           setMenuPageName(name);
         }}
         className={`${styles.menuItem} ${colorClass}`}
@@ -56,7 +56,7 @@ export default function Sidebar({
     <div
       className={styles.modalOverlay}
       onClick={() => {
-        setter(oldVal => !oldVal);
+        setter((oldVal) => !oldVal);
       }}
     />
   );
@@ -139,7 +139,9 @@ export default function Sidebar({
                   />
                 }
               />
-               <MenuItem
+             
+            </div>
+            <MenuItem
                 name="Staff Members"
                 route="/staff-members"
                 icon={
@@ -152,8 +154,8 @@ export default function Sidebar({
                   />
                 }
               />
-            </div>
-          </div>
+              </div>
+
           <div className={styles.logoContainer}>
             <h4>Account and Billing</h4>
             <div className={styles.menuItems}>
