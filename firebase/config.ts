@@ -1,5 +1,6 @@
 import { FirebaseApp, FirebaseOptions, getApp, getApps, initializeApp } from "firebase/app";
 import "firebase/auth";
+import { getStorage } from "firebase/storage";
 import { Auth, getAuth } from "firebase/auth";
 import { Firestore, getFirestore } from "firebase/firestore";
 import { Functions, getFunctions, httpsCallable } from "firebase/functions";
@@ -68,5 +69,8 @@ if (jsonObject) {
   console.error("Firebase config is not valid.");
   throw Error("Config is not valid.");
 }
+// Get a reference to the storage service
+const storage = getStorage(app);
 
+export { storage };
 export { auth, functions, db, httpsCallable };

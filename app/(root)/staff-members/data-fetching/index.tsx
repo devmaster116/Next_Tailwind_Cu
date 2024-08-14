@@ -26,30 +26,6 @@ export const fetchPermissions = (callback: (permissions: any[]) => void) => {
   });
 };
 
-export const fetchConfigs = (callback: (staffconfigs: any[]) => void) => {
-  const q = query(collection(db, "configs"));
-    console.log("$$$$$$$$$$$",q);
-  // return onSnapshot(q, (querySnapshot:any) => {
-  //   const staffconfigs: any[] = [];
-  //   querySnapshot.forEach((doc:any) => {
-  //     const data = doc.data();
-  //     console.log(`Fetching staffconfigs from document ID: ${doc.id}`,data);
-  //     if (Array.isArray(data.configs)) {
-  //       data.configs.forEach((staffconfig:any) => {
-  //         staffconfigs.push({
-  //           id: staffconfig.id,
-  //           name: staffconfig.name,
-  //           description: staffconfig.description,
-  //         });
-  //       });
-  //     }
-  //   });
-  //   callback(staffconfigs);
-  //   console
-  // }, (error) => {
-  //   console.error("Error fetching staffconfig:", error);
-  // });
-};
 export const subscribeRoles = (kitchenId: string | null, callback: (data: { rolesList: any[], ownerDetails: any }) => void) => {
   if (!kitchenId) {
     console.error("Kitchen ID is required but was not provided.");

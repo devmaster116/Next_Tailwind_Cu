@@ -21,10 +21,10 @@ const CustomModalFullPage = ({
   content: React.ReactElement;
   cancelButtonText?: string;
   confirmButtonText?: string;
-  onUpdateClick: MouseEventHandler;
+  onUpdateClick: ()=>void;
   type?: string;
   updateButtonText?: string;
-  onDeleteClick: MouseEventHandler;
+  onDeleteClick: () => void; 
   isExiting: boolean;
 }) => {
   const [deleteModal, setDeleteModal] = useState(false);

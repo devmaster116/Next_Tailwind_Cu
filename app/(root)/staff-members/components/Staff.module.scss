@@ -4,13 +4,13 @@
     border-radius: 12px;
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
     min-width: 342px;
-
+    background-color: #fff;
     .header {
         display: flex;
         width: 100%;
         align-items: center;
         padding: 12px;
-        background-color: var(--gray-200);
+        background-color: var(--gray-50);
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
@@ -37,11 +37,11 @@
             width:100%;
             align-items: center;
             padding: 12px;
-
+            border-bottom: 1px solid var(--gray-200);
             .leftItem {
                 display: flex;
                 flex: 1 1 0;
-                gap: 8px;
+                gap: 12px;
                 @media only screen and (max-width: 600px) {
                     flex:2 1 0;
                   }
@@ -57,7 +57,7 @@
                     width: 48px;
                     height: 48px;
                     border-radius: 50%;
-                    color:black;
+                    color: var(--gray-600);
                     background-color: var(--gray-200);
                 }
                 @media only screen and (max-width: 600px) {
@@ -74,7 +74,6 @@
                 .content {
                     display: flex;
                     flex-direction: column;
-                    gap: 4px;
                     .fullName {
                         font-weight: 600;
                         font-size: 18px;
@@ -112,7 +111,8 @@
             }
         }
         .row:hover {
-            background-color: var(--gray-200);
+            background-color: var(--gray-50);
+            cursor: pointer;
             .avatar {
                 color: black;
             }

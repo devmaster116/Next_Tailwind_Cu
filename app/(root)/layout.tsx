@@ -1,4 +1,7 @@
 import "../../app/globals.scss";
+import "../../app/globals.css";
+import 'react-modern-drawer/dist/index.css'
+import 'react-toastify/dist/ReactToastify.css';
 import SidebarMenuLayout from "../components/SidebarMenuLayout";
 import { Urbanist } from "next/font/google";
 import Navbar from "../components/Navbar";
