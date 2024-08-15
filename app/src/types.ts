@@ -140,7 +140,7 @@ export interface User {
 }
 
 export interface RoleInfo {
-  id: string; // Use ID to uniquely identify roles
+  id: string;
   roles: string[];
   access: string;
   staff: number;
@@ -149,8 +149,22 @@ export interface RoleInfo {
 }
 
 export interface Permission {
-id: string;
-label: string;
-description: string;
-enabled: boolean;
+  id: string;
+  label: string;
+  description: string;
+  enabled: boolean;
+}
+
+export interface SelectedVariantsForDishData {
+  category: string;
+  dishName: string;
+  variantCombination: string;
+  count: number;
+  totalPriceWithVariants: number;
+}
+
+export interface ModifierItemInsightsData {
+  variantCombination: string;
+  count: number;
+  totalPriceWithVariants: number;
 }

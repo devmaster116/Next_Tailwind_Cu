@@ -8,7 +8,11 @@ import DateRangeSelectorModal from "../overview/components/utils/DateRangeSelect
 import { useKitchen } from "@/app/context/KitchenContext";
 import DataError from "../overview/components/DataError";
 import SalesData from "../overview/components/SalesData";
-import { Dishes } from "@/app/src/types";
+import {
+  Dishes,
+  ModifierItemInsightsData,
+  SelectedVariantsForDishData,
+} from "@/app/src/types";
 import DataTable from "../overview/components/DataTable";
 import "../overview/components/DatePicker.scss";
 import { getDishStats } from "./utils/commonUtils";
@@ -26,9 +30,18 @@ const ItemSales = () => {
     setSelectedOption,
   } = useReportDate();
 
-  const [noSales, setNoSales] = useState<boolean>(false);
-  const { kitchen } = useKitchen();
+  const { ordersData } = useReportDataContext();
+  const total_net_sales = ordersData?.[0]?.total_net_sales || 0;
 
+  const [noSales, setNoSales] = useState<boolean>(false);
+  const [isModifiersModalOpen, setIsModifiersModalOpen] = useState(false);
+  const [dishName, setDishName] = useState<string>("");
+  const [totalModifierCount, setTotalModifierCount] = useState<number>(0);
+  const [matchedDishes, setMatchedDishes] = useState<
+    ModifierItemInsightsData[]
+  >([]);
+
+  const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
 
   const {
@@ -38,6 +51,7 @@ const ItemSales = () => {
     setCustomDate,
     allDishes,
     advancedReportingError,
+    selectedVariants,
   } = useFetchReports(
     kitchenId,
     reportStartDate,
@@ -52,6 +66,52 @@ const ItemSales = () => {
     mostPopular: null,
     highestNetSale: null,
   });
+
+  console.log("selected guy ==>", selectedVariants);
+  console.log("all dishes==>", allDishes);
+
+  const handleRowClick = (dishName: any) => {
+    // Set matched dishes based on dishName
+    const matchedDishes = getMatchingDishes(dishName, selectedVariants);
+    setMatchedDishes(
+      matchedDishes.map(dish => ({
+        ...dish,
+        variantCombination:
+          dish.variantCombination === "" ? "Regular" : dish.variantCombination,
+      }))
+    );
+
+    // Calculate and set the total modifier count
+    const totalCount = getTotalModifierCount(matchedDishes);
+    setTotalModifierCount(totalCount);
+
+    // Set dish name and open the modal, but wait until the other states are set
+    setDishName(dishName);
+  };
+
+  const getMatchingDishes = (
+    dishName: string,
+    dishes: SelectedVariantsForDishData[]
+  ): ModifierItemInsightsData[] => {
+    return dishes
+      .filter(dish => dish.dishName === dishName)
+      .map(({ dishName, category, ...rest }) => rest);
+  };
+
+  console.log(" matchedDishes====>", matchedDishes);
+  console.log(" totalModifierCount====>", totalModifierCount);
+
+  function getTotalModifierCount(dishes: ModifierItemInsightsData[]): number {
+    return dishes.reduce((total, dish) => total + dish.count, 0);
+  }
+
+  useEffect(() => {
+    console.log("hello 1");
+    if (dishName && totalModifierCount >= 0) {
+      console.log("dishname total", dishName, totalModifierCount);
+      setIsModifiersModalOpen(true);
+    }
+  }, [dishName, totalModifierCount, matchedDishes]);
 
   useEffect(() => {
     if (loading) {
@@ -79,6 +139,8 @@ const ItemSales = () => {
     }
   }, [loading, allDishes]);
 
+  console.log("ALL DISHES +=====>", allDishes);
+
   return (
     <>
       <DateRangeSelectorModal
@@ -105,6 +167,19 @@ const ItemSales = () => {
             <DataError errorMessage="Error retrieving item data" />
           ) : !noSales ? (
             <>
+              <ModifiersModal
+                title="Item Insights"
+                dishName={dishName}
+                netSales={total_net_sales}
+                show={isModifiersModalOpen}
+                onClose={() => setIsModifiersModalOpen(false)}
+                customDate={customDate}
+                selectedOption={selectedOption}
+                totalModifierCount={totalModifierCount}
+                numberOfModifiers={matchedDishes.length}
+                modifiersForDish={matchedDishes}
+              />
+
               <div className={styles.salesDataContainer}>
                 <SalesData
                   title="Most Popular"
@@ -130,6 +205,7 @@ const ItemSales = () => {
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
+                onRowClick={handleRowClick}
               />
             </>
           ) : (
