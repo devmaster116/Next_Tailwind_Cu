@@ -18,7 +18,7 @@ export const UserRole = () => {
                 handleGoBack={handlePreviousStep}
             />
             <Fragment>
-                <Form.Card>
+                {/* <Form.Card> */}
                     <Form.Header
                         title="Assign Role"
                         description="Manage Aifansopermissions."
@@ -26,7 +26,7 @@ export const UserRole = () => {
                     <div className="mt-5 flex flex-col gap-4">
                     
                     </div>
-                </Form.Card>
+                {/* </Form.Card> */}
             </Fragment>
         </div>
     )

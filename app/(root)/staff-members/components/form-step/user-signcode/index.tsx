@@ -18,7 +18,7 @@ export const UserSignCode = () => {
                 handleGoBack={handlePreviousStep}
             />
             <Fragment>
-                <Form.Card>
+                {/* <Form.Card> */}
                     <Form.Header
                         title="Generate Code"
                         description="This code will be used by Aifanso to sign in to POS."
@@ -26,7 +26,7 @@ export const UserSignCode = () => {
                     <div className="mt-5 flex flex-col gap-4">
                     
                     </div>
-                </Form.Card>
+                {/* </Form.Card> */}
             </Fragment>
         </div>
     )

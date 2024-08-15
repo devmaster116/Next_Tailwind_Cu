@@ -1,8 +1,8 @@
-import { Card } from './Card'
+import { StepStatus } from './StepStatus'
 import { Header } from './Header'
 
 const components = {
-  Card,
+  StepStatus,
   Header
 }
 
