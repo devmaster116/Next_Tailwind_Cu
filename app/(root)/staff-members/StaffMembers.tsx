@@ -85,6 +85,9 @@ useEffect(() => {
     if (storedModalFlag !== null) {
       setOpenDeleteModal(JSON.parse(storedModalFlag));
     }
+    console.log("2222222222222");
+    console.log("33332222222222222",storedToastFlag)
+    console.log("33332222222222222",storedModalFlag)
   }, []); 
 
   // Step 3: Save values back to localStorage when they change

@@ -30,7 +30,6 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
 
     localStorage.setItem("toastflag", 'true');
     localStorage.setItem("staffDelflag", JSON.stringify(openDeleteModal));
-
     // console.log("toastMessage",toastMessage)
     // toast.success("Alfanse Was Deleted As Staff Member", {
     //   style: {
