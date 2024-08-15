@@ -55,7 +55,7 @@ export type ChosenSubscriptionDetails = {
   products: SubscriptionProduct[];
 };
 
-export type ActiveSubscribtionDetails = {
+export type ActiveSubscriptionDetails = {
   activeProducts: string[];
   addonNames: string[];
   cancel_at_period_end: boolean;
