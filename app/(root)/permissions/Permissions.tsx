@@ -115,7 +115,7 @@ const Permissions = () => {
     }));
   };
   const handleDeleteRole = async () => {
-    console.log('deleted triggered')
+    // console.log('deleted triggered')
     if (!roleToEdit) return;
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
@@ -222,7 +222,7 @@ const Permissions = () => {
         // Update the roles document
         await updateDoc(roleDocRef, { roles: updatedRoles });
         setRoles(updatedRoles);
-        console.log("Role updated successfully:", updatedRole);
+        // console.log("Role updated successfully:", updatedRole);
       } else {
         console.error("Roles document not found");
       }
@@ -302,20 +302,7 @@ const Permissions = () => {
     });
     () => unsubscribe()
   }, [])
-  useEffect(() => {
-    const fetchRolesData = async () => {
-      try {
-        const { rolesList, ownerDetails } = await fetchRoles(permissions);
-        setRoles(rolesList);
-        // setOwnerDetails(ownerDetails);
-      } catch (error) {
-        console.error("Failed to fetch roles:", error);
-      }
-    };
-
-    fetchRolesData();
-  }, [permissions]);
-
+  
   const handleSubmit = async () => {
     setErrors({});
     if (!kitchenId) {

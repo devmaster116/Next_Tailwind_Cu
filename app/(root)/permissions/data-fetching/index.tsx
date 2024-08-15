@@ -92,8 +92,8 @@ export const addRoleToExistingDocument = async (newRole: any,kitchenId:string) =
     if (docSnap.exists()) {
       const docData = docSnap.data();
       const existingRoles = docData.roles || [];
-      console.log("Existing roles before update:", existingRoles);
-      console.log("New role to add:", newRole);
+      // console.log("Existing roles before update:", existingRoles);
+      // console.log("New role to add:", newRole);
 
       // Ensure all fields in newRole are defined
       const sanitizedNewRole = {
@@ -106,10 +106,10 @@ export const addRoleToExistingDocument = async (newRole: any,kitchenId:string) =
       };
 
       const updatedRoles = [...existingRoles, sanitizedNewRole];
-      console.log("Updated roles:", updatedRoles);
+      // console.log("Updated roles:", updatedRoles);
 
       await updateDoc(docRef, { roles: updatedRoles });
-      console.log("Role added successfully!");
+      // console.log("Role added successfully!");
     } else {
       console.log("No such document!");
     }
