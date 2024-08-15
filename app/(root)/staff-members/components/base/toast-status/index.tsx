@@ -12,11 +12,11 @@ type Props = {
   label?: string
 }
 
-export const Notification = (props: Props) => {
+export const ToastStatus = (props: Props) => {
   return (
     <div className="alert alert-custom alert-outline-2x alert-outline-primary fade show mb-5" role="alert">
       <div className="alert-icon"><i className="flaticon-warning"></i></div>
-      <div className="alert-text">{props?.label?props.label: ""}</div>
+      <div className="alert-text">{props?.label?props.label: ""}dfsfdsfsdfsdfsdfds</div>
       <div className="alert-close">
           <button type="button" className="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true"><i className="ki ki-close"></i></span>

@@ -8,7 +8,6 @@ import StaffView from '../components/staff-view';
 import Drawer from 'react-modern-drawer'
 import CustomModal from '@/app/components/CustomModal';
 import { ToastContainer, toast } from 'react-toastify';
-import { Notification } from './base/notification';
 interface StaffProps {
   staffList: IConfig[];
 }
@@ -33,15 +32,15 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
     localStorage.setItem("staffDelflag", JSON.stringify(openDeleteModal));
 
     // console.log("toastMessage",toastMessage)
-    toast.success("Alfanse Was Deleted As Staff Member", {
-      style: {
-        width: '100% !important', 
-        margin: '0 auto', 
-        backgroundColor: '#16B364 !important', 
-        color: 'white !important' /* Customize text color */
-      }
-    });
-    setToastMessage(true)
+    // toast.success("Alfanse Was Deleted As Staff Member", {
+    //   style: {
+    //     width: '100% !important', 
+    //     margin: '0 auto', 
+    //     backgroundColor: '#16B364 !important', 
+    //     color: 'white !important' /* Customize text color */
+    //   }
+    // });
+    // setToastMessage(true)
   }
  
   const togglePanel = (item:ConfigStaffMember) => {

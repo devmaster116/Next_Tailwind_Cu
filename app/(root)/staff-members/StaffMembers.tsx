@@ -9,6 +9,7 @@ import { Kitchen, IConfig, User } from "@/app/src/types";
 import { FormProvider } from "@/app/context/StaffForm";
 import { FormStep } from "./components/form-step";
 import { FormStepProvider } from "@/app/context/StaffFormStep";
+import { ToastStatus  } from "./components/base/toast-status";
 import {
   addDoc,
   collection,
@@ -124,7 +125,9 @@ useEffect(() => {
 
   return (
     <>
-
+      {toastMessage&& openDeleteModal&&(
+        <ToastStatus label={"aa"} cls="bb" />
+      )}
       <div className={styles.main_container}>
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Staff Members</h1>
