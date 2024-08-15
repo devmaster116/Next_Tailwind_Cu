@@ -100,6 +100,7 @@ interface TakeAwayConfig {
 
 export interface Kitchen {
   activeAccount?: boolean;
+  accessManagementEnabled: boolean;
   dishes?: Record<string, any>;
   hours?: Hours;
   kitchenId: string;
@@ -136,4 +137,20 @@ export interface User {
   mobileNumber?: string;
   isTransferOwnershipReview?: boolean | null;
   emailVerified?: boolean;
+}
+
+export interface RoleInfo {
+  id: string; // Use ID to uniquely identify roles
+  roles: string[];
+  access: string;
+  staff: number;
+  name: string;
+  permissions: Permission[];
+}
+
+export interface Permission {
+id: string;
+label: string;
+description: string;
+enabled: boolean;
 }

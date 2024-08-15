@@ -1,0 +1,173 @@
+.table {
+    width: 100%;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+
+    .header{
+        display: flex;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 12px 24px;
+        padding-inline: 30px;
+        text-align: left;
+        font-weight: 700;
+        width: 100%;
+        gap: 10px;
+        color: var(--gray-600);
+        .role {
+            width: 20%;
+            min-width: 20%;
+           
+        }
+        .access{
+            width: 50%;
+            min-width: 50%;
+
+            
+        }
+        .staff{
+            width: 10%;
+            min-width: 10%;
+        }
+        .actions{
+            width: 20%;
+            min-width: 20%;
+        }
+        .roleandAccess{
+            display: none;
+        }
+        @media only screen and (max-width: 600px) {
+            padding: 12px 16px;
+            .role,.access,.staff,.actions{
+                display: none;
+            }
+            .roleandAccess{
+                display: block;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: 700;
+
+            }
+            
+        }
+    }
+     .row {
+        display: flex;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 16px 24px;
+        text-align: left;
+        gap: 10px;
+        min-height: 72px;
+        &:last-child{
+            border-bottom: none;
+        }
+        .role {
+            width: 20%;
+            min-width: 20%;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--gray-900);
+        }
+        .access{
+            width: 50%;
+            min-width: 50%;
+            font-weight: 400;
+            font-size: 18px;
+            color: var(--gray-600);
+        }
+        .staff{
+            width: 10%;
+            min-height: 10%;
+            span{
+                display: none;
+            }
+
+        }
+        .actions{
+            width: 20%;
+            min-width: 20%;
+            text-align: end;
+            button{
+                font-size: 18px;
+            }
+        }
+        .mobileRow{
+            display: none;
+        }
+        @media only screen and (max-width: 600px) {
+            padding: 16px 12px;
+            .role,.staff,.actions,.access{
+                display: none;
+            }
+             .mobileRow{
+                width: 100%;
+                display: block;
+                .mobileRowHeader{
+                    display: flex;
+                    margin-bottom: 4px;
+                    .actions{
+                        display: block;
+                        button{
+                            font-size: 16px;
+                        }
+                    }
+                }
+                .nameAndStaff{
+                    display: flex;
+                    width: 100%;
+                }
+                .role{
+                    width: fit-content;
+                    margin-right: 8px;
+                    font-size: 16px;
+                    display: block;
+                    margin-bottom: 4px;
+                    min-width: fit-content;
+                }
+                .access{
+                    font-size: 14px;
+                    display: block;
+                    width: 100%;
+                }
+                .staff{
+                    display: block;
+                    background-color: var(--gray-100);
+                    width: fit-content;
+                    border-radius: 16px;
+                    padding: 2px 8px;
+                    height: fit-content;
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: var(--gray-700);
+                    span{
+                        display: inline-block;
+                    }
+                }
+                
+            }
+            .actions{
+                display: none;
+
+            }
+        }
+    }
+    .header {
+        background-color: var(--gray-50);
+        border-top-right-radius:12px ;
+        border-top-left-radius:12px ;
+    }
+    .button {
+        border: none;
+        color: var(--primary-purple-700);
+        width: 100%;
+        cursor: pointer;
+        font-weight: 600;
+        text-align: right;
+        &:hover{
+            text-decoration: underline;
+        }
+       
+    }
+}
+
