@@ -39,15 +39,13 @@ import styles from "./StaffMember.module.scss";
 import { FirebaseError } from "firebase/app";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { useForm } from "@/app/hooks/useForm";
+import { useBanner } from "@/app/context/BannerContext";
 
 const StaffMembers = () => {
-
+  const { banner, setBanner } = useBanner()
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isExiting, setIsExiting] = useState(false);
-
-  const [toastMessage, setToastMessage] = useState<boolean>(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 
   const [addNewStaffModalOpen, setAddNewStaffModalOpen] = useState(false);
 
@@ -76,26 +74,10 @@ const StaffMembers = () => {
     () => unsubscribe()
   }, []);
 
-useEffect(() => {
-    const storedToastFlag = localStorage.getItem("toastflag");
-    if (storedToastFlag !== null) {
-      setToastMessage(JSON.parse(storedToastFlag));
-    }
-    const storedModalFlag = localStorage.getItem("staffDelflag");
-    if (storedModalFlag !== null) {
-      setOpenDeleteModal(JSON.parse(storedModalFlag));
-    }
-    console.log("2222222222222");
-    console.log("33332222222222222",storedToastFlag)
-    console.log("33332222222222222",storedModalFlag)
-  }, []); 
 
-  // Step 3: Save values back to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem("toastflag", JSON.stringify(toastMessage));
-    localStorage.setItem("staffDelflag", JSON.stringify(openDeleteModal));
-  }, [toastMessage, openDeleteModal]); // Run this effect whenever these states change
-
+  const handleClose = () => {
+    setBanner(false)
+  }
 
   const plusIcon = (
     <svg
@@ -128,8 +110,8 @@ useEffect(() => {
 
   return (
     <>
-      {toastMessage&& openDeleteModal&&(
-        <ToastStatus label={"aa"} cls="bb" />
+      {banner && (
+        <ToastStatus label={"Alfonso Was Deleted As Staff Member"} onClose={handleClose}/>
       )}
       <div className={styles.main_container}>
         <div className={styles.pageHeader}>

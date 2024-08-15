@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge"
-import { Typography } from "../typography"
+import { Avatar } from "../avatar"
+import { CancelSvg } from "@/app/assets/svg/whiteCancel"
 
 type ClassOverrideProps = {
   container?: string
@@ -8,20 +9,19 @@ type ClassOverrideProps = {
 }
 
 type Props = {
-  cls: string
   label?: string
+  onClose?: () => void
 }
 
 export const ToastStatus = (props: Props) => {
+
   return (
-    <div className="alert alert-custom alert-outline-2x alert-outline-primary fade show mb-5" role="alert">
-      <div className="alert-icon"><i className="flaticon-warning"></i></div>
-      <div className="alert-text">{props?.label?props.label: ""}dfsfdsfsdfsdfsdfds</div>
-      <div className="alert-close">
-          <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true"><i className="ki ki-close"></i></span>
-          </button>
-      </div>
+    <div className="flex justify-betwee items-center px-4 justfy-center py-2 w-full bg-green-500 gap-4" role="alert">
+      <p className="text-base font-semibold text-white">{props?.label?props.label: ""}</p>
+      <Avatar 
+        icon={<CancelSvg />}
+        onClick={props?.onClose}
+      />
   </div>
   )
 }

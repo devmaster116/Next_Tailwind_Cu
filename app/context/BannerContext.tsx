@@ -2,8 +2,8 @@
 import { createContext, useState, ReactNode, useContext } from "react";
 
 interface BannerContextType {
-  banner: Boolean | null;
-  setBanner: (any:null) => void;
+  banner: boolean | null;
+  setBanner: (status: boolean) => void;
 }
 
 const BannerContext = createContext<BannerContextType | undefined>(undefined);

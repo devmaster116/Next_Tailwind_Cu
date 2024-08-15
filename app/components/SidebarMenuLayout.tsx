@@ -4,6 +4,7 @@ import Head from "next/head";
 import Sidebar from "./Sidebar";
 import MenuBarMobile from "./MenuBarMobile";
 import styles from "./SidebarMenuLayout.module.scss";
+import { BannerProvider } from "../context/BannerContext";
 
 interface SidebarMenuLayoutProps {
   pageTitle?: string;
@@ -48,7 +49,9 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
             setter={setShowSidebar}
             setMenuPageName={setMenuPageName}
           />
-          <div className={styles.contentArea}>{children}</div>
+          <BannerProvider>
+            <div className={styles.contentArea}>{children}</div>
+          </BannerProvider>
         </div>
       </div>
     </>

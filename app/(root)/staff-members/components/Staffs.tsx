@@ -8,38 +8,26 @@ import StaffView from '../components/staff-view';
 import Drawer from 'react-modern-drawer'
 import CustomModal from '@/app/components/CustomModal';
 import { ToastContainer, toast } from 'react-toastify';
+import { useBanner } from '@/app/context/BannerContext';
 interface StaffProps {
   staffList: IConfig[];
 }
 
 
 const Staffs: React.FC<StaffProps> = ({ staffList}) => {
+  const { setBanner } = useBanner()
   const [viewStaff, setViewStaff] = useState(false);
   const [staffItem,setStaffItem]=useState<ConfigStaffMember | undefined>(undefined)
   const [openDeleteModal, setOpenDeleteModal]=useState<boolean>(false)
-  const [toastMessage,setToastMessage] =useState<boolean>(false)
   const openDeleteStaffModal = () => {
     setOpenDeleteModal(!openDeleteModal)
   }
  
   const updateStaff = () =>{
      
-    setToastMessage(true)
     setViewStaff(!viewStaff);
     setOpenDeleteModal(!openDeleteModal)
-
-    localStorage.setItem("toastflag", 'true');
-    localStorage.setItem("staffDelflag", JSON.stringify(openDeleteModal));
-    // console.log("toastMessage",toastMessage)
-    // toast.success("Alfanse Was Deleted As Staff Member", {
-    //   style: {
-    //     width: '100% !important', 
-    //     margin: '0 auto', 
-    //     backgroundColor: '#16B364 !important', 
-    //     color: 'white !important' /* Customize text color */
-    //   }
-    // });
-    // setToastMessage(true)
+    setBanner(true)
   }
  
   const togglePanel = (item:ConfigStaffMember) => {
@@ -114,7 +102,6 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
           onDeleteModalOpen = {openDeleteStaffModal} 
         />
       </Drawer>
-
     </>
   );
 };
