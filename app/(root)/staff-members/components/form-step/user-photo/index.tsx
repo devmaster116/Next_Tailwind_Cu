@@ -19,7 +19,8 @@ export const UserPhoto = () => {
                 handleGoBack={handlePreviousStep}
             />
             <Fragment>
-                {/* <Form.Card> */}
+                
+                   <Form.StepStatus value={30} stepIndex={1}></Form.StepStatus>
                     <Form.Header
                         title="Add Profile Photo"
                         description="You can add a photo for Aifonso which will appear in the POS and in your admin potal."
@@ -27,7 +28,7 @@ export const UserPhoto = () => {
                     <div className="mt-5 flex flex-col gap-4">
                       <ImageUpload />
                     </div>
-                {/* </Form.Card> */}
+                
             </Fragment>
 
         </div>

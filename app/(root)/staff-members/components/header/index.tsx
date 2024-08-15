@@ -3,19 +3,23 @@ import styles from "../StaffModalFullPage.module.scss";
 import { useFormStep } from "@/app/hooks/useFormStep";
 type StaffModalHeaderProps = {
   title: string
-  handleGoForwardStep: () => void
-  handleGoBack: () => void
+  handleGoForwardStep?: () => void
+  handleGoBack?: () => void
+  handleClose?: () => void
+  handleSave?: () => void
 }
 export const StaffModalHeader = ({
   title,
   handleGoForwardStep,
-  handleGoBack
+  handleGoBack,
+  handleClose,
+  handleSave
 }: StaffModalHeaderProps) => {
   const { currentStep } = useFormStep();
   
   return (
     <div className={styles.titleDiv}>
-      <button className={styles.titleAddCloseBtn} onClick={handleGoBack}>
+      <button className={styles.titleAddCloseBtn} onClick={currentStep>1?handleGoBack:handleClose}>
           <Image
           className={styles.icon}
           src="/icons/close.svg"
@@ -31,7 +35,7 @@ export const StaffModalHeader = ({
       <div className={styles.titleText}>{title}</div>
       <button 
         className={styles.saveBtn} 
-        onClick={handleGoForwardStep}
+        onClick={currentStep==4?handleSave:handleGoForwardStep}
       >
         {currentStep==4?"Save":"Next"}
       </button>

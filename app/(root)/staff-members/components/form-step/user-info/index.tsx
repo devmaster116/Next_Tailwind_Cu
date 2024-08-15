@@ -42,62 +42,66 @@ export const  UserInfo=()=> {
       <StaffModalHeader 
         title={'Add Staff Member'}
         handleGoForwardStep={handleGoForwardStep}
-        handleGoBack={handlePreviousStep}
+        // handleClose={handleClose}
       />
       <Fragment>
-        
+        <Form.StepStatus value={30} stepIndex={1}></Form.StepStatus>
           <Form.Header
             title="Profile"
             description="Add your staff members name,nickname, email addres and mobile number."
           />
             
-             <form >
-                   <div>
-                    <p className="">First Name</p>
-                    <Input
-                      value={newUser.firstName}
-                      handleInputChange={(e) =>
-                        handleInputChangeField(e, setNewUser, setErrors, "firstName")
-                      }
-                      handleBlurField={(e) =>
-                        handleBlurField(
-                          e,
-                          setNewUser,
-                          setErrors,
-                          validateRequired,
-                          "Please enter a valid first name.",
-                          "firstName"
-                        )
-                      }
-                      error={errors.firstName}
-                      loading={loading}
-                      placeholder="Enter first name"
-                    />
-                  </div>
-                  <div>
-                    <p className="">Last Name</p>
-                    <Input
-                      value={newUser.lastName}
-                      handleInputChange={(e) =>
-                        handleInputChangeField(e, setNewUser, setErrors, "lastName")
-                      }
-                      handleBlurField={(e) =>
-                        handleBlurField(
-                          e,
-                          setNewUser,
-                          setErrors,
-                          validateRequired,
-                          "Please enter a valid last name.",
-                          "lastName"
-                        )
-                      }
-                      error={errors.name}
-                      loading={loading}
-                      placeholder="Enter last name"
-                    />
-                  </div>
-                  <div>
-                    <p className="">Nick Name(Display Name)</p>
+             <form className="mt-8">
+                   <div className="flex flex-col lg:flex-row justify-between gap-6 mb-7">
+                    <div className="flex flex-col">
+                        <p className="">First Name</p>
+                          <Input
+                            value={newUser.firstName}
+                            handleInputChange={(e) =>
+                              handleInputChangeField(e, setNewUser, setErrors, "firstName")
+                            }
+                            handleBlurField={(e) =>
+                              handleBlurField(
+                                e,
+                                setNewUser,
+                                setErrors,
+                                validateRequired,
+                                "Please enter a valid first name.",
+                                "firstName"
+                              )
+                            }
+                            error={errors.firstName}
+                            loading={loading}
+                            placeholder="Enter first name"
+                          />
+                    </div>
+                    <div className="flex flex-col ">
+                        <p className="">Last Name</p>
+                        <Input
+                          value={newUser.lastName}
+                          handleInputChange={(e) =>
+                            handleInputChangeField(e, setNewUser, setErrors, "lastName")
+                          }
+                          handleBlurField={(e) =>
+                            handleBlurField(
+                              e,
+                              setNewUser,
+                              setErrors,
+                              validateRequired,
+                              "Please enter a valid last name.",
+                              "lastName"
+                            )
+                          }
+                          error={errors.name}
+                          loading={loading}
+                          placeholder="Enter last name"
+                        />
+                    </div>
+                  
+                    </div>
+                   
+                  <div className="flex flex-col mb-6 gap-1">
+                    <p className="font-semibold text-base text-gray-700">Nick Name(Display Name)</p>
                     <Input
                       value={newUser.name}
                       handleInputChange={(e) =>
@@ -117,9 +121,10 @@ export const  UserInfo=()=> {
                       loading={loading}
                       placeholder="Default display name"
                     />
+                     <p className="text-base font-normal text-grey-600">If not set default is first name and last name initial</p>
                   </div>
-                  <div>
-                    <p className="">Email Address</p>
+                  <div className="flex flex-col mb-6 gap-1">
+                    <p className="font-semibold text-base text-gray-700">Email Address</p>
                     <Input
                       value={newUser.email}
                       handleInputChange={(e) =>
@@ -146,7 +151,7 @@ export const  UserInfo=()=> {
                     />
                   </div>
                   <div>
-                    <p className="">Mobile Number</p>
+                    <p className="font-semibold text-base text-gray-700">Mobile Number</p>
                     <Input
                       value={newUser.mobileNumber}
                       maxLength={10}
