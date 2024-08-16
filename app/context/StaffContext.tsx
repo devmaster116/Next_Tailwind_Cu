@@ -27,6 +27,7 @@ interface StaffContextType {
   
   error: boolean;
   setError: Dispatch<SetStateAction<boolean>>;
+
 }
 
 const StaffContext = createContext<StaffContextType | undefined>(

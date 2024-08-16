@@ -11,56 +11,24 @@ import { FormStep } from "./components/form-step";
 import { FormStepProvider } from "@/app/context/StaffFormStep";
 import { ToastStatus  } from "./components/base/toast-status";
 import {
-  addDoc,
   collection,
-  doc,
-  FieldValue,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  arrayRemove,
-  where,
   onSnapshot,
-  DocumentData,
-  QuerySnapshot,
+
 } from "firebase/firestore";
-import { auth, db } from "@/firebase/config";
-import {
-  handleBlurField,
-  handleInputChangeField,
-  validateEmail,
-  formatDate,
-  validateMobileNumber,
-} from "@/app/components/Auth/utils/helper";
-import { User as FirebaseUser } from "firebase/auth";
-import { useKitchen } from "../../context/KitchenContext";
+import { db } from "@/firebase/config";
+
 import styles from "./StaffMember.module.scss";
-import { FirebaseError } from "firebase/app";
-import { useFormStep } from "@/app/hooks/useFormStep";
-import { useForm } from "@/app/hooks/useForm";
+// import { useFormStep } from "@/app/hooks/useFormStep";
 import { useBanner } from "@/app/context/BannerContext";
+import { useFormStep } from "@/app/hooks/useFormStep";
 
 const StaffMembers = () => {
-  const { banner, setBanner } = useBanner()
+  const { banner, setBanner } = useBanner();
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isExiting, setIsExiting] = useState(false);
-
-  const [addNewStaffModalOpen, setAddNewStaffModalOpen] = useState(false);
-
+  const { statusModal, setStatusModal } = useFormStep()
+  // const {currentStep, setCurrentStep} = useFormStep()
+  // const {statusModal, setStatusModal} = useFormStep()
   const [staffConfig,setStaffConfig] = useState<IConfig[]>([])
-
-  const errorRef = useRef<HTMLParagraphElement | null>(null);
-
-  const handleCloseModal = (modalStateSetter:  React.Dispatch<React.SetStateAction<boolean>>) => {
-    setIsExiting(true);
-    setTimeout(() => {
-      modalStateSetter(false);
-      setIsExiting(false);
-      setErrors({});
-    }, 500);
-  };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "configs"), (snapShot) => {
@@ -99,14 +67,16 @@ const StaffMembers = () => {
   const ModalContainer = () => (
     <>
       <div className={styles.formContainer}>
-        <FormStepProvider>
-          <FormProvider>
+        {/* <FormStepProvider>
+          <FormProvider> */}
             <FormStep/>
-          </FormProvider>
-        </FormStepProvider>
+          {/* </FormProvider>
+        </FormStepProvider> */}
       </div>
     </>
   )
+
+  
 
   return (
     <>
@@ -118,7 +88,7 @@ const StaffMembers = () => {
           <h1 className={styles.pageTitle}>Staff Members</h1>
           <button
             className={styles.buttonPrimary}
-            onClick={() =>{ setAddNewStaffModalOpen(true);}}
+            onClick={()=> setStatusModal(true)}
           >
               <span style={{ marginRight: "8px" }}>{plusIcon}</span>
               Staff Member{" "}
@@ -131,20 +101,16 @@ const StaffMembers = () => {
             />
           )
         }
-        {addNewStaffModalOpen && (
+        {/* {addNewStaffModalOpen && ( */}
           <StaffModalFullPage
-            show={addNewStaffModalOpen}
+            show={statusModal}
             content={
               <div className={styles.formContainer}>
-                <FormStepProvider>
-                  <FormProvider>
-                    <ModalContainer/>
-                  </FormProvider>
-                </FormStepProvider>
+                <ModalContainer/>
             </div>
             }
           />
-        )}
+        {/* )} */}
 
         {loading && (
           <>

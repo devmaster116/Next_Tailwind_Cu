@@ -2,16 +2,15 @@ import React from "react";
 // @ts-ignore
 import { ProgressBar, Step } from "react-step-progress-bar";
 interface ProgressProps {
-  value: number,
   stepIndex: number
 }
 
-export function StepStatus({ value, stepIndex }: ProgressProps) {
+export function StepStatus({ stepIndex }: ProgressProps) {
   return (
     <div className="flex flex-col mb-8 ">
             <ProgressBar
                 filledBackground="#4CA30D"
-                percent={value}
+                percent={stepIndex*25}
               >
                 <Step transition="scale">
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (

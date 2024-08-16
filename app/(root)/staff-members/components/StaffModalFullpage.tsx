@@ -1,11 +1,11 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useContext, useState } from "react";
 import styles from "./StaffModalFullPage.module.scss";
 import Image from "next/image";
-import { useFormStep } from "@/app/hooks/useFormStep";
 import { twMerge } from "tailwind-merge";
+import { useFormStep } from "@/app/hooks/useFormStep";
 const StaffModalFullpage = ({
   show,
-  // onClose,
+  onClose,
   // title,
   content,
   // isExiting,
@@ -13,23 +13,17 @@ const StaffModalFullpage = ({
   // pageId
 }: {
   show: boolean;
-  // onClose: MouseEventHandler;
   // title: string;
   content: React.ReactElement;
   confirmButtonText?: string;
   // handleGoForwardStep: MouseEventHandler;
   updateButtonText?: string;
+  onClose?: MouseEventHandler;
   // pageId:number
   // isExiting: boolean;
 }) => {
-  const [isExitings, setIsExitings] = useState(false);
-  const handleClose = (e: React.MouseEvent) => {
-    setIsExitings(true);
-    setTimeout(() => {
-      setIsExitings(false);
-      // onClose(e); // Calls the parent onClose to actually hide the modal
-    }, 500); // Duration of the exit animation
-  };
+  // const {currentStep} =useFormStep()
+  // const {statusModal} =useFormStep()
 
   if (!show) {
     return null;
@@ -42,7 +36,7 @@ const StaffModalFullpage = ({
           "!bg-white !items-start",
         )}>
           <div
-            // className={`${styles.modal} ${isExiting ? styles.exit : ""}`}
+            // className={`${styles.modal} ${!statusModal ? styles.exit : ""}`}
             // onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.modalContent}>

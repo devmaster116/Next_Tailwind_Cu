@@ -31,21 +31,47 @@ export const  UserInfo=()=> {
     mobileNumber: "",
   });
   
-  const { handleNextStep, handlePreviousStep } = useFormStep()
+  const { handleNextStep, setStatusModal } = useFormStep()
 
-  function handleGoForwardStep() {
+
+  const handleGoForwardStep = async () => {
     handleNextStep()
-  }
+    const newErrors: { [key: string]: string } = {};
+    if (!validateRequired(newUser?.firstName)) {
+      newErrors.firstName = "Please enter a valid name.";
+    }
+    if (!validateRequired(newUser?.lastName)) {
+      newErrors.lastName = "Please enter a valid name.";
+    }
+    if (
+      !validateRequired(newUser?.emailAddress) ||
+      !validateEmail(newUser?.emailAddress)
+    ) {
+      newErrors.emailAddress = "Please enter a valid email address.";
+    }
+    if (
+      !validateRequired(newUser?.mobileNumber) ||
+      !validateMobileNumber(newUser?.mobileNumber)
+    ) {
+      newErrors.mobileNumber =
+        "Enter a valid mobile number containing 10 digits.";
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      handleNextStep()
+    }
+  };
 
   return (
     <div>
       <StaffModalHeader 
         title={'Add Staff Member'}
         handleGoForwardStep={handleGoForwardStep}
-        // handleClose={handleClose}
+        handleClose={() => setStatusModal(false)}
       />
       <Fragment>
-        <Form.StepStatus value={30} stepIndex={1}></Form.StepStatus>
+        {/* <Form.StepStatus stepIndex={1}></Form.StepStatus> */}
           <Form.Header
             title="Profile"
             description="Add your staff members name,nickname, email addres and mobile number."
@@ -92,7 +118,7 @@ export const  UserInfo=()=> {
                               "lastName"
                             )
                           }
-                          error={errors.name}
+                          error={errors.lastName}
                           loading={loading}
                           placeholder="Enter last name"
                         />
@@ -103,7 +129,7 @@ export const  UserInfo=()=> {
                   <div className="flex flex-col mb-6 gap-1">
                     <p className="font-semibold text-base text-gray-700">Nick Name(Display Name)</p>
                     <Input
-                      value={newUser.name}
+                      value={newUser.displayName}
                       handleInputChange={(e) =>
                         handleInputChangeField(e, setNewUser, setErrors, "displayName")
                       }
@@ -117,7 +143,7 @@ export const  UserInfo=()=> {
                           "displayName"
                         )
                       }
-                      error={errors.name}
+                      error={errors.displayName}
                       loading={loading}
                       placeholder="Default display name"
                     />
@@ -126,13 +152,13 @@ export const  UserInfo=()=> {
                   <div className="flex flex-col mb-6 gap-1">
                     <p className="font-semibold text-base text-gray-700">Email Address</p>
                     <Input
-                      value={newUser.email}
+                      value={newUser.emailAddress}
                       handleInputChange={(e) =>
                         handleInputChangeField(
                           e,
                           setNewUser,
                           setErrors,
-                          "email"
+                          "emailAddress"
                         )
                       }
                       handleBlurField={(e) =>
@@ -142,10 +168,10 @@ export const  UserInfo=()=> {
                           setErrors,
                           validateRequired,
                           "Please enter a valid email address.",
-                          "email"
+                          "emailAddress"
                         )
                       }
-                      error={errors.email}
+                      error={errors.emailAddress}
                       loading={loading}
                       placeholder="Enter email address"
                     />
@@ -187,4 +213,3 @@ export const  UserInfo=()=> {
     </div>
   )
 } 
-// export default withAuth(UserInfo);

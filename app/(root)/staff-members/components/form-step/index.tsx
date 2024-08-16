@@ -7,30 +7,27 @@ import { UserSignCode } from "./user-signcode";
 const steps = [
   {
     step: 1,
-    component: UserInfo
+    component: <UserInfo />
   },
   {
     step: 2,
-    component: UserPhoto
+    component: <UserPhoto />
   },
   {
     step: 3,
-    component: UserRole
+    component: <UserRole />
   },
   {
     step: 4,
-    component: UserSignCode
+    component: <UserSignCode />
   }
 ]
 
 export function FormStep() {
   const { currentStep } = useFormStep();
-
-  const step = steps.find(({ step }) => step === currentStep);
-
   return (
     <div className="flex flex-col flex-1 justify-between">
-         {step && step.component()}
+      {steps[currentStep - 1].component ?? steps[0].component}
     </div>
   )
 } 
