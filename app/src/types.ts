@@ -159,12 +159,18 @@ export interface SelectedVariantsForDishData {
   category: string;
   dishName: string;
   variantCombination: string;
-  count: number;
   totalPriceWithVariants: number;
+  total_quantity: number;
 }
 
 export interface ModifierItemInsightsData {
+  category: string;
   variantCombination: string;
-  count: number;
+  totalPriceWithVariants: number;
+  total_quantity: number;
+}
+
+export interface TotalsModifier {
+  totalQuantity: number;
   totalPriceWithVariants: number;
 }

@@ -89,11 +89,12 @@ const useFetchReports = (
           toReportDate: formatDate(reportEndDate),
         })
           .then(result => {
-            console.log("RESULT ++>", result);
             const data = result.data as KitchenData;
+
             const allCategories = data.categories as Categories[];
             setAllCategories(allCategories);
             const allDishes = data.dishes as Dishes[];
+
             setAllDishes(allDishes);
           })
           .catch(error => {
@@ -108,7 +109,6 @@ const useFetchReports = (
         })
           .then(result => {
             const data = result.data as SelectedVariantsForDishResponseData;
-            console.log("DATA +++++", data);
 
             if (
               data &&

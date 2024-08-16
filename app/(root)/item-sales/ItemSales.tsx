@@ -12,6 +12,7 @@ import {
   Dishes,
   ModifierItemInsightsData,
   SelectedVariantsForDishData,
+  TotalsModifier,
 } from "@/app/src/types";
 import DataTable from "../overview/components/DataTable";
 import "../overview/components/DatePicker.scss";
@@ -19,6 +20,7 @@ import { getDishStats } from "./utils/commonUtils";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
 import { useReportDate } from "@/app/context/ReportDateContext";
 import { removeGst } from "@/app/components/Auth/utils/helper";
+import ModifiersModal from "./components/ModifiersModal";
 
 const ItemSales = () => {
   const {
@@ -30,13 +32,11 @@ const ItemSales = () => {
     setSelectedOption,
   } = useReportDate();
 
-  const { ordersData } = useReportDataContext();
-  const total_net_sales = ordersData?.[0]?.total_net_sales || 0;
-
   const [noSales, setNoSales] = useState<boolean>(false);
   const [isModifiersModalOpen, setIsModifiersModalOpen] = useState(false);
   const [dishName, setDishName] = useState<string>("");
-  const [totalModifierCount, setTotalModifierCount] = useState<number>(0);
+  const [totalModifierCount, setTotalModifierCount] =
+    useState<TotalsModifier>();
   const [matchedDishes, setMatchedDishes] = useState<
     ModifierItemInsightsData[]
   >([]);
@@ -67,12 +67,9 @@ const ItemSales = () => {
     highestNetSale: null,
   });
 
-  console.log("selected guy ==>", selectedVariants);
-  console.log("all dishes==>", allDishes);
-
   const handleRowClick = (dishName: any) => {
-    // Set matched dishes based on dishName
     const matchedDishes = getMatchingDishes(dishName, selectedVariants);
+
     setMatchedDishes(
       matchedDishes.map(dish => ({
         ...dish,
@@ -81,11 +78,12 @@ const ItemSales = () => {
       }))
     );
 
-    // Calculate and set the total modifier count
-    const totalCount = getTotalModifierCount(matchedDishes);
-    setTotalModifierCount(totalCount);
+    const totalCount = getTotalsForModifiers(matchedDishes) || {
+      totalQuantity: 0,
+      totalPriceWithVariants: 0,
+    };
 
-    // Set dish name and open the modal, but wait until the other states are set
+    setTotalModifierCount(totalCount);
     setDishName(dishName);
   };
 
@@ -95,20 +93,28 @@ const ItemSales = () => {
   ): ModifierItemInsightsData[] => {
     return dishes
       .filter(dish => dish.dishName === dishName)
-      .map(({ dishName, category, ...rest }) => rest);
+      .map(({ dishName, ...rest }) => rest);
   };
 
-  console.log(" matchedDishes====>", matchedDishes);
-  console.log(" totalModifierCount====>", totalModifierCount);
+  function getTotalsForModifiers(
+    dishes: ModifierItemInsightsData[] = []
+  ): TotalsModifier {
+    if (dishes.length === 0) {
+      return { totalQuantity: 0, totalPriceWithVariants: 0 };
+    }
 
-  function getTotalModifierCount(dishes: ModifierItemInsightsData[]): number {
-    return dishes.reduce((total, dish) => total + dish.count, 0);
+    return dishes.reduce(
+      (acc, dish) => {
+        acc.totalQuantity += dish.total_quantity;
+        acc.totalPriceWithVariants += dish.totalPriceWithVariants;
+        return acc;
+      },
+      { totalQuantity: 0, totalPriceWithVariants: 0 }
+    );
   }
 
   useEffect(() => {
-    console.log("hello 1");
-    if (dishName && totalModifierCount >= 0) {
-      console.log("dishname total", dishName, totalModifierCount);
+    if (dishName) {
       setIsModifiersModalOpen(true);
     }
   }, [dishName, totalModifierCount, matchedDishes]);
@@ -139,8 +145,6 @@ const ItemSales = () => {
     }
   }, [loading, allDishes]);
 
-  console.log("ALL DISHES +=====>", allDishes);
-
   return (
     <>
       <DateRangeSelectorModal
@@ -170,12 +174,16 @@ const ItemSales = () => {
               <ModifiersModal
                 title="Item Insights"
                 dishName={dishName}
-                netSales={total_net_sales}
                 show={isModifiersModalOpen}
                 onClose={() => setIsModifiersModalOpen(false)}
                 customDate={customDate}
                 selectedOption={selectedOption}
-                totalModifierCount={totalModifierCount}
+                totalModifierCount={
+                  totalModifierCount ?? {
+                    totalPriceWithVariants: 0,
+                    totalQuantity: 0,
+                  }
+                }
                 numberOfModifiers={matchedDishes.length}
                 modifiersForDish={matchedDishes}
               />
