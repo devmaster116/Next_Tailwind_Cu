@@ -35,7 +35,7 @@ export const  UserInfo=()=> {
 
 
   const handleGoForwardStep = async () => {
-    // handleNextStep()
+    handleNextStep()
     const newErrors: { [key: string]: string } = {};
     if (!validateRequired(newUser?.firstName)) {
       newErrors.firstName = "Please enter a valid name.";
@@ -59,7 +59,7 @@ export const  UserInfo=()=> {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      handleNextStep()
+      // handleNextStep()
     }
   };
 

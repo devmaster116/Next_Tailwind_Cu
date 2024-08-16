@@ -14,6 +14,7 @@
         font-weight: 700;
         font-size: 16px;
         line-height: 24px;
+        border-radius: 12px 12px 0 0;
         border-bottom: 1px solid var(--gray-200);
         color: var(--gray-800);
         .headerName, .headerRole {
@@ -33,6 +34,7 @@
         width: 100%;
         flex-direction: column;
         .row {
+            border-radius: 0 0 11px 11px ;
             display: flex;
             width:100%;
             align-items: center;
@@ -58,7 +60,7 @@
                     height: 48px;
                     border-radius: 50%;
                     color: var(--gray-600);
-                    background-color: var(--gray-200);
+                    background-color: #F2F4F7;
                 }
                 @media only screen and (max-width: 600px) {
                     .avatar {
@@ -67,6 +69,7 @@
                         width: 40px;
                         height: 40px;
                         color: var(--gray-600);
+                        background-color: #F2F4F7;
                         font-size: 16px;
                         line-height: 24px;
                     }
@@ -78,9 +81,9 @@
                         font-weight: 600;
                         font-size: 18px;
                         line-height: 28px;
-                        color: black;
+                        color: var(--gray-900);
                         @media only screen and (max-width: 600px) {
-                            color: var(--gray-900);
+                            // color: var(--gray-900);
                             font-size: 16px;
                             line-height: 24px;
                           }
@@ -113,9 +116,21 @@
         .row:hover {
             background-color: var(--gray-50);
             cursor: pointer;
-            .avatar {
+            .fullName {
                 color: black;
             }
+            .avatar {
+                color: black;
+                background-color: #EAECF0;
+            }
+            .nickName {
+                color: black;
+            }
+            .rightItem {
+                color:black
+            }
+          
+
         }
     }
 

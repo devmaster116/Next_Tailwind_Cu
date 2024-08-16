@@ -16,7 +16,7 @@ const StaffView = (props: Props) => {
 
   const data=props.item
   return (
-    <div className="bg-white shadow-lg rounded-lg h-full">
+    <div className="bg-white  rounded-lg h-full">
       {data&&(
       <div>
       <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border ">
