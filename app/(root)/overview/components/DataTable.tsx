@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./DataTable.module.scss";
 import Skeleton from "./Skeleton";
 
+type TableRowClickHandler = (rowData: any) => void;
+
 interface DataTableProps {
   dataObj: Array<Record<string, any>>;
   firstColumnTitle: string;
@@ -9,11 +11,12 @@ interface DataTableProps {
   thirdColumnTitle?: string;
   secondColumnSymbol?: string;
   thirdColumnSymbol?: string;
-  loading: boolean;
+  loading?: boolean;
   customDate?: string;
   selectedOption?: string;
   negative?: boolean;
   hideRow?: boolean;
+  onRowClick?: TableRowClickHandler;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -28,6 +31,7 @@ const DataTable: React.FC<DataTableProps> = ({
   selectedOption,
   negative = false,
   hideRow = false,
+  onRowClick,
 }) => {
   return (
     <div
@@ -69,7 +73,13 @@ const DataTable: React.FC<DataTableProps> = ({
               hideRow && !item[Object.keys(item)[1]] ? (
                 <div></div>
               ) : (
-                <div key={i} className={styles.reportRow}>
+                <div
+                  key={i}
+                  className={styles.reportRow}
+                  onClick={() =>
+                    onRowClick && onRowClick(item[Object.keys(item)[0]])
+                  }
+                >
                   <div
                     className={`${styles.reportItem} ${styles.reportItemName}`}
                   >
