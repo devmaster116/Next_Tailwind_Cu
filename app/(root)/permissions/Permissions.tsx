@@ -302,7 +302,6 @@ const Permissions = () => {
     });
     () => unsubscribe()
   }, [])
-
   const handleSubmit = async () => {
     setErrors({});
     if (!kitchenId) {

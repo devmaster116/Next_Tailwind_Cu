@@ -8,7 +8,8 @@ export const fetchPermissions = (callback: (permissions: any[]) => void) => {
     const permissions: any[] = [];
     querySnapshot.forEach((doc:any) => {
       const data = doc.data();
-      // console.log(`Fetching permissions from document ID: ${doc.id}`,data);
+      console.log(`Fetching permissions from document ID: ${doc.id}`,data);
+
       if (Array.isArray(data.permissions)) {
         data.permissions.forEach((permission:any) => {
           permissions.push({
@@ -109,7 +110,7 @@ export const addRoleToExistingDocument = async (newRole: any,kitchenId:string) =
       // console.log("Updated roles:", updatedRoles);
 
       await updateDoc(docRef, { roles: updatedRoles });
-      console.log("Role added successfully!");
+      // console.log("Role added successfully!");
     } else {
       console.log("No such document!");
     }

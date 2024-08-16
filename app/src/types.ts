@@ -154,7 +154,6 @@ label: string;
 description: string;
 enabled: boolean;
 }
-
 // ==== type for config
 
 export interface ConfigStaffMember {
@@ -172,3 +171,4 @@ export interface IConfig {
   passcodeEnabled: boolean
   staffMembers: ConfigStaffMember[]
 }
+
