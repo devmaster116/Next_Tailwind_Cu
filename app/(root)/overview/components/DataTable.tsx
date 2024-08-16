@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./DataTable.module.scss";
 import Skeleton from "./Skeleton";
+import Image from "next/image";
 
 type TableRowClickHandler = (rowData: any) => void;
 
@@ -75,7 +76,9 @@ const DataTable: React.FC<DataTableProps> = ({
               ) : (
                 <div
                   key={i}
-                  className={styles.reportRow}
+                  className={`${styles.reportRow} ${
+                    onRowClick && styles.isClickable
+                  }`}
                   onClick={() =>
                     onRowClick && onRowClick(item[Object.keys(item)[0]])
                   }
@@ -116,6 +119,16 @@ const DataTable: React.FC<DataTableProps> = ({
                           {item[Object.keys(item)[2]]}
                           {thirdColumnSymbol}
                         </>
+                      )}
+                      {onRowClick && (
+                        <div className={styles.chevronRightIconContainer}>
+                          <Image
+                            src="/icons/chevron-right.svg"
+                            height={16}
+                            width={16}
+                            alt="Chevron right icon"
+                          />
+                        </div>
                       )}
                     </div>
                   )}
