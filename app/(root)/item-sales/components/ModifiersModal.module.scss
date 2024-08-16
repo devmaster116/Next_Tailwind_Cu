@@ -1,0 +1,80 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal {
+  background: white;
+  height: 100%;
+  width: 500px;
+  max-width: 100%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.headerContent {
+  align-items: center;
+  border: 1px solid var(--gray-100);
+  display: flex;
+  font-weight: 600;
+  height: 64px;
+  padding: 18px;
+  width: 100%;
+
+  h2 {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  button {
+    align-self: self-start;
+  }
+}
+
+.dishName {
+  border: 1px solid var(--gray-100);
+  display: flex;
+  font-weight: 700;
+  height: 64px;
+  padding: 18px;
+  width: 100%;
+
+  .category {
+    font-weight: 400;
+    margin-right: 5px;
+  }
+}
+
+.salesData {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  margin-bottom: 32px;
+
+  > * {
+    border: 1px solid var(--gray-200);
+    box-sizing: border-box;
+  }
+
+  > *:nth-child(-n + 2) {
+    border-bottom: none;
+  }
+
+  > *:nth-child(odd) {
+    border-right: none;
+    border-left: none;
+  }
+
+  > *:nth-child(even) {
+    border-right: none;
+  }
+}
