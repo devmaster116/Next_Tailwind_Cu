@@ -137,8 +137,9 @@ const StaffView = (props: Props) => {
                   }}
                   onClick={() => console.log('clicked')}
                 />
-            
-                <p className='pt-1 pr-3 pb-1 pl-3 font-base  font-medium   rounded-2xl bg-purple-50 text-purple-700'>{data.passcode?data.passcode:'No Code Set'}</p>
+                <div className='flex flex-row  ' >
+                <p className=' pt-1 pr-3 pb-1 pl-3 font-base  font-medium   rounded-2xl bg-purple-50 text-purple-700'>{data.passcode?data.passcode:'No Code Set'}</p>
+                </div>
             </div>
           </div>
         </div>
