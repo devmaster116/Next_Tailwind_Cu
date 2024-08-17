@@ -5,6 +5,7 @@ import { CancelSvg } from '@/app/assets/svg/cancel';
 import { ConfigStaffMember } from '@/app/src/types';
 import CustomModal from '@/app/components/CustomModal';
 import styles from "../Staff.module.scss";
+import { ImageUpload } from '../form/ImageUpload';
 
 type Props = {
   onClose: () => void,
@@ -35,9 +36,9 @@ const StaffView = (props: Props) => {
           <div className='flex items-center justify-center border-b border-gray-200 py-4'>
               <div className='flex flex-col items-center gap-2'>
                   <div className='w-16 h-16 rounded-full bg-gray-200'>
-                      {/* avatar */}
+                      {/* <ImageUpload /> */}
                   </div>
-                  <p className="font-semibold  text-gray-800 text-base text-purple-700">Update Photo</p>
+                  <p className="font-semibold  text-gray-800 text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] text-purple-700">Update Photo</p>
               </div>
           </div>
           <div className='flex flex-col'>
@@ -47,8 +48,8 @@ const StaffView = (props: Props) => {
                   content='Edit'
                   classOverride={{
                     container: 'flex-row justify-between mt-4 mb-2',
-                    title: 'font-bold',
-                    content: 'font-semibold text-purple-700'
+                    title: 'font-bold text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]',
+                    content: 'font-semibold text-purple-700 text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                   }}
                   onClick={() => console.log('clicked')}
                 />
@@ -59,18 +60,18 @@ const StaffView = (props: Props) => {
                         title='First Name'
                         content={data.firstName}
                         classOverride={{
-                          title: 'font-bold',
-                          content: 'font-semibold'
+                             title: 'text-gray-800 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]',
+                             content: 'font-normal  text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]'
                         }}
                       />
                     </div>
                     <div className="flex-1 w-32">
                       <Paragraph 
                           title='Last Name'
-                          content={data.firstName}
+                          content={data.lastName}
                           classOverride={{
-                            title: 'font-bold',
-                            content: ''
+                           title: 'text-gray-800 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]',
+                           content: 'font-normal  text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                           }}
                         />
 
@@ -80,10 +81,10 @@ const StaffView = (props: Props) => {
                     <div className="flex-1 w-32">
                       <Paragraph 
                         title='Nick Name'
-                        content={data.firstName}
+                        content={data.displayName}
                         classOverride={{
-                          title: 'font-bold',
-                          content: ' text-gray-800'
+                        title: 'text-gray-800 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]',
+                        content: 'font-normal  text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                         }}
                       />
                     </div>
@@ -92,8 +93,8 @@ const StaffView = (props: Props) => {
                           title='Mobile'
                           content={'Not provided'}
                           classOverride={{
-                            title: 'font-bold',
-                            content: ' '
+                           title: 'text-gray-800 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]',
+                           content: 'font-normal  text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                           }}
                         />
 
@@ -105,8 +106,8 @@ const StaffView = (props: Props) => {
                           title='Email Address'
                           content={'Alfonso.Cassano@gmail.com'}
                           classOverride={{
-                            title: 'font-bold',
-                            content: ''
+                            title: 'text-gray-800 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]',
+                            content: 'font-normal  text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                           }}
                         />
                 </div>
@@ -118,8 +119,8 @@ const StaffView = (props: Props) => {
                 content='Edit'
                 classOverride={{
                   container: 'flex-row justify-between',
-                  title: 'font-bold',
-                  content: 'font-semibold text-purple-700'
+                  title: 'font-bold text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]',
+                  content: 'font-semibold text-purple-700 text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                 }}
                 onClick={() => console.log('clicked')}
               />
@@ -131,19 +132,19 @@ const StaffView = (props: Props) => {
                   content='Generate'
                   classOverride={{
                     container: 'flex-row justify-between',
-                    title: 'font-bold',
-                    content: 'font-semibold text-purple-700'
+                    title: 'font-bold text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]',
+                    content: 'font-semibold text-purple-700 text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
                   }}
                   onClick={() => console.log('clicked')}
                 />
             
-                <p className='pt-1 pr-3 pb-1 pl-3 font-base text-lg text-gray-900 rounded-2xl bg-purple-100 text-purple-700'>{data.passcode?data.passcode:'No Code Set'}</p>
+                <p className='pt-1 pr-3 pb-1 pl-3 font-base  font-medium   rounded-2xl bg-purple-50 text-purple-700'>{data.passcode?data.passcode:'No Code Set'}</p>
             </div>
           </div>
         </div>
       </div>
       <div className='flex items-center justify-center'>
-        <button className="text-rose-700 bg-rose-50 font-base pt-[10px] pr-[18px] pb-[10px] pl-[18px] rounded-lg" onClick={props.onDeleteModalOpen}>Delete Staff Member</button>
+        <button className="hover:text-white text-rose-700 bg-rose-50 font-base pt-[10px] pr-[18px] pb-[10px] pl-[18px] rounded-lg hover:bg-rose-600" onClick={props.onDeleteModalOpen}>Delete Staff Member</button>
       </div>
       </div>
       )}

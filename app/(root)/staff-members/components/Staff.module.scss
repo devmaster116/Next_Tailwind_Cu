@@ -12,19 +12,26 @@
         padding: 12px;
         background-color: var(--gray-50);
         font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
         border-radius: 12px 12px 0 0;
         border-bottom: 1px solid var(--gray-200);
         color: var(--gray-800);
         .headerName, .headerRole {
             display: flex;
             flex: 1 1 0;
+            font-size: 16px;
+            line-height: 24px;
         }
         @media only screen and (max-width: 600px) {
             .headerName {
                 flex:2 1 0;
+                font-size:14px;
+                line-height: 20px;
             }
+            .headerRole {
+                font-size:14px;
+                line-height: 20px;
+            }
+          
         }
       
     }

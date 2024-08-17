@@ -37,9 +37,11 @@ interface FormStepProviderProps {
 }
 
 export const FormStepProvider = ({ children }: FormStepProviderProps) => {
+  
   const [currentStep, setCurrentStep] = useState(1);
+  
   const [statusModal, setStatusModal] = useState(false);
-
+  
   const [steps, _] = useState([
     { title: 'Profile', number: 1 },
     { title: 'Add Prfile Photo', number: 2 },
@@ -47,49 +49,32 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
     { title: 'Generate Code', number: 4 },
   ])
 
-  // const { getValueFromLocalStorage, saveValueToLocalStorage } = useLocalStorage()
-
-  // useEffect(() => {
-  //   const step = getValueFromLocalStorage('currentStep')
-  //   if (step) setCurrentStep(step)
-  // }, [getValueFromLocalStorage])
-
-  const handleNextStep = () => {
-    const newStepValue = currentStep + 1;
-    if (currentStep < steps.length) {
-      setCurrentStep(newStepValue);
-      // setStatusModal(true);
-      // saveValueToLocalStorage('currentStep', `${newStepValue}`)
+    const handleNextStep = () => {
+      const newStepValue = currentStep + 1;
+      if (currentStep < steps.length) {
+        setCurrentStep(newStepValue);
+      };
     };
+
+    const handlePreviousStep = () => {
+      const newStepValue = currentStep - 1;
+        setCurrentStep(newStepValue);
+      // }
+    };
+
+    const handleSave = () => {
+      setStatusModal(false);
+        setCurrentStep(1);
+        
+    };
+    const handleClose = () => {
+      setCurrentStep(1);
+      setStatusModal(false);
   };
 
-  const handlePreviousStep = () => {
-    const newStepValue = currentStep - 1;
-    // if (currentStep > 1) {
-      setCurrentStep(newStepValue);
-      // setStatusModal(true);
-      // saveValueToLocalStorage('currentStep', `${newStepValue}`)
-    // }
-  };
-
-  const handleSave = () => {
-    setStatusModal(false);
-      // setCurrentStep(0);
-      
-      // saveValueToLocalStorage('currentStep', `${currentStep}`)
-  };
-  const handleClose = () => {
-    // setCurrentStep(1);
-    setStatusModal(false);
-    // saveValueToLocalStorage('currentStep', `${currentStep}`)
-};
-
-console.log('statusModal', statusModal)
-
-  const moveToStep = (step: number) => {
-    setCurrentStep(step);
-    // saveValueToLocalStorage('currentStep', `${step}`)
-  }
+    const moveToStep = (step: number) => {
+      setCurrentStep(step);
+    }
 
   return (
     <FormStepContext.Provider 

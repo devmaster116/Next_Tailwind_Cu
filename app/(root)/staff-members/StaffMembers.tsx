@@ -6,9 +6,7 @@ import LoadingSkeleton from "./components/LoadingSkeleton";
 import Staffs from "./components/Staffs";
 import StaffModalFullPage from "./components/StaffModalFullpage";
 import { Kitchen, IConfig, User } from "@/app/src/types";
-import { FormProvider } from "@/app/context/StaffForm";
 import { FormStep } from "./components/form-step";
-import { FormStepProvider } from "@/app/context/StaffFormStep";
 import { ToastStatus  } from "./components/base/toast-status";
 import {
   collection,
@@ -26,8 +24,6 @@ const StaffMembers = () => {
   const { banner, setBanner } = useBanner();
   const [loading, setLoading] = useState(false);
   const { statusModal, setStatusModal } = useFormStep()
-  // const {currentStep, setCurrentStep} = useFormStep()
-  // const {statusModal, setStatusModal} = useFormStep()
   const [staffConfig,setStaffConfig] = useState<IConfig[]>([])
 
   useEffect(() => {
@@ -101,16 +97,14 @@ const StaffMembers = () => {
             />
           )
         }
-        {/* {addNewStaffModalOpen && ( */}
           <StaffModalFullPage
             show={statusModal}
             content={
               <div className={styles.formContainer}>
-                <ModalContainer/>
+                   <FormStep/>
             </div>
             }
           />
-        {/* )} */}
 
         {loading && (
           <>

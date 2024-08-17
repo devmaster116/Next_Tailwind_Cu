@@ -25,13 +25,15 @@ type FormContextData = {
   dispatchEmailField: React.Dispatch<any>;
   phoneNumberField: Field;
   dispatchPhoneNumberField: React.Dispatch<any>;
-  isYearly: boolean;
-  setIsYearly: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedPlan: Plan;
-  setSelectedPlan: React.Dispatch<React.SetStateAction<Plan>>;
 
-  assignRole: Field
-  setAssignRole: React.Dispatch<any>;
+  imageNameField:Field;
+  dispatchImageNameField: React.Dispatch<any>;
+
+  assignRoleField:Field;
+  dispatchAssignRoleField: React.Dispatch<any>;
+
+  passCodeField:Field;
+  dispatchPassCodeField: React.Dispatch<any>;
   clearForm: () => void;
 }
 
@@ -46,12 +48,16 @@ export const FormContext = createContext({
   dispatchEmailField: () => {},
   phoneNumberField: initialState,
   dispatchPhoneNumberField: () => {},
-  isYearly: false,
-  setIsYearly: () => {},
-  selectedPlan: null as any,
-  setSelectedPlan: () => {},
-  assignRole: initialState,
-  setAssignRole: () => {},
+
+  imageNameField: initialState,
+  dispatchImageNameField: () => {},
+
+  assignRoleField: initialState,
+  dispatchAssignRoleField: () => {},
+
+  passCodeField: initialState,
+  dispatchPassCodeField: () => {},
+
   clearForm: () => {}
 } as FormContextData);
 
@@ -107,52 +113,56 @@ export const FormProvider = ({ children }: FormProviderProps) => {
   const [emailField, dispatchEmailField] = useReducer(handleFormState, initialState)
   const [phoneNumberField, dispatchPhoneNumberField] = useReducer(handleFormState, initialState)
 
-  // Plan
-  const [isYearly, setIsYearly] = useState<boolean>(false);
-  const [selectedPlan, setSelectedPlan] = useState<Plan>(null as any);
+  // profile photo
+  const [imageNameField, dispatchImageNameField] = useReducer(handleFormState, initialState)
 
   // assign-role
-  const [assignRole, setAssignRole] =  useReducer(handleFormState, initialState)
+  const [assignRoleField, dispatchAssignRoleField] =  useReducer(handleFormState, initialState)
 
-  const { getValueFromLocalStorage, removeValueFromLocalStorage } = useLocalStorage()
+  
+  // pass-code
+  const [passCodeField, dispatchPassCodeField] =  useReducer(handleFormState, initialState)
+
+  // const { getValueFromLocalStorage, removeValueFromLocalStorage } = useLocalStorage()
 
   function clearForm() {
-    removeValueFromLocalStorage('user-info')
-    removeValueFromLocalStorage('user-photo')
-    removeValueFromLocalStorage('user-role')
-    removeValueFromLocalStorage('user-sign-code')
+    // removeValueFromLocalStorage('user-info')
+    // removeValueFromLocalStorage('user-photo')
+    // removeValueFromLocalStorage('user-role')
+    // removeValueFromLocalStorage('user-sign-code')
 
     dispatchFirstNameField({ type: ACTIONS.SET_VALUE, value: '' })
     dispatchLastNameField({ type: ACTIONS.SET_VALUE, value: '' })
     dispatchDisplayNameField({ type: ACTIONS.SET_VALUE, value: '' })
     dispatchEmailField({ type: ACTIONS.SET_VALUE, value: '' })
     dispatchPhoneNumberField({ type: ACTIONS.SET_VALUE, value: '' })
-    setIsYearly(false)
-    setSelectedPlan(null as any)
-    setAssignRole({ type: ACTIONS.SET_VALUE, value: '' })
+    dispatchImageNameField({ type: ACTIONS.SET_VALUE, value: '' })
+    dispatchAssignRoleField({ type: ACTIONS.SET_VALUE, value: '' })
+    dispatchPassCodeField({ type: ACTIONS.SET_VALUE, value: '' })
+   
   }
 
-  useEffect(() => {
-    const userInfoFromLocalStorage = getValueFromLocalStorage('user-info')
-    if (userInfoFromLocalStorage) {
-      dispatchFirstNameField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.firstName })
-      dispatchLastNameField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.lastName })
-      dispatchDisplayNameField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.lastName })
-      dispatchEmailField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.email })
-      dispatchPhoneNumberField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.phoneNumber })
-    }
+  // useEffect(() => {
+  //   const userInfoFromLocalStorage = getValueFromLocalStorage('user-info')
+  //   if (userInfoFromLocalStorage) {
+  //     dispatchFirstNameField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.firstName })
+  //     dispatchLastNameField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.lastName })
+  //     dispatchDisplayNameField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.lastName })
+  //     dispatchEmailField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.email })
+  //     dispatchPhoneNumberField({ type: ACTIONS.SET_VALUE, value: userInfoFromLocalStorage.phoneNumber })
+  //   }
 
-    const planFromLocalStorage = getValueFromLocalStorage('plan')
-    if (planFromLocalStorage) {
-      setSelectedPlan(planFromLocalStorage.name)
-      setIsYearly(planFromLocalStorage.isYearly)
-    }
+  //   const planFromLocalStorage = getValueFromLocalStorage('plan')
+  //   if (planFromLocalStorage) {
+  //     setSelectedPlan(planFromLocalStorage.name)
+  //     setIsYearly(planFromLocalStorage.isYearly)
+  //   }
 
-    const addOnsFromLocalStorage = getValueFromLocalStorage('user-role')
-    if (addOnsFromLocalStorage) {
-      setAssignRole(addOnsFromLocalStorage)
-    }
-  }, [])
+  //   const addOnsFromLocalStorage = getValueFromLocalStorage('user-role')
+  //   if (addOnsFromLocalStorage) {
+  //     setAssignRole(addOnsFromLocalStorage)
+  //   }
+  // }, [])
 
   const value = {
     firstNameField,
@@ -165,12 +175,13 @@ export const FormProvider = ({ children }: FormProviderProps) => {
     dispatchEmailField,
     phoneNumberField,
     dispatchPhoneNumberField,
-    isYearly,
-    setIsYearly,
-    selectedPlan,
-    setSelectedPlan,
-    assignRole,
-    setAssignRole,
+    imageNameField,
+    dispatchImageNameField,
+    assignRoleField,
+    dispatchAssignRoleField,
+    passCodeField,
+    dispatchPassCodeField,
+
     clearForm
   }
 

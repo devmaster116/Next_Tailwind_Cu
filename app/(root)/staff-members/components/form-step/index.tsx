@@ -26,7 +26,7 @@ const steps = [
 export function FormStep() {
   const { currentStep } = useFormStep();
   return (
-    <div className="flex flex-col flex-1 justify-between">
+    <div className="flex flex-col flex-1 justify-between overflow-auto">
       {steps[currentStep - 1].component ?? steps[0].component}
     </div>
   )

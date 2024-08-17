@@ -23,12 +23,14 @@
     "react-images-uploading": "^3.1.7",
     "react-loader-spinner": "^6.1.6",
     "react-modern-drawer": "^1.4.0",
+    "react-radio-buttons": "^1.2.2",
     "react-step-progress-bar": "^1.0.3",
     "react-toastify": "^10.0.5",
     "sass": "^1.77.8",
     "tailwind-merge": "^2.5.2",
     "uuid": "^10.0.0"
   },
+  "proxy": "https://firebasestorage.googleapis.com",
   "devDependencies": {
     "@types/firebase": "^3.2.1",
     "@types/node": "20.12.12",

@@ -3,7 +3,7 @@ import { Header } from './Header'
 
 const components = {
   StepStatus,
-  Header
+  Header,
 }
 
 export default components
