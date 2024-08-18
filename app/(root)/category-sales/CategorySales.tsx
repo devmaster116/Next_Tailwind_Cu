@@ -14,6 +14,7 @@ import "../overview/components/DatePicker.scss";
 import { getCategoryStats } from "./utils/commonUtils";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
 import { useReportDate } from "@/app/context/ReportDateContext";
+import { removeGst } from "@/app/components/Auth/utils/helper";
 
 const CategorySales = () => {
   const {
@@ -125,7 +126,7 @@ const CategorySales = () => {
                 thirdColumnTitle="Net"
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
-                dataObj={allCategories}
+                dataObj={removeGst(allCategories)}
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}

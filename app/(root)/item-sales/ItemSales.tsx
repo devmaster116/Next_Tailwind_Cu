@@ -14,6 +14,7 @@ import "../overview/components/DatePicker.scss";
 import { getDishStats } from "./utils/commonUtils";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
 import { useReportDate } from "@/app/context/ReportDateContext";
+import { removeGst } from "@/app/components/Auth/utils/helper";
 
 const ItemSales = () => {
   const {
@@ -125,7 +126,7 @@ const ItemSales = () => {
                 thirdColumnTitle="Net"
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
-                dataObj={allDishes}
+                dataObj={removeGst(allDishes)}
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
