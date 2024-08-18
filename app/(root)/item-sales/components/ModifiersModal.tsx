@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import styles from "./ModifiersModal.module.scss";
 import Image from "next/image";
 import ItemSalesData from "./ItemSalesData";
@@ -7,7 +7,6 @@ import { ModifierItemInsightsData, TotalsModifier } from "@/app/src/types";
 
 const ModifiersModal = ({
   show,
-  onClose,
   title,
   dishName,
   customDate,
@@ -15,9 +14,9 @@ const ModifiersModal = ({
   totalModifierCount,
   numberOfModifiers,
   modifiersForDish,
+  onClose,
 }: {
   show: boolean;
-  onClose: MouseEventHandler;
   title: string | null;
   dishName: string;
   cancelButtonText?: string;
@@ -26,10 +25,17 @@ const ModifiersModal = ({
   totalModifierCount: TotalsModifier;
   numberOfModifiers: number;
   modifiersForDish: ModifierItemInsightsData[];
+  onClose: MouseEventHandler;
 }) => {
   if (!show) {
     return null;
   }
+  const [isExiting, setIsExiting] = useState(false);
+
+  const handleClose = () => {
+    setIsExiting(true);
+    setTimeout(onClose, 500);
+  };
 
   function removeCategory(
     modifiersForDish: { [x: string]: any; category: any }[]
@@ -38,10 +44,13 @@ const ModifiersModal = ({
   }
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} onClick={e => e.stopPropagation()}>
+    <div className={styles.modalOverlay}>
+      <div
+        className={`${styles.modal} ${isExiting ? styles.exit : ""}`}
+        onClick={e => e.stopPropagation()}
+      >
         <div className={styles.headerContent}>
-          <button className={styles.closeButton} onClick={onClose}>
+          <button className={styles.closeButton} onClick={handleClose}>
             <Image
               className={styles.icon}
               src="/icons/x-close.svg"

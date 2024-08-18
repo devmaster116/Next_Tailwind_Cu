@@ -159,4 +159,8 @@
 
 .isClickable {
   cursor: pointer;
+
+  &:hover {
+    background-color: var(--gray-100);
+  }
 }
