@@ -9,7 +9,7 @@ interface ItemSalesDataProps {
 
 const ItemSalesData = ({ title, amount, symbol }: ItemSalesDataProps) => {
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${styles[title.split(" ").join("")]}`}>
       <div className={styles.title}>{title}</div>
       <div className={styles.amount}>
         {symbol}

@@ -74,7 +74,7 @@ const ModifiersModal = ({
             symbol="$"
           />
           <ItemSalesData
-            title="Highest Net Sale"
+            title="Time Frame"
             amount={customDate ? customDate : selectedOption}
           />
           <ItemSalesData
@@ -82,7 +82,7 @@ const ModifiersModal = ({
             amount={totalModifierCount.totalQuantity.toString()}
           />
           <ItemSalesData
-            title="Variation"
+            title="Unique Variations"
             amount={numberOfModifiers.toString()}
           />
         </div>
