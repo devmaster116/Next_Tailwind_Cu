@@ -163,14 +163,14 @@ export interface SelectedVariantsForDishData {
   total_quantity: number;
 }
 
-export interface ModifierItemInsightsData {
+export interface ItemInsightsData {
   category: string;
   variantCombination: string;
   totalPriceWithVariants: number;
   total_quantity: number;
 }
 
-export interface TotalsModifier {
+export interface DishVariationTotals {
   totalQuantity: number;
   totalPriceWithVariants: number;
 }

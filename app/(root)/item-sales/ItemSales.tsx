@@ -10,9 +10,9 @@ import DataError from "../overview/components/DataError";
 import SalesData from "../overview/components/SalesData";
 import {
   Dishes,
-  ModifierItemInsightsData,
+  ItemInsightsData,
   SelectedVariantsForDishData,
-  TotalsModifier,
+  DishVariationTotals,
 } from "@/app/src/types";
 import DataTable from "../overview/components/DataTable";
 import "../overview/components/DatePicker.scss";
@@ -20,7 +20,7 @@ import { getDishStats } from "./utils/commonUtils";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
 import { useReportDate } from "@/app/context/ReportDateContext";
 import { removeGst } from "@/app/components/Auth/utils/helper";
-import ModifiersModal from "./components/ModifiersModal";
+import ItemInsightsModal from "./components/ItemInsightsModal";
 
 const ItemSales = () => {
   const {
@@ -33,13 +33,11 @@ const ItemSales = () => {
   } = useReportDate();
 
   const [noSales, setNoSales] = useState<boolean>(false);
-  const [isModifiersModalOpen, setIsModifiersModalOpen] = useState(false);
+  const [isItemInsightsModalOpen, setIsItemInsightsModalOpen] = useState(false);
   const [dishName, setDishName] = useState<string>("");
-  const [totalModifierCount, setTotalModifierCount] =
-    useState<TotalsModifier>();
-  const [matchedDishes, setMatchedDishes] = useState<
-    ModifierItemInsightsData[]
-  >([]);
+  const [totalDishVariantCount, setTotalDishVariantCount] =
+    useState<DishVariationTotals>();
+  const [matchedDishes, setMatchedDishes] = useState<ItemInsightsData[]>([]);
 
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
@@ -78,27 +76,27 @@ const ItemSales = () => {
       }))
     );
 
-    const totalCount = getTotalsForModifiers(matchedDishes) || {
+    const totalCount = getTotalsForDishVariations(matchedDishes) || {
       totalQuantity: 0,
       totalPriceWithVariants: 0,
     };
 
-    setTotalModifierCount(totalCount);
+    setTotalDishVariantCount(totalCount);
     setDishName(dishName);
   };
 
   const getMatchingDishes = (
     dishName: string,
     dishes: SelectedVariantsForDishData[]
-  ): ModifierItemInsightsData[] => {
+  ): ItemInsightsData[] => {
     return dishes
       .filter(dish => dish.dishName === dishName)
       .map(({ dishName, ...rest }) => rest);
   };
 
-  function getTotalsForModifiers(
-    dishes: ModifierItemInsightsData[] = []
-  ): TotalsModifier {
+  function getTotalsForDishVariations(
+    dishes: ItemInsightsData[] = []
+  ): DishVariationTotals {
     if (dishes.length === 0) {
       return { totalQuantity: 0, totalPriceWithVariants: 0 };
     }
@@ -115,9 +113,9 @@ const ItemSales = () => {
 
   useEffect(() => {
     if (dishName) {
-      setIsModifiersModalOpen(true);
+      setIsItemInsightsModalOpen(true);
     }
-  }, [dishName, totalModifierCount, matchedDishes]);
+  }, [dishName, totalDishVariantCount, matchedDishes]);
 
   useEffect(() => {
     if (loading) {
@@ -171,21 +169,21 @@ const ItemSales = () => {
             <DataError errorMessage="Error retrieving item data" />
           ) : !noSales ? (
             <>
-              <ModifiersModal
+              <ItemInsightsModal
                 title="Item Insights"
                 dishName={dishName}
-                show={isModifiersModalOpen}
-                onClose={() => setIsModifiersModalOpen(false)}
+                show={isItemInsightsModalOpen}
+                onClose={() => setIsItemInsightsModalOpen(false)}
                 customDate={customDate}
                 selectedOption={selectedOption}
-                totalModifierCount={
-                  totalModifierCount ?? {
+                totalDishVariantCount={
+                  totalDishVariantCount ?? {
                     totalPriceWithVariants: 0,
                     totalQuantity: 0,
                   }
                 }
-                numberOfModifiers={matchedDishes.length}
-                modifiersForDish={matchedDishes}
+                numberOfVariants={matchedDishes.length}
+                uniqueVariations={matchedDishes}
               />
 
               <div className={styles.salesDataContainer}>
