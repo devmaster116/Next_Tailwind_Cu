@@ -6,14 +6,12 @@ type StaffModalHeaderProps = {
   handleGoForwardStep?: () => void
   handleGoBack?: () => void
   handleClose?: () => void
-  handleSave?: () => void
 }
 export const StaffModalHeader = ({
   title,
   handleGoForwardStep,
   handleGoBack,
   handleClose,
-  handleSave
 }: StaffModalHeaderProps) => {
   const { currentStep } = useFormStep();
   
@@ -35,7 +33,7 @@ export const StaffModalHeader = ({
       <div className={styles.titleText}>{title}</div>
       <button 
         className={styles.saveBtn} 
-        onClick={currentStep==4?handleSave:handleGoForwardStep}
+        onClick={handleGoForwardStep}
       >
         {currentStep==4?"Save":"Next"}
       </button>

@@ -1,5 +1,6 @@
 import React from "react";
 // @ts-ignore
+//use @strict
 import { ProgressBar, Step } from "react-step-progress-bar";
 interface ProgressProps {
   stepIndex: number

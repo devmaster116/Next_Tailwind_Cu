@@ -45,6 +45,7 @@ import { useUser } from "../../context/UserContext";
 import styles from "./Permission.module.scss";
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
+import { twMerge } from "tailwind-merge";
 
 
 
@@ -405,7 +406,9 @@ const Permissions = () => {
   return (
     <>
       <div className={styles.main_container}>
-        <div className={styles.pageHeader}>
+        <div className={
+          twMerge('font-bold',styles.pageHeader)
+        }>
           <h1 className={styles.pageTitle}>POS Permissions</h1>
           <button
             className={styles.buttonPrimary}

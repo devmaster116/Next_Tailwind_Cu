@@ -3,7 +3,7 @@
     border: 1px solid var(--gray-200);
     border-radius: 12px;
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-    min-width: 342px;
+    // min-width: 320px;
     background-color: #fff;
     .header {
         display: flex;
@@ -26,6 +26,7 @@
                 flex:2 1 0;
                 font-size:14px;
                 line-height: 20px;
+                // font-weight: 600;
             }
             .headerRole {
                 font-size:14px;

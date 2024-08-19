@@ -1,5 +1,5 @@
-import "../../app/globals.scss";
 import "../../app/globals.css";
+import "../../app/globals.scss";
 import 'react-modern-drawer/dist/index.css'
 // import 'react-toastify/dist/ReactToastify.css';
 import "react-step-progress-bar/styles.css";
@@ -11,7 +11,7 @@ import { KitchenProvider } from "../context/KitchenContext";
 import { ReportDateProvider } from "../context/ReportDateContext";
 import { ReportDataProvider } from "../context/ReportDataContext";
 import { FormStepProvider } from "../context/StaffFormStep";
-import { FormProvider } from "../context/StaffForm";
+import { FormProvider } from "../context/StaffContext";
 
 const urbanist = Urbanist({
   weight: ["400", "600"],

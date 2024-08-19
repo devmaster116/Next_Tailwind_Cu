@@ -22,7 +22,8 @@ const StaffModalFullpage = ({
   // pageId:number
   // isExiting: boolean;
 }) => {
-  // const {currentStep} =useFormStep()
+
+  const {currentStep, handleNextStep} =useFormStep()
   // const {statusModal} =useFormStep()
 
   if (!show) {
@@ -33,7 +34,7 @@ const StaffModalFullpage = ({
         {/* <div className={`${styles.modalOverlay} `}> */}
         <div className={twMerge(
           styles.modalOverlay,
-          "!bg-white !items-start",
+          "!bg-white !items-start p-4 overflow-auto",
         )}>
           <div
             // className={`${styles.modal} ${!statusModal ? styles.exit : ""}`}
@@ -43,8 +44,8 @@ const StaffModalFullpage = ({
               {content}
             </div>
             <div className={styles.modalFooter}>
-              <button  className={styles.updateBtn}>
-              {/* {pageId>3 ? 'Save' : 'Next'}Next */}
+              <button  className={styles.updateBtn} onClick={handleNextStep}>
+              {currentStep>3?'Save' : 'Next'}
               </button>
             </div>
           </div>

@@ -16,14 +16,13 @@ import {
 import { db } from "@/firebase/config";
 
 import styles from "./StaffMember.module.scss";
-// import { useFormStep } from "@/app/hooks/useFormStep";
 import { useBanner } from "@/app/context/BannerContext";
 import { useFormStep } from "@/app/hooks/useFormStep";
 
 const StaffMembers = () => {
   const { banner, setBanner } = useBanner();
   const [loading, setLoading] = useState(false);
-  const { statusModal, setStatusModal } = useFormStep()
+  const { statusModal, setStatusModal, statusAddStaff,setStatusAddStaff } = useFormStep()
   const [staffConfig,setStaffConfig] = useState<IConfig[]>([])
 
   useEffect(() => {
@@ -43,6 +42,9 @@ const StaffMembers = () => {
     setBanner(false)
   }
 
+  const handleCloseStaffBanner = () => {
+    setStatusAddStaff(false)
+  }
   const plusIcon = (
     <svg
       width="14"
@@ -60,17 +62,6 @@ const StaffMembers = () => {
       />
     </svg>
   );
-  const ModalContainer = () => (
-    <>
-      <div className={styles.formContainer}>
-        {/* <FormStepProvider>
-          <FormProvider> */}
-            <FormStep/>
-          {/* </FormProvider>
-        </FormStepProvider> */}
-      </div>
-    </>
-  )
 
   
 
@@ -79,7 +70,10 @@ const StaffMembers = () => {
       {banner && (
         <ToastStatus label={"Alfonso Was Deleted As Staff Member"} onClose={handleClose}/>
       )}
-      <div className={styles.main_container}>
+      {statusAddStaff && (
+        <ToastStatus label={"New Staff Member Created"} onClose={handleCloseStaffBanner}/>
+      )}
+      <div className={"w-full"}>
         <div className={styles.pageHeader}>
           <h1 className={styles.pageTitle}>Staff Members</h1>
           <button

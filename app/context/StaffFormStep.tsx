@@ -9,10 +9,13 @@ type FormStepContextData = {
   statusModal: boolean
   setStatusModal: (status: boolean) => void;
 
+  statusAddStaff: boolean
+  setStatusAddStaff: (status: boolean) => void;
+
   steps: { title: string; number: number }[];
   handleNextStep: () => void;
   handlePreviousStep: () => void;
-  handleSave:()=>void;
+  // handleSave:()=>void;
   handleClose:()=>void;
   moveToStep(step: number): void;
 }
@@ -24,11 +27,13 @@ export const FormStepContext = createContext<FormStepContextData>({
   statusModal: false,
   setStatusModal: () =>{},
 
+  statusAddStaff: false,
+  setStatusAddStaff: () =>{},
   steps: [],
   handleNextStep: () => {},
   handlePreviousStep: () => {},
   moveToStep: () => {},
-  handleSave:()=>{},
+  // handleSave:()=>{},
   handleClose:()=>{},
 } as FormStepContextData);
 
@@ -42,6 +47,7 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   
   const [statusModal, setStatusModal] = useState(false);
   
+  const [statusAddStaff, setStatusAddStaff] =useState(false)
   const [steps, _] = useState([
     { title: 'Profile', number: 1 },
     { title: 'Add Prfile Photo', number: 2 },
@@ -54,18 +60,29 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
       if (currentStep < steps.length) {
         setCurrentStep(newStepValue);
       };
+      if(currentStep==steps.length){
+        setStatusModal(false);
+
+        setStatusAddStaff(true);
+  
+        setCurrentStep(1);
+      }
     };
 
     const handlePreviousStep = () => {
-      const newStepValue = currentStep - 1;
+  
+        const newStepValue = currentStep - 1;
+      
         setCurrentStep(newStepValue);
-      // }
     };
 
     const handleSave = () => {
+    
       setStatusModal(false);
-        setCurrentStep(1);
-        
+
+      setStatusAddStaff(true);
+
+      setCurrentStep(1);
     };
     const handleClose = () => {
       setCurrentStep(1);
@@ -83,10 +100,12 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         currentStep, 
         statusModal,
         setStatusModal,
+        statusAddStaff,
+        setStatusAddStaff,
         setCurrentStep, 
         handleNextStep, 
         handlePreviousStep,
-        handleSave,
+        // handleSave,
         handleClose,
         moveToStep 
       }}>

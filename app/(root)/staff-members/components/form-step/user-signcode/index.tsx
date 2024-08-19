@@ -1,39 +1,49 @@
+import { Fragment, useState,useContext,useEffect } from "react"
 import { useFormStep } from "@/app/hooks/useFormStep"
 import { StaffModalHeader } from "../../header"
-import { Fragment, useState } from "react"
 import Form from "../../../components/form";
+import { FormContext } from "@/app/context/StaffContext";
 
 export const UserSignCode = () => {
-    const {handleSave, handlePreviousStep, setStatusModal } = useFormStep()
-    const [code, setCode] = useState<string[]>(["", "", "", ""]);
+    // const {handleSave, handlePreviousStep } = useFormStep()
+    const { handlePreviousStep,handleNextStep } = useFormStep()
+    const { state, dispatch,saveStaffToFirebase,resetForm } = useContext(FormContext)!;
+    const [passCode, setPassCode] = useState<string[]>(["", "", "", ""]);
     const [error, setError] = useState<boolean>(false);
-  
+
     const generateCode = (): void => {
       const randomCode = Math.floor(1000 + Math.random() * 9000).toString().split('');
-      setCode(randomCode);
-      setError(false); // Reset error when a code is generated
+      setPassCode(randomCode);
+      dispatch({ type: 'SET_PASSCODE', payload: randomCode.join('') });
+      setError(false); 
     };
-    const  handleGoForwardStep=()=> {
-        handleSave()
-      }
-    const sendGenerateRequestCode = (): void => {
-        if (code.includes("")) {
-          setError(true);
-        } else {
-          setError(false);
-          // Proceed with the next step, such as signing in
-          console.log('Code is complete:', code.join(''));
+    useEffect(() => {
+        if (state.passcode) {
+            setPassCode(state.passcode.split(''));
         }
-      };
+    }, [state.passcode]);
+    const  handleGoForwardStep = async()=> {
+        if (passCode.includes("")) {
+            setError(true);
+          } else {
+            
+            setError(false);
+            await saveStaffToFirebase();
+            // handleSave()
+            handleNextStep()
+            resetForm()
+          }
+      }
+
     return (
         <div>
             <StaffModalHeader 
                 title={'Add Staff Member'}
-                handleSave={handleGoForwardStep}
+                handleGoForwardStep={handleGoForwardStep}
                 handleGoBack={handlePreviousStep}
             />
             <Fragment>
-                  {/* <Form.StepStatus  stepIndex={4}></Form.StepStatus> */}
+                  <Form.StepStatus  stepIndex={4}></Form.StepStatus>
                     <Form.Header
                         title="Generate Code"
                         description="This code will be used by Aifanso to sign in to POS."
@@ -42,7 +52,7 @@ export const UserSignCode = () => {
                         <div className="">
                         <h2 className="text-sm font-semibold text-gray-700">Gustons' Sign in Code</h2>
                             <div className=" flex flex-row items-center  bg-white ">
-                                {code.map((digit, index) => (
+                                {passCode.map((digit, index) => (
                                 <div
                                     key={index}
                                     className={`w-12 h-12 flex items-center justify-center  text-center border   ${error && digit === "" ? 'border-red-500' : 'border-gray-300'}`}
@@ -53,7 +63,7 @@ export const UserSignCode = () => {
 
                                  <div
                                         onClick={generateCode}
-                                        className=" flex text-gray-700 font-semibold rounded-md border-gray-300 "
+                                        className="text-gray-700 font-semibold rounded-md border-gray-300 "
                                     >
                                         Generate
                                 </div>
@@ -69,7 +79,6 @@ export const UserSignCode = () => {
                             <input
                             type="checkbox"
                             className="mr-2 form-checkbox h-5 w-5 text-primary-600"
-                            // checked
                             readOnly
                             />
                             <span className="text-sm font-semibold text-gray-700">Send passcode via email to Guston.</span>

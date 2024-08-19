@@ -6,10 +6,13 @@ import { ConfigStaffMember } from '@/app/src/types';
 import CustomModal from '@/app/components/CustomModal';
 import styles from "../Staff.module.scss";
 import { ImageUpload } from '../form/ImageUpload';
+import { twMerge } from 'tailwind-merge';
+import { HelpSvg } from '@/app/assets/svg/help';
 
 type Props = {
   onClose: () => void,
   onDeleteModalOpen: () => void
+  className?: string,
   item? :ConfigStaffMember
 }
 
@@ -17,26 +20,29 @@ const StaffView = (props: Props) => {
 
   const data=props.item
   return (
-    <div className="bg-white  rounded-lg h-full">
+    <div className={twMerge(
+      "bg-white rounded-lg h-full",
+      props?.className
+    )}>
       {data&&(
-      <div>
-      <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border ">
-        <p className="font-semibold text-xl text-gray-800">{data.firstName+ " "+ data.lastName}</p>
-        <Avatar 
-          icon={<CancelSvg />}
-          classOverride={{
-            container: 'absolute left-4 top-4',
-          }}
-          onClick={props.onClose}
-        />
-    
-      </div>
+      <div className='flex flex-col h-full'>
+          <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border ">
+            <p className="font-semibold text-xl text-gray-800">{data.firstName+ " "+ data.lastName}</p>
+            <Avatar 
+              icon={<CancelSvg />}
+              classOverride={{
+                container: 'absolute left-4 top-4',
+            }}
+              onClick={props.onClose}
+            />
+        
+          </div>
       <div className='p-4'>
-        <div className='shadow border border-gray-200 rounded'> 
+        <div className='shadow border-lg border-gray-200 rounded'> 
           <div className='flex items-center justify-center border-b border-gray-200 py-4'>
               <div className='flex flex-col items-center gap-2'>
-                  <div className='w-16 h-16 rounded-full bg-gray-200'>
-                      {/* <ImageUpload /> */}
+                  <div className='w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center'>
+                      <span className='text-2xl font-medium text-gray-600'>GC</span>
                   </div>
                   <p className="font-semibold  text-gray-800 text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] text-purple-700">Update Photo</p>
               </div>
@@ -91,7 +97,7 @@ const StaffView = (props: Props) => {
                     <div className="flex-1 w-32">
                       <Paragraph 
                           title='Mobile'
-                          content={'Not provided'}
+                          content={data?.phoneNumber}
                           classOverride={{
                            title: 'text-gray-800 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]',
                            content: 'font-normal  text-[16px] leading-[24px] md:text-[18px] md:leading-[28px]'
@@ -124,7 +130,13 @@ const StaffView = (props: Props) => {
                 }}
                 onClick={() => console.log('clicked')}
               />
-              <p className='font-normal text-lg text-gray-800'>{data.roleName}</p>
+                <div className='flex flex-row  ' >
+                  <p className='  gap-1 font-normal text-lg text-gray-800'>{data.roleName}</p>
+                  <Avatar 
+                  icon={<HelpSvg />}
+                />
+                </div>
+           
             </div>
             <div className='flex flex-col gap-1 p-4 border-t border-gray-200'>
               <Paragraph 
@@ -144,7 +156,7 @@ const StaffView = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className='flex items-center justify-center'>
+      <div className='flex items-center justify-center pb-4'>
         <button className="hover:text-white text-rose-700 bg-rose-50 font-base pt-[10px] pr-[18px] pb-[10px] pl-[18px] rounded-lg hover:bg-rose-600" onClick={props.onDeleteModalOpen}>Delete Staff Member</button>
       </div>
       </div>

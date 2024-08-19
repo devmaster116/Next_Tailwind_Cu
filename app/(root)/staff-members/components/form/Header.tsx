@@ -6,8 +6,9 @@ interface HeaderProps {
   export function Header({ title, description }: HeaderProps) {
     return (
       <header className="flex flex-col gap-2">
-        <h1 className="font-extrabold text-xl text-grey-800 ">{title}</h1>
-        <p className="text-grey-800 font-normal text-base ">{description}</p>
+        
+        <h1 className="font-bold text-[20px] leading-[30px] md:text-[24px] md:leading-[32px] text-grey-800 ">{title}</h1>
+        <p className="font-normal text-[16px] leading-[24px] md:text-[18px] md:leading-[28px] text-grey-800 ">{description}</p>
       </header>
     )
   } 

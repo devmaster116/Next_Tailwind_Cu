@@ -160,10 +160,13 @@ export interface ConfigStaffMember {
   displayName: string
   firstName: string
   lastName: string
-  id: string
   passcode: string
   roleID: string
   roleName: string
+  displayImageURL:string
+  email:string
+  phoneNumber:string
+
 }
 export interface IConfig {
   enabled: boolean

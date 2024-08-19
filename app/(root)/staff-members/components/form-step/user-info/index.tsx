@@ -1,10 +1,8 @@
 import { Fragment } from "react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
-import { useForm } from "@/app/hooks/useForm";
-import { ACTIONS } from "@/app/context/StaffForm";
-import { TextInput } from "../../form/TextInput";
+import { FormContext } from "@/app/context/StaffContext";
 import { StaffModalHeader } from "../../header";
 import withAuth from "@/app/components/Auth/withAuth";
 import Input from "@/app/components/Input";
@@ -17,25 +15,30 @@ import {
   validateMobileNumber,
 } from "@/app/components/Auth/utils/helper";
 
-
 export const  UserInfo=()=> {
+  const { state, dispatch,resetForm } = useContext(FormContext)!;
 
   const [loading, setLoading] = useState(false);
   const validateRequired = (value: string) => value?.trim().length > 0;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
-    firstName: "",
-    lastName: "",
-    displayName: "",
-    emailAddress: "",
-    mobileNumber: "",
+    firstName: state.firstName || "",
+    lastName: state.lastName || "",
+    displayName: state.displayName || "",
+    email: state.email || "",
+    mobileNumber: state.phoneNumber || "",
   });
   
   const { handleNextStep, setStatusModal } = useFormStep()
 
-
+  const handleCloseModal=() => {
+    setStatusModal(false)
+    resetForm()
+  }
   const handleGoForwardStep = async () => {
-    handleNextStep()
+    // handleNextStep()
+    // dispatch({ type: 'SET_USER_INFO', payload: newUser });
     const newErrors: { [key: string]: string } = {};
     if (!validateRequired(newUser?.firstName)) {
       newErrors.firstName = "Please enter a valid name.";
@@ -44,10 +47,10 @@ export const  UserInfo=()=> {
       newErrors.lastName = "Please enter a valid name.";
     }
     if (
-      !validateRequired(newUser?.emailAddress) ||
-      !validateEmail(newUser?.emailAddress)
+      !validateRequired(newUser?.email) ||
+      !validateEmail(newUser?.email)
     ) {
-      newErrors.emailAddress = "Please enter a valid email address.";
+      newErrors.email = "Please enter a valid email address.";
     }
     if (
       !validateRequired(newUser?.mobileNumber) ||
@@ -59,7 +62,8 @@ export const  UserInfo=()=> {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // handleNextStep()
+      handleNextStep()
+      dispatch({ type: 'SET_USER_INFO', payload: newUser });
     }
   };
 
@@ -68,10 +72,10 @@ export const  UserInfo=()=> {
       <StaffModalHeader 
         title={'Add Staff Member'}
         handleGoForwardStep={handleGoForwardStep}
-        handleClose={() => setStatusModal(false)}
+        handleClose={handleCloseModal}
       />
       <Fragment>
-        {/* <Form.StepStatus stepIndex={1}></Form.StepStatus> */}
+        <Form.StepStatus stepIndex={1}></Form.StepStatus>
           <Form.Header
             title="Profile"
             description="Add your staff members name,nickname, email addres and mobile number."
@@ -80,7 +84,7 @@ export const  UserInfo=()=> {
              <form className="mt-8">
                    <div className="flex flex-col lg:flex-row justify-between gap-6 mb-7">
                     <div className="flex flex-col">
-                        <p className="">First Name</p>
+                        <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] font-semibold text-gray-700">First Name</p>
                           <Input
                             value={newUser.firstName}
                             handleInputChange={(e) =>
@@ -102,7 +106,8 @@ export const  UserInfo=()=> {
                           />
                     </div>
                     <div className="flex flex-col ">
-                        <p className="">Last Name</p>
+                  
+                        <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] font-semibold text-gray-700">Last Name</p>
                         <Input
                           value={newUser.lastName}
                           handleInputChange={(e) =>
@@ -127,7 +132,7 @@ export const  UserInfo=()=> {
                     </div>
                    
                   <div className="flex flex-col mb-6 gap-1">
-                    <p className="font-semibold text-base text-gray-700">Nick Name(Display Name)</p>
+                    <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] font-semibold text-gray-700">Nick Name(Display Name)</p>
                     <Input
                       value={newUser.displayName}
                       handleInputChange={(e) =>
@@ -150,15 +155,15 @@ export const  UserInfo=()=> {
                      <p className="text-base font-normal text-grey-600">If not set default is first name and last name initial</p>
                   </div>
                   <div className="flex flex-col mb-6 gap-1">
-                    <p className="font-semibold text-base text-gray-700">Email Address</p>
+                    <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] font-semibold text-gray-700">Email Address</p>
                     <Input
-                      value={newUser.emailAddress}
+                      value={newUser.email}
                       handleInputChange={(e) =>
                         handleInputChangeField(
                           e,
                           setNewUser,
                           setErrors,
-                          "emailAddress"
+                          "email"
                         )
                       }
                       handleBlurField={(e) =>
@@ -168,16 +173,16 @@ export const  UserInfo=()=> {
                           setErrors,
                           validateRequired,
                           "Please enter a valid email address.",
-                          "emailAddress"
+                          "email"
                         )
                       }
-                      error={errors.emailAddress}
+                      error={errors.email}
                       loading={loading}
                       placeholder="Enter email address"
                     />
                   </div>
                   <div>
-                    <p className="font-semibold text-base text-gray-700">Mobile Number</p>
+                    <p className="text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] font-semibold text-gray-700">Mobile Number</p>
                     <Input
                       value={newUser.mobileNumber}
                       maxLength={10}
