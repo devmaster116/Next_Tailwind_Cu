@@ -36,18 +36,23 @@
         }
       
     }
-
+    .body .row:last-child {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
     .body {
         display: flex;
         width: 100%;
         flex-direction: column;
         .row {
-            border-radius: 0 0 11px 11px ;
+            // border-radius: 0 0 11px 11px ;
             display: flex;
             width:100%;
             align-items: center;
             padding: 12px;
             border-bottom: 1px solid var(--gray-200);
+
+            
             .leftItem {
                 display: flex;
                 flex: 1 1 0;
