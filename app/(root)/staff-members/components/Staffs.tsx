@@ -9,14 +9,12 @@ import Drawer from 'react-modern-drawer'
 import CustomModal from '@/app/components/CustomModal';
 import { ToastContainer, toast } from 'react-toastify';
 import { useBanner } from '@/app/context/BannerContext';
-import useWindowSize from '@/app/hooks/useWindowSize';
 interface StaffProps {
   staffList: IConfig[];
 }
 
 
 const Staffs: React.FC<StaffProps> = ({ staffList}) => {
-  const { width } = useWindowSize()
   const { setBanner } = useBanner()
   const [viewStaff, setViewStaff] = useState(false);
   const [staffItem,setStaffItem]=useState<ConfigStaffMember | undefined>(undefined)
@@ -95,7 +93,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
         open={viewStaff}
         onClose={CloseTogglePanel}
         direction='right'
-        className='!w-full lg:w-[400px] overflow-auto bg-white '
+        className='!w-full lg:!max-w-[400px] overflow-auto bg-white '
         lockBackgroundScroll={true}
         overlayColor="bg-grey-25"
         overlayOpacity={0}
