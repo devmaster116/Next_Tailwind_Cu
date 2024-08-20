@@ -43,11 +43,11 @@ const StaffModalFullpage = ({
             <div className={styles.modalContent}>
               {content}
             </div>
-            <div className={styles.modalFooter}>
+            {/* <div className={styles.modalFooter}>
               <button  className={styles.updateBtn} onClick={handleNextStep}>
               {currentStep>3?'Save' : 'Next'}
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
     </>

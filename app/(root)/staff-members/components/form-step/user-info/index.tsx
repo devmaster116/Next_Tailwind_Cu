@@ -4,6 +4,7 @@ import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { FormContext } from "@/app/context/StaffContext";
 import { StaffModalHeader } from "../../header";
+import { StaffModalFooter } from "../../footer";
 import withAuth from "@/app/components/Auth/withAuth";
 import Input from "@/app/components/Input";
 
@@ -215,6 +216,11 @@ export const  UserInfo=()=> {
                   )}
                 </form>
       </Fragment>
+      <StaffModalFooter 
+        title={'Add Staff Member'}
+        handleGoForwardStep={handleGoForwardStep}
+        handleClose={handleCloseModal}
+      />
     </div>
   )
 } 

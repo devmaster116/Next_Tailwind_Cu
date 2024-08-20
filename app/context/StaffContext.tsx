@@ -3,6 +3,7 @@ import React, { createContext, useReducer,useState,useEffect } from 'react';
 import { ConfigStaffMember,RoleInfo}  from "../src/types";
 import {doc,setDoc,collection,getDocs,getDoc ,updateDoc} from "firebase/firestore";
 import { auth, db } from "@/firebase/config";
+
 export type FormContextType = {
   state: ConfigStaffMember;
   roles:RoleInfo[];
@@ -59,56 +60,6 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [roles, setRoles] = useState<RoleInfo[]>([]);
   
     const saveStaffToFirebase = async () => {
-
-      try {
-        const configDocRef = doc(db, "configs", "staffMemberConfigs");
-        // Get the current document
-        const configDoc = await getDoc(configDocRef);
-        console.log("configDocRef",configDocRef);
-        if (configDoc.exists()) {
-          // Get current staffMembers array from the document
-          const currentData = configDoc.data();
-          const staffMembers = currentData?.staffMembers || [];
-    
-          // Add the new staff member to the array
-          const updatedStaffMembers = [...staffMembers, state];
-    
-          // Update the document with the new staffMembers array
-          await updateDoc(configDocRef, {
-            staffMembers: updatedStaffMembers
-          });
-    
-          console.log("New staff member added successfully!");
-        } else {
-          console.log("Config document does not exist!");
-        }
-      } catch (error) {
-        console.error("Error adding new staff member: ", error);
-      }
-
-
-
-      // try {
-      //   const usersCollection = collection(db, "configs");
-      //   const userDocData = {
-      //     ...state,
-      //     createdAt: new Date(),
-      //   };
-    
-      //   const userDocRef = doc(usersCollection);
-      //   await setDoc(userDocRef, userDocData);
-      // } catch (err) {
-      //   console.error("Error adding user data:", err);
-      //   throw err;
-      // }
-      // try {
-      //   const docRef = doc(db, "configs", state); 
-      //   await setDoc(docRef, state);
-      // } catch (error) {
-      //   console.error("Error adding document: ", error);
-      // }
-
-
 
 
     };

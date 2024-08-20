@@ -4,6 +4,7 @@ import { Fragment,useContext } from "react"
 import Form from "../../../components/form";
 import {ImageUpload} from "../../../components/form/ImageUpload";
 import { FormContext } from "@/app/context/StaffContext";
+import { StaffModalFooter } from "../../footer";
 export const UserPhoto = () => {
     const { handleNextStep, handlePreviousStep } = useFormStep()
     const { state } = useContext(FormContext)!;
@@ -32,7 +33,11 @@ export const UserPhoto = () => {
                       <ImageUpload />
                     </div>
             </Fragment>
-
+            <StaffModalFooter 
+                title={'Add Staff Member'}
+                handleGoForwardStep={handleGoForwardStep}
+                handleGoBack={handlePreviousStep}
+            />
         </div>
     )
 }

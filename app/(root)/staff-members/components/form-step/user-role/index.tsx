@@ -7,6 +7,7 @@ import { RadioGroup, RadioButton } from 'react-radio-buttons';
 import { FormContext } from "@/app/context/StaffContext";
 import { RoleInfo } from "@/app/src/types";
 import { HelpSvg } from "@/app/assets/svg/help";
+import { StaffModalFooter } from "../../footer";
 export const UserRole = () => {
     const { handleNextStep, handlePreviousStep } = useFormStep()
     const { state, dispatch,getStaffRole,roles  } = useContext(FormContext)!;
@@ -57,6 +58,11 @@ export const UserRole = () => {
                         </RadioGroup>
                     </div>
             </Fragment>
+            <StaffModalFooter 
+                title={'Add Staff Member'}
+                handleGoForwardStep={handleGoForwardStep}
+                handleGoBack={handlePreviousStep}
+            />
         </div>
     )
 }

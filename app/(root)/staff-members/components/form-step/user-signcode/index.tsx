@@ -3,6 +3,10 @@ import { useFormStep } from "@/app/hooks/useFormStep"
 import { StaffModalHeader } from "../../header"
 import Form from "../../../components/form";
 import { FormContext } from "@/app/context/StaffContext";
+import { useKitchen } from "@/app/context/KitchenContext";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { auth, db } from "@/firebase/config";
+import { StaffModalFooter } from "../../footer";
 
 export const UserSignCode = () => {
     // const {handleSave, handlePreviousStep } = useFormStep()
@@ -11,6 +15,10 @@ export const UserSignCode = () => {
     const [passCode, setPassCode] = useState<string[]>(["", "", "", ""]);
     const [error, setError] = useState<boolean>(false);
 
+    const { kitchen } = useKitchen();
+
+  const kitchenId = kitchen?.kitchenId ?? null;
+  
     const generateCode = (): void => {
       const randomCode = Math.floor(1000 + Math.random() * 9000).toString().split('');
       setPassCode(randomCode);
@@ -26,11 +34,59 @@ export const UserSignCode = () => {
         if (passCode.includes("")) {
             setError(true);
           } else {
-            
             setError(false);
-            await saveStaffToFirebase();
-            // handleSave()
+
+            // await saveStaffToFirebase();
+
+            // try {
+            //     const configDocRef = doc(db, "configs",kitchenId);
+            //     const configDoc = await getDoc(configDocRef);
+            //     if (configDoc.exists()) {
+            //       const currentData = configDoc.data();
+            //       const existStaffMembers = currentData?.staffMemberConfigs?.staffMembers || [];
+            //       const updatedStaffMembers = [...existStaffMembers, state];
+
+            //       await updateDoc(configDocRef, {
+            //         "staffMemberConfigs.staffMembers": updatedStaffMembers,
+            //         "staffMemberConfigs.enabled": true,          
+            //         "staffMemberConfigs.idleTime": 0,           
+            //         "staffMemberConfigs.passcodeEnabled": true
+            //     });
+
+            //       console.log("New staff member added successfully!");
+            //     } else {
+            //       console.log("Config document does not exist!");
+            //     }
+            //   } catch (error) {
+            //     console.error("Error adding new staff member: ", error);
+            //   }
+
             handleNextStep()
+            try {
+                const configDocRef = doc(db, "configs", kitchenId);
+            
+                // Retrieve the document and destructure the necessary data
+                const configDoc = await getDoc(configDocRef);
+                if (!configDoc.exists()) {
+                    console.log("Config document does not exist!");
+                    return;
+                }
+            
+                const { staffMemberConfigs = {} } = configDoc.data();
+                const { staffMembers = [] } = staffMemberConfigs;
+            
+                // Update the document with the new staff member and other config settings
+                await updateDoc(configDocRef, {
+                    "staffMemberConfigs.staffMembers": [...staffMembers, state],
+                    "staffMemberConfigs.enabled": true,
+                    "staffMemberConfigs.idleTime": 0,
+                    "staffMemberConfigs.passcodeEnabled": true,
+                });
+            
+                console.log("New staff member added successfully!");
+            } catch (error) {
+                console.error("Error adding new staff member:", error);
+            }
             resetForm()
           }
       }
@@ -86,6 +142,11 @@ export const UserSignCode = () => {
                         <p className="text-base text-gray-600 font-normal">(guston.james@gmail.com)</p>
                     </div>
             </Fragment>
+            <StaffModalFooter 
+                title={'Add Staff Member'}
+                handleGoForwardStep={handleGoForwardStep}
+                handleGoBack={handlePreviousStep}
+            />
         </div>
     )
 }

@@ -145,7 +145,7 @@ export default function Sidebar({
                       icon={
                         <Image
                           className={styles.icon}
-                          src="/icons/staff.svg"
+                          src="/icons/user.svg"
                           height={18}
                           width={18}
                           alt="Business Details icon"

@@ -25,8 +25,8 @@ const StaffView = (props: Props) => {
       props?.className
     )}>
       {data&&(
-      <div className='flex flex-col h-full'>
-          <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border ">
+      <div className='flex flex-col h-full '>
+          <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border mb-5">
             <p className="font-semibold text-xl text-gray-800">{data.firstName+ " "+ data.lastName}</p>
             <Avatar 
               icon={<CancelSvg />}
@@ -37,8 +37,8 @@ const StaffView = (props: Props) => {
             />
         
           </div>
-      <div className='p-4'>
-        <div className='shadow border-lg border-gray-200 rounded-lg'> 
+      <div className='px-4'>
+        <div className='shadow border-lg border-gray-200 rounded-lg mb-4'> 
           <div className='flex items-center justify-center border-b border-gray-200 py-4'>
               <div className='flex flex-col items-center gap-2'>
                   <div className='w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center'>
@@ -55,7 +55,7 @@ const StaffView = (props: Props) => {
                   content='Edit'
                   classOverride={{
                     container: 'flex-row justify-between mb-2',
-                    title: 'font-bold text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]',
+                    title: twMerge('font-bold text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]', 'color:#353435'),
                     content: 'font-semibold text-purple-700 text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
                   }}
                   onClick={() => console.log('clicked')}
@@ -77,8 +77,8 @@ const StaffView = (props: Props) => {
                           title='Last Name'
                           content={data.lastName}
                           classOverride={{
-                           title: 'text-gray-800 font-semibold text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px]',
-                           content: 'font-normal  text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
+                           title: 'pl-4 text-gray-800 font-semibold text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px]',
+                           content: 'pl-4 font-normal  text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
                           }}
                         />
 
@@ -98,10 +98,10 @@ const StaffView = (props: Props) => {
                     <div className="flex-1 w-32">
                       <Paragraph 
                           title='Mobile'
-                          content={data?.phoneNumber}
+                          content={data?.phoneNumber?data?.phoneNumber:'Not Provided'}
                           classOverride={{
-                           title: 'text-gray-800 font-semibold text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px]',
-                           content: 'font-normal  text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
+                           title: 'pl-4 text-gray-800 font-semibold text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px]',
+                           content: 'pl-4 text-gray-500 font-normal  text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
                           }}
                         />
 
@@ -166,10 +166,11 @@ const StaffView = (props: Props) => {
             </div>
           </div>
         </div>
+        <div className='flex items-center justify-center pb-4'>
+        <button className="font-semibold hover:text-white text-rose-700 bg-rose-50 text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px] pt-[10px] pr-[18px] pb-[10px] pl-[18px] rounded-lg hover:bg-rose-600" onClick={props.onDeleteModalOpen}>Delete Staff Member</button>
       </div>
-      <div className='flex items-center justify-center pb-4'>
-        <button className="hover:text-white text-rose-700 bg-rose-50 text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px] pt-[10px] pr-[18px] pb-[10px] pl-[18px] rounded-lg hover:bg-rose-600" onClick={props.onDeleteModalOpen}>Delete Staff Member</button>
       </div>
+      
       </div>
       )}
      
