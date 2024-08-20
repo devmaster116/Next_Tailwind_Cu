@@ -13,6 +13,7 @@ import { useKitchen } from "../../../context/KitchenContext";
 import useFetchReports from "@/app/hooks/useFetchReports";
 import { getTopFive } from "./utils/formatDate";
 import { useReportDate } from "@/app/context/ReportDateContext";
+import { removeGst } from "@/app/components/Auth/utils/helper";
 
 const Overview = () => {
   const { width } = useWindowSize();
@@ -123,7 +124,7 @@ const Overview = () => {
                     thirdColumnTitle="Net"
                     secondColumnSymbol=""
                     thirdColumnSymbol="$"
-                    dataObj={getTopFive(allCategories)}
+                    dataObj={getTopFive(removeGst(allCategories))}
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}
@@ -133,7 +134,7 @@ const Overview = () => {
                     secondColumnTitle="Count"
                     thirdColumnTitle="Net"
                     thirdColumnSymbol="$"
-                    dataObj={getTopFive(allDishes)}
+                    dataObj={getTopFive(removeGst(allDishes))}
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}

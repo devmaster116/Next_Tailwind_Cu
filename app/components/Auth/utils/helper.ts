@@ -51,6 +51,13 @@ export const resetPassword = async (
   }
 };
 
+export function removeGst<T extends { total_price: number }>(items: T[]): T[] {
+  return items.map(item => ({
+    ...item,
+    total_price: parseFloat((item.total_price / 1.1).toFixed(2)),
+  }));
+}
+
 export const handleInputChangeField = (
   e: React.ChangeEvent<HTMLInputElement>,
   setState: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,

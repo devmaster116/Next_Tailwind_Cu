@@ -14,6 +14,7 @@ import "../overview/components/DatePicker.scss";
 import { getCategoryStats } from "./utils/commonUtils";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
 import { useReportDate } from "@/app/context/ReportDateContext";
+import { removeGst } from "@/app/components/Auth/utils/helper";
 
 const CategorySales = () => {
   const {
@@ -47,13 +48,9 @@ const CategorySales = () => {
   const [categoryStats, setCategoryStats] = useState<{
     mostPopular: Categories | null;
     highestNetSale: Categories | null;
-    leastPopular: Categories | null;
-    lowestNetSale: Categories | null;
   }>({
     mostPopular: null,
     highestNetSale: null,
-    leastPopular: null,
-    lowestNetSale: null,
   });
 
   useEffect(() => {
@@ -62,8 +59,6 @@ const CategorySales = () => {
       setCategoryStats({
         mostPopular: null,
         highestNetSale: null,
-        leastPopular: null,
-        lowestNetSale: null,
       });
     } else {
       if (allCategories && allCategories.length > 0) {
@@ -78,8 +73,6 @@ const CategorySales = () => {
         setCategoryStats({
           mostPopular: null,
           highestNetSale: null,
-          leastPopular: null,
-          lowestNetSale: null,
         });
         setNoSales(true);
       }
@@ -125,18 +118,6 @@ const CategorySales = () => {
                   isDollarAmount={false}
                   loading={loading}
                 />
-                <SalesData
-                  title="Least Popular"
-                  item={categoryStats.leastPopular?.category_name}
-                  isDollarAmount={false}
-                  loading={loading}
-                />
-                <SalesData
-                  title="Lowest Net Sale"
-                  item={categoryStats.lowestNetSale?.category_name}
-                  isDollarAmount={false}
-                  loading={loading}
-                />
               </div>
 
               <DataTable
@@ -145,7 +126,7 @@ const CategorySales = () => {
                 thirdColumnTitle="Net"
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
-                dataObj={allCategories}
+                dataObj={removeGst(allCategories)}
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}

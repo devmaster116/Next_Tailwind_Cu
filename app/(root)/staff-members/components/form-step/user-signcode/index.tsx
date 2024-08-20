@@ -63,6 +63,10 @@ export const UserSignCode = () => {
 
             handleNextStep()
             try {
+                 if (!kitchenId) {
+                    console.error("Kitchen ID is required but was not provided.");
+                    return;
+                  }
                 const configDocRef = doc(db, "configs", kitchenId);
             
                 // Retrieve the document and destructure the necessary data

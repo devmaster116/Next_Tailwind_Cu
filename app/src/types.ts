@@ -140,7 +140,7 @@ export interface User {
 }
 
 export interface RoleInfo {
-  id: string; // Use ID to uniquely identify roles
+  id: string;
   roles: string[];
   access: string;
   staff: number;
@@ -149,10 +149,30 @@ export interface RoleInfo {
 }
 
 export interface Permission {
-id: string;
-label: string;
-description: string;
-enabled: boolean;
+  id: string;
+  label: string;
+  description: string;
+  enabled: boolean;
+}
+
+export interface SelectedVariantsForDishData {
+  category: string;
+  dishName: string;
+  variantCombination: string;
+  totalPriceWithVariants: number;
+  total_quantity: number;
+}
+
+export interface ItemInsightsData {
+  category: string;
+  variantCombination: string;
+  totalPriceWithVariants: number;
+  total_quantity: number;
+}
+
+export interface DishVariationTotals {
+  totalQuantity: number;
+  totalPriceWithVariants: number;
 }
 // ==== type for config
 

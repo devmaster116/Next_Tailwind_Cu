@@ -4,9 +4,15 @@ import {
   formatDate,
   formatReadableDate,
 } from "../(root)/overview/components/utils/formatDate";
-import { Categories, Dishes } from "../src/types";
+import { Categories, Dishes, SelectedVariantsForDishData } from "../src/types";
 import { useReportDataContext } from "../context/ReportDataContext";
 import { useReportDate } from "../context/ReportDateContext";
+
+interface SelectedVariantsForDishResponseData {
+  selectedVariantsForDish: SelectedVariantsForDishData[];
+  status: string;
+  code: number;
+}
 
 interface KitchenData {
   categories: any[];
@@ -39,6 +45,8 @@ const useFetchReports = (
     setOverviewReportFunctionError,
     customDate,
     setCustomDate,
+    selectedVariants,
+    setSelectedVariants,
   } = useReportDataContext();
 
   const {
@@ -69,6 +77,10 @@ const useFetchReports = (
           functions,
           "getDishesCountByOrderType"
         );
+        const selectedVariantsForDish = httpsCallable(
+          functions,
+          "getSelectedVariantsForDish"
+        );
         setLoading(true);
 
         const fetchAdvancedReports = advancedReports({
@@ -78,14 +90,37 @@ const useFetchReports = (
         })
           .then(result => {
             const data = result.data as KitchenData;
+
             const allCategories = data.categories as Categories[];
             setAllCategories(allCategories);
             const allDishes = data.dishes as Dishes[];
+
             setAllDishes(allDishes);
           })
           .catch(error => {
             console.error("Failed to fetch advanced reports:", error);
             setAdvancedReportingError(true);
+          });
+
+        selectedVariantsForDish({
+          kitchenId: kitchenId,
+          fromReportDate: formatDate(reportStartDateContext),
+          toReportDate: formatDate(reportEndDateContext),
+        })
+          .then(result => {
+            const data = result.data as SelectedVariantsForDishResponseData;
+
+            if (
+              data &&
+              (data.selectedVariantsForDish as SelectedVariantsForDishData[])
+            ) {
+              setSelectedVariants(data.selectedVariantsForDish);
+            } else {
+              console.error("Unexpected data format:", data);
+            }
+          })
+          .catch(error => {
+            console.error("Failed to fetch selected variants:", error);
           });
 
         const fetchOverviewReports = overviewReports({
@@ -165,6 +200,7 @@ const useFetchReports = (
       overviewReportFunctionError,
       customDate,
       setCustomDate,
+      selectedVariants,
     }),
     [
       allCategories,
@@ -176,6 +212,7 @@ const useFetchReports = (
       advancedReportingError,
       overviewReportFunctionError,
       customDate,
+      selectedVariants,
     ]
   );
 

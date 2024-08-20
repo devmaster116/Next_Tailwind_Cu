@@ -9,7 +9,7 @@ interface SalesDataProps {
   secondAmount?: number;
   isDollarAmount?: boolean;
   isPercentage?: boolean;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const SalesData = ({
