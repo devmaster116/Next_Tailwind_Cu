@@ -7,7 +7,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Categories, Dishes } from "../src/types";
+import { Categories, Dishes, SelectedVariantsForDishData } from "../src/types";
 
 interface ReportDataContextType {
   allCategories: Categories[];
@@ -26,6 +26,8 @@ interface ReportDataContextType {
   setOverviewReportFunctionError: Dispatch<SetStateAction<boolean>>;
   customDate?: string;
   setCustomDate: Dispatch<SetStateAction<string | undefined>>;
+  selectedVariants: SelectedVariantsForDishData[];
+  setSelectedVariants: Dispatch<SetStateAction<SelectedVariantsForDishData[]>>;
 }
 
 const ReportDataContext = createContext<ReportDataContextType | undefined>(
@@ -42,8 +44,10 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
   const [overviewReportFunctionError, setOverviewReportFunctionError] =
     useState(false);
   const [customDate, setCustomDate] = useState<string | undefined>();
+  const [selectedVariants, setSelectedVariants] = useState<
+    SelectedVariantsForDishData[]
+  >([]);
 
-  // console.log("ORders data report data context -==>", ordersData);
   return (
     <ReportDataContext.Provider
       value={{
@@ -63,6 +67,8 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
         setOverviewReportFunctionError,
         customDate,
         setCustomDate,
+        selectedVariants,
+        setSelectedVariants,
       }}
     >
       {children}

@@ -1,6 +1,9 @@
 import React from "react";
 import styles from "./DataTable.module.scss";
 import Skeleton from "./Skeleton";
+import Image from "next/image";
+
+type TableRowClickHandler = (rowData: any) => void;
 
 interface DataTableProps {
   dataObj: Array<Record<string, any>>;
@@ -9,11 +12,13 @@ interface DataTableProps {
   thirdColumnTitle?: string;
   secondColumnSymbol?: string;
   thirdColumnSymbol?: string;
-  loading: boolean;
+  loading?: boolean;
   customDate?: string;
   selectedOption?: string;
   negative?: boolean;
   hideRow?: boolean;
+  onRowClick?: TableRowClickHandler;
+  className?: string;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -28,12 +33,16 @@ const DataTable: React.FC<DataTableProps> = ({
   selectedOption,
   negative = false,
   hideRow = false,
+  onRowClick,
+  className,
 }) => {
   return (
     <div
       className={`${styles.report} ${
         firstColumnTitle === "Net Sales" ? styles.netSalesReport : ""
-      } ${firstColumnTitle === "Gross Sales" ? styles.grossSalesReport : ""}`}
+      } ${firstColumnTitle === "Gross Sales" ? styles.grossSalesReport : ""} ${
+        className && styles[className] ? styles[className] : ""
+      }`}
     >
       <div className={styles.reportHeader}>
         <div
@@ -69,7 +78,15 @@ const DataTable: React.FC<DataTableProps> = ({
               hideRow && !item[Object.keys(item)[1]] ? (
                 <div></div>
               ) : (
-                <div key={i} className={styles.reportRow}>
+                <div
+                  key={i}
+                  className={`${styles.reportRow} ${
+                    onRowClick && styles.isClickable
+                  }`}
+                  onClick={() =>
+                    onRowClick && onRowClick(item[Object.keys(item)[0]])
+                  }
+                >
                   <div
                     className={`${styles.reportItem} ${styles.reportItemName}`}
                   >
@@ -106,6 +123,16 @@ const DataTable: React.FC<DataTableProps> = ({
                           {item[Object.keys(item)[2]]}
                           {thirdColumnSymbol}
                         </>
+                      )}
+                      {onRowClick && (
+                        <div className={styles.chevronRightIconContainer}>
+                          <Image
+                            src="/icons/chevron-right.svg"
+                            height={16}
+                            width={16}
+                            alt="Chevron right icon"
+                          />
+                        </div>
                       )}
                     </div>
                   )}
