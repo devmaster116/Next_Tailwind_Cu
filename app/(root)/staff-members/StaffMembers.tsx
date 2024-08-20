@@ -104,8 +104,8 @@ const StaffMembers = () => {
                 <div className={styles.freshpageHeader}>
                   <h1 className={styles.pageTitle}>Staff Members</h1>
                 </div>
-                <div className="bg-gray-25 flex flex-col rounded-lg border border-gray-200 px-4 pb-5">
-                  <div className="flex items-center justify-center py-4">
+                <div className="bg-white flex flex-col rounded-lg border border-gray-200 px-4 py-5 mt-5 lg:mt-8">
+                  <div className="flex items-center justify-center pb-4">
                     <div className="flex flex-col items-center ">
                       <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                         <UserSvg />
@@ -113,10 +113,10 @@ const StaffMembers = () => {
                     </div>
                   </div>
                   <div className="flex flex-col items-center justify-center">
-                    <p className="text-gray-800 font-semibold text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px] mb-2">
+                    <p className="text-gray-800 font-semibold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] mb-2">
                       No Staff Created
                     </p>
-                    <p className="text-gray-800 font-normal text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px] mb-4">
+                    <p className="text-gray-800 font-normal text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] mb-4">
                       You haven’t created any staff yet.
                     </p>
                     <button className={styles.buttonPrimary} onClick={() => setStatusModal(true)}>
