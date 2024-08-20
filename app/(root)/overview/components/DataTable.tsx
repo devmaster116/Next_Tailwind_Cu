@@ -18,6 +18,7 @@ interface DataTableProps {
   negative?: boolean;
   hideRow?: boolean;
   onRowClick?: TableRowClickHandler;
+  className?: string;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -33,12 +34,15 @@ const DataTable: React.FC<DataTableProps> = ({
   negative = false,
   hideRow = false,
   onRowClick,
+  className,
 }) => {
   return (
     <div
       className={`${styles.report} ${
         firstColumnTitle === "Net Sales" ? styles.netSalesReport : ""
-      } ${firstColumnTitle === "Gross Sales" ? styles.grossSalesReport : ""}`}
+      } ${firstColumnTitle === "Gross Sales" ? styles.grossSalesReport : ""} ${
+        className && styles[className] ? styles[className] : ""
+      }`}
     >
       <div className={styles.reportHeader}>
         <div

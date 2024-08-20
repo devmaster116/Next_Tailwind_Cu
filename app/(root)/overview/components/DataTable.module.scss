@@ -164,3 +164,16 @@
     background-color: var(--gray-100);
   }
 }
+
+.dataInsightsTable {
+  border: none;
+  border-radius: 0;
+  padding: 0px 0px 8px 0px;
+  box-shadow: none;
+
+  .reportRow,
+  .reportHeader {
+    padding: 8px 16px;
+    border-radius: 0;
+  }
+}
