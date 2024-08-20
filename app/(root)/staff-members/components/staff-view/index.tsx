@@ -21,7 +21,7 @@ const StaffView = (props: Props) => {
   const data=props.item
   return (
     <div className={twMerge(
-      "bg-white rounded-lg h-full",
+      " rounded-lg h-full",
       props?.className
     )}>
       {data&&(
@@ -55,7 +55,7 @@ const StaffView = (props: Props) => {
                   content='Edit'
                   classOverride={{
                     container: 'flex-row justify-between mb-2',
-                    title: twMerge('font-bold text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]', 'color:#353435'),
+                    title: 'font-bold text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]',
                     content: 'font-semibold text-purple-700 text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
                   }}
                   onClick={() => console.log('clicked')}
@@ -68,7 +68,7 @@ const StaffView = (props: Props) => {
                         content={data.firstName}
                         classOverride={{
                              title: 'text-gray-800 font-semibold text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px]',
-                             content: 'font-normal  text-[14px] leading-[20px] sm:text-[16px] sm:leading-[24px]'
+                             content: 'font-normal  text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]'
                         }}
                       />
                     </div>
@@ -132,7 +132,7 @@ const StaffView = (props: Props) => {
                 onClick={() => console.log('clicked')}
               />
                 <div className='flex flex-row  ' >
-                  <p className='  gap-1 font-normal text-lg text-gray-800'>{data.roleName}</p>
+                  <p className='  gap-1 font-normal text-[16px] leading-[24px] sm:text-[18px] sm:leading-[28px]  text-gray-800'>{data.roleName}</p>
                   <Avatar 
                   icon={<HelpSvg />}
                 />

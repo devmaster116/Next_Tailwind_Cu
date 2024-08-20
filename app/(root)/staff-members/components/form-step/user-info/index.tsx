@@ -38,34 +38,34 @@ export const  UserInfo=()=> {
     resetForm()
   }
   const handleGoForwardStep = async () => {
-    // handleNextStep()
-    // dispatch({ type: 'SET_USER_INFO', payload: newUser });
-    const newErrors: { [key: string]: string } = {};
-    if (!validateRequired(newUser?.firstName)) {
-      newErrors.firstName = "Please enter a valid name.";
-    }
-    if (!validateRequired(newUser?.lastName)) {
-      newErrors.lastName = "Please enter a valid name.";
-    }
-    if (
-      !validateRequired(newUser?.email) ||
-      !validateEmail(newUser?.email)
-    ) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-    if (
-      !validateRequired(newUser?.mobileNumber) ||
-      !validateMobileNumber(newUser?.mobileNumber)
-    ) {
-      newErrors.mobileNumber =
-        "Enter a valid mobile number containing 10 digits.";
-    }
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      handleNextStep()
-      dispatch({ type: 'SET_USER_INFO', payload: newUser });
-    }
+    handleNextStep()
+    dispatch({ type: 'SET_USER_INFO', payload: newUser });
+    // const newErrors: { [key: string]: string } = {};
+    // if (!validateRequired(newUser?.firstName)) {
+    //   newErrors.firstName = "Please enter a valid name.";
+    // }
+    // if (!validateRequired(newUser?.lastName)) {
+    //   newErrors.lastName = "Please enter a valid name.";
+    // }
+    // if (
+    //   !validateRequired(newUser?.email) ||
+    //   !validateEmail(newUser?.email)
+    // ) {
+    //   newErrors.email = "Please enter a valid email address.";
+    // }
+    // if (
+    //   !validateRequired(newUser?.mobileNumber) ||
+    //   !validateMobileNumber(newUser?.mobileNumber)
+    // ) {
+    //   newErrors.mobileNumber =
+    //     "Enter a valid mobile number containing 10 digits.";
+    // }
+    // if (Object.keys(newErrors).length > 0) {
+    //   setErrors(newErrors);
+    // } else {
+    //   handleNextStep()
+    //   dispatch({ type: 'SET_USER_INFO', payload: newUser });
+    // }
   };
 
   return (

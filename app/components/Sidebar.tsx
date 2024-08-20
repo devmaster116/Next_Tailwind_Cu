@@ -1,11 +1,14 @@
-import React from "react";
+'use client'
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname,useRouter  } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
 import LogoutButton from "./Auth/LogoutButton";
 import { useUser } from "../context/UserContext";
 import { useKitchen } from "../context/KitchenContext";
+// import { useBanner } from "../context/BannerContext";
+// import { useFormStep } from "../hooks/useFormStep";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -28,20 +31,38 @@ export default function Sidebar({
 
   const { user } = useUser();
   const { kitchen } = useKitchen();
+  // const {banner, setBanner} = useBanner();
+  // const {statusAddStaff,setStatusAddStaff } = useFormStep()
+  
+  // const router = useRouter();
+  // useEffect(() => {
+  //   const url = `${pathname}`
+  //   console.log(url)
+  // }, [pathname])
 
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
   }`;
 
   const MenuItem = ({ icon, name, route }: MenuItemProps) => {
+    
     const isActive = pathname === route;
     const colorClass = isActive ? styles.active : styles.inactive;
+    // console.log("banner",banner)
+    // console.log("statusAddStaff",statusAddStaff)
+    // console.log("pathname",pathname)
+    // console.log("name",name)
+    // console.log("route",route)
 
+
+   
+     
     return (
       <Link
         href={route}
         onClick={() => {
           setter((oldVal) => !oldVal);
+          // setBanner(false)
           setMenuPageName(name);
         }}
         className={`${styles.menuItem} ${colorClass}`}

@@ -12,6 +12,7 @@ import { ReportDateProvider } from "../context/ReportDateContext";
 import { ReportDataProvider } from "../context/ReportDataContext";
 import { FormStepProvider } from "../context/StaffFormStep";
 import { FormProvider } from "../context/StaffContext";
+import { BannerProvider } from "../context/BannerContext";
 
 const urbanist = Urbanist({
   weight: ["400", "600"],
@@ -27,17 +28,20 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <KitchenProvider>
           <FormStepProvider>
             <FormProvider>
+              <BannerProvider>
                 <html lang="en" className={urbanist.className}>
-                  <body>
-                    <Navbar />
-                    <main className="main">
-                      <SidebarMenuLayout>{children}</SidebarMenuLayout>
-                    </main>
-                    <footer className="footer">
-                      © {new Date().getFullYear()} Swifti. All rights reserved.
-                    </footer>
-                  </body>
-                </html>
+                    <body>
+                      <Navbar />
+                      <main className="main">
+                        <SidebarMenuLayout>{children}</SidebarMenuLayout>
+                      </main>
+                      <footer className="footer">
+                        © {new Date().getFullYear()} Swifti. All rights reserved.
+                      </footer>
+                    </body>
+                  </html>
+              </BannerProvider>
+               
               </FormProvider>
             </FormStepProvider>
           </KitchenProvider>

@@ -136,9 +136,9 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
         open={viewStaff}
         onClose={CloseTogglePanel}
         direction='right'
-        className='!w-full lg:!max-w-[400px] overflow-auto bg-white '
+        className='!w-full lg:!max-w-[400px] overflow-auto bg-gray-25 sm:bg-white'
         lockBackgroundScroll={true}
-        overlayColor="bg-grey-25"
+        overlayColor="bg-gray-25 sm:bg-white"
         overlayOpacity={0}
       >
         <StaffView
