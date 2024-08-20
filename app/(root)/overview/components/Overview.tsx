@@ -14,6 +14,7 @@ import useFetchReports from "@/app/hooks/useFetchReports";
 import { getTopFive } from "./utils/formatDate";
 import { useReportDate } from "@/app/context/ReportDateContext";
 import { removeGst } from "@/app/components/Auth/utils/helper";
+import Link from "next/link";
 
 const Overview = () => {
   const { width } = useWindowSize();
@@ -128,7 +129,16 @@ const Overview = () => {
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}
+                    className="linkTable"
                   />
+                  {allCategories[0] && (
+                    <div className={styles.linkToSeeAllContainer}>
+                      <Link className={styles.link} href="/category-sales">
+                        <h4>See all categories</h4>
+                      </Link>
+                    </div>
+                  )}
+
                   <DataTable
                     firstColumnTitle="Top 5 items"
                     secondColumnTitle="Count"
@@ -138,7 +148,15 @@ const Overview = () => {
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}
+                    className="linkTable"
                   />
+                  {allDishes[0] && (
+                    <div className={styles.linkToSeeAllContainer}>
+                      <Link className={styles.link} href="/item-sales">
+                        <h4>See all items</h4>
+                      </Link>
+                    </div>
+                  )}
                 </>
               )}
             </>

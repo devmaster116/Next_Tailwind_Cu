@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import styles from "./MenuBarMobile.module.scss";
 import Image from "next/image";
 
