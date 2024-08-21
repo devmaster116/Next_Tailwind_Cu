@@ -58,6 +58,13 @@ export function removeGst<T extends { total_price: number }>(items: T[]): T[] {
   }));
 }
 
+export function formatUrlToTitle(urlPath: string): string {
+  return urlPath
+    .replace(/^\//, "")
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, char => char.toUpperCase());
+}
+
 export const handleInputChangeField = (
   e: React.ChangeEvent<HTMLInputElement>,
   setState: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>,
