@@ -19,7 +19,6 @@ const LogoutButton: React.FC = () => {
     localStorage.removeItem("kitchenId");
     localStorage.removeItem("stripeCustomerId");
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("menuPageName");
     router.push("/business-login");
   };
 

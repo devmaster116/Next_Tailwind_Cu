@@ -4,7 +4,9 @@ import Head from "next/head";
 import Sidebar from "./Sidebar";
 import MenuBarMobile from "./MenuBarMobile";
 import styles from "./SidebarMenuLayout.module.scss";
-import { BannerProvider } from "../context/BannerContext";
+import { usePathname } from "next/navigation";
+import { formatUrlToTitle } from "./Auth/utils/helper";
+
 
 interface SidebarMenuLayoutProps {
   pageTitle?: string;
@@ -19,22 +21,8 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
   if (pageTitle) titleConcat = `${pageTitle} | ${titleConcat}`;
 
   const [showSidebar, setShowSidebar] = useState(false);
-  const [menuPageName, setMenuPageName] = useState("");
-
-  useEffect(() => {
-    const storedMenuPageName = localStorage.getItem("menuPageName");
-    if (storedMenuPageName) {
-      setMenuPageName(storedMenuPageName);
-    } else {
-      setMenuPageName("Overview");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (menuPageName) {
-      localStorage.setItem("menuPageName", menuPageName);
-    }
-  }, [menuPageName]);
+  const pathname = usePathname();
+  const pathnameToPageTitle = formatUrlToTitle(pathname);
 
   return (
     <>
@@ -43,15 +31,14 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
       </Head>
       <div className={styles.layoutContainer}>
         <div className={styles.mainContent}>
-          <MenuBarMobile setter={setShowSidebar} pageTitle={menuPageName} />
-          <Sidebar
-            show={showSidebar}
+          <MenuBarMobile
             setter={setShowSidebar}
-            setMenuPageName={setMenuPageName}
+            pageTitle={pathnameToPageTitle}
           />
-          {/* <BannerProvider> */}
-            <div className={styles.contentArea}>{children}</div>
-          {/* </BannerProvider> */}
+
+          <Sidebar show={showSidebar} setter={setShowSidebar} />
+          <div className={styles.contentArea}>{children}</div>
+
         </div>
       </div>
     </>
