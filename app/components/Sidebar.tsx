@@ -16,14 +16,9 @@ interface MenuItemProps {
 interface SidebarProps {
   show: boolean;
   setter: React.Dispatch<React.SetStateAction<boolean>>;
-  setMenuPageName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Sidebar({
-  show,
-  setter,
-  setMenuPageName,
-}: SidebarProps) {
+export default function Sidebar({ show, setter }: SidebarProps) {
   const pathname = usePathname();
 
   const { user } = useUser();
@@ -41,8 +36,7 @@ export default function Sidebar({
       <Link
         href={route}
         onClick={() => {
-          setter((oldVal) => !oldVal);
-          setMenuPageName(name);
+          setter(oldVal => !oldVal);
         }}
         className={`${styles.menuItem} ${colorClass}`}
       >
@@ -56,7 +50,7 @@ export default function Sidebar({
     <div
       className={styles.modalOverlay}
       onClick={() => {
-        setter((oldVal) => !oldVal);
+        setter(oldVal => !oldVal);
       }}
     />
   );
