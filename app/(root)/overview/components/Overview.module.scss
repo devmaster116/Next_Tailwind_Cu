@@ -7,6 +7,12 @@
   }
 }
 
+.tablesContainer {
+  @media only screen and (min-width: 599px) {
+    flex-wrap: wrap;
+  }
+}
+
 .timeSelector {
   align-items: center;
   background-color: #fff;
@@ -178,4 +184,25 @@
 
 .pageTitle {
   margin: 16px 0px 20px 0px;
+}
+
+.linkToSeeAllContainer {
+  background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-top: none;
+  display: flex;
+  height: 52px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  justify-content: end;
+  padding: 12px 16px;
+
+  .link {
+    display: flex;
+
+    h4 {
+      color: var(--primary-purple-700);
+      align-self: center;
+    }
+  }
 }
