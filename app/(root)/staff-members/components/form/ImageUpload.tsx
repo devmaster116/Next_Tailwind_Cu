@@ -7,6 +7,7 @@ import { storage } from "@/firebase/config";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
 import { UploadSvg } from "@/app/assets/svg/upload"
+import { twMerge } from 'tailwind-merge';
 export const ImageUpload = function () {
   const [images, setImages] = useState<ImageListType>([]);
   const maxNumber = 1;
@@ -57,10 +58,13 @@ export const ImageUpload = function () {
           isDragging,
           dragProps,
         }) => (
-          <div className="flex flex-row upload__image-wrapper mt-6 justify-center items-center">
+          <div className={twMerge(
+            "flex flex-row upload__image-wrapper mt-6 justify-center items-center",
+            images.length === 0 && 'justify-start'
+          )}>
             {imageList.length === 0 &&
               <button
-                className="flex flex-direction gap-2 font-semibold text-[14px] leading-[20px] md:text-[16px] md:leading-[24px]  bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-3.5 border-bottom"
+                className="flex flex-direction gap-2 font-semibold text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]  bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-3.5 border-bottom"
                 style={isDragging ? { color: 'red' } : undefined}
                 onClick={onImageUpload}
                 {...dragProps}
@@ -81,13 +85,13 @@ export const ImageUpload = function () {
                 </div>
                 <div className="image-item__btn-wrapper flex flex-col mt-2">
                   <button
-                    className=" text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] font-semibold bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-3.5 border-bottom"
+                    className=" text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-3.5 border-bottom"
                     onClick={() => onImageUpdate(index)}
                   >
                     Update
                   </button>
                   <button
-                    className=" text-[14px] leading-[20px] md:text-[16px] md:leading-[24px] text-red-700 font-semibold py-2 px-3.5"
+                    className=" text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-red-700 font-semibold py-2 px-3.5"
                     onClick={() => onImageRemove(index)}
                   >
                     Remove

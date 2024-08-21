@@ -1,15 +1,14 @@
 'use client'
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { usePathname,useRouter  } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
 import LogoutButton from "./Auth/LogoutButton";
 import { useUser } from "../context/UserContext";
 import { useKitchen } from "../context/KitchenContext";
-// import { useBanner } from "../context/BannerContext";
-// import { useFormStep } from "../hooks/useFormStep";
-
+import { useBanner } from "../context/BannerContext";
+import { useFormStep } from "../hooks/useFormStep";
+import { usePathname } from "next/navigation";
 interface MenuItemProps {
   icon: React.ReactNode;
   name: string;
@@ -28,18 +27,25 @@ export default function Sidebar({
   setMenuPageName,
 }: SidebarProps) {
   const pathname = usePathname();
-
+  // const searchParams = useSearchParams()
   const { user } = useUser();
   const { kitchen } = useKitchen();
-  // const {banner, setBanner} = useBanner();
-  // const {statusAddStaff,setStatusAddStaff } = useFormStep()
-  
-  // const router = useRouter();
-  // useEffect(() => {
-  //   const url = `${pathname}`
-  //   console.log(url)
-  // }, [pathname])
+  const {banner, setBanner} = useBanner();
+  const {statusAddStaff,setStatusAddStaff } = useFormStep()
 
+  useEffect(() => {
+    // if(previousRoute!==pathname) {
+    //   console.log("previousRoute",previousRoute)
+    //   console.log("pathname",pathname)
+    //   setBanner(false)
+    //   setStatusAddStaff(false)
+    // }
+    if (!pathname.includes('/stuff-members')) {
+      setBanner(false)
+      setStatusAddStaff(false)
+    }
+    console.log("===banner ===", banner)
+  }, [pathname])
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
   }`;
@@ -48,21 +54,12 @@ export default function Sidebar({
     
     const isActive = pathname === route;
     const colorClass = isActive ? styles.active : styles.inactive;
-    // console.log("banner",banner)
-    // console.log("statusAddStaff",statusAddStaff)
-    // console.log("pathname",pathname)
-    // console.log("name",name)
-    // console.log("route",route)
-
-
-   
      
     return (
       <Link
         href={route}
         onClick={() => {
           setter((oldVal) => !oldVal);
-          // setBanner(false)
           setMenuPageName(name);
         }}
         className={`${styles.menuItem} ${colorClass}`}

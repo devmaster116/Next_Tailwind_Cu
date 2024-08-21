@@ -145,6 +145,7 @@ export interface RoleInfo {
   access: string;
   staff: number;
   name: string;
+  description: string;
   permissions: Permission[];
 }
 

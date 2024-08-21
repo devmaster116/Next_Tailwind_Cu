@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import withAuth from "@/app/components/Auth/withAuth";
 import LightLoader from "@/app/components/LightLoader";
 import LoadingSkeleton from "./components/LoadingSkeleton";
@@ -20,14 +20,19 @@ import { useBanner } from "@/app/context/BannerContext";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { UserSvg } from "@/app/assets/svg/user";
 import { twMerge } from "tailwind-merge";
+import { FormContext } from "@/app/context/StaffContext";
+import { EditUserInfo } from "./components/edit-step/edit-user-info";
+
 
 const StaffMembers = () => {
   const { banner, setBanner } = useBanner();
-  // const [loading, setLoading] = useState(true);
-  const { statusModal, setStatusModal, statusAddStaff,setStatusAddStaff } = useFormStep()
-  const [staffConfig,setStaffConfig] = useState<IConfig[]>([])
+  const { statusModal, setStatusModal, statusAddStaff,setStatusAddStaff , editUserInfoStatusModal, setEditUserInfoStatusModal} = useFormStep()
 
+  const {state} = useContext(FormContext)!;
+
+  const [staffConfig,setStaffConfig] = useState<IConfig[]>([])
   useEffect(() => {
+ 
     const unsubscribe = onSnapshot(collection(db, "configs"), (snapShot) => {
       const _configs: IConfig[] = []
 
@@ -46,7 +51,10 @@ const StaffMembers = () => {
   const handleClose = () => {
     setBanner(false)
   }
-
+  const handleAddStaff =async()=>{
+    setStatusModal(true)
+    
+  }
   const handleCloseStaffBanner = () => {
     setStatusAddStaff(false)
   }
@@ -86,13 +94,12 @@ const StaffMembers = () => {
         <ToastStatus label={"New Staff Member Created"} onClose={handleCloseStaffBanner}/>
       )}
       <div className={"w-full"}>
-        
         {
            staffConfig?.[0]?.staffMembers?.length > 0?(
               <>
                 <div className={styles.pageHeader}>
                   <h1 className={styles.pageTitle}>Staff Members</h1>
-                  <button className={styles.buttonPrimary} onClick={() => setStatusModal(true)}>
+                  <button className={styles.buttonPrimary} onClick={handleAddStaff}>
                     <span style={{ marginRight: "8px" }}>{plusIcon}</span>
                     Staff Member{" "}
                   </button>
@@ -119,7 +126,7 @@ const StaffMembers = () => {
                     <p className="text-gray-800 font-normal text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] mb-4">
                       You haven’t created any staff yet.
                     </p>
-                    <button className={styles.buttonPrimary} onClick={() => setStatusModal(true)}>
+                    <button className={styles.buttonPrimary} onClick={handleAddStaff}>
                       <span style={{ marginRight: "8px" }}>{plusIcon}</span>
                       Staff Member{" "}
                     </button>
@@ -129,14 +136,24 @@ const StaffMembers = () => {
             )
         }
         
-          <StaffModalFullPage
-            show={statusModal}
-            content={
-              <div className={styles.formContainer}>
-                   <FormStep/>
+        <StaffModalFullPage
+          show={statusModal}
+          content={
+            <div className={styles.formContainer}>
+              <FormStep/>
             </div>
-            }
-          />
+          }
+        />
+
+{/* eidt modal */}
+      <StaffModalFullPage
+          show={editUserInfoStatusModal}
+          content={
+            <div className={styles.formContainer}>
+              <EditUserInfo/>
+            </div>
+          }
+        />
 
         {/* {loading && (
           <>

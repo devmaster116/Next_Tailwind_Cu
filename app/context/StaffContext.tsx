@@ -11,7 +11,9 @@ export type FormContextType = {
   saveStaffToFirebase: () => Promise<void>; 
   getStaffRole: () => Promise<void>; 
   resetForm: () => void;
-
+  currentStaff: ConfigStaffMember | null;
+  loadStaffForEdit: (staff: ConfigStaffMember) => void;
+  updateStaffInFirebase: (updatedStaff: ConfigStaffMember) => Promise<void>;
 };
 
 export type FormAction =
@@ -20,6 +22,7 @@ export type FormAction =
   | { type: 'SET_USER_ROLE'; payload: string }
   | { type: 'SET_USER_ROLE_ID'; payload: string }
   | { type: 'SET_PASSCODE'; payload: string }
+  | { type: 'SET_CURRENT_STAFF'; payload: ConfigStaffMember | null }
   | { type: 'RESET_FORM' };
 
 const initialState: ConfigStaffMember = {
@@ -58,8 +61,7 @@ const formReducer = (state: ConfigStaffMember, action: FormAction): ConfigStaffM
 export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(formReducer, initialState);
   const [roles, setRoles] = useState<RoleInfo[]>([]);
-  // const [selectStaff, setSelectStaff] = useState<ConfigStaffMember[]>([]);
-  
+  const [currentStaff, setCurrentStaff] = useState<ConfigStaffMember | null>(null);
     const saveStaffToFirebase = async () => {
 
 
@@ -82,11 +84,25 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
     };
-    useEffect(() => {
-      getStaffRole(); 
-    }, []);
+   
+      // Load staff data for editing and populate form
+  const loadStaffForEdit = (staff: ConfigStaffMember) => {
+    dispatch({ type: 'SET_CURRENT_STAFF', payload: staff });
+    setCurrentStaff(staff);
+  };
+
+  const updateStaffInFirebase = async (updatedStaff: ConfigStaffMember) => {
+    // if (updatedStaff && updatedStaff.email) {
+    //   const staffDoc = doc(db, "staff", updatedStaff.email); // Assuming email is unique
+    //   await updateDoc(staffDoc, updatedStaff);
+    // }
+  };
+  useEffect(() => {
+    getStaffRole(); 
+  }, []);
   return (
-    <FormContext.Provider value={{ state, roles,dispatch , resetForm,saveStaffToFirebase,getStaffRole}}>
+    <FormContext.Provider value={{ state, roles,dispatch ,currentStaff,   loadStaffForEdit,
+      updateStaffInFirebase,resetForm,saveStaffToFirebase,getStaffRole}}>
       {children}
     </FormContext.Provider>
   );

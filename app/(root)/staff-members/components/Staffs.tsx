@@ -7,10 +7,10 @@ import { getShrinkName } from '@/app/utils';
 import StaffView from '../components/staff-view';
 import Drawer from 'react-modern-drawer'
 import CustomModal from '@/app/components/CustomModal';
-import { ToastContainer, toast } from 'react-toastify';
 import { useBanner } from '@/app/context/BannerContext';
 import { useKitchen } from '@/app/context/KitchenContext';
-import { FormContext } from '@/app/context/StaffContext';
+import { FormContext, FormContextType } from '@/app/context/StaffContext';
+
 interface StaffProps {
   staffList: IConfig[];
 }
@@ -24,16 +24,15 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { state, resetForm, loadStaffForEdit } = useContext(FormContext) as FormContextType;
   const openDeleteStaffModal = () => {
     setOpenDeleteModal(!openDeleteModal)
   }
- 
   const updateStaff = async () =>{
 
       setViewStaff(!viewStaff);
       setOpenDeleteModal(!openDeleteModal)
       setBanner(true)
-
       if (!kitchenId) {
         console.error("Kitchen ID is required but was not provided.");
         setErrors((prevErrors) => ({
@@ -75,10 +74,13 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
   }
  
     const togglePanel = (item:ConfigStaffMember) => {
+
       setViewStaff(!viewStaff);
       setStaffItem(item)
+      // loadStaffForEdit(item);
     };
     const CloseTogglePanel=()=>{
+      resetForm()
       setViewStaff(!viewStaff);
     }
   return (
@@ -136,18 +138,20 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
         open={viewStaff}
         onClose={CloseTogglePanel}
         direction='right'
-        className='!w-full lg:!max-w-[400px] overflow-auto !bg-[#FCFCFD] !lg:bg-white'
+        className='!w-full lg:!max-w-[400px] overflow-auto !bg-[#FCFCFD] lg:!bg-white'
         lockBackgroundScroll={true}
         // overlayColor="bg-white"
         overlayOpacity={0}
       >
         <StaffView
-          className='h-[90%] overflow-auto' 
+          className='h-[90%] lg:h-full overflow-auto' 
           onClose={CloseTogglePanel} 
           item={staffItem}
           onDeleteModalOpen = {openDeleteStaffModal} 
         />
       </Drawer>
+
+      
     </>
   );
 };

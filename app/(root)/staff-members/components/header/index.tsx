@@ -1,6 +1,8 @@
 import Image from "next/image";
 import styles from "../StaffModalFullPage.module.scss";
 import { useFormStep } from "@/app/hooks/useFormStep";
+import { useContext } from "react";
+import { FormContext } from "@/app/context/StaffContext";
 type StaffModalHeaderProps = {
   title: string
   handleGoForwardStep?: () => void
@@ -14,6 +16,7 @@ export const StaffModalHeader = ({
   handleClose,
 }: StaffModalHeaderProps) => {
   const { currentStep } = useFormStep();
+  const { currentStaff} = useContext(FormContext)!;
   
   return (
     <div className={styles.titleDiv}>
@@ -31,12 +34,21 @@ export const StaffModalHeader = ({
         />
       </button>
       <div className={styles.titleText}>{title}</div>
+      {/* edit staff */}
+      {currentStaff?(
+        <button 
+        className={styles.saveBtn} 
+        onClick={handleGoForwardStep}
+      >
+       Update
+      </button>  
+      ):
       <button 
         className={styles.saveBtn} 
         onClick={handleGoForwardStep}
       >
         {currentStep==4?"Save":"Next"}
-      </button>
+      </button>}
     </div>
   )
 }

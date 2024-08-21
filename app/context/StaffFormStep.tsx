@@ -9,6 +9,9 @@ type FormStepContextData = {
   statusModal: boolean
   setStatusModal: (status: boolean) => void;
 
+  editUserInfoStatusModal: boolean
+  setEditUserInfoStatusModal: (status: boolean) => void;
+
   statusAddStaff: boolean
   setStatusAddStaff: (status: boolean) => void;
 
@@ -26,6 +29,9 @@ export const FormStepContext = createContext<FormStepContextData>({
 
   statusModal: false,
   setStatusModal: () =>{},
+
+  editUserInfoStatusModal: false,  
+  setEditUserInfoStatusModal: () =>{},
 
   statusAddStaff: false,
   setStatusAddStaff: () =>{},
@@ -46,6 +52,8 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   
   const [statusModal, setStatusModal] = useState(false);
+
+  const [editUserInfoStatusModal, setEditUserInfoStatusModal] = useState(false);
   
   const [statusAddStaff, setStatusAddStaff] =useState(false)
   const [steps, _] = useState([
@@ -100,6 +108,8 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         currentStep, 
         statusModal,
         setStatusModal,
+        editUserInfoStatusModal,
+        setEditUserInfoStatusModal,
         statusAddStaff,
         setStatusAddStaff,
         setCurrentStep, 

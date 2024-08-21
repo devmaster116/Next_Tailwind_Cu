@@ -49,9 +49,9 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
             setter={setShowSidebar}
             setMenuPageName={setMenuPageName}
           />
-          <BannerProvider>
+          {/* <BannerProvider> */}
             <div className={styles.contentArea}>{children}</div>
-          </BannerProvider>
+          {/* </BannerProvider> */}
         </div>
       </div>
     </>
