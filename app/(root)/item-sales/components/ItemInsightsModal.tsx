@@ -4,6 +4,7 @@ import Image from "next/image";
 import ItemSalesData from "./ItemSalesData";
 import DataTable from "../../overview/components/DataTable";
 import { ItemInsightsData, DishVariationTotals } from "@/app/src/types";
+import { removeGst } from "@/app/components/Auth/utils/helper";
 
 const ItemInsightsModal = ({
   show,
@@ -92,7 +93,9 @@ const ItemInsightsModal = ({
             secondColumnTitle="Count"
             thirdColumnTitle="Net"
             thirdColumnSymbol="$"
-            dataObj={removeCategory(uniqueVariations)}
+            dataObj={removeCategory(
+              removeGst(uniqueVariations, "totalPriceWithVariants")
+            )}
             className="dataInsightsTable"
           />
         )}

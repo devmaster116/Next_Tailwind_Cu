@@ -76,7 +76,9 @@ const ItemSales = () => {
       }))
     );
 
-    const totalCount = getTotalsForDishVariations(matchedDishes) || {
+    const totalCount = getTotalsForDishVariations(
+      removeGst(matchedDishes, "totalPriceWithVariants")
+    ) || {
       totalQuantity: 0,
       totalPriceWithVariants: 0,
     };
@@ -207,7 +209,7 @@ const ItemSales = () => {
                 thirdColumnTitle="Net"
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
-                dataObj={removeGst(allDishes)}
+                dataObj={removeGst(allDishes, "total_price")}
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}

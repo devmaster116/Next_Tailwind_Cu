@@ -126,7 +126,7 @@ const CategorySales = () => {
                 thirdColumnTitle="Net"
                 secondColumnSymbol=""
                 thirdColumnSymbol="$"
-                dataObj={removeGst(allCategories)}
+                dataObj={removeGst(allCategories, "total_price")}
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
