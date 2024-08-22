@@ -51,10 +51,13 @@ export const resetPassword = async (
   }
 };
 
-export function removeGst<T extends { total_price: number }>(items: T[]): T[] {
+export function removeGst<T extends Record<K, number>, K extends keyof T>(
+  items: T[],
+  priceKey: K
+): T[] {
   return items.map(item => ({
     ...item,
-    total_price: parseFloat((item.total_price / 1.1).toFixed(2)),
+    [priceKey]: parseFloat((item[priceKey] / 1.1).toFixed(2)),
   }));
 }
 
