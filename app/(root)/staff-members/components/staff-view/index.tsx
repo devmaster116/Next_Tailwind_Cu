@@ -9,6 +9,7 @@ import { HelpSvg } from '@/app/assets/svg/help';
 import { FormContext, FormContextType } from '@/app/context/StaffContext';
 import { useFormStep } from '@/app/hooks/useFormStep';
 import { EditImageUpload } from '../form/EditImageUpload';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type Props = {
   onClose: () => void,
@@ -18,17 +19,31 @@ type Props = {
 }
 
 const StaffView = (props: Props) => {
-
+  const router = useRouter()
+  const pathName = usePathname()
+  // const searchParams = useSearchParams()
   const { loadStaffForEdit } = useContext(FormContext) as FormContextType;
-  const {  editUserInfoStatusModal, setEditUserInfoStatusModal } = useFormStep()
 
-  const showEditStaffModal=(data:ConfigStaffMember)=>{
+  const [statusHideShow, setStatusHideShow] = useState(false);
+  const showEditUserInfoStaffModal=(data:ConfigStaffMember)=>{
     loadStaffForEdit(data)
-    props.onClose()
-    setEditUserInfoStatusModal(true)
-    // setViewStaff(!viewStaff);
+    // props.onClose()
+    router.push(`${pathName}?type=edit-staff`)
+    // setEditUserInfoStatusModal(true)
+  }
+  const showEditUserRoleStaffModal=(data:ConfigStaffMember)=>{
+    loadStaffForEdit(data)
+    router.push(`${pathName}?type=edit-role`)
 
   }
+  const showEditUserSignCodeStaffModal=(data:ConfigStaffMember)=>{
+    loadStaffForEdit(data)
+    router.push(`${pathName}?type=edit-code`)
+
+  }
+const showHideSignCode= () =>{
+  setStatusHideShow(!statusHideShow)
+}
 
   const data=props.item
   return (
@@ -71,7 +86,7 @@ const StaffView = (props: Props) => {
                         title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
                         content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
                       }}
-                      onClick={()=>showEditStaffModal(data)}
+                      onClick={()=>showEditUserInfoStaffModal(data)}
                     />
 
                     <div className="flex py-[10px] lg:py-3">
@@ -124,7 +139,7 @@ const StaffView = (props: Props) => {
                     <div className='flex pt-[10px] lg:pt-[12px] '>
                           <Paragraph 
                               title='Email Address'
-                              content={'Alfonso.Cassano@gmail.com'}
+                              content={data?.email}
                               classOverride={{
                                 title: 'text-gray-800 font-semibold text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]',
                                 content: 'font-normal  text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
@@ -142,7 +157,7 @@ const StaffView = (props: Props) => {
                       title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
                       content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
                     }}
-                    onClick={() => console.log('clicked')}
+                    onClick={()=>showEditUserRoleStaffModal(data)}
                   />
                     <div className='flex flex-row  ' >
                       <p className='  gap-1 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]  text-gray-800'>{data.roleName}</p>
@@ -161,16 +176,17 @@ const StaffView = (props: Props) => {
                         title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
                         content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
                       }}
-                      onClick={() => console.log('clicked')}
+                      onClick={()=>showEditUserSignCodeStaffModal(data)}
+
                     />
                     <div className='flex flex-row  ' >
                     {data.passcode&&(
                         <div className='flex flex-row'>
                           <div className='flex flex-direction '>
-                              <p className='font-bold  text-[18px] leading-[28px] lg:text-[20px] lg:leading-[28px] text-gray-800 '>****</p>
+                              <p className='font-bold  text-[18px] leading-[28px] lg:text-[20px] lg:leading-[28px] text-gray-800 '>{statusHideShow?data.passcode:'****'}</p>
                           </div>
-                          <div className='flex flex-direction'>
-                              <p className='cursor-pointer flex items-center ml-1 font-bold text-lg leading-5 lg:text-base lg:leading-6 text-purple-700'>Show Code</p>
+                          <div className='flex flex-direction' onClick={showHideSignCode}>
+                              <p className='cursor-pointer flex items-center ml-1 font-bold text-lg leading-5 lg:text-base lg:leading-6 text-purple-700' >{statusHideShow?'Hide Code':'Show Code'}</p>
                           </div>
                         </div>
                     )}

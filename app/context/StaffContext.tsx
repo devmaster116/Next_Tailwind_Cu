@@ -13,7 +13,7 @@ export type FormContextType = {
   resetForm: () => void;
   currentStaff: ConfigStaffMember | null;
   loadStaffForEdit: (staff: ConfigStaffMember) => void;
-  updateStaffInFirebase: (updatedStaff: ConfigStaffMember) => Promise<void>;
+  updateStaffInFirebase: (updatedStaff: ConfigStaffMember, kitchenId: string | any ) => Promise<void>;
 };
 
 export type FormAction =
@@ -87,11 +87,54 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
    
       // Load staff data for editing and populate form
   const loadStaffForEdit = (staff: ConfigStaffMember) => {
+
     dispatch({ type: 'SET_CURRENT_STAFF', payload: staff });
     setCurrentStaff(staff);
   };
 
-  const updateStaffInFirebase = async (updatedStaff: ConfigStaffMember) => {
+  const updateStaffInFirebase = async (updatedStaff: ConfigStaffMember,kitchenId:string) => {
+  
+    try {
+      if (!kitchenId) {
+         console.error("Kitchen ID is required but was not provided.");
+         return;
+       }
+
+     const configDocRef = doc(db, "configs", kitchenId);
+     // Retrieve the document and destructure the necessary data
+     const configDoc = await getDoc(configDocRef);
+     if (!configDoc.exists()) {
+         console.log("Config document does not exist!");
+         return;
+     }
+ 
+     const { staffMemberConfigs = {} } = configDoc.data();
+     const { staffMembers = [] } = staffMemberConfigs;
+     const existingStaffIndex = staffMembers.findIndex(
+      (member: { passcode: string; }) => member.passcode === updatedStaff.passcode
+  );
+
+      if (existingStaffIndex !== -1) {
+            // Staff member exists, update the data
+            staffMembers[existingStaffIndex] = updatedStaff;
+            console.log("Existing staff member updated successfully!");
+        } else {
+            // Add new staff member if no match found
+            // staffMembers = [...staffMembers, updatedStaff];
+            console.log("New staff member added successfully!");
+        }
+     // Update the document with the new staff member and other config settings
+     await updateDoc(configDocRef, {
+         "staffMemberConfigs.staffMembers": staffMembers,
+         "staffMemberConfigs.enabled": true,
+         "staffMemberConfigs.idleTime": 0,
+         "staffMemberConfigs.passcodeEnabled": true,
+     });
+ 
+     console.log("New staff member added successfully!");
+ } catch (error) {
+     console.error("Error adding new staff member:", error);
+ }
     // if (updatedStaff && updatedStaff.email) {
     //   const staffDoc = doc(db, "staff", updatedStaff.email); // Assuming email is unique
     //   await updateDoc(staffDoc, updatedStaff);

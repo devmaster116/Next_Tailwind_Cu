@@ -64,13 +64,13 @@ export const ImageUpload = function () {
           )}>
             {imageList.length === 0 &&
               <button
-                className="flex flex-direction gap-2 font-semibold text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]  bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-3.5 border-bottom"
-                style={isDragging ? { color: 'red' } : undefined}
+                className="flex flex-direction gap-2 font-semibold text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]  bg-white text-gray-700 rounded-lg border-solid border border-gray-300 lg:px-5 lg:py-3 py-[10px] px-[18px] border-bottom hover:bg-gray-50 hover:text-gray-800"
+                style={isDragging ? { color: 'red',boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' } : {boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05'}}
                 onClick={onImageUpload}
                 {...dragProps}
               >
                 <UploadSvg />
-                Upload(Optional)
+                Upload (Optional)
               </button>
             }
             {imageList.map((image, index) => (
@@ -85,13 +85,14 @@ export const ImageUpload = function () {
                 </div>
                 <div className="image-item__btn-wrapper flex flex-col mt-2">
                   <button
-                    className=" text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-3.5 border-bottom"
+                    className=" text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold bg-white text-gray-700 rounded-lg border-solid border border-gray-300 py-2 px-[14px] border-bottom hover:text-gray-800 hover:bg-gray-50"
+                    style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}
                     onClick={() => onImageUpdate(index)}
                   >
                     Update
                   </button>
                   <button
-                    className=" text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-red-700 font-semibold py-2 px-3.5"
+                    className=" text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-red-700 font-semibold py-2 px-[14px]"
                     onClick={() => onImageRemove(index)}
                   >
                     Remove

@@ -8,12 +8,12 @@ interface ProgressProps {
 
 export function StepStatus({ stepIndex }: ProgressProps) {
   return (
-    <div className="flex flex-col mb-8 ">
+    <div className="flex flex-col mb-0 lg:mb-8">
             <ProgressBar
                 filledBackground="#4CA30D"
                 percent={stepIndex*25}
               >
-                <Step transition="scale">
+                <Step transition="scale" transitionDuration="500">
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
@@ -21,7 +21,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     </div>
                   )}
                 </Step>
-                <Step transition="scale">
+                <Step transition="scale" transitionDuration="500">
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
@@ -30,7 +30,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     </div>
                   )}
                 </Step>
-                <Step transition="scale">
+                <Step transition="scale" transitionDuration={500}>
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
@@ -39,7 +39,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     </div>
                   )}
                 </Step>
-                <Step transition="scale">
+                <Step transition="scale" transitionDuration={500}>
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}

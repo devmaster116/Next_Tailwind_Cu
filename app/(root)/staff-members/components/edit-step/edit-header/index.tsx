@@ -1,9 +1,5 @@
 import Image from "next/image";
-import styles from "../StaffModalFullPage.module.scss";
-import { useFormStep } from "@/app/hooks/useFormStep";
-import { useContext } from "react";
-import { FormContext } from "@/app/context/StaffContext";
-import { BackSvg } from "@/app/assets/svg/back";
+import styles from "../../StaffModalFullPage.module.scss";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
 type StaffModalHeaderProps = {
@@ -13,7 +9,7 @@ type StaffModalHeaderProps = {
   handleGoBack?: () => void
   handleClose?: () => void
 }
-export const StaffModalHeader = ({
+export const StaffEditModalHeader = ({
   title,
   children,
   handleGoForwardStep,
@@ -21,19 +17,15 @@ export const StaffModalHeader = ({
   handleClose,
 }: StaffModalHeaderProps) => {
   const { width } = useWindowSize()
-  const { currentStep } = useFormStep();
-  const { currentStaff} = useContext(FormContext)!;
   
-  const MobileHeader = () => (
+  const EditMobileHeader = () => (
     <div className={twMerge(
       styles.titleDiv,
       "flex-col !pb-1"
     )}>
       <div className="flex juitify-between items-center w-full">
-        <button className={styles.titleAddCloseBtn} onClick={currentStep>1?handleGoBack:handleClose}>
-            {
-            currentStep>1?
-              <BackSvg />:
+        <button className={styles.titleAddCloseBtn} onClick={handleClose}>
+
               <Image
               className={styles.icon}
               src="/icons/close.svg"
@@ -46,7 +38,7 @@ export const StaffModalHeader = ({
               }}
             />
             
-          }
+          
             
         </button>
         <div className={styles.titleText}>{title}</div>
@@ -55,7 +47,7 @@ export const StaffModalHeader = ({
           className={styles.saveBtn} 
           onClick={handleGoForwardStep}
         >
-          {currentStep==4?"Save":"Next"}
+       Update
         </button>
       </div>
       {children && (
@@ -66,12 +58,10 @@ export const StaffModalHeader = ({
     </div>
   )
 
-  const DesktopHeader = () => (
+  const EditDesktopHeader = () => (
     <div className={styles.titleDiv}>
-      <button className={styles.titleAddCloseBtn} onClick={currentStep>1?handleGoBack:handleClose}>
-          {
-          currentStep>1?
-            <BackSvg />:
+      <button className={styles.titleAddCloseBtn} onClick={handleClose}>
+
             <Image
             className={styles.icon}
             src="/icons/close.svg"
@@ -84,7 +74,7 @@ export const StaffModalHeader = ({
             }}
           />
           
-        }
+        
           
       </button>
       <div className={styles.titleText}>{title}</div>
@@ -93,13 +83,14 @@ export const StaffModalHeader = ({
         className={styles.saveBtn} 
         onClick={handleGoForwardStep}
       >
-        {currentStep==4?"Save":"Next"}
+       Update
       </button>
     </div>
   )
 
   if (width < 1024)
-    return <MobileHeader />
-  return <DesktopHeader />
+    return <EditMobileHeader />
+  return <EditDesktopHeader />
 
 }
+

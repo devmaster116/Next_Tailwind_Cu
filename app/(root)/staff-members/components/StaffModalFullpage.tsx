@@ -24,7 +24,7 @@ const StaffModalFullpage = ({
 }) => {
 
   const {currentStep, handleNextStep} =useFormStep()
-  // const {statusModal} =useFormStep()
+  const {statusModal} =useFormStep()
 
   if (!show) {
     return null;
@@ -37,7 +37,9 @@ const StaffModalFullpage = ({
           "!bg-white !items-start p-4 overflow-auto",
         )}>
           <div
-            className="w-full"
+            // className={`${styles.modal} ${!statusModal ? styles.exit : ""}`} 
+            className='w-full' 
+            
             // className={`${styles.modal} ${!statusModal ? styles.exit : ""}`}
             // onClick={(e) => e.stopPropagation()}
           >

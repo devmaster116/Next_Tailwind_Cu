@@ -9,8 +9,14 @@ type FormStepContextData = {
   statusModal: boolean
   setStatusModal: (status: boolean) => void;
 
-  editUserInfoStatusModal: boolean
-  setEditUserInfoStatusModal: (status: boolean) => void;
+  // editUserInfoStatusModal: boolean
+  // setEditUserInfoStatusModal: (status: boolean) => void;
+
+  // editUserRoleStatusModal: boolean
+  // setEditUserRoleStatusModal: (status: boolean) => void;
+
+  // editUserSignCodeStatusModal: boolean
+  // setEditUserSignCodeStatusModal: (status: boolean) => void;
 
   statusAddStaff: boolean
   setStatusAddStaff: (status: boolean) => void;
@@ -30,8 +36,14 @@ export const FormStepContext = createContext<FormStepContextData>({
   statusModal: false,
   setStatusModal: () =>{},
 
-  editUserInfoStatusModal: false,  
-  setEditUserInfoStatusModal: () =>{},
+  // editUserInfoStatusModal: false,  
+  // setEditUserInfoStatusModal: () =>{},
+
+  // editUserRoleStatusModal: false,  
+  // setEditUserRoleStatusModal: () =>{},
+
+  // editUserSignCodeStatusModal: false,  
+  // setEditUserSignCodeStatusModal: () =>{},
 
   statusAddStaff: false,
   setStatusAddStaff: () =>{},
@@ -53,7 +65,9 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   
   const [statusModal, setStatusModal] = useState(false);
 
-  const [editUserInfoStatusModal, setEditUserInfoStatusModal] = useState(false);
+  // const [editUserInfoStatusModal, setEditUserInfoStatusModal] = useState(false);
+  // const [editUserRoleStatusModal, setEditUserRoleStatusModal] = useState(false);
+  // const [editUserSignCodeStatusModal, setEditUserSignCodeStatusModal] = useState(false);
   
   const [statusAddStaff, setStatusAddStaff] =useState(false)
   const [steps, _] = useState([
@@ -108,8 +122,12 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         currentStep, 
         statusModal,
         setStatusModal,
-        editUserInfoStatusModal,
-        setEditUserInfoStatusModal,
+        // editUserInfoStatusModal,
+        // setEditUserInfoStatusModal,
+        // editUserRoleStatusModal,
+        // setEditUserRoleStatusModal,
+        // editUserSignCodeStatusModal,
+        // setEditUserSignCodeStatusModal,
         statusAddStaff,
         setStatusAddStaff,
         setCurrentStep, 

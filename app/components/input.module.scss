@@ -10,7 +10,7 @@
     margin-bottom: 6px;
     padding: 10px 14px;
     width: 100%;
-
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05) ;
     &::-webkit-input-placeholder {
       color: var(--gray-500);
       font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
@@ -54,9 +54,18 @@
   .invalidInput {
     border: 1px solid #f04438;
   }
+  .validInput:focus-visible {
+    border: 1px solid #000 !important;
+  }
 
   .errorLabel {
     color: #f04438;
+    font-size: 14px;
+    @media (min-width: 1024px) {
+      /* Adjust for desktop screens */
+      font-size: 16px;
+    }
+    
   }
 
   .inputErrorIcon {

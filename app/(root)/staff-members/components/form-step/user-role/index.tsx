@@ -7,6 +7,7 @@ import { RoleInfo } from "@/app/src/types";
 import { HelpSvg } from "@/app/assets/svg/help";
 import { StaffModalFooter } from "../../footer";
 import { CustomRadio } from "../../base/radio";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 export const UserRole = () => {
   const { handleNextStep, handlePreviousStep } = useFormStep();
@@ -14,6 +15,7 @@ export const UserRole = () => {
   const [error, setError] = useState<boolean>(false);
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { width } = useWindowSize()
 
   const handleGoForwardStep = () => {
     if (!!state.roleName) {
@@ -49,19 +51,39 @@ export const UserRole = () => {
 
   return (
     <div className="w-full">
-      <StaffModalHeader
+
+              {width < 1024 ? (
+                    <StaffModalHeader 
+                    title={"Add Staff Member"}
+                    handleGoForwardStep={handleGoForwardStep}
+                    handleGoBack={handlePreviousStep}
+                    >
+                    <Form.StepStatus stepIndex={3}></Form.StepStatus>
+                    </StaffModalHeader>
+                ) : (
+                    <>
+                    <StaffModalHeader 
+                        title={"Add Staff Member"}
+                        handleGoForwardStep={handleGoForwardStep}
+                        handleGoBack={handlePreviousStep}
+                    />
+                    <Form.StepStatus stepIndex={3}></Form.StepStatus>
+                    </>
+                )}
+
+      {/* <StaffModalHeader
         title={"Add Staff Member"}
         handleGoForwardStep={handleGoForwardStep}
         handleGoBack={handlePreviousStep}
-      />
+      /> */}
       <Fragment>
-        <Form.StepStatus stepIndex={3}></Form.StepStatus>
+        {/* <Form.StepStatus stepIndex={3}></Form.StepStatus> */}
         <Form.Header
           title="Assign Role"
-          description="Manage Aifansopermissions."
+          description={`Manage ${state.firstName} permissions`}
         />
 
-        <div className="flex flex-col gap-3 w-full my-5">
+        <div className="flex flex-col gap-3 w-full my-5 lg:my-8">
           {roles &&
             roles.map((item: RoleInfo, index: number) => (
               <div className="relative" key={index}>
@@ -81,16 +103,16 @@ export const UserRole = () => {
                       "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                     container:
                       state.roleName === item.name
-                        ? "border-purple-700"
+                        ? "border-purple-700 border-2"
                         : "border-gray-300",
                     radioStyle:
                       state.roleName === item.name
-                        ? "border-purple-700"
+                        ? "border-purple-700 border-2"
                         : "border-gray-300",
                     innerRadioStyle:
                       state.roleName !== item.name
                         ? "bg-white"
-                        : "bg-purple-700",
+                        : "bg-purple-700 border-2",
                   }}
                 />
                 {/* Tooltip */}

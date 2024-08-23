@@ -8,6 +8,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "@/firebase/config";
 import { StaffModalFooter } from "../../footer";
 import { twMerge } from "tailwind-merge";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 export const UserSignCode = () => {
     const { handlePreviousStep,handleNextStep } = useFormStep()
@@ -16,6 +17,7 @@ export const UserSignCode = () => {
     const [error, setError] = useState<boolean>(false);
     const { kitchen } = useKitchen();
     const kitchenId = kitchen?.kitchenId ?? null;
+    const { width } = useWindowSize()
   
     const generateCode = (): void => {
       const randomCode = Math.floor(1000 + Math.random() * 9000).toString().split('');
@@ -95,19 +97,33 @@ export const UserSignCode = () => {
 
     return (
         <div>
-            <StaffModalHeader 
-                title={'Add Staff Member'}
-                handleGoForwardStep={handleGoForwardStep}
-                handleGoBack={handlePreviousStep}
-            />
+            
+            {width < 1024 ? (
+                    <StaffModalHeader 
+                    title={"Add Staff Member"}
+                    handleGoForwardStep={handleGoForwardStep}
+                    handleGoBack={handlePreviousStep}
+                    >
+                    <Form.StepStatus stepIndex={4}></Form.StepStatus>
+                    </StaffModalHeader>
+                ) : (
+                    <>
+                    <StaffModalHeader 
+                        title={"Add Staff Member"}
+                        handleGoForwardStep={handleGoForwardStep}
+                        handleGoBack={handlePreviousStep}
+                    />
+                    <Form.StepStatus stepIndex={4}></Form.StepStatus>
+                    </>
+                )}
             <Fragment>
-                  <Form.StepStatus  stepIndex={4}></Form.StepStatus>
+                  {/* <Form.StepStatus  stepIndex={4}></Form.StepStatus> */}
                     <Form.Header
                         title="Generate Code"
-                        description="This code will be used by Aifanso to sign in to POS."
+                        description={`This code will be used by ${state.firstName} to sign in to POS.`}
                     />
-                    <div className="mt-5 flex flex-col ">
-                        <div className="">
+                    <div className="mt-6 lg:[mt-8] flex flex-col ">
+                        <div className="flex flex-col">
                         <h2 className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Gustons' Sign in Code</h2>
    
                                 <div className="flex flex-row  w-full lg:w-2/3  my-[6px]">
@@ -137,11 +153,11 @@ export const UserSignCode = () => {
                                 </div>
                                 {error && (
                                     <div className="flex flex-row text-rose-500 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-normal ">
-                                            Generate a code. This code will be used by this staff to sign in to POS.
+                                            Generate a code. This code will be used by this {` ${state.firstName}`} to sign in to POS.
                                     </div>
                                 )}
                         </div>
-                        <div className="flex items-starter mt-4">
+                        <div className="flex items-starter mt-6 lg:[mt-8]">
                             <div className="flex flex-col ">
                                 {/* <input
                                 type="checkbox"
@@ -157,10 +173,10 @@ export const UserSignCode = () => {
                             </div>
                             <div className="flex flex-col">
                                 <div className="flex flex-row ">
-                                  <p className="text-sm font-semibold text-gray-700">Send passcode via email to Guston.</p>
+                                  <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">Send passcode via email to {` ${state.firstName}`}.</p>
                                 </div>
                                 <div className="flex flex-row">
-                                    <p className="text-base text-gray-600 font-normal">(guston.james@gmail.com)</p>
+                                    <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] text-gray-600 font-normal">({`${state.email}`})</p>
                                 </div>    
                             </div>
                         </div>

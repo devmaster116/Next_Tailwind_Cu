@@ -22,11 +22,27 @@ import { UserSvg } from "@/app/assets/svg/user";
 import { twMerge } from "tailwind-merge";
 import { FormContext } from "@/app/context/StaffContext";
 import { EditUserInfo } from "./components/edit-step/edit-user-info";
+import { EditUserRole } from "./components/edit-step/edit-user-role";
+import { EditUserSignCode } from "./components/edit-step/edit-sign-code";
+import { 
+  useRouter, 
+  usePathname,
+  useSearchParams
+} from "next/navigation";
 
 
 const StaffMembers = () => {
+  const router = useRouter()
+  const pathName = usePathname()
+  const searchParams = useSearchParams()
   const { banner, setBanner } = useBanner();
-  const { statusModal, setStatusModal, statusAddStaff,setStatusAddStaff , editUserInfoStatusModal, setEditUserInfoStatusModal} = useFormStep()
+  const { 
+    statusModal, 
+    // setStatusModal, 
+    statusAddStaff,
+    setStatusAddStaff , 
+    
+  } = useFormStep()
 
   const {state} = useContext(FormContext)!;
 
@@ -47,12 +63,14 @@ const StaffMembers = () => {
     return () => unsubscribe();
   }, []);
 
+  console.log(pathName)
 
   const handleClose = () => {
     setBanner(false)
   }
   const handleAddStaff =async()=>{
-    setStatusModal(true)
+    router.push(`${pathName}?type=add-staff`)
+    // setStatusModal(true)
     
   }
   const handleCloseStaffBanner = () => {
@@ -137,7 +155,10 @@ const StaffMembers = () => {
         }
         
         <StaffModalFullPage
-          show={statusModal}
+          // show={statusModal}
+          show={
+            searchParams.get('type') === 'add-staff' 
+          }
           content={
             <div className={styles.formContainer}>
               <FormStep/>
@@ -145,16 +166,33 @@ const StaffMembers = () => {
           }
         />
 
-{/* eidt modal */}
-      <StaffModalFullPage
-          show={editUserInfoStatusModal}
+{/* eidt UserInfo modal */}
+       <StaffModalFullPage
+          show={searchParams.get('type') === 'edit-staff'}
           content={
             <div className={styles.formContainer}>
               <EditUserInfo/>
             </div>
           }
         />
-
+{/* eidt Role modal */}
+        <StaffModalFullPage
+       show={searchParams.get('type') === 'edit-role'}
+          content={
+            <div className={styles.formContainer}>
+              <EditUserRole/>
+            </div>
+          }
+        />
+      {/* eidt SignCode modal */}
+     <StaffModalFullPage
+       show={searchParams.get('type') === 'edit-code'}
+        content={
+          <div className={styles.formContainer}>
+            <EditUserSignCode/>
+          </div>
+        }
+      />
         {/* {loading && (
           <>
             <LightLoader />
