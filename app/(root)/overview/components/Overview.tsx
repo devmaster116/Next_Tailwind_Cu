@@ -125,11 +125,13 @@ const Overview = () => {
                     thirdColumnTitle="Net"
                     secondColumnSymbol=""
                     thirdColumnSymbol="$"
-                    dataObj={getTopFive(removeGst(allCategories))}
+                    dataObj={getTopFive(
+                      removeGst(allCategories, "total_price")
+                    )}
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}
-                    className="linkTable"
+                    className={allCategories[0] && "linkTable"}
                   />
                   {allCategories[0] && (
                     <div className={styles.linkToSeeAllContainer}>
@@ -144,11 +146,11 @@ const Overview = () => {
                     secondColumnTitle="Count"
                     thirdColumnTitle="Net"
                     thirdColumnSymbol="$"
-                    dataObj={getTopFive(removeGst(allDishes))}
+                    dataObj={getTopFive(removeGst(allDishes, "total_price"))}
                     loading={loading}
                     customDate={customDate}
                     selectedOption={selectedOption}
-                    className="linkTable"
+                    className={allDishes[0] && "linkTable"}
                   />
                   {allDishes[0] && (
                     <div className={styles.linkToSeeAllContainer}>
