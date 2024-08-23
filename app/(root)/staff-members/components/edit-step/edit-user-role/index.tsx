@@ -31,6 +31,11 @@ export const EditUserRole = () => {
           roleName: state.roleName, // Updated role name
           roleID: state.roleID, // Updated role ID
         },kitchenId);
+
+        nextSearchParams.delete('type')
+        router.replace(`${pathname}?${nextSearchParams}`)
+        resetForm()
+        
       } catch (error) {
         console.error("Error updating staff:", error);
       }

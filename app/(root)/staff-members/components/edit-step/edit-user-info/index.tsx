@@ -74,19 +74,19 @@ export const  EditUserInfo=()=> {
     if(newUser?.firstName&&newUser?.lastName){
       newUser.displayName=newUser?.firstName+" "+newUser?.lastName.charAt(0)
     }
-    // if (
-    //   !validateRequired(newUser?.email) ||
-    //   !validateEmail(newUser?.email)
-    // ) {
-    //   newErrors.email = "Please enter a valid email address.";
-    // }
-    // if (
-    //   !validateRequired(newUser?.phoneNumber) ||
-    //   !validateMobileNumber(newUser?.phoneNumber)
-    // ) {
-    //   newErrors.phoneNumber =
-    //     "Enter a valid mobile number containing 10 digits.";
-    // }
+    if (
+      !validateRequired(newUser?.email) ||
+      !validateEmail(newUser?.email)
+    ) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+    if (
+      !validateRequired(newUser?.phoneNumber) ||
+      !validateMobileNumber(newUser?.phoneNumber)
+    ) {
+      newErrors.phoneNumber =
+        "Enter a valid mobile number containing 10 digits.";
+    }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
@@ -99,6 +99,11 @@ export const  EditUserInfo=()=> {
             ...currentStaff,
             ...newUser,  // Updated user info
           },kitchenId);
+
+          nextSearchParams.delete('type')
+          router.replace(`${pathname}?${nextSearchParams}`)
+          resetForm()
+
           console.log("Staff member updated successfully");
         } catch (error) {
           console.error("Error updating staff:", error);
@@ -144,19 +149,20 @@ export const  EditUserInfo=()=> {
                       <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">First Name</p>
                         <Input
                           value={newUser.firstName}
-                          handleInputChange={(e) =>
-                            handleInputChangeField(e, setNewUser, setErrors, "firstName")
-                          }
-                          handleBlurField={(e) =>
-                            handleBlurField(
-                              e,
-                              setNewUser,
-                              setErrors,
-                              validateRequired,
-                              "Please enter a valid first name.",
-                              "firstName"
-                            )
-                          }
+                          // handleInputChange={(e) =>
+                          //   handleInputChangeField(e, setNewUser, setErrors, "firstName")
+                          // }
+                          handleInputChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
+                          // handleBlurField={(e) =>
+                          //   handleBlurField(
+                          //     e,
+                          //     setNewUser,
+                          //     setErrors,
+                          //     validateRequired,
+                          //     "Please enter a valid first name.",
+                          //     "firstName"
+                          //   )
+                          // }
                           error={errors.firstName}
                           loading={true}
                           placeholder="Enter first name"
@@ -168,19 +174,21 @@ export const  EditUserInfo=()=> {
                       <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Last Name</p>
                       <Input
                         value={newUser.lastName}
-                        handleInputChange={(e) =>
-                          handleInputChangeField(e, setNewUser, setErrors, "lastName")
-                        }
-                        handleBlurField={(e) =>
-                          handleBlurField(
-                            e,
-                            setNewUser,
-                            setErrors,
-                            validateRequired,
-                            "Please enter a valid last name.",
-                            "lastName"
-                          )
-                        }
+                        handleInputChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
+
+                        // handleInputChange={(e) =>
+                        //   handleInputChangeField(e, setNewUser, setErrors, "lastName")
+                        // }
+                        // handleBlurField={(e) =>
+                        //   handleBlurField(
+                        //     e,
+                        //     setNewUser,
+                        //     setErrors,
+                        //     validateRequired,
+                        //     "Please enter a valid last name.",
+                        //     "lastName"
+                        //   )
+                        // }
                         error={errors.lastName}
                         loading={true}
                         placeholder="Enter last name"
@@ -217,24 +225,26 @@ export const  EditUserInfo=()=> {
                   <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Email Address</p>
                   <Input
                     value={newUser.email}
-                    handleInputChange={(e) =>
-                      handleInputChangeField(
-                        e,
-                        setNewUser,
-                        setErrors,
-                        "email"
-                      )
-                    }
-                    handleBlurField={(e) =>
-                      handleBlurField(
-                        e,
-                        setNewUser,
-                        setErrors,
-                        validateRequired,
-                        "Please enter a valid email address.",
-                        "email"
-                      )
-                    }
+                    handleInputChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                    
+                    // handleInputChange={(e) =>
+                    //   handleInputChangeField(
+                    //     e,
+                    //     setNewUser,
+                    //     setErrors,
+                    //     "email"
+                    //   )
+                    // }
+                    // handleBlurField={(e) =>
+                    //   handleBlurField(
+                    //     e,
+                    //     setNewUser,
+                    //     setErrors,
+                    //     validateRequired,
+                    //     "Please enter a valid email address.",
+                    //     "email"
+                    //   )
+                    // }
                     error={errors.email}
                     loading={false}
                     placeholder="Enter email address"
@@ -247,24 +257,26 @@ export const  EditUserInfo=()=> {
                     value={newUser.phoneNumber}
                     maxLength={10}
                     type="number"
-                    handleInputChange={(e) =>
-                      handleInputChangeField(
-                        e,
-                        setNewUser,
-                        setErrors,
-                        "phoneNumber"
-                      )
-                    }
-                    handleBlurField={(e) =>
-                      handleBlurField(
-                        e,
-                        setNewUser,
-                        setErrors,
-                        validateRequired,
-                        "Please enter a valid mobile number.",
-                        "phoneNumber"
-                      )
-                    }
+                    handleInputChange={(e) => setNewUser({...newUser, phoneNumber: e.target.value})}
+
+                    // handleInputChange={(e) =>
+                    //   handleInputChangeField(
+                    //     e,
+                    //     setNewUser,
+                    //     setErrors,
+                    //     "phoneNumber"
+                    //   )
+                    // }
+                    // handleBlurField={(e) =>
+                    //   handleBlurField(
+                    //     e,
+                    //     setNewUser,
+                    //     setErrors,
+                    //     validateRequired,
+                    //     "Please enter a valid mobile number.",
+                    //     "phoneNumber"
+                    //   )
+                    // }
                     error={errors.phoneNumber}
                     loading={false}
                     placeholder="Enter mobile number"

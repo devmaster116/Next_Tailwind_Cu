@@ -9,6 +9,7 @@ import { auth, db } from "@/firebase/config";
 import { StaffModalFooter } from "../../footer";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const UserSignCode = () => {
     const { handlePreviousStep,handleNextStep } = useFormStep()
@@ -18,14 +19,17 @@ export const UserSignCode = () => {
     const { kitchen } = useKitchen();
     const kitchenId = kitchen?.kitchenId ?? null;
     const { width } = useWindowSize()
-  
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+    const nextSearchParams = new URLSearchParams(searchParams.toString())
     const generateCode = (): void => {
       const randomCode = Math.floor(1000 + Math.random() * 9000).toString().split('');
       setPassCode(randomCode);
       dispatch({ type: 'SET_PASSCODE', payload: randomCode.join('') });
       setError(false); 
     };
-    useEffect(() => {
+      useEffect(() => {
         if (state.passcode) {
             setPassCode(state.passcode.split(''));
         }
@@ -38,29 +42,8 @@ export const UserSignCode = () => {
 
             // await saveStaffToFirebase();
 
-            // try {
-            //     const configDocRef = doc(db, "configs",kitchenId);
-            //     const configDoc = await getDoc(configDocRef);
-            //     if (configDoc.exists()) {
-            //       const currentData = configDoc.data();
-            //       const existStaffMembers = currentData?.staffMemberConfigs?.staffMembers || [];
-            //       const updatedStaffMembers = [...existStaffMembers, state];
-
-            //       await updateDoc(configDocRef, {
-            //         "staffMemberConfigs.staffMembers": updatedStaffMembers,
-            //         "staffMemberConfigs.enabled": true,          
-            //         "staffMemberConfigs.idleTime": 0,           
-            //         "staffMemberConfigs.passcodeEnabled": true
-            //     });
-
-            //       console.log("New staff member added successfully!");
-            //     } else {
-            //       console.log("Config document does not exist!");
-            //     }
-            //   } catch (error) {
-            //     console.error("Error adding new staff member: ", error);
-            //   }
-
+            nextSearchParams.delete('type')
+            router.replace(`${pathname}?${nextSearchParams}`)
             handleNextStep()
             try {
                  if (!kitchenId) {

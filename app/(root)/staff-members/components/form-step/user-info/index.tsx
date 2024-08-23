@@ -51,6 +51,7 @@ export const  UserInfo=()=> {
     resetForm()
   }
   const handleGoForwardStep = async () => {
+    console.log("``````000```````")
     // handleNextStep()
     // dispatch({ type: 'SET_USER_INFO', payload: newUser });
     const newErrors: { [key: string]: string } = {};
@@ -70,16 +71,15 @@ export const  UserInfo=()=> {
       newErrors.email = "Please enter a valid email address.";
     }
     if (
-      !validateRequired(newUser?.mobileNumber) ||
-      !validateMobileNumber(newUser?.mobileNumber)
+      !validateRequired(newUser?.phoneNumber) ||
+      !validateMobileNumber(newUser?.phoneNumber)
     ) {
-      newErrors.mobileNumber =
+      newErrors.phoneNumber =
         "Enter a valid mobile number containing 10 digits.";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-
       handleNextStep()
       dispatch({ type: 'SET_USER_INFO', payload: newUser });
   
@@ -117,19 +117,20 @@ export const  UserInfo=()=> {
                   <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">First Name</p>
                     <Input
                       value={newUser.firstName}
-                      handleInputChange={(e) =>
-                        handleInputChangeField(e, setNewUser, setErrors, "firstName")
-                      }
-                      handleBlurField={(e) =>
-                        handleBlurField(
-                          e,
-                          setNewUser,
-                          setErrors,
-                          validateRequired,
-                          "Please enter a valid first name.",
-                          "firstName"
-                        )
-                      }
+                      handleInputChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
+                      // handleInputChange={(e) =>
+                      //   handleInputChangeField(e, setNewUser, setErrors, "firstName")
+                      // }
+                      // handleBlurField={(e) =>
+                      //   handleBlurField(
+                      //     e,
+                      //     setNewUser,
+                      //     setErrors,
+                      //     validateRequired,
+                      //     "Please enter a valid first name.",
+                      //     "firstName"
+                      //   )
+                      // }
                       error={errors.firstName}
                       loading={loading}
                       placeholder="Enter first name"
@@ -141,19 +142,20 @@ export const  UserInfo=()=> {
                   <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Last Name</p>
                   <Input
                     value={newUser.lastName}
-                    handleInputChange={(e) =>
-                      handleInputChangeField(e, setNewUser, setErrors, "lastName")
-                    }
-                    handleBlurField={(e) =>
-                      handleBlurField(
-                        e,
-                        setNewUser,
-                        setErrors,
-                        validateRequired,
-                        "Please enter a valid last name.",
-                        "lastName"
-                      )
-                    }
+                    handleInputChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
+                    // handleInputChange={(e) =>
+                    //   handleInputChangeField(e, setNewUser, setErrors, "lastName")
+                    // }
+                    // handleBlurField={(e) =>
+                    //   handleBlurField(
+                    //     e,
+                    //     setNewUser,
+                    //     setErrors,
+                    //     validateRequired,
+                    //     "Please enter a valid last name.",
+                    //     "lastName"
+                    //   )
+                    // }
                     error={errors.lastName}
                     loading={loading}
                     placeholder="Enter last name"
@@ -191,24 +193,25 @@ export const  UserInfo=()=> {
               <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Email Address</p>
               <Input
                 value={newUser.email}
-                handleInputChange={(e) =>
-                  handleInputChangeField(
-                    e,
-                    setNewUser,
-                    setErrors,
-                    "email"
-                  )
-                }
-                handleBlurField={(e) =>
-                  handleBlurField(
-                    e,
-                    setNewUser,
-                    setErrors,
-                    validateRequired,
-                    "Please enter a valid email address.",
-                    "email"
-                  )
-                }
+                handleInputChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                // handleInputChange={(e) =>
+                //   handleInputChangeField(
+                //     e,
+                //     setNewUser,
+                //     setErrors,
+                //     "email"
+                //   )
+                // }
+                // handleBlurField={(e) =>
+                //   handleBlurField(
+                //     e,
+                //     setNewUser,
+                //     setErrors,
+                //     validateRequired,
+                //     "Please enter a valid email address.",
+                //     "email"
+                //   )
+                // }
                 inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
                 error={errors.email}
                 loading={loading}
@@ -221,24 +224,25 @@ export const  UserInfo=()=> {
                 value={newUser.phoneNumber}
                 maxLength={10}
                 type="number"
-                handleInputChange={(e) =>
-                  handleInputChangeField(
-                    e,
-                    setNewUser,
-                    setErrors,
-                    "phoneNumber"
-                  )
-                }
-                handleBlurField={(e) =>
-                  handleBlurField(
-                    e,
-                    setNewUser,
-                    setErrors,
-                    validateRequired,
-                    "Please enter a valid mobile number.",
-                    "phoneNumber"
-                  )
-                }
+                handleInputChange={(e) => setNewUser({...newUser, phoneNumber: e.target.value})}
+                // handleInputChange={(e) =>
+                //   handleInputChangeField(
+                //     e,
+                //     setNewUser,
+                //     setErrors,
+                //     "phoneNumber"
+                //   )
+                // }
+                // handleBlurField={(e) =>
+                //   handleBlurField(
+                //     e,
+                //     setNewUser,
+                //     setErrors,
+                //     validateRequired,
+                //     "Please enter a valid mobile number.",
+                //     "phoneNumber"
+                //   )
+                // }
                 error={errors.phoneNumber}
                 loading={loading}
                 placeholder="Enter mobile number"

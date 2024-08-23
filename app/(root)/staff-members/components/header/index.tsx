@@ -53,7 +53,7 @@ export const StaffModalHeader = ({
 
         <button 
           className={styles.saveBtn} 
-          onClick={handleGoForwardStep}
+          onClick={handleGoForwardStep && handleGoForwardStep}
         >
           {currentStep==4?"Save":"Next"}
         </button>
@@ -66,37 +66,40 @@ export const StaffModalHeader = ({
     </div>
   )
 
-  const DesktopHeader = () => (
-    <div className={styles.titleDiv}>
-      <button className={styles.titleAddCloseBtn} onClick={currentStep>1?handleGoBack:handleClose}>
-          {
-          currentStep>1?
-            <BackSvg />:
-            <Image
-            className={styles.icon}
-            src="/icons/close.svg"
-            height={12}
-            width={12}
-            alt="Close Button"
-            style={{
-              filter:
-                "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-            }}
-          />
-          
-        }
-          
-      </button>
-      <div className={styles.titleText}>{title}</div>
+  const DesktopHeader = () => {
+    return (
+      <div className={styles.titleDiv}>
+        <button className={styles.titleAddCloseBtn} onClick={currentStep>1?handleGoBack:handleClose}>
+            {
+            currentStep>1?
+              <BackSvg />:
+              <Image
+              className={styles.icon}
+              src="/icons/close.svg"
+              height={12}
+              width={12}
+              alt="Close Button"
+              style={{
+                filter:
+                  "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
+              }}
+            />
+            
+          }
+            
+        </button>
+        <div className={styles.titleText}>{title}</div>
 
-      <button 
-        className={styles.saveBtn} 
-        onClick={handleGoForwardStep}
-      >
-        {currentStep==4?"Save":"Next"}
-      </button>
-    </div>
-  )
+        <button 
+          className={styles.saveBtn} 
+          onClick={handleGoForwardStep && handleGoForwardStep}
+        >
+          {currentStep==4?"Save":"Next"}
+        </button>
+      </div>
+    )
+  }
+  
 
   if (width < 1024)
     return <MobileHeader />

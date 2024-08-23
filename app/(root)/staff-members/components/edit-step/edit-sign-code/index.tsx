@@ -55,6 +55,11 @@ export const EditUserSignCode = () => {
             ...currentStaff,
             passcode: state.passcode
           },kitchenId);
+
+          nextSearchParams.delete('type')
+          router.replace(`${pathname}?${nextSearchParams}`)
+          resetForm()
+          
         } catch (error) {
           console.error("Error updating staff:", error);
         }

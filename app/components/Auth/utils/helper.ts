@@ -1,16 +1,24 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../../firebase/config";
 
-export const validateEmail = (email: string): boolean => {
-  if (!email) return false;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
+// export const validateEmail = (email: string): boolean => {
+//   if (!email) return false;
+//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//   return emailRegex.test(email);
+// };
+
+export const validateEmail = (email: string) => {
+  return /^\S+@\S+\.\S+$/.test(email)
+}
 
 export const validateMobileNumber = (mobileNumber: string): boolean => {
+  console.log("mobile number ===>", mobileNumber)
   if (!mobileNumber) return false
-  const mobileNumberRegex = /^04\d{8}$/;
-  return mobileNumberRegex.test(mobileNumber);
+  // const mobileNumberRegex = /^04\d{8}$/;
+  // return mobileNumberRegex.test(mobileNumber);
+  if (/^\d{10}$/.test(mobileNumber))
+    return true
+  return false
 };
 
 export const handleBlurEmail = (
