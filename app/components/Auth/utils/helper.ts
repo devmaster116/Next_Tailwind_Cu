@@ -1,24 +1,14 @@
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../../firebase/config";
 
-// export const validateEmail = (email: string): boolean => {
-//   if (!email) return false;
-//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   return emailRegex.test(email);
-// };
-
-export const validateEmail = (email: string) => {
-  return /^\S+@\S+\.\S+$/.test(email)
-}
+export const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
 export const validateMobileNumber = (mobileNumber: string): boolean => {
-  console.log("mobile number ===>", mobileNumber)
-  if (!mobileNumber) return false
-  // const mobileNumberRegex = /^04\d{8}$/;
-  // return mobileNumberRegex.test(mobileNumber);
-  if (/^\d{10}$/.test(mobileNumber))
-    return true
-  return false
+  const mobileNumberRegex = /^04\d{8}$/;
+  return mobileNumberRegex.test(mobileNumber);
 };
 
 export const handleBlurEmail = (
@@ -61,13 +51,10 @@ export const resetPassword = async (
   }
 };
 
-export function removeGst<T extends Record<K, number>, K extends keyof T>(
-  items: T[],
-  priceKey: K
-): T[] {
+export function removeGst<T extends { total_price: number }>(items: T[]): T[] {
   return items.map(item => ({
     ...item,
-    [priceKey]: parseFloat((item[priceKey] / 1.1).toFixed(2)),
+    total_price: parseFloat((item.total_price / 1.1).toFixed(2)),
   }));
 }
 

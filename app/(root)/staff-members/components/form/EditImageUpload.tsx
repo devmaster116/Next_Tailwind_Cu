@@ -1,101 +1,140 @@
 "use client";
 
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+
 import { storage } from "@/firebase/config";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
-import { UploadSvg } from "@/app/assets/svg/upload"
+import { UploadSvg } from "@/app/assets/svg/upload";
 import { twMerge } from 'tailwind-merge';
-export const EditImageUpload = function () {
+
+export const EditImageUpload = function ({img}: {img: string}) {
   const [images, setImages] = useState<ImageListType>([]);
   const maxNumber = 1;
-  const { state, dispatch } = useContext(FormContext)!;
+  const { state, dispatch, currentStaff } = useContext(FormContext)!;
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
+  const [firebaseImageUrl, setFirebaseImageUrl] = useState<string | null>(null);
 
   const onChange = async (
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
   ) => {
-    console.log(imageList, addUpdateIndex);
     setImages(imageList);
 
     if (imageList.length > 0) {
       const imageFile = imageList[0].file;
-      if (imageFile) {
-        if (kitchenId) {
-            const storageRef = ref(storage, `${kitchenId}/${imageFile.name}`);
-
-            try {
-              await uploadBytes(storageRef, imageFile);
-              const url = await getDownloadURL(storageRef);
-              dispatch({ type: 'SET_PROFILE_IMAGE_URL', payload: imageFile.name });
-              console.log("File Uploaded Successfully:", url);
-            } catch (error) {
-              console.error('Error uploading the file', error);
-            }
+      if (imageFile && kitchenId) {
+        const storageRef = ref(storage, `${kitchenId}/${imageFile.name}`);
+        try {
+          await uploadBytes(storageRef, imageFile);
+          const url = await getDownloadURL(storageRef);
+          dispatch({ type: 'SET_PROFILE_IMAGE_URL', payload: imageFile.name });
+          console.log("File Uploaded Successfully:", url);
+        } catch (error) {
+          console.error('Error uploading the file', error);
         }
       }
     }
   };
 
+  const fetchImageFromFirebase = async () => {
+    if (currentStaff?.displayImageURL && kitchenId) {
+      const storageRef = ref(storage, `${kitchenId}/${currentStaff.displayImageURL}`);
+      try {
+        const url = await getDownloadURL(storageRef);
+        console.log("Fetched Image URL:", url);
+        setFirebaseImageUrl(url);
+      } catch (error) {
+        console.error('Error fetching image from Firebase:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchImageFromFirebase();
+  }, [currentStaff, kitchenId]);
+
   return (
-  
-      <ImageUploading
-        multiple={false}
-        value={images}
-        onChange={onChange}
-        maxNumber={maxNumber}
-        dataURLKey="data_url"
-      >
-        {({
-          imageList,
-          onImageUpload,
-          onImageUpdate,
-          isDragging,
-          dragProps,
-        }) => (
-          <div className={twMerge(
-            "flex flex-row upload__image-wrapper mt-6 justify-center items-center"
-          )}>
-            {imageList.length === 0 &&
-              <button
-                className="flex flex-direction font-semibold  text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
-                style={isDragging ? { color: 'red' } : undefined}
-                onClick={onImageUpload}
-                {...dragProps}
-              >
-             
-               Add Photo
-              </button>
-            }
-            {imageList.map((image, index) => (
-              <div key={index} className="image-item">
-                <div className="rounded-xl">
+    <ImageUploading
+      value={images}
+      onChange={onChange}
+      maxNumber={maxNumber}
+      dataURLKey="data_url"
+    >
+      {({
+        imageList,
+        onImageUpload,
+        onImageUpdate,
+        isDragging,
+        dragProps,
+      }) => (
+        <div className={twMerge(
+          "flex flex-col upload__image-wrapper justify-center items-center"
+        )}>
+          {imageList.length < 1 && (
+            <div className=''>
+              {img ? (
+                <div className="rounded-xl flex flex-col justify-center items-center">
                   <img
-                    src={image['data_url']}
-                    className="rounded-full w-16 h-16"
-                    alt=""
+                    src={img}
+                    className="rounded-full w-16 h-16 rounded-full"
+                    alt="Uploaded"
                     width="100"
                   />
-                </div>
-                <div className="image-item__btn-wrapper flex flex-col ">
                   <button
-                    className=" font-semibold  text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
-                    onClick={() => onImageUpdate(index)}
+                    className="flex flex-direction mt-2 font-semibold text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
+                    style={isDragging ? { color: 'red' } : undefined}
+                    onClick={onImageUpload}
+                    {...dragProps}
                   >
                     Update Photo
                   </button>
-           
                 </div>
+              ): (
+                <div className='flex flex-col justify-center items-center'>
+                  <div className='flex w-16 h-16 bg-gray-200 rounded-full justify-center items-center'>
+                  <span className='text-2xl font-medium text-gray-600'>GC</span>
+                    </div> 
+                  <button
+                    className="flex flex-direction mt-2 font-semibold text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
+                    style={isDragging ? { color: 'red' } : undefined}
+                    onClick={onImageUpload}
+                    {...dragProps}
+                  >
+                    Add Photo
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+          {imageList.map((image, index) => (
+            <div key={index} className="flex flex-col justify-center items-center">
+              <div className="rounded-xl">
+                <img
+                  src={image.data_url}
+                  className="rounded-full w-16 h-16"
+                  alt="Uploaded"
+                  width="100"
+                />
+                 
               </div>
-            ))}
-          </div>
-        )}
-      </ImageUploading>
-  
+              <div className="image-item__btn-wrapper flex flex-col mt-2">
+                <button
+                  className="font-semibold text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
+                  onClick={() => onImageUpdate(index)}
+                >
+                  Update Photo
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </ImageUploading>
   );
 };
+
 

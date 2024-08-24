@@ -1,58 +1,96 @@
-import React, { MouseEventHandler, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./StaffModalFullPage.module.scss";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import { useFormStep } from "@/app/hooks/useFormStep";
+import useWindowSize from "@/app/hooks/useWindowSize";
+import Form from "./form";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { BackSvg } from "@/app/assets/svg/back";
 const StaffModalFullpage = ({
-  show,
-  onClose,
-  // title,
   content,
-  // isExiting,
-  // handleGoForwardStep,
-  // pageId
-}: {
-  show: boolean;
-  // title: string;
-  content: React.ReactElement;
-  confirmButtonText?: string;
-  // handleGoForwardStep: MouseEventHandler;
-  updateButtonText?: string;
-  onClose?: MouseEventHandler;
-  // pageId:number
-  // isExiting: boolean;
+}:
+{
+    content: React.ReactElement;
+
 }) => {
+  const { width } = useWindowSize()
+  const router = useRouter()
+  const pathName = usePathname()
+  const searchParams = useSearchParams()
+  const nextSearchParams = new URLSearchParams(searchParams.toString())
+  const [animationClass, setAnimationClass] = useState("");
 
-  const {currentStep, handleNextStep} =useFormStep()
-  const {statusModal} =useFormStep()
+  const {
+    currentStep, 
+    setCurrentStep,
+    setNextClicked
+  } =useFormStep()
 
-  if (!show) {
-    return null;
+  const handleGoForwardStep = () => {
+     setNextClicked(true)
   }
+
+  const handleCloseModal = () => {
+    router.back()
+      // nextSearchParams.delete('type')
+      // console.log("nextsearchparam ===", nextSearchParams)
+      // console.log("pathName ===", pathName)
+      // console.log("path result ===", `${pathName}?${nextSearchParams}`)
+      // router.replace(`${pathName}?${nextSearchParams}`)
+  }
+
+
+  const handleGoBack = () => {
+    setCurrentStep(currentStep - 1)
+  }
+
   return (
     <>
-        {/* <div className={`${styles.modalOverlay} `}> */}
-        <div className={twMerge(
-          styles.modalOverlay,
-          "!bg-white !items-start p-4 overflow-auto",
-        )}>
-          <div
-            // className={`${styles.modal} ${!statusModal ? styles.exit : ""}`} 
-            className='w-full' 
-            
-            // className={`${styles.modal} ${!statusModal ? styles.exit : ""}`}
-            // onClick={(e) => e.stopPropagation()}
-          >
-            <div className={styles.modalContent}>
-              {content}
+         <div className='flex justify-center px-4 w-full lg:w-[680px] mx-auto h-[90%] lg:h-full overflow-auto'>
+            <div className="flex flex-row gap-8">
+             <div className={twMerge(styles.titleDiv, width < 1024 ? "flex-col !pb-1" : "")}>
+                <div className="flex justify-between items-center w-full">
+                  <button
+                    className={styles.titleAddCloseBtn}
+                    onClick={currentStep > 1 ? handleGoBack : handleCloseModal}
+                  >
+                    {currentStep > 1 ? (
+                      <BackSvg />
+                    ) : (
+                      <Image
+                        className={styles.icon}
+                        src="/icons/close.svg"
+                        height={12}
+                        width={12}
+                        alt="Close Button"
+                        style={{
+                          filter: "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
+                        }}
+                      />
+                    )}
+                  </button>
+                  <div className={styles.titleText}>Add Staff Member</div>
+                  <button className={styles.saveBtn} onClick={handleGoForwardStep}>
+                    {currentStep === 4 ? "Save" : "Next"}
+                  </button>
+                </div>
+                  {
+                    width <1024 &&      
+                      <div className="w-full mt-2"> 
+                      <Form.StepStatus stepIndex={currentStep}></Form.StepStatus>
+                    </div>
+                  }
+              </div>
             </div>
-            {/* <div className={styles.modalFooter}>
-              <button  className={styles.updateBtn} onClick={handleNextStep}>
-              {currentStep>3?'Save' : 'Next'}
-              </button>
-            </div> */}
+            <div className={twMerge(
+              styles.modalContent,
+              // 'transition ease-in-out duration-300',
+            )} >
+               {width >= 1024 && <Form.StepStatus stepIndex={currentStep}></Form.StepStatus>}
+                 {content}
+            </div>
           </div>
-        </div>
     </>
   );
 };

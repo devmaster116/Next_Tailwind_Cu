@@ -1,6 +1,6 @@
 import { useFormStep } from "@/app/hooks/useFormStep"
 import { StaffModalHeader } from "../../header"
-import { Fragment,useContext } from "react"
+import { Fragment,useContext, useEffect } from "react"
 import Form from "../../../components/form";
 import {ImageUpload} from "../../../components/form/ImageUpload";
 import { FormContext } from "@/app/context/StaffContext";
@@ -10,14 +10,26 @@ export const UserPhoto = () => {
     const { handleNextStep, handlePreviousStep } = useFormStep()
     const { state } = useContext(FormContext)!;
     const { width } = useWindowSize()
+      const {nextClicked, setNextClicked} =useFormStep()
     
     function handleGoForwardStep() {
         // if(state.displayImageURL!="")
           handleNextStep()
       }
+      useEffect(() => {
+        if (nextClicked) {
+            handleNextStep()
+        //   validateAndProceed();
+        }
+        return () => {
+          // Cleanup: Reset `nextClicked` to false after the effect runs to avoid repetitive calls
+          setNextClicked(false);
+        };
+      }, [nextClicked]);
     return (
-        <div>
-             {width < 1024 ? (
+        <div className='animate-fade-in-up'>
+            {/* <div className='transition ease-in-out delay-150 duration-300 translate-y-1 scale-110'></div> */}
+             {/* {width < 1024 ? (
                     <StaffModalHeader 
                     title={"Add Staff Member"}
                     handleGoForwardStep={handleGoForwardStep}
@@ -34,8 +46,14 @@ export const UserPhoto = () => {
                     />
                     <Form.StepStatus stepIndex={2}></Form.StepStatus>
                     </>
-                )}
-          
+                )} */}
+                   {/* <StaffModalHeader
+                        title="Add Staff Member"
+                        handleGoForwardStep={handleGoForwardStep}
+                        handleGoBack={handlePreviousStep}
+                    >
+                    </StaffModalHeader> */}
+                    
             <Fragment>
                    {/* <Form.StepStatus stepIndex={2}></Form.StepStatus> */}
                     <Form.Header

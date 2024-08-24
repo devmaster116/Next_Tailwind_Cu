@@ -102,8 +102,7 @@
   color: #475467;
   padding: 0px 10px;
   padding-top: 113px;
-
-
+  width:100%;
   @media only screen and (max-width: 600px) {
     // padding: 20px;
     padding-inline: 0px;
@@ -364,7 +363,7 @@
   &:focus {
     background-color: var(--primary-purple-700);
   }
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 1024px) {
     display: none;
   }
 }
@@ -409,4 +408,50 @@
   @media only screen and (max-width: 600px) {
     margin-top: 0px;
   }
+}
+
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.slideIn {
+  animation: slideInFromBottom 0.3s ease-out;
+}
+
+.slideOutLeft {
+  animation: slideOutToLeft 0.3s ease-in;
+}
+
+.slideOutRight {
+  animation: slideOutToRight 0.3s ease-in;
 }

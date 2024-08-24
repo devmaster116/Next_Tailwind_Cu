@@ -5,6 +5,9 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 type FormStepContextData = {
   currentStep: number;
   setCurrentStep: (status: number) => void;
+
+  stepInvalid: boolean
+  setStepInvalid: (status: boolean) => void;
   
   statusModal: boolean
   setStatusModal: (status: boolean) => void;
@@ -27,14 +30,23 @@ type FormStepContextData = {
   // handleSave:()=>void;
   handleClose:()=>void;
   moveToStep(step: number): void;
+
+  nextClicked: boolean 
+  setNextClicked: (_clicked: boolean) => void
 }
 
 export const FormStepContext = createContext<FormStepContextData>({
   currentStep: 1,
   setCurrentStep: () =>{},
 
+  stepInvalid: false,
+  setStepInvalid: () =>{},
+
   statusModal: false,
   setStatusModal: () =>{},
+
+  nextClicked: false,
+  setNextClicked: () => {},
 
   // editUserInfoStatusModal: false,  
   // setEditUserInfoStatusModal: () =>{},
@@ -62,8 +74,9 @@ interface FormStepProviderProps {
 export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   
   const [currentStep, setCurrentStep] = useState(1);
-  
   const [statusModal, setStatusModal] = useState(false);
+  const [stepInvalid, setStepInvalid] = useState(false);
+  const [nextClicked, setNextClicked] = useState(false)
 
   // const [editUserInfoStatusModal, setEditUserInfoStatusModal] = useState(false);
   // const [editUserRoleStatusModal, setEditUserRoleStatusModal] = useState(false);
@@ -83,7 +96,7 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         setCurrentStep(newStepValue);
       };
       if(currentStep==steps.length){
-        setStatusModal(false);
+        // setStatusModal(false);
 
         setStatusAddStaff(true);
   
@@ -120,6 +133,9 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
       value={{ 
         steps,
         currentStep, 
+        setStatusAddStaff,
+        stepInvalid,
+        setStepInvalid,
         statusModal,
         setStatusModal,
         // editUserInfoStatusModal,
@@ -129,13 +145,14 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         // editUserSignCodeStatusModal,
         // setEditUserSignCodeStatusModal,
         statusAddStaff,
-        setStatusAddStaff,
         setCurrentStep, 
         handleNextStep, 
         handlePreviousStep,
         // handleSave,
         handleClose,
-        moveToStep 
+        moveToStep,
+        nextClicked, 
+        setNextClicked
       }}>
       {children}
     </FormStepContext.Provider>

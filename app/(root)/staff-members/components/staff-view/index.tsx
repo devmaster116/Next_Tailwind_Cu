@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Paragraph } from '../base/paragraph';
 import { Avatar } from '../base/avatar';
 import { CancelSvg } from '@/app/assets/svg/cancel';
@@ -10,6 +10,8 @@ import { FormContext, FormContextType } from '@/app/context/StaffContext';
 import { useFormStep } from '@/app/hooks/useFormStep';
 import { EditImageUpload } from '../form/EditImageUpload';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { useKitchen } from '@/app/context/KitchenContext';
 
 type Props = {
   onClose: () => void,
@@ -19,6 +21,7 @@ type Props = {
 }
 
 const StaffView = (props: Props) => {
+  const data=props.item
   const router = useRouter()
   const pathName = usePathname()
   // const searchParams = useSearchParams()
@@ -41,11 +44,41 @@ const StaffView = (props: Props) => {
     router.push(`${pathName}?type=edit-code`)
 
   }
+
+  const { kitchen } = useKitchen();
+  const { state, dispatch, currentStaff } = useContext(FormContext)!;
+  const kitchenId = kitchen?.kitchenId ?? null;
+  const storage = getStorage()
+  const [img, setImg] = useState<any>();
+  const fetchImageFromFirebase = async () => {
+    // if (currentStaff?.displayImageURL && kitchenId) {
+    //   const storageRef = ref(storage, `${kitchenId}/${currentStaff.displayImageURL}`);
+    //   try {
+    //     const url = await getDownloadURL(storageRef);
+    //     console.log("Fetched Image URL:", url);
+    //     setFirebaseImageUrl(url);
+    //   } catch (error) {
+    //     console.error('Error fetching image from Firebase:', error);
+    //   }
+    // }
+    try {
+      const imgURL = await getDownloadURL(ref(storage, `${kitchenId}/${props.item?.displayImageURL}`))
+      console.log("====imgUrl====", imgURL)
+      setImg(imgURL)
+    } catch (err: any) {
+      console.log("image fetch error ===>", err)
+    }
+  };
+
+  useEffect(() => {
+    fetchImageFromFirebase();
+  }, []);
+
 const showHideSignCode= () =>{
   setStatusHideShow(!statusHideShow)
 }
 
-  const data=props.item
+  
   return (
     <div className={twMerge(
       " rounded-lg h-full",
@@ -67,9 +100,11 @@ const showHideSignCode= () =>{
           <div className='px-4'>
             <div className=' border-gray-200 border rounded-lg mb-4 ' style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}> 
               <div className='flex items-center justify-center border-b border-gray-200 py-4'>
-                  <div className='flex flex-col items-center gap-2'>
-                      <div className='w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center'>
-                          <EditImageUpload />
+                  <div className='w-full flex flex-col items-center gap-2'>
+                      <div className={twMerge(
+                        'w-full flex items-center justify-center',
+                      )}>
+                          <EditImageUpload img={img}/>
                           {/* <span className='text-2xl font-medium text-gray-600'>GC</span> */}
                       </div>
                       {/* <p className="font-semibold  text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700">Update Photo</p> */}

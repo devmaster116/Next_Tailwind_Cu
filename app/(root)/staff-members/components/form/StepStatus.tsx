@@ -2,6 +2,7 @@ import React from "react";
 // @ts-ignore
 //use @strict
 import { ProgressBar, Step } from "react-step-progress-bar";
+
 interface ProgressProps {
   stepIndex: number
 }
@@ -13,7 +14,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                 filledBackground="#4CA30D"
                 percent={stepIndex*25}
               >
-                <Step transition="scale" transitionDuration="500">
+                <Step transition="scale">
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
@@ -21,7 +22,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     </div>
                   )}
                 </Step>
-                <Step transition="scale" transitionDuration="500">
+                <Step transition="scale" >
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
@@ -30,7 +31,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     </div>
                   )}
                 </Step>
-                <Step transition="scale" transitionDuration={500}>
+                <Step transition="scale">
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
@@ -39,7 +40,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     </div>
                   )}
                 </Step>
-                <Step transition="scale" transitionDuration={500}>
+                <Step transition="scale">
                   {({ accomplished, index }: { accomplished: boolean; index: number }) => (
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}

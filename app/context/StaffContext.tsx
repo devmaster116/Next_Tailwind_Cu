@@ -26,6 +26,7 @@ export type FormAction =
   | { type: 'RESET_FORM' };
 
 const initialState: ConfigStaffMember = {
+  id:'',
   firstName: '',
   lastName: '',
   displayName: '',
@@ -69,6 +70,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const resetForm = () => {
       dispatch({ type: 'RESET_FORM' });
     };
+
     const getStaffRole = async () => {
         try {
           const rolesCollection = collection(db, "roles"); // Replace "roles" with your collection name
@@ -111,7 +113,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
      const { staffMemberConfigs = {} } = configDoc.data();
      const { staffMembers = [] } = staffMemberConfigs;
      const existingStaffIndex = staffMembers.findIndex(
-      (member: { passcode: string; }) => member.passcode === updatedStaff.passcode
+      (member: { id: string; }) => member.id === updatedStaff.id
   );
 
       if (existingStaffIndex !== -1) {

@@ -1,36 +1,30 @@
 "use client"
-import { Fragment } from "react";
 import React, { useEffect, useState,useContext } from "react";
 import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { FormContext } from "@/app/context/StaffContext";
 import { StaffModalHeader } from "../../header";
 import { StaffModalFooter } from "../../footer";
-import withAuth from "@/app/components/Auth/withAuth";
 import Input from "@/app/components/Input";
-
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   handleBlurField,
   handleInputChangeField,
   validateEmail,
-  formatDate,
   validateMobileNumber,
 } from "@/app/components/Auth/utils/helper";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import useWindowSize from "@/app/hooks/useWindowSize";
-
-export const  UserInfo=()=> {
+export const UserInfo = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const nextSearchParams = new URLSearchParams(searchParams.toString())
-  const { width } = useWindowSize()
   const [isEditing, setIsEditing] = useState(false);
-  const { state, dispatch,resetForm } = useContext(FormContext)!;
+  const { state, dispatch,resetForm, } = useContext(FormContext)!;
+  const {nextClicked, setNextClicked} =useFormStep()
+
   const [loading, setLoading] = useState(false);
   const validateRequired = (value: string) => value?.trim().length > 0;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
     firstName: state.firstName || "",
     lastName: state.lastName || "",
@@ -38,75 +32,67 @@ export const  UserInfo=()=> {
     email: state.email || "",
     phoneNumber: state.phoneNumber || "",
   });
-  
+
+  useEffect(() => {
+    if (nextClicked) {
+      validateAndProceed();
+    }
+    return () => {
+      setNextClicked(false);
+    };
+  }, [nextClicked]);
+
   const { handleNextStep } = useFormStep()
   const handleEnableInputEdit = () => {
        setIsEditing(true);
   }
 
   const handleCloseModal=() => {
+    resetForm()
     nextSearchParams.delete('type')
     router.replace(`${pathname}?${nextSearchParams}`)
-    // setStatusModal(false)
-    resetForm()
   }
-  const handleGoForwardStep = async () => {
-    console.log("``````000```````")
-    // handleNextStep()
-    // dispatch({ type: 'SET_USER_INFO', payload: newUser });
+  const validateAndProceed = async () => {
+    const newErrors = validateFields();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      handleNextStep()
+      dispatch({ type: 'SET_USER_INFO', payload: newUser });
+      // Proceed to next step
+    }
+  };
+  const validateFields = (): { [key: string]: string } => {
     const newErrors: { [key: string]: string } = {};
+  
     if (!validateRequired(newUser?.firstName)) {
       newErrors.firstName = "Please enter a valid name.";
     }
     if (!validateRequired(newUser?.lastName)) {
       newErrors.lastName = "Please enter a valid name.";
     }
-    if(newUser?.firstName&&newUser?.lastName){
-      newUser.displayName=newUser?.firstName+" "+newUser?.lastName.charAt(0)
+    if (newUser?.firstName && newUser?.lastName) {
+      newUser.displayName = `${newUser?.firstName} ${newUser?.lastName.charAt(0)}`;
     }
-    if (
-      !validateRequired(newUser?.email) ||
-      !validateEmail(newUser?.email)
-    ) {
+    if (!validateEmail(newUser?.email)) {
       newErrors.email = "Please enter a valid email address.";
     }
-    if (
-      !validateRequired(newUser?.phoneNumber) ||
-      !validateMobileNumber(newUser?.phoneNumber)
-    ) {
-      newErrors.phoneNumber =
-        "Enter a valid mobile number containing 10 digits.";
+    if (!validateMobileNumber(newUser?.phoneNumber)) {
+      
+      newErrors.phoneNumber = "Enter a valid mobile number containing 10 digits.";
     }
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      handleNextStep()
-      dispatch({ type: 'SET_USER_INFO', payload: newUser });
   
-    }
+    return newErrors;
   };
-
+  const handleInputChange = (field: string, value: string) => {
+    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
+    
+    // Real-time validation
+    const newErrors = validateFields();
+    setErrors(newErrors);
+  };
   return (
     <div>
-      {width < 1024 ? (
-        <StaffModalHeader 
-          title={"Add Staff Member"}
-          handleGoForwardStep={handleGoForwardStep}
-          handleClose={handleCloseModal}
-        >
-          <Form.StepStatus stepIndex={1} ></Form.StepStatus>
-        </StaffModalHeader>
-      ) : (
-        <>
-          <StaffModalHeader 
-            title={"Add Staff Member"}
-            handleGoForwardStep={handleGoForwardStep}
-            handleClose={handleCloseModal}
-          />
-          <Form.StepStatus stepIndex={1}></Form.StepStatus>
-        </>
-      )}
-    
       <Form.Header
             title="Profile"
             description="Add your staff members name,nickname, email addres and mobile number."
@@ -117,22 +103,11 @@ export const  UserInfo=()=> {
                   <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">First Name</p>
                     <Input
                       value={newUser.firstName}
-                      handleInputChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
-                      // handleInputChange={(e) =>
-                      //   handleInputChangeField(e, setNewUser, setErrors, "firstName")
-                      // }
-                      // handleBlurField={(e) =>
-                      //   handleBlurField(
-                      //     e,
-                      //     setNewUser,
-                      //     setErrors,
-                      //     validateRequired,
-                      //     "Please enter a valid first name.",
-                      //     "firstName"
-                      //   )
-                      // }
+                      handleInputChange={(e) => handleInputChange("firstName", e.target.value)}
+                      // handleInputChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
                       error={errors.firstName}
                       loading={loading}
+                      
                       placeholder="Enter first name"
                       inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
                     />
@@ -142,20 +117,8 @@ export const  UserInfo=()=> {
                   <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Last Name</p>
                   <Input
                     value={newUser.lastName}
-                    handleInputChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
-                    // handleInputChange={(e) =>
-                    //   handleInputChangeField(e, setNewUser, setErrors, "lastName")
-                    // }
-                    // handleBlurField={(e) =>
-                    //   handleBlurField(
-                    //     e,
-                    //     setNewUser,
-                    //     setErrors,
-                    //     validateRequired,
-                    //     "Please enter a valid last name.",
-                    //     "lastName"
-                    //   )
-                    // }
+                    handleInputChange={(e) => handleInputChange("lastName", e.target.value)}
+                    // handleInputChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
                     error={errors.lastName}
                     loading={loading}
                     placeholder="Enter last name"
@@ -177,7 +140,8 @@ export const  UserInfo=()=> {
                       `${newUser.firstName} ${newUser.lastName.charAt(0)}` : '')}
                     placeholder="Default display name"
                      disabled={!isEditing}
-                    onChange={(e) => setNewUser({ ...newUser, displayName: e.target.value })}
+                     onChange={(e) => handleInputChange("displayName", e.target.value)}
+                    // onChange={(e) => setNewUser({ ...newUser, displayName: e.target.value })}
                   />
                 </div>
 
@@ -193,25 +157,8 @@ export const  UserInfo=()=> {
               <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Email Address</p>
               <Input
                 value={newUser.email}
-                handleInputChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                // handleInputChange={(e) =>
-                //   handleInputChangeField(
-                //     e,
-                //     setNewUser,
-                //     setErrors,
-                //     "email"
-                //   )
-                // }
-                // handleBlurField={(e) =>
-                //   handleBlurField(
-                //     e,
-                //     setNewUser,
-                //     setErrors,
-                //     validateRequired,
-                //     "Please enter a valid email address.",
-                //     "email"
-                //   )
-                // }
+                handleInputChange={(e) => handleInputChange("email", e.target.value)}
+                // handleInputChange={(e) => setNewUser({...newUser, email: e.target.value})}
                 inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
                 error={errors.email}
                 loading={loading}
@@ -224,25 +171,8 @@ export const  UserInfo=()=> {
                 value={newUser.phoneNumber}
                 maxLength={10}
                 type="number"
-                handleInputChange={(e) => setNewUser({...newUser, phoneNumber: e.target.value})}
-                // handleInputChange={(e) =>
-                //   handleInputChangeField(
-                //     e,
-                //     setNewUser,
-                //     setErrors,
-                //     "phoneNumber"
-                //   )
-                // }
-                // handleBlurField={(e) =>
-                //   handleBlurField(
-                //     e,
-                //     setNewUser,
-                //     setErrors,
-                //     validateRequired,
-                //     "Please enter a valid mobile number.",
-                //     "phoneNumber"
-                //   )
-                // }
+                handleInputChange={(e) => handleInputChange("phoneNumber", e.target.value)}
+                // handleInputChange={(e) => setNewUser({...newUser, phoneNumber: e.target.value})}
                 error={errors.phoneNumber}
                 loading={loading}
                 placeholder="Enter mobile number"
@@ -255,18 +185,9 @@ export const  UserInfo=()=> {
         </form>
       <StaffModalFooter 
         title={ "Add Staff Member"}
-        handleGoForwardStep={handleGoForwardStep}
+        handleGoForwardStep={validateAndProceed}
         handleClose={handleCloseModal}
       />
-
-        {/* <StaffModalFullPage
-            show={statusModal}
-            content={
-              <div className={styles.formContainer}>
-                   <FormStep/>
-            </div>
-            }
-          /> */}
     </div>
   )
 } 

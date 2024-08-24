@@ -10,10 +10,11 @@ import { StaffModalFooter } from "../../footer";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
 
 export const UserSignCode = () => {
-    const { handlePreviousStep,handleNextStep } = useFormStep()
-    const { state, dispatch,saveStaffToFirebase,resetForm } = useContext(FormContext)!;
+    const { currentStep, setCurrentStep, handlePreviousStep,handleNextStep,setStatusAddStaff } = useFormStep()
+    const { state, dispatch,saveStaffToFirebase,resetForm, } = useContext(FormContext)!;
     const [passCode, setPassCode] = useState<string[]>(["", "", "", ""]);
     const [error, setError] = useState<boolean>(false);
     const { kitchen } = useKitchen();
@@ -23,10 +24,13 @@ export const UserSignCode = () => {
     const pathname = usePathname()
     const searchParams = useSearchParams()
     const nextSearchParams = new URLSearchParams(searchParams.toString())
+    const {nextClicked, setNextClicked} =useFormStep()
+
     const generateCode = (): void => {
       const randomCode = Math.floor(1000 + Math.random() * 9000).toString().split('');
       setPassCode(randomCode);
       dispatch({ type: 'SET_PASSCODE', payload: randomCode.join('') });
+      
       setError(false); 
     };
       useEffect(() => {
@@ -34,6 +38,18 @@ export const UserSignCode = () => {
             setPassCode(state.passcode.split(''));
         }
     }, [state.passcode]);
+
+
+     useEffect(() => {
+        if (nextClicked) {
+            handleGoForwardStep();
+        }
+        return () => {
+          // Cleanup: Reset `nextClicked` to false after the effect runs to avoid repetitive calls
+          setNextClicked(false);
+        };
+      }, [nextClicked]);
+
     const  handleGoForwardStep = async()=> {
         if (passCode.includes("")) {
             setError(true);
@@ -44,7 +60,9 @@ export const UserSignCode = () => {
 
             nextSearchParams.delete('type')
             router.replace(`${pathname}?${nextSearchParams}`)
-            handleNextStep()
+            setStatusAddStaff(true);//show the toast
+            setCurrentStep(1)
+        
             try {
                  if (!kitchenId) {
                     console.error("Kitchen ID is required but was not provided.");
@@ -61,26 +79,30 @@ export const UserSignCode = () => {
             
                 const { staffMemberConfigs = {} } = configDoc.data();
                 const { staffMembers = [] } = staffMemberConfigs;
-            
-                // Update the document with the new staff member and other config settings
                 await updateDoc(configDocRef, {
-                    "staffMemberConfigs.staffMembers": [...staffMembers, state],
+                    "staffMemberConfigs.staffMembers": [...staffMembers, {...state,id:uuidv4()}],
                     "staffMemberConfigs.enabled": true,
                     "staffMemberConfigs.idleTime": 0,
                     "staffMemberConfigs.passcodeEnabled": true,
                 });
-            
+                 resetForm()
                 console.log("New staff member added successfully!");
             } catch (error) {
                 console.error("Error adding new staff member:", error);
             }
-            resetForm()
+           
           }
       }
 
+    useEffect(() => {
+        if (currentStep > 4) {
+            handleGoForwardStep()
+        }
+    }, [currentStep])
+
     return (
         <div>
-            
+{/*             
             {width < 1024 ? (
                     <StaffModalHeader 
                     title={"Add Staff Member"}
@@ -98,7 +120,7 @@ export const UserSignCode = () => {
                     />
                     <Form.StepStatus stepIndex={4}></Form.StepStatus>
                     </>
-                )}
+                )} */}
             <Fragment>
                   {/* <Form.StepStatus  stepIndex={4}></Form.StepStatus> */}
                     <Form.Header

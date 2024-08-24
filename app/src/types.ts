@@ -178,6 +178,7 @@ export interface DishVariationTotals {
 // ==== type for config
 
 export interface ConfigStaffMember {
+  id: string;
   displayName: string
   firstName: string
   lastName: string

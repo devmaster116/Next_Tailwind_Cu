@@ -8,7 +8,7 @@ import { HelpSvg } from "@/app/assets/svg/help";
 import { StaffModalFooter } from "../../footer";
 import { CustomRadio } from "../../base/radio";
 import useWindowSize from "@/app/hooks/useWindowSize";
-
+import { Tooltip } from 'react-tooltip'
 export const UserRole = () => {
   const { handleNextStep, handlePreviousStep } = useFormStep();
   const { state, dispatch, getStaffRole, roles } = useContext(FormContext)!;
@@ -16,6 +16,7 @@ export const UserRole = () => {
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { width } = useWindowSize()
+  const {nextClicked, setNextClicked} =useFormStep()
 
   const handleGoForwardStep = () => {
     if (!!state.roleName) {
@@ -33,7 +34,15 @@ export const UserRole = () => {
       dispatch({ type: "SET_USER_ROLE_ID", payload: selectedRole.id });
     }
   };
-
+  useEffect(() => {
+    if (nextClicked) {
+      handleGoForwardStep()
+    }
+    return () => {
+      // Cleanup: Reset `nextClicked` to false after the effect runs to avoid repetitive calls
+      setNextClicked(false);
+    };
+  }, [nextClicked]);
   // Get the user roleName and role ID
   useEffect(() => {
     getStaffRole();
@@ -51,7 +60,7 @@ export const UserRole = () => {
 
   return (
     <div className="w-full">
-
+{/* 
               {width < 1024 ? (
                     <StaffModalHeader 
                     title={"Add Staff Member"}
@@ -69,7 +78,7 @@ export const UserRole = () => {
                     />
                     <Form.StepStatus stepIndex={3}></Form.StepStatus>
                     </>
-                )}
+                )} */}
 
       {/* <StaffModalHeader
         title={"Add Staff Member"}
@@ -82,7 +91,7 @@ export const UserRole = () => {
           title="Assign Role"
           description={`Manage ${state.firstName} permissions`}
         />
-
+        
         <div className="flex flex-col gap-3 w-full my-5 lg:my-8">
           {roles &&
             roles.map((item: RoleInfo, index: number) => (
@@ -91,12 +100,22 @@ export const UserRole = () => {
                   label={item.name}
                   onChange={() => onChange(item.name)}
                   icon={
-                    <div
-                      onMouseEnter={() => handleMouseEnter(item.description, item.name, index)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <HelpSvg />
-                    </div>
+                    <>
+                      <a
+                        data-tooltip-id="my-tooltip" 
+                        // data-tooltip-content={`${item.name} \n${item.description}`}
+                        data-tooltip-html={`<div><p>${item.name}</p><p>${item.description}</p></div>`}
+                        className="truncate"
+                      >
+                        <HelpSvg />
+                      </a>
+                      <Tooltip 
+                        id="my-tooltip" 
+                        className="max-w-[320px]" 
+                        place={"bottom"}
+                        positionStrategy={'fixed'}
+                      />
+                    </>
                   }
                   classOverride={{
                     labelContainer:
@@ -117,9 +136,7 @@ export const UserRole = () => {
                 />
                 {/* Tooltip */}
                 {hoveredIndex === index && tooltip && (
-                  <div className="absolute left-[8px] bottom-[60%] transform translate-y-1/2 bg-gray-900 text-white text-sm px-2 py-1 rounded-md z-10000 w-[247px] h-[94px]">
-                    {tooltip}
-                  </div>
+                  <Tooltip id="my-tooltip" />
                 )}
               </div>
             ))}

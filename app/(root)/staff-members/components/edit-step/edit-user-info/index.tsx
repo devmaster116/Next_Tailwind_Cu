@@ -209,11 +209,12 @@ export const  EditUserInfo=()=> {
                           (newUser.firstName && newUser.lastName ? 
                           `${newUser.firstName} ${newUser.lastName.charAt(0)}` : '')}
                            placeholder="Default display name"
+                        disabled={!isEditing}
                         onChange={(e) => setNewUser({ ...newUser, displayName: e.target.value })}
                       />
                     </div>
 
-                    <div className="flex items-center justify-center px-[18px] py-[10px] border border-gray-300 h-[44px] lg:h-[48px] w-[64px] lg:w-[68px] rounded-r-xl"
+                    <div className="flex cursor-pointer items-center justify-center px-[18px] py-[10px] border border-gray-300 h-[44px] lg:h-[48px] w-[64px] lg:w-[68px] rounded-r-xl"
                      onClick={handleEnableInputEdit}
                      >
                       <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">Edit</p>

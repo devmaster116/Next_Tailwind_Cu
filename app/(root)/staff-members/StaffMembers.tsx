@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import withAuth from "@/app/components/Auth/withAuth";
 import LightLoader from "@/app/components/LightLoader";
 import LoadingSkeleton from "./components/LoadingSkeleton";
@@ -8,6 +8,8 @@ import StaffModalFullPage from "./components/StaffModalFullpage";
 import { Kitchen, IConfig, User } from "@/app/src/types";
 import { FormStep } from "./components/form-step";
 import { ToastStatus  } from "./components/base/toast-status";
+import Drawer from 'react-modern-drawer'
+
 import {
   collection,
   onSnapshot,
@@ -63,7 +65,6 @@ const StaffMembers = () => {
     return () => unsubscribe();
   }, []);
 
-  console.log(pathName)
 
   const handleClose = () => {
     setBanner(false)
@@ -71,11 +72,16 @@ const StaffMembers = () => {
   const handleAddStaff =async()=>{
     router.push(`${pathName}?type=add-staff`)
     // setStatusModal(true)
-    
   }
+
   const handleCloseStaffBanner = () => {
     setStatusAddStaff(false)
   }
+
+  const openModal = useMemo(() => {
+    return searchParams?.get('type') === 'add-staff'
+  }, [searchParams])
+
   const plusIcon = (
     <svg
       width="14"
@@ -93,6 +99,8 @@ const StaffMembers = () => {
       />
     </svg>
   );
+
+  // to be removed
 
   if (!Array.isArray(staffConfig) || staffConfig.length === 0)
     return <> <LightLoader /></>
@@ -117,7 +125,10 @@ const StaffMembers = () => {
               <>
                 <div className={styles.pageHeader}>
                   <h1 className={styles.pageTitle}>Staff Members</h1>
-                  <button className={styles.buttonPrimary} onClick={handleAddStaff}>
+                  <button 
+                    className={styles.buttonPrimary} 
+                    onClick={handleAddStaff}
+                  >
                     <span style={{ marginRight: "8px" }}>{plusIcon}</span>
                     Staff Member{" "}
                   </button>
@@ -153,46 +164,61 @@ const StaffMembers = () => {
               </>
             )
         }
-        
-        <StaffModalFullPage
+              <Drawer
+                // open={ searchParams?.get('type') === 'add-staff' }
+                open={openModal}
+                // onClose={CloseTogglePanel}
+                direction='bottom'
+                className=' overflow-auto w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                lockBackgroundScroll={true}
+                // overlayColor="bg-white"
+                overlayOpacity={0}
+              >
+                  <StaffModalFullPage 
+                   content={
+                      <FormStep/>
+                  }
+                  />
+              </Drawer>
+        {/* <StaffModalFullPage
           // show={statusModal}
           show={
             searchParams.get('type') === 'add-staff' 
           }
-          content={
+            content={
             <div className={styles.formContainer}>
               <FormStep/>
             </div>
           }
-        />
+        /> */}
 
 {/* eidt UserInfo modal */}
-       <StaffModalFullPage
+       {/* <StaffModalFullPage
           show={searchParams.get('type') === 'edit-staff'}
           content={
             <div className={styles.formContainer}>
               <EditUserInfo/>
             </div>
           }
-        />
+        /> */}
 {/* eidt Role modal */}
-        <StaffModalFullPage
+        {/* <StaffModalFullPage
        show={searchParams.get('type') === 'edit-role'}
           content={
             <div className={styles.formContainer}>
               <EditUserRole/>
             </div>
           }
-        />
+        /> */}
       {/* eidt SignCode modal */}
-     <StaffModalFullPage
+     {/* <StaffModalFullPage
        show={searchParams.get('type') === 'edit-code'}
         content={
           <div className={styles.formContainer}>
             <EditUserSignCode/>
           </div>
         }
-      />
+      /> */}
         {/* {loading && (
           <>
             <LightLoader />

@@ -54,9 +54,9 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
             const { staffMemberConfigs = {} } = configDoc.data();
             const { staffMembers = [] } = staffMemberConfigs;
         
-            if (staffItem && staffItem.roleID) {
+            if (staffItem && staffItem.id) {
               const updatedStaffMembers = staffMembers.filter(
-                (member: ConfigStaffMember) => member.roleID !== staffItem.roleID
+                (member: ConfigStaffMember) => member.id !== staffItem.id
               );
           
               await updateDoc(configDocRef, { 
@@ -143,12 +143,14 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
         // overlayColor="bg-white"
         overlayOpacity={0}
       >
-        <StaffView
-          className='h-[90%] lg:h-full overflow-auto' 
-          onClose={CloseTogglePanel} 
-          item={staffItem}
-          onDeleteModalOpen = {openDeleteStaffModal} 
-        />
+        {viewStaff && (
+          <StaffView
+            className='h-[90%] lg:h-full overflow-auto' 
+            onClose={CloseTogglePanel} 
+            item={staffItem}
+            onDeleteModalOpen = {openDeleteStaffModal} 
+          />
+        )}
       </Drawer>
 
       
