@@ -5,6 +5,7 @@ import ItemSalesData from "./ItemSalesData";
 import DataTable from "../../overview/components/DataTable";
 import { ItemInsightsData, DishVariationTotals } from "@/app/src/types";
 import { removeGst } from "@/app/components/Auth/utils/helper";
+import { formatRoundUp } from "../../overview/components/utils/formatRoundUp";
 import { filterProperties } from "../utils/filterProperties";
 
 const ItemInsightsModal = ({
@@ -66,7 +67,7 @@ const ItemInsightsModal = ({
         <div className={styles.salesData}>
           <ItemSalesData
             title="Net Sales"
-            amount={totalDishVariantCount.totalPriceWithVariants.toString()}
+            amount={formatRoundUp(totalDishVariantCount.totalPriceWithVariants).toString()}
             symbol="$"
           />
           <ItemSalesData
