@@ -120,7 +120,7 @@ const CategorySales = () => {
                 />
               </div>
 
-              <DataTable
+              {/* <DataTable
                 firstColumnTitle="Category Name"
                 secondColumnTitle="Count"
                 thirdColumnTitle="Net"
@@ -130,7 +130,7 @@ const CategorySales = () => {
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
-              />
+              /> */}
             </>
           ) : (
             <NoSalesMessage

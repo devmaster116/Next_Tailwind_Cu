@@ -87,7 +87,7 @@ const ItemInsightsModal = ({
             amount={numberOfVariants.toString()}
           />
         </div>
-        {uniqueVariations && (
+        {/* {uniqueVariations && (
           <DataTable
             firstColumnTitle="Modifiers"
             secondColumnTitle="Count"
@@ -98,7 +98,7 @@ const ItemInsightsModal = ({
             )}
             className="dataInsightsTable"
           />
-        )}
+        )} */}
       </div>
     </div>
   );
