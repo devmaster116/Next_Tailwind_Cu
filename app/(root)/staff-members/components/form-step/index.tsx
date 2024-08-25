@@ -7,7 +7,7 @@ import { UserSignCode } from "./user-signcode";
 const steps = [
   {
     step: 1,
-    component: <UserInfo />
+    component: <UserInfo key={1}/>
   },
   {
     step: 2,

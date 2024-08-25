@@ -12,13 +12,7 @@ import { UserInfo } from "../components/form-step/user-info";
 import { UserPhoto } from "../components/form-step/user-photo";
 import { UserRole } from "../components/form-step/user-role";
 import { UserSignCode } from "../components/form-step/user-signcode";
-const StaffModalFullpage = ({
-  content,
-}:
-{
-    content: React.ReactElement;
-
-}) => {
+const StaffModalFullpage = () => {
   const { width } = useWindowSize()
   const router = useRouter()
   const pathName = usePathname()

@@ -123,7 +123,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
               <>
                 <h3 className={styles.deleteModalTitle}>Delete Staff Member?</h3>
                 <p className={styles.deleteMessage}>
-                  Are you sure you want to delete the {staffItem?.firstName + " " + staffItem?.lastName}?
+                  Are you sure you want to delete the {currentStaff?.firstName + " " + currentStaff?.lastName}?
                 </p>
                 <br />
                 <p className={styles.description}>
