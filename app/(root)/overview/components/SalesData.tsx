@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./SalesData.module.scss";
 import SalesDataSkeleton from "./SalesDataSkeleton";
+import { formatRoundUp } from "./utils/formatRoundUp";
 
 interface SalesDataProps {
   title: string;
@@ -10,6 +11,7 @@ interface SalesDataProps {
   isDollarAmount?: boolean;
   isPercentage?: boolean;
   loading?: boolean;
+  wholeNumber?:boolean
 }
 
 const SalesData = ({
@@ -20,22 +22,30 @@ const SalesData = ({
   isDollarAmount = false,
   isPercentage = false,
   loading,
+  wholeNumber = false
 }: SalesDataProps) => {
-  const getDisplayAmount = (amount: number | undefined): number => {
-    return isNaN(amount as number) || amount === undefined ? 0 : amount;
+  const getDisplayAmount = (amount: number | undefined): string | 0 => {
+    return isNaN(amount as number) || amount === undefined ? 0 : formatRoundUp(amount);
   };
 
   function formatAmount(amount: number | undefined) {
     const safeAmount = amount ?? 0;
+    let displayAmount = "0";
+
     if (isDollarAmount) {
-      return safeAmount ? `$${getDisplayAmount(safeAmount).toFixed(2)}` : "$0";
+      return safeAmount ? `$${getDisplayAmount(safeAmount)}` : "$0";
     }
 
     if (isPercentage) {
       return `${getDisplayAmount(safeAmount * 100)}%`;
     }
 
-    return getDisplayAmount(safeAmount);
+    if(wholeNumber){
+     displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(0)
+    }else{
+      displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(2)
+    }
+    return displayAmount;
   }
 
   return (

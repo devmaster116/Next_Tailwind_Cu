@@ -99,6 +99,7 @@ const Overview = () => {
                     amount={total_orders}
                     isDollarAmount={false}
                     loading={loading}
+                    wholeNumber={true}
                   />
                   <SalesData
                     title="Avg. Net Sale"

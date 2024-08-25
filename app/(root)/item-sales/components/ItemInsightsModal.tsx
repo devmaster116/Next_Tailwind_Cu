@@ -5,6 +5,8 @@ import ItemSalesData from "./ItemSalesData";
 import DataTable from "../../overview/components/DataTable";
 import { ItemInsightsData, DishVariationTotals } from "@/app/src/types";
 import { removeGst } from "@/app/components/Auth/utils/helper";
+import { formatRoundUp } from "../../overview/components/utils/formatRoundUp";
+import { filterProperties } from "../utils/filterProperties";
 
 const ItemInsightsModal = ({
   show,
@@ -38,12 +40,6 @@ const ItemInsightsModal = ({
     setTimeout(onClose, 500);
   };
 
-  function removeCategory(
-    uniqueVariations: { [x: string]: any; category: any }[]
-  ) {
-    return uniqueVariations.map(({ category, ...rest }) => rest);
-  }
-
   return (
     <div className={styles.modalOverlay}>
       <div
@@ -71,7 +67,7 @@ const ItemInsightsModal = ({
         <div className={styles.salesData}>
           <ItemSalesData
             title="Net Sales"
-            amount={totalDishVariantCount.totalPriceWithVariants.toString()}
+            amount={formatRoundUp(totalDishVariantCount.totalPriceWithVariants).toString()}
             symbol="$"
           />
           <ItemSalesData
@@ -93,7 +89,7 @@ const ItemInsightsModal = ({
             secondColumnTitle="Count"
             thirdColumnTitle="Net"
             thirdColumnSymbol="$"
-            dataObj={removeCategory(
+            dataObj={filterProperties(
               removeGst(uniqueVariations, "totalPriceWithVariants")
             )}
             className="dataInsightsTable"
