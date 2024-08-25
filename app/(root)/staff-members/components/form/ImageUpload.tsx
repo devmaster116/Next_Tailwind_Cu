@@ -31,7 +31,7 @@ export const ImageUpload = function () {
             try {
               await uploadBytes(storageRef, imageFile);
               const url = await getDownloadURL(storageRef);
-              dispatch({ type: 'SET_PROFILE_IMAGE_URL', payload: imageFile.name });
+              dispatch({ type: 'SET_PROFILE_IMAGE_URL', payload: url });
               console.log("File Uploaded Successfully:", url);
             } catch (error) {
               console.error('Error uploading the file', error);

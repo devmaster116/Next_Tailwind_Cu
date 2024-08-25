@@ -76,15 +76,15 @@ const ItemSales = () => {
       }))
     );
 
-    // const totalCount = getTotalsForDishVariations(
-    //   removeGst(matchedDishes, "totalPriceWithVariants")
-    // ) || {
-    //   totalQuantity: 0,
-    //   totalPriceWithVariants: 0,
-    // };
+    const totalCount = getTotalsForDishVariations(
+      removeGst(matchedDishes, "totalPriceWithVariants")
+    ) || {
+      totalQuantity: 0,
+      totalPriceWithVariants: 0,
+    };
 
-    // setTotalDishVariantCount(totalCount);
-    // setDishName(dishName);
+    setTotalDishVariantCount(totalCount);
+    setDishName(dishName);
   };
 
   const getMatchingDishes = (
@@ -203,7 +203,7 @@ const ItemSales = () => {
                 />
               </div>
 
-              {/* <DataTable
+              <DataTable
                 firstColumnTitle="Item Name"
                 secondColumnTitle="Count"
                 thirdColumnTitle="Net"
@@ -214,7 +214,7 @@ const ItemSales = () => {
                 customDate={customDate}
                 selectedOption={selectedOption}
                 onRowClick={handleRowClick}
-              /> */}
+              /> 
             </>
           ) : (
             <NoSalesMessage

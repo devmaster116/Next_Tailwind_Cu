@@ -120,7 +120,7 @@ const Overview = () => {
                 <DataError errorMessage="Error retrieving category and item data" />
               ) : (
                 <>
-                  {/* <DataTable
+                  <DataTable
                     firstColumnTitle="Top 5 categories"
                     secondColumnTitle="Count"
                     thirdColumnTitle="Net"
@@ -133,7 +133,7 @@ const Overview = () => {
                     customDate={customDate}
                     selectedOption={selectedOption}
                     className={allCategories[0] && "linkTable"}
-                  /> */}
+                  /> 
                   {allCategories[0] && (
                     <div className={styles.linkToSeeAllContainer}>
                       <Link className={styles.link} href="/category-sales">
@@ -142,7 +142,7 @@ const Overview = () => {
                     </div>
                   )}
 
-                  {/* <DataTable
+                  <DataTable
                     firstColumnTitle="Top 5 items"
                     secondColumnTitle="Count"
                     thirdColumnTitle="Net"
@@ -152,7 +152,7 @@ const Overview = () => {
                     customDate={customDate}
                     selectedOption={selectedOption}
                     className={allDishes[0] && "linkTable"}
-                  /> */}
+                  />
                   {allDishes[0] && (
                     <div className={styles.linkToSeeAllContainer}>
                       <Link className={styles.link} href="/item-sales">

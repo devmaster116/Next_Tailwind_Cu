@@ -61,13 +61,12 @@ const StaffView = (props: Props) => {
     //     console.error('Error fetching image from Firebase:', error);
     //   }
     // }
-    try {
-      const imgURL = await getDownloadURL(ref(storage, `${kitchenId}/${props.item?.displayImageURL}`))
-      console.log("====imgUrl====", imgURL)
-      setImg(imgURL)
-    } catch (err: any) {
-      console.log("image fetch error ===>", err)
-    }
+    // try {
+      // const imgURL = await getDownloadURL(ref(storage, `${kitchenId}/${props.item?.displayImageURL}`))
+      setImg(props.item?.displayImageURL)
+    // } catch (err: any) {
+    //   console.log("image fetch error ===>", err)
+    // }
   };
 
   useEffect(() => {
@@ -104,7 +103,7 @@ const showHideSignCode= () =>{
                       <div className={twMerge(
                         'w-full flex items-center justify-center',
                       )}>
-                          <EditImageUpload img={img}/>
+                          <EditImageUpload img={img} data={data}/>
                           {/* <span className='text-2xl font-medium text-gray-600'>GC</span> */}
                       </div>
                       {/* <p className="font-semibold  text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700">Update Photo</p> */}
