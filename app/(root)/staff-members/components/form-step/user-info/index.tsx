@@ -2,7 +2,7 @@
 import React, { useEffect, useState,useContext } from "react";
 import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
-import { FormContext } from "@/app/context/StaffContext";
+import { FormContext, FormContextType } from "@/app/context/StaffContext";
 import { StaffModalHeader } from "../../header";
 import { StaffModalFooter } from "../../footer";
 import Input from "@/app/components/Input";
@@ -13,25 +13,41 @@ import {
   validateEmail,
   validateMobileNumber,
 } from "@/app/components/Auth/utils/helper";
-export const UserInfo = () => {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const nextSearchParams = new URLSearchParams(searchParams.toString())
+type Props = {
+  key: number
+}
+
+export const UserInfo = ({key}:Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const nextSearchParams = new URLSearchParams(searchParams.toString());
+  const validateRequired = (value: string) => value?.trim().length > 0;
   const [isEditing, setIsEditing] = useState(false);
-  const { state, dispatch,resetForm, } = useContext(FormContext)!;
-  const {nextClicked, setNextClicked} =useFormStep()
+  const { state, resetForm, dispatch } = useContext(FormContext)!
+
+  const { nextClicked, setNextClicked } = useFormStep();
 
   const [loading, setLoading] = useState(false);
-  const validateRequired = (value: string) => value?.trim().length > 0;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
-    firstName: state.firstName || "",
-    lastName: state.lastName || "",
-    displayName: state.displayName || "",
-    email: state.email || "",
-    phoneNumber: state.phoneNumber || "",
+    firstName:  "",
+    lastName:  "",
+    displayName:  "",
+    email:  "",
+    phoneNumber:  "",
   });
+
+  // Update newUser state when the modal is opened or the state in context changes
+  useEffect(() => {
+    setNewUser({
+      firstName: state.firstName || "",
+      lastName: state.lastName || "",
+      displayName: state.displayName || "",
+      email: state.email || "",
+      phoneNumber: state.phoneNumber || "",
+    });
+  }, [state]);
 
   useEffect(() => {
     if (nextClicked) {
@@ -42,29 +58,33 @@ export const UserInfo = () => {
     };
   }, [nextClicked]);
 
-  const { handleNextStep } = useFormStep()
-  const handleEnableInputEdit = () => {
-       setIsEditing(true);
-  }
+  const { handleNextStep } = useFormStep();
 
-  const handleCloseModal=() => {
-    resetForm()
-    nextSearchParams.delete('type')
-    router.replace(`${pathname}?${nextSearchParams}`)
-  }
+  const handleEnableInputEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCloseModal = () => {
+    resetForm();
+    router.back()
+
+    // nextSearchParams.delete("type");
+    // router.replace(`${pathname}?${nextSearchParams}`);
+  };
+
   const validateAndProceed = async () => {
     const newErrors = validateFields();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      handleNextStep()
-      dispatch({ type: 'SET_USER_INFO', payload: newUser });
-      // Proceed to next step
+      handleNextStep();
+      dispatch({ type: "SET_USER_INFO", payload: newUser });
     }
   };
+
   const validateFields = (): { [key: string]: string } => {
     const newErrors: { [key: string]: string } = {};
-  
+
     if (!validateRequired(newUser?.firstName)) {
       newErrors.firstName = "Please enter a valid name.";
     }
@@ -78,21 +98,19 @@ export const UserInfo = () => {
       newErrors.email = "Please enter a valid email address.";
     }
     if (!validateMobileNumber(newUser?.phoneNumber)) {
-      
       newErrors.phoneNumber = "Enter a valid mobile number containing 10 digits.";
     }
-  
+
     return newErrors;
   };
+
   const handleInputChange = (field: string, value: string) => {
     setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
-    
-    // Real-time validation
     const newErrors = validateFields();
     setErrors(newErrors);
   };
   return (
-    <div>
+    <div key={key}>
       <Form.Header
             title="Profile"
             description="Add your staff members name,nickname, email addres and mobile number."

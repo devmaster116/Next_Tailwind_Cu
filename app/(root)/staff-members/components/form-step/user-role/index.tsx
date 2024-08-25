@@ -47,46 +47,10 @@ export const UserRole = () => {
   useEffect(() => {
     getStaffRole();
   }, []);
-
-  const handleMouseEnter = (description: string, name: string, index: number) => {
-    setTooltip(`${name}: ${description}`);
-    setHoveredIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setTooltip(null);
-    setHoveredIndex(null);
-  };
-
   return (
     <div className="w-full">
-{/* 
-              {width < 1024 ? (
-                    <StaffModalHeader 
-                    title={"Add Staff Member"}
-                    handleGoForwardStep={handleGoForwardStep}
-                    handleGoBack={handlePreviousStep}
-                    >
-                    <Form.StepStatus stepIndex={3}></Form.StepStatus>
-                    </StaffModalHeader>
-                ) : (
-                    <>
-                    <StaffModalHeader 
-                        title={"Add Staff Member"}
-                        handleGoForwardStep={handleGoForwardStep}
-                        handleGoBack={handlePreviousStep}
-                    />
-                    <Form.StepStatus stepIndex={3}></Form.StepStatus>
-                    </>
-                )} */}
 
-      {/* <StaffModalHeader
-        title={"Add Staff Member"}
-        handleGoForwardStep={handleGoForwardStep}
-        handleGoBack={handlePreviousStep}
-      /> */}
       <Fragment>
-        {/* <Form.StepStatus stepIndex={3}></Form.StepStatus> */}
         <Form.Header
           title="Assign Role"
           description={`Manage ${state.firstName} permissions`}
@@ -103,7 +67,6 @@ export const UserRole = () => {
                     <>
                       <a
                         data-tooltip-id="my-tooltip" 
-                        // data-tooltip-content={`${item.name} \n${item.description}`}
                         data-tooltip-html={`<div><p>${item.name}</p><p>${item.description}</p></div>`}
                         className="truncate"
                       >

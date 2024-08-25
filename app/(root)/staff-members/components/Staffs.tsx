@@ -19,12 +19,12 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
   const { setBanner } = useBanner()
   
   const [viewStaff, setViewStaff] = useState(false);
-  const [staffItem,setStaffItem]=useState<ConfigStaffMember | undefined>(undefined)
+  // const [staffItem,setStaffItem]=useState<ConfigStaffMember | undefined>(undefined)
   const [openDeleteModal, setOpenDeleteModal]=useState<boolean>(false)
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const { state, resetForm, loadStaffForEdit } = useContext(FormContext) as FormContextType;
+  const { state, resetForm, loadStaffForEdit,currentStaff } = useContext(FormContext) as FormContextType;
   const openDeleteStaffModal = () => {
     setOpenDeleteModal(!openDeleteModal)
   }
@@ -54,9 +54,9 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
             const { staffMemberConfigs = {} } = configDoc.data();
             const { staffMembers = [] } = staffMemberConfigs;
         
-            if (staffItem && staffItem.id) {
+            if (currentStaff && currentStaff.id) {
               const updatedStaffMembers = staffMembers.filter(
-                (member: ConfigStaffMember) => member.id !== staffItem.id
+                (member: ConfigStaffMember) => member.id !== currentStaff.id
               );
           
               await updateDoc(configDocRef, { 
@@ -76,8 +76,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
     const togglePanel = (item:ConfigStaffMember) => {
 
       setViewStaff(!viewStaff);
-      setStaffItem(item)
-      // loadStaffForEdit(item);
+      // setStaffItem(item)
+      loadStaffForEdit(item);
     };
     const CloseTogglePanel=()=>{
       resetForm()
@@ -147,7 +147,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList}) => {
           <StaffView
             className='h-[90%] lg:h-full overflow-auto' 
             onClose={CloseTogglePanel} 
-            item={staffItem}
+            // item={currentStaff}
             onDeleteModalOpen = {openDeleteStaffModal} 
           />
         )}

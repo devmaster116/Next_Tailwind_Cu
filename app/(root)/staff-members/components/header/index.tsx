@@ -1,8 +1,6 @@
 import Image from "next/image";
 import styles from "../StaffModalFullPage.module.scss";
 import { useFormStep } from "@/app/hooks/useFormStep";
-import { useContext } from "react";
-import { FormContext } from "@/app/context/StaffContext";
 import { BackSvg } from "@/app/assets/svg/back";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";

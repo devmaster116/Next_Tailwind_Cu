@@ -90,7 +90,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Load staff data for editing and populate form
   const loadStaffForEdit = (staff: ConfigStaffMember) => {
 
-    dispatch({ type: 'SET_CURRENT_STAFF', payload: staff });
+    // dispatch({ type: 'SET_CURRENT_STAFF', payload: staff });
     setCurrentStaff(staff);
   };
 

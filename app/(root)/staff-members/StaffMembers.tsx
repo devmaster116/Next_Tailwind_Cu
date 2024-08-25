@@ -171,7 +171,6 @@ const StaffMembers = () => {
                 direction='bottom'
                 className=' overflow-auto w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
                 lockBackgroundScroll={true}
-                // overlayColor="bg-white"
                 overlayOpacity={0}
               >
                   <StaffModalFullPage 
