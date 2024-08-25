@@ -20,17 +20,12 @@ import styles from "./StaffMember.module.scss";
 import { useBanner } from "@/app/context/BannerContext";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { UserSvg } from "@/app/assets/svg/user";
-import { twMerge } from "tailwind-merge";
 import { FormContext } from "@/app/context/StaffContext";
-import { EditUserInfo } from "./components/edit-step/edit-user-info";
-import { EditUserRole } from "./components/edit-step/edit-user-role";
-import { EditUserSignCode } from "./components/edit-step/edit-sign-code";
 import { 
   useRouter, 
   usePathname,
   useSearchParams
 } from "next/navigation";
-
 
 const StaffMembers = () => {
   const router = useRouter()
@@ -38,14 +33,11 @@ const StaffMembers = () => {
   const searchParams = useSearchParams()
   const { banner, setBanner } = useBanner();
   const { 
-    statusModal, 
-    // setStatusModal, 
     statusAddStaff,
     setStatusAddStaff , 
-    
   } = useFormStep()
 
-  const {state} = useContext(FormContext)!;
+  const {state, currentStaff} = useContext(FormContext)!;
 
   const [staffConfig,setStaffConfig] = useState<IConfig[]>([])
   useEffect(() => {
@@ -70,7 +62,6 @@ const StaffMembers = () => {
   }
   const handleAddStaff =async()=>{
     router.push(`${pathName}?type=add-staff`)
-    // setStatusModal(true)
   }
 
   const handleCloseStaffBanner = () => {
@@ -113,7 +104,7 @@ const StaffMembers = () => {
         </>
       )} */}
       {banner && (
-        <ToastStatus label={"Alfonso Was Deleted As Staff Member"} onClose={handleClose}/>
+        <ToastStatus label={`${currentStaff?.firstName} Was Deleted As Staff Member`} onClose={handleClose}/>
       )}
       {statusAddStaff && (
         <ToastStatus label={"New Staff Member Created"} onClose={handleCloseStaffBanner}/>
@@ -164,60 +155,42 @@ const StaffMembers = () => {
             )
         }
               <Drawer
-                // open={ searchParams?.get('type') === 'add-staff' }
                 open={openModal}
-                // onClose={CloseTogglePanel}
                 direction='bottom'
-                className=' overflow-auto w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
                 lockBackgroundScroll={true}
                 overlayOpacity={0}
               >
-                  <StaffModalFullPage />
+                  <StaffModalFullPage type='add' editPage="" />
               </Drawer>
-        {/* <StaffModalFullPage
-          // show={statusModal}
-          show={
-            searchParams.get('type') === 'add-staff' 
-          }
-            content={
-            <div className={styles.formContainer}>
-              <FormStep/>
-            </div>
-          }
-        /> */}
-
-{/* eidt UserInfo modal */}
-       {/* <StaffModalFullPage
-          show={searchParams.get('type') === 'edit-staff'}
-          content={
-            <div className={styles.formContainer}>
-              <EditUserInfo/>
-            </div>
-          }
-        /> */}
-{/* eidt Role modal */}
-        {/* <StaffModalFullPage
-       show={searchParams.get('type') === 'edit-role'}
-          content={
-            <div className={styles.formContainer}>
-              <EditUserRole/>
-            </div>
-          }
-        /> */}
-      {/* eidt SignCode modal */}
-     {/* <StaffModalFullPage
-       show={searchParams.get('type') === 'edit-code'}
-        content={
-          <div className={styles.formContainer}>
-            <EditUserSignCode/>
-          </div>
-        }
-      /> */}
-        {/* {loading && (
-          <>
-            <LightLoader />
-          </>
-        )} */}
+              
+              <Drawer
+                open={ searchParams?.get('type') === 'edit-staff'} 
+                direction='bottom'
+                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                lockBackgroundScroll={true}
+                overlayOpacity={0}
+              >
+                  <StaffModalFullPage type='edit' editPage='user-info' />
+              </Drawer>
+              <Drawer
+                open={ searchParams?.get('type') === 'edit-role'} 
+                direction='bottom'
+                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                lockBackgroundScroll={true}
+                overlayOpacity={0}
+              >
+                  <StaffModalFullPage type='edit' editPage='user-role' />
+              </Drawer>
+              <Drawer
+                open={ searchParams?.get('type') === 'edit-code'} 
+                direction='bottom'
+                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                lockBackgroundScroll={true}
+                overlayOpacity={0}
+              >
+                  <StaffModalFullPage type='edit' editPage='user-sign' />
+              </Drawer>
       </div>
     </>
   );

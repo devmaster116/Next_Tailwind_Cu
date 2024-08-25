@@ -1,14 +1,11 @@
-import { Fragment, useState, useContext, useEffect } from "react";
+import {useState, useContext, useEffect } from "react";
 import { useFormStep } from "@/app/hooks/useFormStep";
-import { StaffModalHeader } from "../../header";
 import Form from "../../../components/form";
 import { FormContext } from "@/app/context/StaffContext";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from "@/firebase/config";
-import { StaffModalFooter } from "../../footer";
 import { twMerge } from "tailwind-merge";
-import useWindowSize from "@/app/hooks/useWindowSize";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
 
@@ -16,17 +13,14 @@ export const UserSignCode = () => {
   const {
     currentStep,
     setCurrentStep,
-    handlePreviousStep,
-    handleNextStep,
     setStatusAddStaff,
   } = useFormStep();
-  const { state, dispatch, saveStaffToFirebase, resetForm } =
+  const { state, dispatch, resetForm,currentStaff } =
     useContext(FormContext)!;
   const [passCode, setPassCode] = useState<string[]>(["", "", "", ""]);
   const [error, setError] = useState<boolean>(false);
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
-  const { width } = useWindowSize();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -39,9 +33,9 @@ export const UserSignCode = () => {
       .split("");
     setPassCode(randomCode);
     dispatch({ type: "SET_PASSCODE", payload: randomCode.join("") });
-
     setError(false);
   };
+
   useEffect(() => {
     if (state.passcode) {
       setPassCode(state.passcode.split(""));
@@ -53,7 +47,6 @@ export const UserSignCode = () => {
       handleGoForwardStep();
     }
     return () => {
-      // Cleanup: Reset `nextClicked` to false after the effect runs to avoid repetitive calls
       setNextClicked(false);
     };
   }, [nextClicked]);
@@ -63,12 +56,9 @@ export const UserSignCode = () => {
       setError(true);
     } else {
       setError(false);
-
-      // await saveStaffToFirebase();
-
       nextSearchParams.delete("type");
       router.replace(`${pathname}?${nextSearchParams}`);
-      setStatusAddStaff(true); //show the toast
+      setStatusAddStaff(true); //
       setCurrentStep(1);
 
       try {
@@ -77,8 +67,6 @@ export const UserSignCode = () => {
           return;
         }
         const configDocRef = doc(db, "configs", kitchenId);
-
-        // Retrieve the document and destructure the necessary data
         const configDoc = await getDoc(configDocRef);
         if (!configDoc.exists()) {
           console.log("Config document does not exist!");
@@ -90,6 +78,9 @@ export const UserSignCode = () => {
         await updateDoc(configDocRef, {
           staffMemberConfigs: {
             ...staffMemberConfigs,
+            enabled:true,
+            idleTime:0,
+            passcodeEnabled:true,
             staffMembers: [...staffMembers, { ...state, id: uuidv4() }],
           },
         });
@@ -108,28 +99,7 @@ export const UserSignCode = () => {
   }, [currentStep]);
 
   return (
-    <div>
-      {/*             
-            {width < 1024 ? (
-                    <StaffModalHeader 
-                    title={"Add Staff Member"}
-                    handleGoForwardStep={handleGoForwardStep}
-                    handleGoBack={handlePreviousStep}
-                    >
-                    <Form.StepStatus stepIndex={4}></Form.StepStatus>
-                    </StaffModalHeader>
-                ) : (
-                    <>
-                    <StaffModalHeader 
-                        title={"Add Staff Member"}
-                        handleGoForwardStep={handleGoForwardStep}
-                        handleGoBack={handlePreviousStep}
-                    />
-                    <Form.StepStatus stepIndex={4}></Form.StepStatus>
-                    </>
-                )} */}
-      <Fragment>
-        {/* <Form.StepStatus  stepIndex={4}></Form.StepStatus> */}
+    <div className="">
         <Form.Header
           title="Generate Code"
           description={`This code will be used by ${state.firstName} to sign in to POS.`}
@@ -145,13 +115,10 @@ export const UserSignCode = () => {
                 <div
                   key={index}
                   className={`relative flex py-[6px] w-[52px] h-[43px] lg:h-[48px] lg:w-[52px] items-center justify-center text-center border 
-                                                    ${
-                                                      error && digit === ""
-                                                        ? "border-red-500"
-                                                        : "border-gray-300"
-                                                    } ${
-                    index == 0 ? "rounded-s-lg" : ""
-                  }`}
+                    ${error && digit === ""
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } ${index == 0 ? "rounded-s-lg" : ""}`}
                 >
                   {error || digit === "" ? (
                     <div className="absolute bottom-[12px] left-1/2 transform -translate-x-1/2 bg-gray-300 h-[2px] w-[15px] lg:w-[19px]"></div>
@@ -183,12 +150,6 @@ export const UserSignCode = () => {
           </div>
           <div className="flex items-starter mt-6 lg:[mt-8]">
             <div className="flex flex-col ">
-              {/* <input
-                                type="checkbox"
-                                className="mr-2 form-checkbox h-5 w-5 bg-primary-50 border border-primary-600 rounded-md"
-                                readOnly
-                                /> */}
-
               <input
                 type="checkbox"
                 className={twMerge(
@@ -211,12 +172,6 @@ export const UserSignCode = () => {
             </div>
           </div>
         </div>
-      </Fragment>
-      <StaffModalFooter
-        title={"Add Staff Member"}
-        handleGoForwardStep={handleGoForwardStep}
-        handleGoBack={handlePreviousStep}
-      />
     </div>
   );
 };

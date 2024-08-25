@@ -12,14 +12,8 @@ type FormStepContextData = {
   statusModal: boolean
   setStatusModal: (status: boolean) => void;
 
-  // editUserInfoStatusModal: boolean
-  // setEditUserInfoStatusModal: (status: boolean) => void;
-
-  // editUserRoleStatusModal: boolean
-  // setEditUserRoleStatusModal: (status: boolean) => void;
-
-  // editUserSignCodeStatusModal: boolean
-  // setEditUserSignCodeStatusModal: (status: boolean) => void;
+  pageKey:number;
+  setPageKey: (status: number) => void;
 
   statusAddStaff: boolean
   setStatusAddStaff: (status: boolean) => void;
@@ -33,11 +27,17 @@ type FormStepContextData = {
 
   nextClicked: boolean 
   setNextClicked: (_clicked: boolean) => void
+
+  updateClicked: boolean 
+  setUpdateClicked: (_clicked: boolean) => void
 }
 
 export const FormStepContext = createContext<FormStepContextData>({
   currentStep: 1,
   setCurrentStep: () =>{},
+
+  pageKey:1,
+  setPageKey: () => {},
 
   stepInvalid: false,
   setStepInvalid: () =>{},
@@ -47,6 +47,9 @@ export const FormStepContext = createContext<FormStepContextData>({
 
   nextClicked: false,
   setNextClicked: () => {},
+
+  updateClicked: false,
+  setUpdateClicked: () => {},
 
   // editUserInfoStatusModal: false,  
   // setEditUserInfoStatusModal: () =>{},
@@ -74,9 +77,11 @@ interface FormStepProviderProps {
 export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   
   const [currentStep, setCurrentStep] = useState(1);
+  const [pageKey, setPageKey] = useState(1);
   const [statusModal, setStatusModal] = useState(false);
   const [stepInvalid, setStepInvalid] = useState(false);
   const [nextClicked, setNextClicked] = useState(false)
+  const [updateClicked, setUpdateClicked] = useState(false)
 
   // const [editUserInfoStatusModal, setEditUserInfoStatusModal] = useState(false);
   // const [editUserRoleStatusModal, setEditUserRoleStatusModal] = useState(false);
@@ -134,16 +139,14 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         steps,
         currentStep, 
         setStatusAddStaff,
+        pageKey,
+        setPageKey,
+        updateClicked,
+        setUpdateClicked,
         stepInvalid,
         setStepInvalid,
         statusModal,
         setStatusModal,
-        // editUserInfoStatusModal,
-        // setEditUserInfoStatusModal,
-        // editUserRoleStatusModal,
-        // setEditUserRoleStatusModal,
-        // editUserSignCodeStatusModal,
-        // setEditUserSignCodeStatusModal,
         statusAddStaff,
         setCurrentStep, 
         handleNextStep, 

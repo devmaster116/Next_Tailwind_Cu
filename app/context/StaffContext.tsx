@@ -12,6 +12,7 @@ export type FormContextType = {
   getStaffRole: () => Promise<void>; 
   resetForm: () => void;
   currentStaff: ConfigStaffMember | null;
+
   loadStaffForEdit: (staff: ConfigStaffMember) => void;
   updateStaffInFirebase: (updatedStaff: ConfigStaffMember, kitchenId: string | any ) => Promise<void>;
 };
@@ -21,6 +22,7 @@ export type FormAction =
   | { type: 'SET_PROFILE_IMAGE_URL'; payload: string }
   | { type: 'SET_USER_ROLE'; payload: string }
   | { type: 'SET_USER_ROLE_ID'; payload: string }
+  | { type: 'SET_USER_ROLE_DESCRIPTION'; payload: string }
   | { type: 'SET_PASSCODE'; payload: string }
   | { type: 'SET_CURRENT_STAFF'; payload: ConfigStaffMember | null }
   | { type: 'RESET_FORM' };
@@ -32,6 +34,7 @@ const initialState: ConfigStaffMember = {
   displayName: '',
   email: '',
   phoneNumber: '',
+  description:'',
   displayImageURL: '',
   roleName: '',
   roleID:'',
@@ -50,6 +53,8 @@ const formReducer = (state: ConfigStaffMember, action: FormAction): ConfigStaffM
       return { ...state, roleName: action.payload };
       case 'SET_USER_ROLE_ID':
       return { ...state, roleID: action.payload };
+    case 'SET_USER_ROLE_DESCRIPTION':
+      return { ...state, description: action.payload };
     case 'SET_PASSCODE':
       return { ...state, passcode: action.payload };
     case 'RESET_FORM':
@@ -87,15 +92,11 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     };
    
-      // Load staff data for editing and populate form
   const loadStaffForEdit = (staff: ConfigStaffMember) => {
-
-    // dispatch({ type: 'SET_CURRENT_STAFF', payload: staff });
+    dispatch({ type: 'SET_CURRENT_STAFF', payload: staff });
     setCurrentStaff(staff);
   };
-
   const updateStaffInFirebase = async (updatedStaff: ConfigStaffMember,kitchenId:string) => {
-  
     try {
       if (!kitchenId) {
          console.error("Kitchen ID is required but was not provided.");
@@ -103,7 +104,6 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
        }
 
      const configDocRef = doc(db, "configs", kitchenId);
-     // Retrieve the document and destructure the necessary data
      const configDoc = await getDoc(configDocRef);
      if (!configDoc.exists()) {
          console.log("Config document does not exist!");
@@ -115,38 +115,31 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
      const existingStaffIndex = staffMembers.findIndex(
       (member: { id: string; }) => member.id === updatedStaff.id
   );
-
+  let updatedStaffMembers;
       if (existingStaffIndex !== -1) {
-            // Staff member exists, update the data
-            staffMembers[existingStaffIndex] = updatedStaff;
-            console.log("Existing staff member updated successfully!");
+            updatedStaffMembers = [...staffMembers];
+            updatedStaffMembers[existingStaffIndex] = updatedStaff;
         } else {
-            // Add new staff member if no match found
-            // staffMembers = [...staffMembers, updatedStaff];
+            updatedStaffMembers = [...staffMembers, updatedStaff];
             console.log("New staff member added successfully!");
         }
-     // Update the document with the new staff member and other config settings
      await updateDoc(configDocRef, {
       staffMemberConfigs: {
         ...staffMemberConfigs,
-        staffMembers
+        staffMembers:updatedStaffMembers
       }
      });
  
-     console.log("New staff member added successfully!");
  } catch (error) {
      console.error("Error adding new staff member:", error);
  }
-    // if (updatedStaff && updatedStaff.email) {
-    //   const staffDoc = doc(db, "staff", updatedStaff.email); // Assuming email is unique
-    //   await updateDoc(staffDoc, updatedStaff);
-    // }
+
   };
   useEffect(() => {
     getStaffRole(); 
   }, []);
   return (
-    <FormContext.Provider value={{ state, roles,dispatch ,currentStaff,   loadStaffForEdit,
+    <FormContext.Provider value={{ state,roles,dispatch ,currentStaff,   loadStaffForEdit,
       updateStaffInFirebase,resetForm,saveStaffToFirebase,getStaffRole}}>
       {children}
     </FormContext.Provider>

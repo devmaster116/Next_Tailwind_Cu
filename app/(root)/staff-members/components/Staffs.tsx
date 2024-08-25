@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./Staff.module.scss";
 import { db } from "@/firebase/config";
 import {
-  collection,
   doc,
   getDoc,
-  getDocs,
   updateDoc,
 } from "firebase/firestore";
 import { IConfig, ConfigStaffMember } from "@/app/src/types";
@@ -15,7 +13,7 @@ import Drawer from "react-modern-drawer";
 import CustomModal from "@/app/components/CustomModal";
 import { useBanner } from "@/app/context/BannerContext";
 import { useKitchen } from "@/app/context/KitchenContext";
-import { FormContext, FormContextType } from "@/app/context/StaffContext";
+import { FormContext } from "@/app/context/StaffContext";
 
 interface StaffProps {
   staffList: IConfig[];
@@ -29,7 +27,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const { state, resetForm, loadStaffForEdit,currentStaff } = useContext(FormContext)!
+  const { resetForm, loadStaffForEdit,currentStaff } = useContext(FormContext)!
 
   const openDeleteStaffModal = () => {
     setOpenDeleteModal(!openDeleteModal);
@@ -170,9 +168,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
         open={viewStaff}
         onClose={CloseTogglePanel}
         direction="right"
-        className="!w-full lg:!max-w-[400px] overflow-auto !bg-[#FCFCFD] lg:!bg-white"
+        className="!w-full lg:!max-w-[400px]  overflow-auto !bg-[#FCFCFD] lg:!bg-white"
         lockBackgroundScroll={true}
-        // overlayColor="bg-white"
         overlayOpacity={0}
       >
         {viewStaff && (

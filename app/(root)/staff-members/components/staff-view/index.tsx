@@ -3,61 +3,41 @@ import { Paragraph } from '../base/paragraph';
 import { Avatar } from '../base/avatar';
 import { CancelSvg } from '@/app/assets/svg/cancel';
 import { ConfigStaffMember } from '@/app/src/types';
-import styles from "../Staff.module.scss";
 import { twMerge } from 'tailwind-merge';
 import { HelpSvg } from '@/app/assets/svg/help';
-import { FormContext, FormContextType } from '@/app/context/StaffContext';
-import { useFormStep } from '@/app/hooks/useFormStep';
+import { FormContext } from '@/app/context/StaffContext';
 import { EditImageUpload } from '../form/EditImageUpload';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { useKitchen } from '@/app/context/KitchenContext';
+import { Tooltip } from 'react-tooltip';
+import { useFormStep } from '@/app/hooks/useFormStep';
+
 
 type Props = {
   onClose: () => void,
   onDeleteModalOpen: () => void
   className?: string,
-  // item? :ConfigStaffMember
 }
 
 const StaffView = (props: Props) => {
-  // const data=props.item
   const router = useRouter()
   const pathName = usePathname()
-  // const searchParams = useSearchParams()
+
+  // 
   const [statusHideShow, setStatusHideShow] = useState(false);
   const showEditUserInfoStaffModal=(data:ConfigStaffMember)=>{
-    loadStaffForEdit(data)
     router.push(`${pathName}?type=edit-staff`)
-    // setEditUserInfoStatusModal(true)
   }
   const showEditUserRoleStaffModal=(data:ConfigStaffMember)=>{
-    loadStaffForEdit(data)
     router.push(`${pathName}?type=edit-role`)
-
   }
   const showEditUserSignCodeStaffModal=(data:ConfigStaffMember)=>{
-    loadStaffForEdit(data)
     router.push(`${pathName}?type=edit-code`)
-
   }
 
-  const { kitchen } = useKitchen();
-  const { state, dispatch, currentStaff ,loadStaffForEdit} = useContext(FormContext)!;
-  const kitchenId = kitchen?.kitchenId ?? null;
-  const storage = getStorage()
+  const { currentStaff } = useContext(FormContext)!;
   const [img, setImg] = useState<any>();
   const fetchImageFromFirebase = async () => {
-    // try {
-    //   const imgURL = await getDownloadURL(ref(storage, `${kitchenId}/${currentStaff?.displayImageURL}`))
-    //   console.log("====imgUrl====", imgURL)
-    //   setImg(imgURL)
-    // } catch (err: any) {
-    //   console.log("image fetch error ===>", err)
-    // }
-
       setImg(currentStaff?.displayImageURL)
-
   };
 
   useEffect(() => {
@@ -96,13 +76,10 @@ const showHideSignCode= () =>{
                       )}>
 
                           <EditImageUpload img={img} data={currentStaff}/>
-                          {/* <span className='text-2xl font-medium text-gray-600'>GC</span> */}
                       </div>
-                      {/* <p className="font-semibold  text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700">Update Photo</p> */}
                   </div>
               </div>
               <div className={twMerge('flex flex-col')} >
-              {/* <div className= {twMerge('flex flex-col', styles['box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05)'])}> */}
                 <div className='p-4'>
                     <Paragraph 
                       title='Personal Details'
@@ -188,7 +165,21 @@ const showHideSignCode= () =>{
                     <div className='flex flex-row  ' >
                       <p className='  gap-1 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]  text-gray-800'>{currentStaff.roleName}</p>
                       <Avatar 
-                      icon={<HelpSvg />}
+                      icon={<>
+                          <a
+                              data-tooltip-id="my-tooltip" 
+                              data-tooltip-html={`<div><p>${currentStaff.roleName}</p><p>${currentStaff.description}</p></div>`}
+                              className="truncate"
+                            >
+                              <HelpSvg />
+                            </a>
+                            <Tooltip 
+                              id="my-tooltip" 
+                              className="max-w-[320px]" 
+                              place={"bottom"}
+                              positionStrategy={'fixed'}
+                            />
+                      </>}
                     />
                     </div>
               

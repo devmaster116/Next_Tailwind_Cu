@@ -1,21 +1,15 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useFormStep } from "@/app/hooks/useFormStep";
-import { StaffModalHeader } from "../../header";
 import Form from "../../../components/form";
 import { FormContext } from "@/app/context/StaffContext";
 import { RoleInfo } from "@/app/src/types";
 import { HelpSvg } from "@/app/assets/svg/help";
-import { StaffModalFooter } from "../../footer";
 import { CustomRadio } from "../../base/radio";
-import useWindowSize from "@/app/hooks/useWindowSize";
 import { Tooltip } from 'react-tooltip'
 export const UserRole = () => {
   const { handleNextStep, handlePreviousStep } = useFormStep();
-  const { state, dispatch, getStaffRole, roles } = useContext(FormContext)!;
+  const { state, dispatch, getStaffRole, roles ,currentStaff} = useContext(FormContext)!;
   const [error, setError] = useState<boolean>(false);
-  const [tooltip, setTooltip] = useState<string | null>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const { width } = useWindowSize()
   const {nextClicked, setNextClicked} =useFormStep()
 
   const handleGoForwardStep = () => {
@@ -30,8 +24,10 @@ export const UserRole = () => {
   const onChange = (value: string) => {
     const selectedRole = roles?.find((role: RoleInfo) => role.name === value);
     if (selectedRole) {
+      console.log("selectedRole",selectedRole)
       dispatch({ type: "SET_USER_ROLE", payload: selectedRole.name });
       dispatch({ type: "SET_USER_ROLE_ID", payload: selectedRole.id });
+      dispatch({ type: "SET_USER_ROLE_DESCRIPTION", payload: selectedRole.description });
     }
   };
   useEffect(() => {
@@ -39,23 +35,20 @@ export const UserRole = () => {
       handleGoForwardStep()
     }
     return () => {
-      // Cleanup: Reset `nextClicked` to false after the effect runs to avoid repetitive calls
       setNextClicked(false);
     };
   }, [nextClicked]);
-  // Get the user roleName and role ID
+
+
   useEffect(() => {
     getStaffRole();
   }, []);
   return (
-    <div className="w-full">
-
-      <Fragment>
+    <div className="">
         <Form.Header
           title="Assign Role"
           description={`Manage ${state.firstName} permissions`}
         />
-        
         <div className="flex flex-col gap-3 w-full my-5 lg:my-8">
           {roles &&
             roles.map((item: RoleInfo, index: number) => (
@@ -63,6 +56,7 @@ export const UserRole = () => {
                 <CustomRadio
                   label={item.name}
                   onChange={() => onChange(item.name)}
+                  checked={state.roleName === item.name}
                   icon={
                     <>
                       <a
@@ -97,10 +91,6 @@ export const UserRole = () => {
                         : "bg-purple-700 border-2",
                   }}
                 />
-                {/* Tooltip */}
-                {hoveredIndex === index && tooltip && (
-                  <Tooltip id="my-tooltip" />
-                )}
               </div>
             ))}
         </div>
@@ -111,12 +101,7 @@ export const UserRole = () => {
             </p>
           </div>
         )}
-      </Fragment>
-      <StaffModalFooter
-        title={"Add Staff Member"}
-        handleGoForwardStep={handleGoForwardStep}
-        handleGoBack={handlePreviousStep}
-      />
+ 
     </div>
   );
 };

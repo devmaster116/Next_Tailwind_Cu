@@ -185,6 +185,7 @@ export interface ConfigStaffMember {
   passcode: string
   roleID: string
   roleName: string
+  description: string
   displayImageURL:string
   email:string
   phoneNumber:string

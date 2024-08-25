@@ -16,7 +16,7 @@ import { editImageUploadDB } from "../../data-fetching";
 export const EditImageUpload = function ({ img, data }: { img: string, data: ConfigStaffMember }) {
   const [images, setImages] = useState<ImageListType>([]);
   const maxNumber = 1;
-  const { state, dispatch, currentStaff } = useContext(FormContext)!;
+  const { state, dispatch, currentStaff,loadStaffForEdit } = useContext(FormContext)!;
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [firebaseImageUrl, setFirebaseImageUrl] = useState<string | null>(null);
@@ -34,7 +34,22 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
         try {
           await uploadBytes(storageRef, imageFile);
           const url = await getDownloadURL(storageRef);
-          dispatch({ type: "SET_PROFILE_IMAGE_URL", payload: url });
+
+          if(currentStaff) {
+
+            const updatedStaff = {
+              ...currentStaff, // Keep all existing values
+              displayImageURL: url, // Overwrite with the new user info
+            };
+          try {
+            loadStaffForEdit(updatedStaff);       
+            // await updateStaffInFirebase(updatedStaff, kitchenId);
+          } catch (error) {
+            console.error("Error updating staff:", error);
+          }
+        }
+
+          // dispatch({ type: "SET_PROFILE_IMAGE_URL", payload: url });
           console.log("File Uploaded Successfully:", url);
 
           // Update staff member in the db

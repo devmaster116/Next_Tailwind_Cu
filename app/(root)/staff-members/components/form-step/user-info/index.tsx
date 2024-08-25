@@ -20,11 +20,13 @@ type Props = {
 export const UserInfo = ({key}:Props) => {
   const router = useRouter();
   const pathname = usePathname();
+
   const searchParams = useSearchParams();
-  const nextSearchParams = new URLSearchParams(searchParams.toString());
+  // const nextSearchParams = new URLSearchParams(searchParams.toString());
+  const typeParam = searchParams.get("type");
   const validateRequired = (value: string) => value?.trim().length > 0;
   const [isEditing, setIsEditing] = useState(false);
-  const { state, resetForm, dispatch } = useContext(FormContext)!
+  const { state, resetForm, dispatch ,currentStaff} = useContext(FormContext)!
 
   const { nextClicked, setNextClicked } = useFormStep();
 
@@ -37,7 +39,6 @@ export const UserInfo = ({key}:Props) => {
     email:  "",
     phoneNumber:  "",
   });
-
   // Update newUser state when the modal is opened or the state in context changes
   useEffect(() => {
     setNewUser({
@@ -48,7 +49,7 @@ export const UserInfo = ({key}:Props) => {
       phoneNumber: state.phoneNumber || "",
     });
   }, [state]);
-
+ 
   useEffect(() => {
     if (nextClicked) {
       validateAndProceed();
@@ -62,14 +63,6 @@ export const UserInfo = ({key}:Props) => {
 
   const handleEnableInputEdit = () => {
     setIsEditing(true);
-  };
-
-  const handleCloseModal = () => {
-    resetForm();
-    router.back()
-
-    // nextSearchParams.delete("type");
-    // router.replace(`${pathname}?${nextSearchParams}`);
   };
 
   const validateAndProceed = async () => {
@@ -125,7 +118,7 @@ export const UserInfo = ({key}:Props) => {
                       // handleInputChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
                       error={errors.firstName}
                       loading={loading}
-                      
+                      // onBlur={() => handleBlurField("firstName")}
                       placeholder="Enter first name"
                       inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
                     />
@@ -201,11 +194,11 @@ export const UserInfo = ({key}:Props) => {
               <p className="">{errors.addingUser}</p>
             )}
         </form>
-      <StaffModalFooter 
+      {/* <StaffModalFooter 
         title={ "Add Staff Member"}
         handleGoForwardStep={validateAndProceed}
         handleClose={handleCloseModal}
-      />
+      /> */}
     </div>
   )
 } 
