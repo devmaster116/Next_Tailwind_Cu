@@ -1,32 +1,48 @@
+import { ConfigStaffMember } from "@/app/src/types";
 import { db } from "@/firebase/config";
 import { FirebaseError } from "firebase/app";
-import { collection, doc, getDoc, getDocs, onSnapshot, query, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 export const fetchPermissions = (callback: (permissions: any[]) => void) => {
   const q = query(collection(db, "permissions"));
-  
-  return onSnapshot(q, (querySnapshot:any) => {
-    const permissions: any[] = [];
-    querySnapshot.forEach((doc:any) => {
-      const data = doc.data();
-      console.log(`Fetching permissions from document ID: ${doc.id}`,data);
-      if (Array.isArray(data.permissions)) {
-        data.permissions.forEach((permission:any) => {
-          permissions.push({
-            id: permission.id,
-            name: permission.name,
-            description: permission.description,
+
+  return onSnapshot(
+    q,
+    (querySnapshot: any) => {
+      const permissions: any[] = [];
+      querySnapshot.forEach((doc: any) => {
+        const data = doc.data();
+        console.log(`Fetching permissions from document ID: ${doc.id}`, data);
+        if (Array.isArray(data.permissions)) {
+          data.permissions.forEach((permission: any) => {
+            permissions.push({
+              id: permission.id,
+              name: permission.name,
+              description: permission.description,
+            });
           });
-        });
-      }
-    });
-    callback(permissions);
-    console
-  }, (error) => {
-    console.error("Error fetching permissions:", error);
-  });
+        }
+      });
+      callback(permissions);
+      console;
+    },
+    (error) => {
+      console.error("Error fetching permissions:", error);
+    }
+  );
 };
 
-export const subscribeRoles = (kitchenId: string | null, callback: (data: { rolesList: any[], ownerDetails: any }) => void) => {
+export const subscribeRoles = (
+  kitchenId: string | null,
+  callback: (data: { rolesList: any[]; ownerDetails: any }) => void
+) => {
   if (!kitchenId) {
     console.error("Kitchen ID is required but was not provided.");
     return;
@@ -37,55 +53,66 @@ export const subscribeRoles = (kitchenId: string | null, callback: (data: { role
   const unsubscribe = onSnapshot(roleDocRef, (docSnapshot) => {
     const data = docSnapshot.data();
     const rolesList = data?.roles || [];
-    const ownerDetails = data?.owner  ||{};
+    const ownerDetails = data?.owner || {};
     callback({ rolesList, ownerDetails });
   });
 
   return unsubscribe;
 };
 
+export const fetchRoles = async (permissions: any[]) => {
+  const rolesCollection = collection(db, "roles");
+  const rolesSnapshot = await getDocs(rolesCollection);
 
-  export const fetchRoles = async (permissions: any[]) => {
-    const rolesCollection = collection(db, 'roles');
-    const rolesSnapshot = await getDocs(rolesCollection);
-  
-    const rolesList: any[] = [];
-    let ownerDetails: any = {};
-  
-    rolesSnapshot.docs.forEach(doc => {
-      const data = doc.data();
-      if (Array.isArray(data.roles)) {
-        data.roles.forEach((role: { id: string; name: string; description: string; permissions: any[] }) => {
+  const rolesList: any[] = [];
+  let ownerDetails: any = {};
+
+  rolesSnapshot.docs.forEach((doc) => {
+    const data = doc.data();
+    if (Array.isArray(data.roles)) {
+      data.roles.forEach(
+        (role: {
+          id: string;
+          name: string;
+          description: string;
+          permissions: any[];
+        }) => {
           const roleData = {
-            id:role.id,
+            id: role.id,
             name: role.name,
             description: role.description,
             staff: data.staff || 0,
-            permissions: role.permissions || []
+            permissions: role.permissions || [],
           };
-  
+
           rolesList.push(roleData);
-  
+
           if (role.name.toLowerCase() === "owner") {
             ownerDetails = roleData;
           }
-        });
-      }
-    });
-  
-    const permissionNamesSet = new Set(permissions.map(p => p.label));
-  
-    const filteredPermissions = (ownerDetails.permissions || []).filter((permission: any) => 
-      permissionNamesSet.has(permission.name)
-    );
-  
-    return { rolesList, ownerDetails: { ...ownerDetails, permissions: filteredPermissions } };
-  };
+        }
+      );
+    }
+  });
 
-  
-export const addRoleToExistingDocument = async (newRole: any,kitchenId:string) => {
+  const permissionNamesSet = new Set(permissions.map((p) => p.label));
+
+  const filteredPermissions = (ownerDetails.permissions || []).filter(
+    (permission: any) => permissionNamesSet.has(permission.name)
+  );
+
+  return {
+    rolesList,
+    ownerDetails: { ...ownerDetails, permissions: filteredPermissions },
+  };
+};
+
+export const addRoleToExistingDocument = async (
+  newRole: any,
+  kitchenId: string
+) => {
   try {
-    const docRef = doc(db, "roles",kitchenId );
+    const docRef = doc(db, "roles", kitchenId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -115,4 +142,45 @@ export const addRoleToExistingDocument = async (newRole: any,kitchenId:string) =
   } catch (error) {
     console.error("Error adding role:", error);
   }
+};
+
+export const editImageUploadDB = async (
+  staffMemberDetails: ConfigStaffMember,
+  imageUrl: string,
+  kitchenId: string
+) => {
+  if (!kitchenId) {
+    console.error("Kitchen ID is required but was not provided.");
+    return;
+  }
+  const configDocRef = doc(db, "configs", kitchenId);
+
+  // Retrieve the document and destructure the necessary data
+  const configDoc = await getDoc(configDocRef);
+  if (!configDoc.exists()) {
+    console.log("Config document does not exist!");
+    return;
+  }
+
+  const { staffMemberConfigs = {} } = configDoc.data();
+  const { staffMembers = [] } = staffMemberConfigs;
+
+  const updatedStaffMemberList = staffMembers.map(
+    (member: ConfigStaffMember) => {
+      if (member.id === staffMemberDetails.id) {
+        return {
+          ...member,
+          displayImageURL: imageUrl,
+        };
+      }
+      return member;
+    }
+  );
+
+  await updateDoc(configDocRef, {
+    staffMemberConfigs: {
+      ...staffMemberConfigs,
+      staffMembers: updatedStaffMemberList,
+    },
+  });
 };

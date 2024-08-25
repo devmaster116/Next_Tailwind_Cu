@@ -127,10 +127,10 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
      // Update the document with the new staff member and other config settings
      await updateDoc(configDocRef, {
-         "staffMemberConfigs.staffMembers": staffMembers,
-         "staffMemberConfigs.enabled": true,
-         "staffMemberConfigs.idleTime": 0,
-         "staffMemberConfigs.passcodeEnabled": true,
+      staffMemberConfigs: {
+        ...staffMemberConfigs,
+        staffMembers
+      }
      });
  
      console.log("New staff member added successfully!");

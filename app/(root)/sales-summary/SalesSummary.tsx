@@ -186,6 +186,7 @@ const SalesSummary = () => {
                   amount={total_orders}
                   isDollarAmount={false}
                   loading={loading}
+                  wholeNumber={true}
                 />
                 <SalesData
                   title="Avg. Net Sale"
@@ -213,7 +214,8 @@ const SalesSummary = () => {
               </div>
               <DataTable
                 firstColumnTitle="Gross Sales"
-                secondColumnTitle={`$${String(total_revenue || 0)}`}
+                secondColumnTitle={total_revenue || 0}
+                isSecondColumnNumber={true}
                 secondColumnSymbol="$"
                 negative={true}
                 dataObj={[
@@ -240,7 +242,8 @@ const SalesSummary = () => {
               />
               <DataTable
                 firstColumnTitle="Net Sales"
-                secondColumnTitle={`$${String(total_net_sales || 0)}`}
+                secondColumnTitle={total_net_sales || 0}
+                isSecondColumnNumber={true}
                 secondColumnSymbol="$"
                 dataObj={[
                   {

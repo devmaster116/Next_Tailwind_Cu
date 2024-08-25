@@ -2,13 +2,14 @@ import React from "react";
 import styles from "./DataTable.module.scss";
 import Skeleton from "./Skeleton";
 import Image from "next/image";
+import { formatRoundUp } from "./utils/formatRoundUp";
 
 type TableRowClickHandler = (rowData: any) => void;
 
 interface DataTableProps {
   dataObj: Array<Record<string, any>>;
   firstColumnTitle: string;
-  secondColumnTitle: string;
+  secondColumnTitle: string | number;
   thirdColumnTitle?: string;
   secondColumnSymbol?: string;
   thirdColumnSymbol?: string;
@@ -19,6 +20,7 @@ interface DataTableProps {
   hideRow?: boolean;
   onRowClick?: TableRowClickHandler;
   className?: string;
+  isSecondColumnNumber?: boolean;
 }
 
 const DataTable: React.FC<DataTableProps> = ({
@@ -35,6 +37,7 @@ const DataTable: React.FC<DataTableProps> = ({
   hideRow = false,
   onRowClick,
   className,
+  isSecondColumnNumber = false
 }) => {
   return (
     <div
@@ -50,7 +53,12 @@ const DataTable: React.FC<DataTableProps> = ({
         >
           {firstColumnTitle}
         </div>
-        {secondColumnTitle && (
+        {secondColumnTitle && isSecondColumnNumber && (
+          <div className={`${styles.headerItemCenter} ${styles.countHeading}`}>
+            ${Number((Math.ceil(Number(secondColumnTitle) * 100) / 100).toFixed(2)).toLocaleString()}
+          </div>
+        )}
+        {secondColumnTitle && !isSecondColumnNumber && (
           <div className={`${styles.headerItemCenter} ${styles.countHeading}`}>
             {secondColumnTitle}
           </div>
@@ -98,8 +106,8 @@ const DataTable: React.FC<DataTableProps> = ({
                         {negative && "("}
                         {secondColumnSymbol}
                         {item[Object.keys(item)[1]]
-                          ? item[Object.keys(item)[1]].toFixed(2)
-                          : 0}
+                            ? formatRoundUp(item[Object.keys(item)[1]])
+                            : 0}
                         {negative && ")"}
                       </>
                     ) : (
@@ -115,12 +123,12 @@ const DataTable: React.FC<DataTableProps> = ({
                         <>
                           {thirdColumnSymbol}
                           {item[Object.keys(item)[2]]
-                            ? item[Object.keys(item)[2]].toFixed(2)
+                            ?formatRoundUp(item[Object.keys(item)[2]])
                             : 0}
                         </>
                       ) : (
                         <>
-                          {item[Object.keys(item)[2]]}
+                          {formatRoundUp(item[Object.keys(item)[2]])}
                           {thirdColumnSymbol}
                         </>
                       )}

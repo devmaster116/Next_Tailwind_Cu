@@ -28,7 +28,6 @@ const StaffView = (props: Props) => {
   const [statusHideShow, setStatusHideShow] = useState(false);
   const showEditUserInfoStaffModal=(data:ConfigStaffMember)=>{
     loadStaffForEdit(data)
-    // props.onClose()
     router.push(`${pathName}?type=edit-staff`)
     // setEditUserInfoStatusModal(true)
   }
@@ -49,23 +48,16 @@ const StaffView = (props: Props) => {
   const storage = getStorage()
   const [img, setImg] = useState<any>();
   const fetchImageFromFirebase = async () => {
-    // if (currentStaff?.displayImageURL && kitchenId) {
-    //   const storageRef = ref(storage, `${kitchenId}/${currentStaff.displayImageURL}`);
-    //   try {
-    //     const url = await getDownloadURL(storageRef);
-    //     console.log("Fetched Image URL:", url);
-    //     setFirebaseImageUrl(url);
-    //   } catch (error) {
-    //     console.error('Error fetching image from Firebase:', error);
-    //   }
+    // try {
+    //   const imgURL = await getDownloadURL(ref(storage, `${kitchenId}/${currentStaff?.displayImageURL}`))
+    //   console.log("====imgUrl====", imgURL)
+    //   setImg(imgURL)
+    // } catch (err: any) {
+    //   console.log("image fetch error ===>", err)
     // }
-    try {
-      const imgURL = await getDownloadURL(ref(storage, `${kitchenId}/${currentStaff?.displayImageURL}`))
-      console.log("====imgUrl====", imgURL)
-      setImg(imgURL)
-    } catch (err: any) {
-      console.log("image fetch error ===>", err)
-    }
+
+      setImg(currentStaff?.displayImageURL)
+
   };
 
   useEffect(() => {
@@ -102,7 +94,9 @@ const showHideSignCode= () =>{
                       <div className={twMerge(
                         'w-full flex items-center justify-center',
                       )}>
-                          <EditImageUpload img={img}/>
+
+                          <EditImageUpload img={img} data={currentStaff}/>
+                          {/* <span className='text-2xl font-medium text-gray-600'>GC</span> */}
                       </div>
                       {/* <p className="font-semibold  text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700">Update Photo</p> */}
                   </div>

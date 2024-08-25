@@ -1,16 +1,19 @@
 "use client";
 
-import React, { useState, useContext, useEffect } from 'react';
-import ImageUploading, { ImageListType } from 'react-images-uploading';
+import React, { useState, useContext, useEffect } from "react";
+import ImageUploading, { ImageListType } from "react-images-uploading";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 
 import { storage } from "@/firebase/config";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
 import { UploadSvg } from "@/app/assets/svg/upload";
-import { twMerge } from 'tailwind-merge';
+import { twMerge } from "tailwind-merge";
+import { getShrinkName } from "@/app/utils";
+import { ConfigStaffMember } from "@/app/src/types";
+import { editImageUploadDB } from "../../data-fetching";
 
-export const EditImageUpload = function ({img}: {img: string}) {
+export const EditImageUpload = function ({ img, data }: { img: string, data: ConfigStaffMember }) {
   const [images, setImages] = useState<ImageListType>([]);
   const maxNumber = 1;
   const { state, dispatch, currentStaff } = useContext(FormContext)!;
@@ -31,10 +34,14 @@ export const EditImageUpload = function ({img}: {img: string}) {
         try {
           await uploadBytes(storageRef, imageFile);
           const url = await getDownloadURL(storageRef);
-          dispatch({ type: 'SET_PROFILE_IMAGE_URL', payload: imageFile.name });
+          dispatch({ type: "SET_PROFILE_IMAGE_URL", payload: url });
           console.log("File Uploaded Successfully:", url);
+
+          // Update staff member in the db
+          await editImageUploadDB(data, url,kitchenId)
+
         } catch (error) {
-          console.error('Error uploading the file', error);
+          console.error("Error uploading the file", error);
         }
       }
     }
@@ -42,13 +49,16 @@ export const EditImageUpload = function ({img}: {img: string}) {
 
   const fetchImageFromFirebase = async () => {
     if (currentStaff?.displayImageURL && kitchenId) {
-      const storageRef = ref(storage, `${kitchenId}/${currentStaff.displayImageURL}`);
+      const storageRef = ref(
+        storage,
+        `${kitchenId}/${currentStaff.displayImageURL}`
+      );
       try {
         const url = await getDownloadURL(storageRef);
         console.log("Fetched Image URL:", url);
         setFirebaseImageUrl(url);
       } catch (error) {
-        console.error('Error fetching image from Firebase:', error);
+        console.error("Error fetching image from Firebase:", error);
       }
     }
   };
@@ -64,18 +74,14 @@ export const EditImageUpload = function ({img}: {img: string}) {
       maxNumber={maxNumber}
       dataURLKey="data_url"
     >
-      {({
-        imageList,
-        onImageUpload,
-        onImageUpdate,
-        isDragging,
-        dragProps,
-      }) => (
-        <div className={twMerge(
-          "flex flex-col upload__image-wrapper justify-center items-center"
-        )}>
+      {({ imageList, onImageUpload, onImageUpdate, isDragging, dragProps }) => (
+        <div
+          className={twMerge(
+            "flex flex-col upload__image-wrapper justify-center items-center"
+          )}
+        >
           {imageList.length < 1 && (
-            <div className=''>
+            <div className="">
               {img ? (
                 <div className="rounded-xl flex flex-col justify-center items-center">
                   <img
@@ -86,21 +92,28 @@ export const EditImageUpload = function ({img}: {img: string}) {
                   />
                   <button
                     className="flex flex-direction mt-2 font-semibold text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
-                    style={isDragging ? { color: 'red' } : undefined}
+                    style={isDragging ? { color: "red" } : undefined}
                     onClick={onImageUpload}
                     {...dragProps}
                   >
                     Update Photo
                   </button>
                 </div>
-              ): (
-                <div className='flex flex-col justify-center items-center'>
-                  <div className='flex w-16 h-16 bg-gray-200 rounded-full justify-center items-center'>
-                  <span className='text-2xl font-medium text-gray-600'>GC</span>
-                    </div> 
+              ) : (
+                <div className="flex flex-col justify-center items-center">
+                  <div className="flex w-16 h-16 bg-gray-200 rounded-full justify-center items-center">
+                    <span className="text-2xl font-medium text-gray-600">
+                      {data?.firstName && data?.lastName
+                        ? getShrinkName(
+                            data.firstName,
+                            data.lastName
+                          )
+                        : "GC"}
+                    </span>
+                  </div>
                   <button
                     className="flex flex-direction mt-2 font-semibold text-gray-800 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700"
-                    style={isDragging ? { color: 'red' } : undefined}
+                    style={isDragging ? { color: "red" } : undefined}
                     onClick={onImageUpload}
                     {...dragProps}
                   >
@@ -111,7 +124,10 @@ export const EditImageUpload = function ({img}: {img: string}) {
             </div>
           )}
           {imageList.map((image, index) => (
-            <div key={index} className="flex flex-col justify-center items-center">
+            <div
+              key={index}
+              className="flex flex-col justify-center items-center"
+            >
               <div className="rounded-xl">
                 <img
                   src={image.data_url}
@@ -119,7 +135,6 @@ export const EditImageUpload = function ({img}: {img: string}) {
                   alt="Uploaded"
                   width="100"
                 />
-                 
               </div>
               <div className="image-item__btn-wrapper flex flex-col mt-2">
                 <button
@@ -136,5 +151,3 @@ export const EditImageUpload = function ({img}: {img: string}) {
     </ImageUploading>
   );
 };
-
-
