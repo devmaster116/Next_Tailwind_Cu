@@ -1,45 +1,32 @@
-"use client"
-import React, { useEffect, useState,useContext } from "react";
+"use client";
+import React, { useEffect, useState, useContext } from "react";
 import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
-import { FormContext, FormContextType } from "@/app/context/StaffContext";
-import { StaffModalHeader } from "../../header";
-import { StaffModalFooter } from "../../footer";
+import { FormContext } from "@/app/context/StaffContext";
 import Input from "@/app/components/Input";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  handleBlurField,
-  handleInputChangeField,
   validateEmail,
   validateMobileNumber,
 } from "@/app/components/Auth/utils/helper";
+
 type Props = {
-  key: number
-}
+  key: number;
+};
 
-export const UserInfo = ({key}:Props) => {
-  const router = useRouter();
-  const pathname = usePathname();
+export const UserInfo = ({ key }: Props) => {
+  const { state, dispatch } = useContext(FormContext)!;
+  const { nextClicked, setNextClicked, handleNextStep } = useFormStep();
 
-  const searchParams = useSearchParams();
-  // const nextSearchParams = new URLSearchParams(searchParams.toString());
-  const typeParam = searchParams.get("type");
-  const validateRequired = (value: string) => value?.trim().length > 0;
   const [isEditing, setIsEditing] = useState(false);
-  const { state, resetForm, dispatch ,currentStaff} = useContext(FormContext)!
-
-  const { nextClicked, setNextClicked } = useFormStep();
-
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
-    firstName:  "",
-    lastName:  "",
-    displayName:  "",
-    email:  "",
-    phoneNumber:  "",
+    firstName: "",
+    lastName: "",
+    displayName: "",
+    email: "",
+    phoneNumber: "",
   });
-  // Update newUser state when the modal is opened or the state in context changes
+
   useEffect(() => {
     setNewUser({
       firstName: state.firstName || "",
@@ -49,7 +36,7 @@ export const UserInfo = ({key}:Props) => {
       phoneNumber: state.phoneNumber || "",
     });
   }, [state]);
- 
+
   useEffect(() => {
     if (nextClicked) {
       validateAndProceed();
@@ -59,13 +46,47 @@ export const UserInfo = ({key}:Props) => {
     };
   }, [nextClicked]);
 
-  const { handleNextStep } = useFormStep();
+  const validateField = (field: string, value: string) => {
+    switch (field) {
+      case "firstName":
+      case "lastName":
+        return value?.trim().length > 0 ? "" : "Please enter a valid name.";
+      case "email":
+        return validateEmail(value) ? "" : "Please enter a valid email address.";
+      case "phoneNumber":
+        return validateMobileNumber(value)
+          ? ""
+          : "Enter a valid mobile number containing 10 digits.";
+      default:
+        return "";
+    }
+  };
+
+  const validateFields = (): { [key: string]: string } => {
+    const newErrors: { [key: string]: string } = {};
+    Object.entries(newUser).forEach(([field, value]) => {
+      const error = validateField(field, value);
+      if (error) {
+        newErrors[field] = error;
+      }
+    });
+    return newErrors;
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
+    const fieldError = validateField(field, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: fieldError,
+    }));
+  };
 
   const handleEnableInputEdit = () => {
     setIsEditing(true);
   };
 
-  const validateAndProceed = async () => {
+  const validateAndProceed = () => {
     const newErrors = validateFields();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -75,71 +96,45 @@ export const UserInfo = ({key}:Props) => {
     }
   };
 
-  const validateFields = (): { [key: string]: string } => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!validateRequired(newUser?.firstName)) {
-      newErrors.firstName = "Please enter a valid name.";
-    }
-    if (!validateRequired(newUser?.lastName)) {
-      newErrors.lastName = "Please enter a valid name.";
-    }
-    if (newUser?.firstName && newUser?.lastName) {
-      newUser.displayName = `${newUser?.firstName} ${newUser?.lastName.charAt(0)}`;
-    }
-    if (!validateEmail(newUser?.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-    if (!validateMobileNumber(newUser?.phoneNumber)) {
-      newErrors.phoneNumber = "Enter a valid mobile number containing 10 digits.";
-    }
-
-    return newErrors;
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
-    const newErrors = validateFields();
-    setErrors(newErrors);
-  };
   return (
     <div key={key}>
       <Form.Header
-            title="Profile"
-            description="Add your staff members name,nickname, email addres and mobile number."
-        />
-        <form className="mt-8">
-              <div className="flex flex-col lg:flex-row justify-between  gap-6 mb-6 lg:mb-7">
-              <div className=" w-full">
-                  <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">First Name</p>
-                    <Input
-                      value={newUser.firstName}
-                      handleInputChange={(e) => handleInputChange("firstName", e.target.value)}
-                      // handleInputChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
-                      error={errors.firstName}
-                      loading={loading}
-                      // onBlur={() => handleBlurField("firstName")}
-                      placeholder="Enter first name"
-                      inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
-                    />
-              </div>
-              <div className="w-full">
-            
-                  <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Last Name</p>
-                  <Input
-                    value={newUser.lastName}
-                    handleInputChange={(e) => handleInputChange("lastName", e.target.value)}
-                    // handleInputChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
-                    error={errors.lastName}
-                    loading={loading}
-                    placeholder="Enter last name"
-                    inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
-                  />
-              </div>
-            
-              </div>
-              
-            <div className="flex flex-col mb-6 lg:mb-7 gap-1">
+        title="Profile"
+        description="Add your staff members' name, nickname, email address, and mobile number."
+      />
+      <form className="mt-8">
+        <div className="flex flex-col lg:flex-row justify-between  gap-6 mb-6 lg:mb-7">
+          <div className="w-full">
+            <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
+              First Name
+            </p>
+            <Input
+              value={newUser.firstName}
+              handleInputChange={(e) =>
+                handleInputChange("firstName", e.target.value)
+              }
+              error={errors.firstName}
+              placeholder="Enter first name"
+              inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
+            />
+          </div>
+          <div className="w-full">
+            <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
+              Last Name
+            </p>
+            <Input
+              value={newUser.lastName}
+              handleInputChange={(e) =>
+                handleInputChange("lastName", e.target.value)
+              }
+              error={errors.lastName}
+              placeholder="Enter last name"
+              inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col mb-6 lg:mb-7 gap-1">
               <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Nick Name (Display Name)</p>
               <div className="flex flex-row w-full" style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}>
                 <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
@@ -152,7 +147,6 @@ export const UserInfo = ({key}:Props) => {
                     placeholder="Default display name"
                      disabled={!isEditing}
                      onChange={(e) => handleInputChange("displayName", e.target.value)}
-                    // onChange={(e) => setNewUser({ ...newUser, displayName: e.target.value })}
                   />
                 </div>
 
@@ -164,41 +158,39 @@ export const UserInfo = ({key}:Props) => {
               </div>
                 <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]  font-normal text-grey-600">If not set default is first name and last name initial</p>
             </div>
-            <div className="flex flex-col mb-6 lg:mb-7 gap-1">
-              <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Email Address</p>
-              <Input
-                value={newUser.email}
-                handleInputChange={(e) => handleInputChange("email", e.target.value)}
-                // handleInputChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
-                error={errors.email}
-                loading={loading}
-                placeholder="Enter email address"
-              />
-            </div>
-            <div>
-              <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Mobile Number</p>
-              <Input
-                value={newUser.phoneNumber}
-                maxLength={10}
-                type="number"
-                handleInputChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-                // handleInputChange={(e) => setNewUser({...newUser, phoneNumber: e.target.value})}
-                error={errors.phoneNumber}
-                loading={loading}
-                placeholder="Enter mobile number"
-                inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
-              />
-            </div>
-            {errors?.addingUser && (
-              <p className="">{errors.addingUser}</p>
-            )}
-        </form>
-      {/* <StaffModalFooter 
-        title={ "Add Staff Member"}
-        handleGoForwardStep={validateAndProceed}
-        handleClose={handleCloseModal}
-      /> */}
+
+        <div className="flex flex-col mb-6 lg:mb-7 gap-1">
+          <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
+            Email Address
+          </p>
+          <Input
+            value={newUser.email}
+            handleInputChange={(e) => handleInputChange("email", e.target.value)}
+            error={errors.email}
+            placeholder="Enter email address"
+            inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
+          />
+        </div>
+
+        <div className="flex flex-col mb-6 lg:mb-7 gap-1">
+          <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
+            Mobile Number
+          </p>
+          <Input
+            value={newUser.phoneNumber}
+            type="number"
+            maxLength={10}
+            handleInputChange={(e) =>
+              handleInputChange("phoneNumber", e.target.value)
+            }
+            error={errors.phoneNumber}
+            placeholder="Enter mobile number"
+            inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
+          />
+        </div>
+
+        {errors?.addingUser && <p className="">{errors.addingUser}</p>}
+      </form>
     </div>
-  )
-} 
+  );
+};

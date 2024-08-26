@@ -17,10 +17,8 @@ type Props = {
 
 export const EditUserInfo = ({key}:Props) => {
 
-
-  const validateRequired = (value: string) => value?.trim().length > 0;
   const [isEditing, setIsEditing] = useState(false);
-  const { state, resetForm, dispatch ,currentStaff,updateStaffInFirebase,loadStaffForEdit} = useContext(FormContext)!
+  const { currentStaff,updateStaffInFirebase,loadStaffForEdit} = useContext(FormContext)!
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const { updateClicked, setUpdateClicked } = useFormStep();
@@ -58,13 +56,49 @@ export const EditUserInfo = ({key}:Props) => {
     };
   }, [updateClicked]);
 
-  // const { handleNextStep } = useFormStep();
+
+  const validateField = (field: string, value: string) => {
+    switch (field) {
+      case "firstName":
+      case "lastName":
+        return value?.trim().length > 0 ? "" : "Please enter a valid name.";
+      case "email":
+        return validateEmail(value) ? "" : "Please enter a valid email address.";
+      case "phoneNumber":
+        return validateMobileNumber(value)
+          ? ""
+          : "Enter a valid mobile number containing 10 digits.";
+      default:
+        return "";
+    }
+  };
+
+  const validateFields = (): { [key: string]: string } => {
+    const newErrors: { [key: string]: string } = {};
+    Object.entries(newUser).forEach(([field, value]) => {
+      const error = validateField(field, value);
+      if (error) {
+        newErrors[field] = error;
+      }
+    });
+    return newErrors;
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
+    const fieldError = validateField(field, value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: fieldError,
+    }));
+  };
 
   const handleEnableInputEdit = () => {
     setIsEditing(true);
   };
 
-  const validateAndProceed = async () => {
+  const validateAndProceed = async() => {
+
     const newErrors = validateFields();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -89,37 +123,10 @@ export const EditUserInfo = ({key}:Props) => {
         }
       }
      
-
     }
+
   };
 
-  const validateFields = (): { [key: string]: string } => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!validateRequired(newUser?.firstName)) {
-      newErrors.firstName = "Please enter a valid name.";
-    }
-    if (!validateRequired(newUser?.lastName)) {
-      newErrors.lastName = "Please enter a valid name.";
-    }
-    if (newUser?.firstName && newUser?.lastName) {
-      newUser.displayName = `${newUser?.firstName} ${newUser?.lastName.charAt(0)}`;
-    }
-    if (!validateEmail(newUser?.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-    if (!validateMobileNumber(newUser?.phoneNumber)) {
-      newErrors.phoneNumber = "Enter a valid mobile number containing 10 digits.";
-    }
-
-    return newErrors;
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
-    const newErrors = validateFields();
-    setErrors(newErrors);
-  };
   return (
     <div key={key}>
       <Form.Header
