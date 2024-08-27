@@ -12,7 +12,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 export const EditUserRole = () => {
   const { dispatch, getStaffRole, roles, currentStaff, updateStaffInFirebase, loadStaffForEdit } = useContext(FormContext)!;
   const [error, setError] = useState<boolean>(false);
-  const { updateClicked, setUpdateClicked } = useFormStep();
+  const { updateUserRoleClicked, setUpdateUserRoleClicked } = useFormStep();
   const { kitchen } = useKitchen();
   const router = useRouter();
   const kitchenId = kitchen?.kitchenId ?? null;
@@ -23,10 +23,13 @@ export const EditUserRole = () => {
     if (currentStaff && currentStaff.roleID) {
       try {
         if(searchParams?.get('type') === 'edit-role'){
+        
+          nextSearchParams.delete("type");
+          router.replace(`${pathname}?${nextSearchParams}`);
           await updateStaffInFirebase(currentStaff, kitchenId);
+          
         }
-        nextSearchParams.delete("type");
-        router.replace(`${pathname}?${nextSearchParams}`);
+        
       } catch (error) {
         console.error("Error updating staff:", error);
       }
@@ -36,6 +39,7 @@ export const EditUserRole = () => {
   };
 
   const onChange = (value: string) => {
+
     const selectedRole = roles?.find((role: RoleInfo) => role.name === value);
     if (selectedRole) {
       if (currentStaff) {
@@ -51,13 +55,13 @@ export const EditUserRole = () => {
   };
 
   useEffect(() => {
-    if (updateClicked) {
+    if (updateUserRoleClicked) {
       handleGoForwardStep();
     }
     return () => {
-      setUpdateClicked(false);
+      setUpdateUserRoleClicked(false);
     };
-  }, [updateClicked]);
+  }, [updateUserRoleClicked]);
   useEffect(() => {
     getStaffRole();
   }, []);

@@ -21,7 +21,12 @@ export const EditUserInfo = ({key}:Props) => {
   const { currentStaff,updateStaffInFirebase,loadStaffForEdit} = useContext(FormContext)!
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
-  const { updateClicked, setUpdateClicked } = useFormStep();
+  const { 
+    updateUserInfoClicked,
+    setUpdateUserInfoClicked,
+    setPageKey,
+    pageKey
+   } = useFormStep();
   const router = useRouter()
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -35,26 +40,35 @@ export const EditUserInfo = ({key}:Props) => {
     email:  "",
     phoneNumber:  "",
   });
-  // Update newUser state when the modal is opened or the state in context changes
   useEffect(() => {
     if(currentStaff)
     setNewUser({
       firstName: currentStaff.firstName || "",
       lastName: currentStaff.lastName || "",
-      displayName: currentStaff.displayName || "",
+      displayName: currentStaff.displayName,
       email: currentStaff.email || "",
       phoneNumber: currentStaff.phoneNumber || "",
     });
   }, [currentStaff]);
- 
   useEffect(() => {
-    if (updateClicked) {
+    if (!isEditing) {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        displayName:
+          prevUser.firstName && prevUser.lastName
+            ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
+            : "",
+      }));
+    }
+  }, [isEditing, newUser.firstName, newUser.lastName]);
+  useEffect(() => {
+    if (updateUserInfoClicked) {
       validateAndProceed();
     }
     return () => {
-      setUpdateClicked(false);
+      setUpdateUserInfoClicked(false);
     };
-  }, [updateClicked]);
+  }, [updateUserInfoClicked]);
 
 
   const validateField = (field: string, value: string) => {
@@ -98,7 +112,6 @@ export const EditUserInfo = ({key}:Props) => {
   };
 
   const validateAndProceed = async() => {
-
     const newErrors = validateFields();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -109,15 +122,14 @@ export const EditUserInfo = ({key}:Props) => {
             ...newUser, // Overwrite with the new user info
           };
         try {
-         
           if(searchParams?.get('type') === 'edit-staff'){
             loadStaffForEdit(updatedStaff); 
+            nextSearchParams.delete("type");
+            router.replace(`${pathname}?${nextSearchParams}`);
+            setPageKey(pageKey + 1)
             await updateStaffInFirebase(updatedStaff, kitchenId);
           }
-         
-         
-          nextSearchParams.delete("type");
-          router.replace(`${pathname}?${nextSearchParams}`);
+        
         } catch (error) {
           console.error("Error updating staff:", error);
         }
@@ -133,7 +145,7 @@ export const EditUserInfo = ({key}:Props) => {
             title="Profile"
             description="You can only update the owners nickname,email address and mobile number."
         />
-        <form className="mt-8">
+        <form className="mt-5 lg:mt-8">
               <div className="flex flex-col lg:flex-row justify-between  gap-6 mb-6 lg:mb-7">
               <div className=" w-full">
                   <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">First Name</p>
@@ -142,7 +154,6 @@ export const EditUserInfo = ({key}:Props) => {
                       handleInputChange={(e) => handleInputChange("firstName", e.target.value)}
                       error={errors.firstName}
                       loading={loading}
-                      // onBlur={() => handleBlurField("firstName")}
                       placeholder="Enter first name"
                       inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
                     />
@@ -168,10 +179,13 @@ export const EditUserInfo = ({key}:Props) => {
                 <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
                   <input
                     type="text"
-                    className="bg-gray-50 rounded-l-xl px-[14px] py-[10px] border border-gray-300 w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500" style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}
-                    value={newUser.displayName || 
-                      (newUser.firstName && newUser.lastName ? 
-                      `${newUser.firstName} ${newUser.lastName.charAt(0)}` : '')}
+                    className={`${isEditing?'bg-white':'bg-gray-50'} focus:!border-sky-500 rounded-l-xl px-[14px] py-[10px] border border-gray-300 w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
+                    style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}
+                    value={
+                      isEditing
+                        ? newUser.displayName || `${newUser.firstName} ${newUser.lastName.charAt(0)}`
+                        : `${newUser.firstName} ${newUser.lastName.charAt(0)}`
+                    }
                     placeholder="Default display name"
                      disabled={!isEditing}
                      onChange={(e) => handleInputChange("displayName", e.target.value)}

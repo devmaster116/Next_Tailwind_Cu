@@ -4,6 +4,7 @@ import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { FormContext } from "@/app/context/StaffContext";
 import Input from "@/app/components/Input";
+
 import {
   validateEmail,
   validateMobileNumber,
@@ -37,6 +38,18 @@ export const UserInfo = ({ key }: Props) => {
     });
   }, [state]);
 
+  useEffect(() => {
+    if (!isEditing) {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        displayName:
+          prevUser.firstName && prevUser.lastName
+            ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
+            : "",
+      }));
+    }
+  }, [isEditing, newUser.firstName, newUser.lastName]);
+  
   useEffect(() => {
     if (nextClicked) {
       validateAndProceed();
@@ -102,7 +115,7 @@ export const UserInfo = ({ key }: Props) => {
         title="Profile"
         description="Add your staff members' name, nickname, email address, and mobile number."
       />
-      <form className="mt-8">
+      <form className="mt-5 lg:mt-8">
         <div className="flex flex-col lg:flex-row justify-between  gap-6 mb-6 lg:mb-7">
           <div className="w-full">
             <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
@@ -115,7 +128,7 @@ export const UserInfo = ({ key }: Props) => {
               }
               error={errors.firstName}
               placeholder="Enter first name"
-              inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
+              inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal"
             />
           </div>
           <div className="w-full">
@@ -129,7 +142,7 @@ export const UserInfo = ({ key }: Props) => {
               }
               error={errors.lastName}
               placeholder="Enter last name"
-              inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
+              inputStyle="  text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal "
             />
           </div>
         </div>
@@ -140,7 +153,10 @@ export const UserInfo = ({ key }: Props) => {
                 <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
                   <input
                     type="text"
-                    className="bg-gray-50 rounded-l-xl px-[14px] py-[10px] border border-gray-300 w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500" style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}
+                    className={`${isEditing?'bg-white':'bg-gray-50'} focus:!border-sky-500 focus:outline-none  rounded-l-xl px-[14px] py-[10px] border border-gray-300 w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
+                    style={{ 
+                      boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)'
+                     }}
                     value={newUser.displayName || 
                       (newUser.firstName && newUser.lastName ? 
                       `${newUser.firstName} ${newUser.lastName.charAt(0)}` : '')}

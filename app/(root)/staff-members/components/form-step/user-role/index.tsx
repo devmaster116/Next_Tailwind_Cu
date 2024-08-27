@@ -24,7 +24,6 @@ export const UserRole = () => {
   const onChange = (value: string) => {
     const selectedRole = roles?.find((role: RoleInfo) => role.name === value);
     if (selectedRole) {
-      console.log("selectedRole",selectedRole)
       dispatch({ type: "SET_USER_ROLE", payload: selectedRole.name });
       dispatch({ type: "SET_USER_ROLE_ID", payload: selectedRole.id });
       dispatch({ type: "SET_USER_ROLE_DESCRIPTION", payload: selectedRole.description });
@@ -47,7 +46,7 @@ export const UserRole = () => {
     <div className="">
         <Form.Header
           title="Assign Role"
-          description={`Manage ${state.firstName} permissions`}
+          description={`Manage ${state?.firstName} permissions`}
         />
         <div className="flex flex-col gap-3 w-full my-5 lg:my-8">
           {roles &&

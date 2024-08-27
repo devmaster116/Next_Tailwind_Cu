@@ -130,7 +130,7 @@ const StaffMembers = () => {
                 <div className={styles.freshpageHeader}>
                   <h1 className={styles.pageTitle}>Staff Members</h1>
                 </div>
-                <div className="bg-white flex flex-col rounded-lg border border-gray-200 px-4 py-5 mt-5 lg:mt-8">
+                <div className="bg-white flex flex-col rounded-lg border border-gray-200 px-4 py-5 mt-5 lg:mt-3">
                   <div className="flex items-center justify-center pb-4">
                     <div className="flex flex-col items-center ">
                       <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
@@ -157,8 +157,8 @@ const StaffMembers = () => {
               <Drawer
                 open={openModal}
                 direction='bottom'
-                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
-                lockBackgroundScroll={true}
+                className='w-full !h-full  '
+                // lockBackgroundScroll={true}
                 overlayOpacity={0}
               >
                   <StaffModalFullPage type='add' editPage="" />
@@ -167,7 +167,7 @@ const StaffMembers = () => {
               <Drawer
                 open={ searchParams?.get('type') === 'edit-staff'} 
                 direction='bottom'
-                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                className='  w-full !h-full e '
                 lockBackgroundScroll={true}
                 overlayOpacity={0}
               >
@@ -176,7 +176,7 @@ const StaffMembers = () => {
               <Drawer
                 open={ searchParams?.get('type') === 'edit-role'} 
                 direction='bottom'
-                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                className='  w-full !h-full '
                 lockBackgroundScroll={true}
                 overlayOpacity={0}
               >
@@ -185,7 +185,7 @@ const StaffMembers = () => {
               <Drawer
                 open={ searchParams?.get('type') === 'edit-code'} 
                 direction='bottom'
-                className='  w-full !h-full !bg-[#FCFCFD] lg:!bg-white '
+                className='  w-full !h-full  '
                 lockBackgroundScroll={true}
                 overlayOpacity={0}
               >

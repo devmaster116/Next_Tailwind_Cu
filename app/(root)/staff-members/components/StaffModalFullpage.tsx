@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import Form from "./form";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BackSvg } from "@/app/assets/svg/back";
 import { FormContext } from "@/app/context/StaffContext";
 import { UserInfo } from "../components/form-step/user-info";
@@ -25,6 +25,9 @@ const StaffModalFullpage = ({
 }) => {
   const { width } = useWindowSize()
   const router = useRouter()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const nextSearchParams = new URLSearchParams(searchParams.toString());
   const { resetForm} = useContext(FormContext)!
   const {
     currentStep, 
@@ -32,7 +35,9 @@ const StaffModalFullpage = ({
     pageKey,
     setPageKey,
     setNextClicked,
-    setUpdateClicked,
+    setUpdateUserInfoClicked,
+    setUpdateUserRoleClicked,
+    setUpdateUserCodeClicked,
     
   } =useFormStep()
 
@@ -63,7 +68,17 @@ const StaffModalFullpage = ({
     router.back()
   }
   const handleUpdateStaff = () => {
-    setUpdateClicked(true)
+    if(searchParams?.get('type') === 'edit-staff'){
+      setUpdateUserInfoClicked(true)
+    }
+    if(searchParams?.get('type') === 'edit-role'){
+      setUpdateUserRoleClicked(true)
+    }
+    if(searchParams?.get('type') === 'edit-code'){
+      setUpdateUserCodeClicked(true)
+
+    }
+    
   }
 
   const handleGoBack = () => {
@@ -73,9 +88,9 @@ const StaffModalFullpage = ({
   return (
     <>
        {type == "add" && (
-        <div className='flex flex-row justify-center px-4 w-full lg:w-[680px] mx-auto h-[90%]  lg:h-full ' > 
-              <div className="flex flex-row gap-8">
-                <div className={twMerge(styles.titleDiv, width < 1024 ? "flex-col !pb-1" : "")}>
+        <div className='flex flex-col  w-full  h-[90%]  lg:h-full ' > 
+              <div className="flex flex-col gap-8">
+                <div className={twMerge(styles.titleDiv, width < 1024 ? "flex-col !pb-1" : "", "!m-0 !relative")}>
                   <div className="flex justify-between items-center w-full">
                     <button
                       className={styles.titleAddCloseBtn}
@@ -109,7 +124,13 @@ const StaffModalFullpage = ({
                     }
                 </div>
               </div>
-              <div className={twMerge(styles.modalContent,' overflow-auto w-full')}> 
+              <div className={twMerge(
+                  styles.modalContent,
+                  '!px-4 overflow-auto w-full',
+                  "lg:!w-[680px] mx-auto !pt-6 lg:!pt-8"
+                   
+                )}
+              > 
                   {width >= 1024 && <Form.StepStatus stepIndex={currentStep}></Form.StepStatus>}
                   {steps[currentStep - 1].component ?? steps[0].component}
               </div>
@@ -124,9 +145,12 @@ const StaffModalFullpage = ({
         </div>
       )} 
        {type == "edit" && (
-        <div className='flex flex-row justify-center px-4 w-full lg:w-[680px] mx-auto h-[90%]  lg:h-full ' > 
-              <div className="flex flex-row gap-8">
-                <div className={twMerge(styles.titleDiv, width < 1024 ? "flex-col !pb-1" : "")}>
+        <div className='flex flex-col w-full h-[90%]  lg:h-full ' > 
+              <div className="flex flex-col gap-8">
+                <div className={twMerge(
+                  styles.titleDiv, width < 1024 ? "flex-col" : "",
+                  "!m-0 !relative"
+                )}>
                   <div className="flex justify-between items-center w-full">
                     <button
                       className={styles.titleAddCloseBtn}
@@ -160,37 +184,16 @@ const StaffModalFullpage = ({
                       Save
                     </button>
                   </div>
-                    {
-                      width <1024 &&      
-                        <div className="w-full mt-2">
-                          {editPage=='user-info'&&(
-                             <Form.StepStatus stepIndex={1}></Form.StepStatus>
-                          )} 
-                          {editPage=='user-role'&&(
-                             <Form.StepStatus stepIndex={3}></Form.StepStatus>
-                          )} 
-                          {editPage=='user-sign'&&(
-                             <Form.StepStatus stepIndex={4}></Form.StepStatus>
-                          )} 
-                       
-                      </div>
-                    }
+                  
                 </div>
               </div>
-              <div className={twMerge(styles.modalContent,' overflow-auto w-full')}> 
-                  {width >= 1024 && 
-                  <>
-                      {editPage=='user-info'&&(
-                        <Form.StepStatus stepIndex={1}></Form.StepStatus>
-                      )} 
-                      {editPage=='user-role'&&(
-                         <Form.StepStatus stepIndex={3}></Form.StepStatus>
-                      )} 
-                      {editPage=='user-sign'&&(
-                          <Form.StepStatus stepIndex={4}></Form.StepStatus>
-                      )} 
-                  </>
-                  }
+              <div className={twMerge(
+                  styles.modalContent,
+                  '!px-4 overflow-auto w-full',
+                  "!pt-6 lg:!pt-8",
+                  "lg:!w-[680px] mx-auto"
+                )}
+              > 
                      {editPage=='user-info'&&(
                         <>
                        <EditUserInfo key={pageKey}/>
@@ -202,9 +205,9 @@ const StaffModalFullpage = ({
                          </>
                       )} 
                       {editPage=='user-sign'&&(
-                          <>
-                          <EditUserSignCode/>
-                          </>
+                        <>
+                          <EditUserSignCode key={pageKey}/>
+                        </>
                       )} 
               </div>
               <div className={twMerge(styles.modalFooter,'')}>

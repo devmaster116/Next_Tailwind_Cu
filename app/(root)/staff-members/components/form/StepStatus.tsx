@@ -9,7 +9,7 @@ interface ProgressProps {
 
 export function StepStatus({ stepIndex }: ProgressProps) {
   return (
-    <div className="flex flex-col mb-0 lg:mb-8">
+    <div className="flex flex-col mb-0 lg:mb-10">
             <ProgressBar
                 filledBackground="#4CA30D"
                 percent={stepIndex*25}

@@ -28,8 +28,14 @@ type FormStepContextData = {
   nextClicked: boolean 
   setNextClicked: (_clicked: boolean) => void
 
-  updateClicked: boolean 
-  setUpdateClicked: (_clicked: boolean) => void
+  updateUserInfoClicked: boolean 
+  setUpdateUserInfoClicked: (_clicked: boolean) => void
+
+  updateUserRoleClicked: boolean 
+  setUpdateUserRoleClicked: (_clicked: boolean) => void
+
+  updateUserCodeClicked: boolean 
+  setUpdateUserCodeClicked: (_clicked: boolean) => void
 }
 
 export const FormStepContext = createContext<FormStepContextData>({
@@ -48,17 +54,14 @@ export const FormStepContext = createContext<FormStepContextData>({
   nextClicked: false,
   setNextClicked: () => {},
 
-  updateClicked: false,
-  setUpdateClicked: () => {},
+  updateUserRoleClicked: false,
+  setUpdateUserRoleClicked: () => {},
 
-  // editUserInfoStatusModal: false,  
-  // setEditUserInfoStatusModal: () =>{},
+  updateUserInfoClicked: false,
+  setUpdateUserInfoClicked: () => {},
 
-  // editUserRoleStatusModal: false,  
-  // setEditUserRoleStatusModal: () =>{},
-
-  // editUserSignCodeStatusModal: false,  
-  // setEditUserSignCodeStatusModal: () =>{},
+  updateUserCodeClicked: false,
+  setUpdateUserCodeClicked: () => {},
 
   statusAddStaff: false,
   setStatusAddStaff: () =>{},
@@ -81,7 +84,9 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   const [statusModal, setStatusModal] = useState(false);
   const [stepInvalid, setStepInvalid] = useState(false);
   const [nextClicked, setNextClicked] = useState(false)
-  const [updateClicked, setUpdateClicked] = useState(false)
+  const [updateUserInfoClicked, setUpdateUserInfoClicked] = useState(false)
+  const [updateUserRoleClicked, setUpdateUserRoleClicked] = useState(false)
+  const [updateUserCodeClicked, setUpdateUserCodeClicked] = useState(false)
 
   // const [editUserInfoStatusModal, setEditUserInfoStatusModal] = useState(false);
   // const [editUserRoleStatusModal, setEditUserRoleStatusModal] = useState(false);
@@ -141,8 +146,12 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         setStatusAddStaff,
         pageKey,
         setPageKey,
-        updateClicked,
-        setUpdateClicked,
+        updateUserInfoClicked,
+        setUpdateUserInfoClicked,
+        updateUserRoleClicked,
+        setUpdateUserRoleClicked,
+        updateUserCodeClicked,
+        setUpdateUserCodeClicked,
         stepInvalid,
         setStepInvalid,
         statusModal,

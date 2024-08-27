@@ -14,6 +14,7 @@ import CustomModal from "@/app/components/CustomModal";
 import { useBanner } from "@/app/context/BannerContext";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
+import { twMerge } from "tailwind-merge";
 
 interface StaffProps {
   staffList: IConfig[];
@@ -131,8 +132,12 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
                       <p className={styles.nickName}>@{item.displayName}</p>
                     </div>
                   </div>
-                  <div className={styles.rightItem}>
-                    <p>{item.roleName}</p>
+                  {/* <div className={twMerge('!text-[16px] lg:!text-[18px]' ,styles.rightItem) }> */}
+                  <div className={twMerge(
+                    styles.rightItem,
+                    '!text-[1rem] lg:!text-[1.125rem]'
+                  )}>
+                    {item.roleName}
                   </div>
                 </div>
               )
@@ -151,7 +156,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
             cancelButtonText="Keep Staff"
             content={
               <>
-                <h3 className={styles.deleteModalTitle}>Delete Staff Member?</h3>
+                <h3 className={twMerge(styles.deleteModalTitle,'text-gray-900')}>Delete Staff Member?</h3>
                 <p className={styles.deleteMessage}>
                   Are you sure you want to delete the {currentStaff?.firstName + " " + currentStaff?.lastName}?
                 </p>

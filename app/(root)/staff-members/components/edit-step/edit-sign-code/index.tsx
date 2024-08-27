@@ -8,8 +8,10 @@ import { auth, db } from "@/firebase/config";
 import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
-
-export const EditUserSignCode = () => {
+type Props = {
+  key: number
+}
+export const EditUserSignCode = ({key}:Props) => {
  
   const {currentStaff,loadStaffForEdit ,updateStaffInFirebase} =
     useContext(FormContext)!;
@@ -21,7 +23,12 @@ export const EditUserSignCode = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const nextSearchParams = new URLSearchParams(searchParams.toString());
-  const {updateClicked,setUpdateClicked } = useFormStep();
+  const {
+    updateUserCodeClicked,
+    setUpdateUserCodeClicked,
+    pageKey,
+    setPageKey,
+   } = useFormStep();
 
   const generateCode = (): void => {
     const randomCode = Math.floor(1000 + Math.random() * 9000)
@@ -31,51 +38,55 @@ export const EditUserSignCode = () => {
     setError(false);
   };
   
-  useEffect(() => {
-    if(currentStaff)
-    if (currentStaff?.passcode) {
-      setPassCode(currentStaff?.passcode.split(""));
-    }
-  }, [currentStaff]);
+  // useEffect(() => {
+  //   if(currentStaff)
+  //   if (currentStaff?.passcode) {
+  //     setPassCode(currentStaff?.passcode.split(""));
+  //   }
+  // }, [currentStaff]);
 
 
   useEffect(() => {
-    if (updateClicked) {
+    if (updateUserCodeClicked) {
+
       handleGoForwardStep()
     }
     return () => {
-      setUpdateClicked(false);
+      setUpdateUserCodeClicked(false);
     };
-  }, [updateClicked]);
+  }, [updateUserCodeClicked]);
   const handleGoForwardStep = async () => {
-    if (passCode.includes("")) {
-      setError(true);
-    } else {
-      setError(false);
-      if(currentStaff) {
-          const updatedStaff = {
-            ...currentStaff, // Keep all existing values
-            passcode:passCode.join(""), // Overwrite with the new user info
-          };
-        try {
-           
-          if(searchParams?.get('type') === 'edit-code'){
-            loadStaffForEdit(updatedStaff);    
-            await updateStaffInFirebase(updatedStaff, kitchenId);
-          } 
-         
-          router.back()
-        } catch (error) {
-          console.error("Error updating staff:", error);
+    if(searchParams?.get('type') === 'edit-code'){
+      if (passCode.includes("")) {
+        setError(true);
+      } else {
+        setError(false);
+        if(currentStaff) {
+            const updatedStaff = {
+              ...currentStaff, // Keep all existing values
+              passcode:passCode.join(""), // Overwrite with the new user info
+            };
+          try {
+                if (!error) {
+                  loadStaffForEdit(updatedStaff);    
+                  router.back();
+                  setPageKey(pageKey+1)
+                  await updateStaffInFirebase(updatedStaff, kitchenId);
+                }
+          
+              } catch (error) {
+              console.error("Error updating staff:", error);
+          }
         }
       }
-    }
+  } 
+
   };
 
 
 
   return (
-    <div className="">
+    <div className="" key={key}>
         <Form.Header
           title="Generate Code"
           description={`This code will be used by ${currentStaff?.firstName} to sign in to POS.`}

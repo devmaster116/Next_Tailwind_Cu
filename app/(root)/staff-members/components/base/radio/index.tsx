@@ -19,7 +19,7 @@ export const CustomRadio = (props: Props) => {
   return (
     <div
       className={twMerge(
-        "flex justify-between p-4 bg-white rounded-lg border border-gray-200 cursor-pointer",
+        "flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 cursor-pointer",
         props?.classOverride?.container,
         props.checked ? "border-purple-700" : "" // Conditional styling for checked state
       )}
@@ -27,7 +27,7 @@ export const CustomRadio = (props: Props) => {
     >
       <div
         className={twMerge(
-          "flex items-center gap-2",
+          "flex items-center justify-center gap-2",
           props?.classOverride?.labelContainer
         )}
       >

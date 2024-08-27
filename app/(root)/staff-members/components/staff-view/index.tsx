@@ -132,7 +132,7 @@ const showHideSignCode= () =>{
                               content={currentStaff?.phoneNumber?currentStaff?.phoneNumber:'Not Provided'}
                               classOverride={{
                               title: 'pl-4 text-gray-800 font-semibold text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]',
-                              content: 'pl-4 text-gray-500 font-normal  text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
+                               content:`${currentStaff?.phoneNumber ? 'text-gray-800' : 'text-gray-500'} pl-4 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]`
                               }}
                             />
 
@@ -187,7 +187,7 @@ const showHideSignCode= () =>{
                 <div className='flex flex-col gap-1 p-4 border-t border-gray-200'>
                   <Paragraph 
                       title='POS Sign In Code'
-                      content='Generate'
+                      content={`${currentStaff.passcode?'Reset':'Generate'}`}
                       classOverride={{
                         container: 'flex-row justify-between',
                         title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
