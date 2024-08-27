@@ -79,6 +79,7 @@ export const EditUserInfo = ({key}:Props) => {
       case "email":
         return validateEmail(value) ? "" : "Please enter a valid email address.";
       case "phoneNumber":
+        if(value)
         return validateMobileNumber(value)
           ? ""
           : "Enter a valid mobile number containing 10 digits.";

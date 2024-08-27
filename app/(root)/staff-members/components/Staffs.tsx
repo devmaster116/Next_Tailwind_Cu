@@ -15,6 +15,7 @@ import { useBanner } from "@/app/context/BannerContext";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
 import { twMerge } from "tailwind-merge";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface StaffProps {
   staffList: IConfig[];
@@ -29,6 +30,9 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const kitchenId = kitchen?.kitchenId ?? null;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const { resetForm, loadStaffForEdit,currentStaff } = useContext(FormContext)!
+  const router = useRouter()
+  const pathName = usePathname()
+  const searchParams = useSearchParams()
 
   const openDeleteStaffModal = () => {
     setOpenDeleteModal(!openDeleteModal);
@@ -88,7 +92,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   };
 
   const togglePanel = (item: ConfigStaffMember) => {
-    setViewStaff(!viewStaff);
+    router.push(`${pathName}?type=view-staff`)
+    // setViewStaff(!viewStaff);
     loadStaffForEdit(item);
   };
   const CloseTogglePanel = () => {
@@ -170,20 +175,24 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
       )}
 
       <Drawer
-        open={viewStaff}
-        onClose={CloseTogglePanel}
+        open={ searchParams?.get('type') === 'view-staff'} 
+
+        // open={viewStaff}
+        // onClose={CloseTogglePanel}
         direction="right"
         className="!w-full lg:!max-w-[400px]  overflow-auto !bg-[#FCFCFD] lg:!bg-white"
-        lockBackgroundScroll={true}
+        lockBackgroundScroll={false}
         overlayOpacity={0}
+        enableOverlay={true}
+        zIndex={80}
       >
-        {viewStaff && (
+        {/* {viewStaff && ( */}
           <StaffView
             className='h-[90%] lg:h-full overflow-auto' 
-            onClose={CloseTogglePanel} 
+            // onClose={CloseTogglePanel} 
             onDeleteModalOpen = {openDeleteStaffModal} 
           />
-        )}
+        {/* )} */}
       </Drawer>
     </>
   );

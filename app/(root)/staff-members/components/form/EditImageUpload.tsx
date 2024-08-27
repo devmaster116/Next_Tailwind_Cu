@@ -20,7 +20,6 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [firebaseImageUrl, setFirebaseImageUrl] = useState<string | null>(null);
-
   const onChange = async (
     imageList: ImageListType,
     addUpdateIndex: number[] | undefined
@@ -64,13 +63,14 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
 
   const fetchImageFromFirebase = async () => {
     if (currentStaff?.displayImageURL && kitchenId) {
+      console.log("currentStaff",currentStaff)
       const storageRef = ref(
         storage,
         `${kitchenId}/${currentStaff.displayImageURL}`
       );
+      console.log("storageRef",storageRef)
       try {
         const url = await getDownloadURL(storageRef);
-        console.log("Fetched Image URL:", url);
         setFirebaseImageUrl(url);
       } catch (error) {
         console.error("Error fetching image from Firebase:", error);

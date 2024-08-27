@@ -13,7 +13,7 @@ import { useFormStep } from '@/app/hooks/useFormStep';
 
 
 type Props = {
-  onClose: () => void,
+  // onClose: () => void,
   onDeleteModalOpen: () => void
   className?: string,
 }
@@ -39,7 +39,9 @@ const StaffView = (props: Props) => {
   const fetchImageFromFirebase = async () => {
       setImg(currentStaff?.displayImageURL)
   };
-
+  const closeViewStaffModal=()=>{
+    router.back()
+  }
   useEffect(() => {
     fetchImageFromFirebase();
   }, []);
@@ -63,7 +65,7 @@ const showHideSignCode= () =>{
                   classOverride={{
                     container: 'absolute left-4 top-4',
                 }}
-                  onClick={props.onClose}
+                  onClick={closeViewStaffModal}
                 />
             
               </div>
