@@ -5,3 +5,9 @@
     display: none;
   }
 }
+
+// adding this style disables the tooltip for barChart. Come up with solution
+.barChart {
+  position: relative;
+  z-index: -1;
+}
