@@ -13,7 +13,7 @@ import { useFormStep } from '@/app/hooks/useFormStep';
 
 
 type Props = {
-  // onClose: () => void,
+  onClose: () => void,
   onDeleteModalOpen: () => void
   className?: string,
 }
@@ -66,6 +66,7 @@ const showHideSignCode= () =>{
                     container: 'absolute left-4 top-4',
                 }}
                   onClick={closeViewStaffModal}
+                  // onClick={props.onClose}
                 />
             
               </div>

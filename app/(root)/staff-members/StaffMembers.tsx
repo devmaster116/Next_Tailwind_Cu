@@ -176,7 +176,7 @@ const StaffMembers = () => {
               <Drawer
                 open={ searchParams?.get('type') === 'edit-role'} 
                 direction='bottom'
-                className='  w-full !h-full '
+                className='  w-full !h-full'
                 lockBackgroundScroll={true}
                 overlayOpacity={0}
               >

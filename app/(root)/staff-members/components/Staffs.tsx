@@ -16,6 +16,7 @@ import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
 import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import ViewStaffModal from "./ViewStaffModal";
 
 interface StaffProps {
   staffList: IConfig[];
@@ -35,10 +36,14 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const searchParams = useSearchParams()
 
   const openDeleteStaffModal = () => {
+    
     setOpenDeleteModal(!openDeleteModal);
+    // router.back()
   };
   const updateStaff = async () => {
-    setViewStaff(!viewStaff);
+    // setViewStaff(!viewStaff);
+    router.back()
+
     setOpenDeleteModal(!openDeleteModal);
     setBanner(true);
     if (!kitchenId) {
@@ -98,7 +103,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   };
   const CloseTogglePanel = () => {
     resetForm();
-    setViewStaff(!viewStaff);
+    router.back()
+    // setViewStaff(!viewStaff);
   };
   return (
     <>
@@ -174,7 +180,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
           />
       )}
 
-      <Drawer
+      {/* <Drawer
         open={ searchParams?.get('type') === 'view-staff'} 
 
         // open={viewStaff}
@@ -186,14 +192,27 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
         enableOverlay={true}
         zIndex={80}
       >
-        {/* {viewStaff && ( */}
           <StaffView
             className='h-[90%] lg:h-full overflow-auto' 
             // onClose={CloseTogglePanel} 
             onDeleteModalOpen = {openDeleteStaffModal} 
           />
-        {/* )} */}
-      </Drawer>
+      </Drawer> */}
+      <ViewStaffModal 
+        // show={viewStaff}
+        show={searchParams?.get('type') === 'view-staff'}
+        onClose={CloseTogglePanel}
+        title={currentStaff?.firstName + " " + currentStaff?.lastName}
+        content={
+          <>
+            <StaffView
+              className='h-[90%] lg:h-full overflow-auto' 
+              onDeleteModalOpen = {openDeleteStaffModal} 
+              onClose={CloseTogglePanel} 
+            />
+          </>
+        }
+      />
     </>
   );
 };

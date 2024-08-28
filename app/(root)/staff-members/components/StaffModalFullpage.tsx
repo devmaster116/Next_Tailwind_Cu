@@ -145,7 +145,7 @@ const StaffModalFullpage = ({
         </div>
       )} 
        {type == "edit" && (
-        <div className='flex flex-col w-full h-[90%]  lg:h-full ' > 
+        <div className='flex flex-col w-full h-[90%]  lg:h-full bg-white ' > 
               <div className="flex flex-col gap-8">
                 <div className={twMerge(
                   styles.titleDiv, width < 1024 ? "flex-col" : "",
