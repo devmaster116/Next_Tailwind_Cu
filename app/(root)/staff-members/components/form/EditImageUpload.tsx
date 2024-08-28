@@ -63,26 +63,26 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
     }
   };
 
-  const fetchImageFromFirebase = async () => {
-    if (currentStaff?.displayImageURL && kitchenId) {
-      console.log("currentStaff",currentStaff)
-      const storageRef = ref(
-        storage,
-        `${kitchenId}/${currentStaff.displayImageURL}`
-      );
-      console.log("storageRef",storageRef)
-      try {
-        const url = await getDownloadURL(storageRef);
-        setFirebaseImageUrl(url);
-      } catch (error) {
-        console.error("Error fetching image from Firebase:", error);
-      }
-    }
-  };
+  // const fetchImageFromFirebase = async () => {
+  //   if (currentStaff?.displayImageURL && kitchenId) {
+  //     console.log("currentStaff",currentStaff)
+  //     const storageRef = ref(
+  //       storage,
+  //       `${kitchenId}/${currentStaff.displayImageURL}`
+  //     );
+  //     console.log("storageRef",storageRef)
+  //     try {
+  //       const url = await getDownloadURL(storageRef);
+  //       setFirebaseImageUrl(url);
+  //     } catch (error) {
+  //       console.error("Error fetching image from Firebase:", error);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchImageFromFirebase();
-  }, [currentStaff, kitchenId]);
+  // useEffect(() => {
+  //   fetchImageFromFirebase();
+  // }, [currentStaff, kitchenId]);
 
   return (
     <ImageUploading

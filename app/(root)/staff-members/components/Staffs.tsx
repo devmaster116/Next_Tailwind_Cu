@@ -17,6 +17,7 @@ import { FormContext } from "@/app/context/StaffContext";
 import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ViewStaffModal from "./ViewStaffModal";
+import { useFormStep } from "@/app/hooks/useFormStep";
 
 interface StaffProps {
   staffList: IConfig[];
@@ -24,8 +25,7 @@ interface StaffProps {
 
 const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const { setBanner } = useBanner();
-
-  const [viewStaff, setViewStaff] = useState(false);
+  // const { statusModal, setStatusModal} = useFormStep();
   const [openDeleteModal, setOpenDeleteModal]=useState<boolean>(false)
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
@@ -41,7 +41,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
     // router.back()
   };
   const updateStaff = async () => {
-    // setViewStaff(!viewStaff);
+    // setStatusModal(false);
     router.back()
 
     setOpenDeleteModal(!openDeleteModal);
@@ -98,13 +98,13 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
 
   const togglePanel = (item: ConfigStaffMember) => {
     router.push(`${pathName}?type=view-staff`)
-    // setViewStaff(!viewStaff);
+    // setStatusModal(true);
     loadStaffForEdit(item);
   };
   const CloseTogglePanel = () => {
     resetForm();
     router.back()
-    // setViewStaff(!viewStaff);
+    // setStatusModal(false);
   };
   return (
     <>

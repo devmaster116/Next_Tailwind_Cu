@@ -58,7 +58,7 @@ const showHideSignCode= () =>{
     )}>
       {currentStaff&&(
           <div className='flex flex-col h-full '>
-              <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border mb-5">
+              {/* <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border mb-5">
                 <p className="font-semibold  text-gray-800 text-[18px] leading-[28px] lg:text-[20px] lg:leading-[30px]">{currentStaff.firstName+ " "+ currentStaff.lastName}</p>
                 <Avatar 
                   icon={<CancelSvg />}
@@ -69,7 +69,7 @@ const showHideSignCode= () =>{
                   // onClick={props.onClose}
                 />
             
-              </div>
+              </div> */}
           <div className='px-4'>
             <div className=' border-gray-200 border rounded-lg mb-4 ' style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}> 
               <div className='flex items-center justify-center border-b border-gray-200 py-4'>
