@@ -206,7 +206,7 @@ const showHideSignCode= () =>{
                               <p className='font-bold  text-[18px] leading-[28px] lg:text-[20px] lg:leading-[28px] text-gray-800 '>{statusHideShow?currentStaff.passcode:'****'}</p>
                           </div>
                           <div className='flex flex-direction' onClick={showHideSignCode}>
-                              <p className='cursor-pointer flex items-center ml-1 font-bold text-lg leading-5 lg:text-base lg:leading-6 text-purple-700' >{statusHideShow?'Hide Code':'Show Code'}</p>
+                              <p className='cursor-pointer flex items-center ml-1 font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] text-purple-700' >{statusHideShow?'Hide Code':'Show Code'}</p>
                           </div>
                         </div>
                     )}
