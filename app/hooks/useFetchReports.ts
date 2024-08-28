@@ -12,6 +12,7 @@ import {
 } from "../src/types";
 import { useReportDataContext } from "../context/ReportDataContext";
 import { useReportDate } from "../context/ReportDateContext";
+import useFetchSalesTrendsData from "./useFetchSalesTrendsData";
 
 interface SelectedVariantsForDishResponseData {
   selectedVariantsForDish: SelectedVariantsForDishData[];
@@ -49,23 +50,27 @@ const useFetchReports = (
   } = useReportDataContext();
 
   const {
-    reportEndDate: reportEndDateContext,
-    reportStartDate: reportStartDateContext,
+    reportStartDate,
+    reportEndDate,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
   } = useReportDate();
 
-  const previousReportEndDateRef = useRef<Date | null>(reportEndDateContext);
-  const previousReportStartDateRef = useRef<Date | null>(
-    reportStartDateContext
-  );
+  // const { salesData, totals } = useFetchSalesTrendsData(
+  //   kitchenId,
+  //   reportStartDateContext,
+  //   reportEndDateContext,
+  //   selectedOption
+  // );
 
   useEffect(() => {
     if (kitchenId !== null) {
       if (
         !ordersData ||
         previousReportEndDateRef.current?.toDateString() !==
-          reportEndDateContext.toDateString() ||
+          reportEndDate.toDateString() ||
         previousReportStartDateRef.current?.toDateString() !==
-          reportStartDateContext.toDateString()
+          reportStartDate.toDateString()
       ) {
         const advancedReports = httpsCallable(functions, "advancedReporting");
         const overviewReports = httpsCallable(
@@ -103,8 +108,8 @@ const useFetchReports = (
 
         selectedVariantsForDish({
           kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDateContext),
-          toReportDate: formatDate(reportEndDateContext),
+          fromReportDate: formatDate(reportStartDate),
+          toReportDate: formatDate(reportEndDate),
         })
           .then(result => {
             const data = result.data as SelectedVariantsForDishResponseData;
@@ -171,16 +176,16 @@ const useFetchReports = (
           setLoading(false);
         });
 
-        previousReportEndDateRef.current = reportEndDateContext;
-        previousReportStartDateRef.current = reportStartDateContext;
+        previousReportEndDateRef.current = reportEndDate;
+        previousReportStartDateRef.current = reportStartDate;
       }
     } else {
       setError(true);
       setLoading(false);
     }
   }, [
-    reportEndDateContext,
-    reportStartDateContext,
+    reportEndDate,
+    reportStartDate,
     kitchenId,
     functions,
     selectedOption,
@@ -200,6 +205,8 @@ const useFetchReports = (
       customDate,
       setCustomDate,
       selectedVariants,
+      // salesData,
+      // totals,
     }),
     [
       allCategories,

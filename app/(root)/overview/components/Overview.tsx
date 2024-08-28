@@ -41,12 +41,7 @@ const Overview = () => {
     allCategories,
     advancedReportingError,
     overviewReportFunctionError,
-  } = useFetchReports(
-    kitchenId,
-    reportStartDate,
-    reportEndDate,
-    selectedOption
-  );
+  } = useFetchReports(kitchenId, selectedOption);
 
   let total_net_sales = 0;
   let total_orders = 0;

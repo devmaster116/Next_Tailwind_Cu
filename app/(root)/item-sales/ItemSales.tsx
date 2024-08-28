@@ -50,12 +50,7 @@ const ItemSales = () => {
     allDishes,
     advancedReportingError,
     selectedVariants,
-  } = useFetchReports(
-    kitchenId,
-    reportStartDate,
-    reportEndDate,
-    selectedOption
-  );
+  } = useFetchReports(kitchenId, selectedOption);
 
   const [dishStats, setDishesStats] = useState<{
     mostPopular: Dishes | null;

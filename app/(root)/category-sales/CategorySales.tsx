@@ -38,12 +38,7 @@ const CategorySales = () => {
     setCustomDate,
     allCategories,
     advancedReportingError,
-  } = useFetchReports(
-    kitchenId,
-    reportStartDate,
-    reportEndDate,
-    selectedOption
-  );
+  } = useFetchReports(kitchenId, selectedOption);
 
   const [categoryStats, setCategoryStats] = useState<{
     mostPopular: Categories | null;

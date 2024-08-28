@@ -39,12 +39,7 @@ const SalesSummary = () => {
     ordersData,
     dishByOrderType,
     overviewReportFunctionError,
-  } = useFetchReports(
-    kitchenId,
-    reportStartDate,
-    reportEndDate,
-    selectedOption
-  );
+  } = useFetchReports(kitchenId, selectedOption);
 
   useEffect(() => {
     if (loading) {
