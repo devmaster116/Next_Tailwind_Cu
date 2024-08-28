@@ -180,7 +180,7 @@ const StaffModalFullpage = ({
                           )} 
 
                     </div>
-                    <button className={styles.saveBtn} onClick={handleUpdateStaff}>
+                    <button type="button" className={styles.saveBtn} onClick={handleUpdateStaff}>
                       Save
                     </button>
                   </div>
@@ -211,7 +211,7 @@ const StaffModalFullpage = ({
                       )} 
               </div>
               <div className={twMerge(styles.modalFooter,'')}>
-                  <button 
+                  <button type="button"
                     className={styles.updateBtn} 
                     onClick={handleUpdateStaff}
                   >
