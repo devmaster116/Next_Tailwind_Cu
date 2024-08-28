@@ -27,7 +27,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
                     >
-                      <div className="w-1 h-2 bg-white "></div>
+                      <div className="w-1 h-[10px] bg-white "></div>
                     </div>
                   )}
                 </Step>
@@ -36,7 +36,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
                     >
-                    <div className="w-1 h-2 bg-white "></div>
+                    <div className="w-1 h-[10px] bg-white "></div>
                     </div>
                   )}
                 </Step>
@@ -45,7 +45,7 @@ export function StepStatus({ stepIndex }: ProgressProps) {
                     <div
                       className={`transitionStep ${accomplished ? "accomplished" : ""}`}
                     >
-                  <div className="w-1 h-2 bg-white "></div>
+                  <div className="w-1 h-[10px] bg-white "></div>
                     </div>
                   )}
                 </Step>

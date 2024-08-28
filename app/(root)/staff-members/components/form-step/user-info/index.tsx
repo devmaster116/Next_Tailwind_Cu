@@ -191,7 +191,7 @@ export const UserInfo = ({ key }: Props) => {
 
         <div className="flex flex-col mb-6 lg:mb-7 gap-1">
           <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
-            Mobile Number
+            Mobile Number (Optional)
           </p>
           <Input
             value={newUser.phoneNumber}

@@ -213,7 +213,7 @@ export const EditUserInfo = ({key}:Props) => {
               />
             </div>
             <div>
-              <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Mobile Number</p>
+              <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Mobile Number (Optional)</p>
               <Input
                 value={newUser.phoneNumber}
                 maxLength={10}
