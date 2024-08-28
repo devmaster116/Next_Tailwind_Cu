@@ -31,7 +31,7 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
       if (imageFile && kitchenId) {
         const storageRef = ref(storage, `${kitchenId}/${imageFile.name}`);
         try {
-          await uploadBytes(storageRef, imageFile);
+        
           const url = await getDownloadURL(storageRef);
 
           if(currentStaff) {
@@ -40,8 +40,10 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
               ...currentStaff, // Keep all existing values
               displayImageURL: url, // Overwrite with the new user info
             };
+            loadStaffForEdit(updatedStaff);   
+            await uploadBytes(storageRef, imageFile);    
           try {
-            loadStaffForEdit(updatedStaff);       
+         
             // await updateStaffInFirebase(updatedStaff, kitchenId);
           } catch (error) {
             console.error("Error updating staff:", error);

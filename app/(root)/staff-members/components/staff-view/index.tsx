@@ -44,7 +44,7 @@ const StaffView = (props: Props) => {
   }
   useEffect(() => {
     fetchImageFromFirebase();
-  }, []);
+  }, [currentStaff]);
 
 const showHideSignCode= () =>{
   setStatusHideShow(!statusHideShow)

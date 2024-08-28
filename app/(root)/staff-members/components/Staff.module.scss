@@ -64,8 +64,6 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    min-width: 48px;
-                    min-height: 48px;
                     font-weight: 500;
                     font-size: 18px;
                     line-height: 28px;
@@ -77,10 +75,8 @@
                 }
                 @media only screen and (max-width: 600px) {
                     .avatar {
-                        min-width: 40px;
-                        min-height: 40px;
-                        width: 40px;
-                        height: 40px;
+                        width: 48px;
+                        height: 48px;
                         color: var(--gray-600);
                         background-color: #F2F4F7;
                         font-size: 16px;
