@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-
 import dynamic from "next/dynamic";
 import {
   Bar,
@@ -20,35 +19,20 @@ import "../overview/components/DatePicker.scss";
 import { useKitchen } from "@/app/context/KitchenContext";
 import styles from "./SalesTrends.module.scss";
 import useFetchSalesTrendsData from "@/app/hooks/useFetchSalesTrendsData";
+import { formatReadableDate } from "../overview/components/utils/formatDate";
+import DataTable from "../overview/components/DataTable";
+import { formatTime } from "./utils/formatTime";
+import { formatDateToDayOfWeek } from "./utils/formatDateToDayOfWeek";
+import withAuth from "@/app/components/Auth/withAuth";
+import { Oval } from "react-loader-spinner";
 
 const SalesTrends = () => {
+  console.log("HALLELUJAHH IN HERE");
   const BarChart = dynamic(() => import("recharts").then(mod => mod.BarChart), {
     ssr: false,
   });
-
-  const formatTime = (value: string) => {
-    const hours = Number(value) % 24;
-    const period = hours >= 12 ? "pm" : "am";
-    const formattedHours = hours % 12 || 12;
-    return `${formattedHours}${period}`;
-  };
-
-  const formatDateToDayOfWeek = (dateString: string): string => {
-    const date = new Date(dateString);
-
-    if (isNaN(date.getTime())) {
-      console.error("Invalid date:", dateString);
-      return "Invalid Date";
-    }
-
-    const options: Intl.DateTimeFormatOptions = { weekday: "short" };
-
-    return new Intl.DateTimeFormat("en-US", options).format(date);
-  };
-
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
-  console.log("Kitchen ID ==>", kitchenId);
 
   const {
     reportStartDate,
@@ -57,39 +41,50 @@ const SalesTrends = () => {
     setReportEndDate,
     selectedOption,
     setSelectedOption,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
   } = useReportDate();
 
+  // console.log("===>", reportStartDate);
+  // console.log("===>", reportEndDate);
+
   const {
+    hourlyDataForTakeAwayAndDineIn,
+    multiDayDataForTakeAwayAndDineIn,
+    dineInTakeAwayTotals,
     loading,
-    error,
-    customDate,
-    setCustomDate,
-    ordersData,
-    dishByOrderType,
-    overviewReportFunctionError,
-  } = useFetchReports(
+  } = useFetchSalesTrendsData(
     kitchenId,
+    selectedOption,
     reportStartDate,
     reportEndDate,
-    selectedOption
+    previousReportStartDateRef,
+    previousReportEndDateRef
+  );
+
+  const { customDate, setCustomDate } = useFetchReports(
+    kitchenId,
+    selectedOption,
+    reportStartDate,
+    reportEndDate,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
+    true
   );
 
   const isHourlyData =
     reportStartDate === reportEndDate ||
     selectedOption === DateRangeOptions.Today;
 
-  const { salesData } = useFetchSalesTrendsData(
-    kitchenId,
-    reportStartDate,
-    reportEndDate,
-    selectedOption
-  );
-
-  const { hourlyDataForTakeAwayAndDineIn, multiDayDataForTakeAwayAndDineIn } =
-    salesData?.data || {};
   const data = isHourlyData
     ? hourlyDataForTakeAwayAndDineIn
     : multiDayDataForTakeAwayAndDineIn;
+
+  const transformedData = data?.map(item => ({
+    ...item,
+    "Dine In Sales": item.total_dine_in_net_sales,
+    "Take Away Sales": item.total_take_away_net_sales,
+  }));
 
   return (
     <div>
@@ -104,47 +99,93 @@ const SalesTrends = () => {
         setSelectedOption={setSelectedOption}
       />
       <h1 className={styles.pageTitle}>Sales Trends</h1>
-      <div className={styles.barChart}>
-        <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
-          <BarChart
-            id=""
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid stroke="#F2F4F7" vertical={false} />
-            <XAxis
-              dataKey={`${isHourlyData ? "order_hour" : "order_date.value"}`}
-              stroke="#475467"
-              tickFormatter={isHourlyData ? formatTime : formatDateToDayOfWeek}
-              axisLine={false}
-              tickLine={false}
-              tickMargin={9}
+      <div className={styles.salesDataContainer}>
+        <div className={styles.chartTitle}>
+          <h3>{isHourlyData ? "Hourly" : "Daily"} Sales Trend</h3>
+          <h4>
+            {isHourlyData
+              ? formatReadableDate(reportStartDate)
+              : `(${formatReadableDate(reportStartDate)} - ${formatReadableDate(
+                  reportEndDate
+                )})`}
+          </h4>
+        </div>
+        {!loading ? (
+          <div className={styles.barChart}>
+            <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
+              <BarChart
+                id=""
+                data={transformedData}
+                margin={{
+                  top: 35,
+                  right: 30,
+                  left: 0,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid stroke="#F2F4F7" vertical={false} />
+                <XAxis
+                  dataKey={`${
+                    isHourlyData ? "order_hour" : "order_date.value"
+                  }`}
+                  stroke="#475467"
+                  tickFormatter={
+                    isHourlyData ? formatTime : formatDateToDayOfWeek
+                  }
+                  axisLine={false}
+                  tickLine={false}
+                  tickMargin={9}
+                />
+                <YAxis
+                  tickFormatter={value => `$${value}`}
+                  axisLine={false}
+                  tickLine={false}
+                  stroke="#475467"
+                />
+                <Tooltip />
+                <Bar dataKey="Take Away Sales" stackId="a" fill="#9E77ED" />
+                <Bar dataKey="Dine In Sales" stackId="a" fill="#6C01CC" />
+              </BarChart>
+            </ResponsiveContainer>
+            <DataTable
+              firstColumnTitle="Order Type"
+              secondColumnTitle="Count"
+              thirdColumnTitle="Net Total"
+              thirdColumnSymbol="$"
+              dataObj={[
+                {
+                  title: "Take Away",
+                  takeAway: dineInTakeAwayTotals?.totalTakeAwayOrders || 0,
+                  net: dineInTakeAwayTotals?.totalTakeAwayNetSales,
+                },
+                {
+                  title: "Dine In",
+                  dine: dineInTakeAwayTotals?.totalDineInOrders || 0,
+                  net: dineInTakeAwayTotals?.totalDineInNetSales,
+                },
+              ]}
+              loading={loading}
+              customDate={customDate}
+              selectedOption={selectedOption}
             />
-            <YAxis
-              tickFormatter={value => `$${value}`}
-              axisLine={false}
-              tickLine={false}
-              stroke="#475467"
-            />
-            <Tooltip />
-            <Bar
-              dataKey="total_take_away_net_sales"
-              stackId="a"
-              fill="#9E77ED"
-            />
-            <Bar dataKey="total_dine_in_net_sales" stackId="a" fill="#6C01CC" />
-          </BarChart>
-        </ResponsiveContainer>
+          </div>
+        ) : (
+          <Oval
+            height={80}
+            width={80}
+            color="#6c01cc"
+            wrapperStyle={{}}
+            wrapperClass={styles.spinner}
+            visible={true}
+            ariaLabel="oval-loading"
+            secondaryColor="#8600ff"
+            strokeWidth={2}
+            strokeWidthSecondary={2}
+          />
+        )}
       </div>
     </div>
   );
 };
 
-export default SalesTrends;
+export default withAuth(SalesTrends);

@@ -191,3 +191,32 @@ export interface DishByOrderType {
   item_count: number;
   total_price: number;
 }
+
+export interface OrderMultiDayData {
+  order_date: {
+    value: string;
+  };
+  total_take_away_orders: number;
+  total_dine_in_orders: number;
+  total_take_away_net_sales: number;
+  total_dine_in_net_sales: number;
+  total_net_sales: number;
+}
+
+export interface OrderHourData {
+  order_hour: number;
+  total_take_away_orders: number;
+  total_dine_in_orders: number;
+  total_take_away_net_sales: number;
+  total_dine_in_net_sales: number;
+  total_net_sales: number;
+}
+
+export type OrderData = OrderMultiDayData | OrderHourData;
+
+export interface Totals {
+  totalTakeAwayOrders: number;
+  totalDineInOrders: number;
+  totalTakeAwayNetSales: number;
+  totalDineInNetSales: number;
+}
