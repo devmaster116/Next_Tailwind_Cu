@@ -29,6 +29,8 @@ const SalesSummary = () => {
     setReportEndDate,
     selectedOption,
     setSelectedOption,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
   } = useReportDate();
 
   const {
@@ -39,7 +41,14 @@ const SalesSummary = () => {
     ordersData,
     dishByOrderType,
     overviewReportFunctionError,
-  } = useFetchReports(kitchenId, selectedOption);
+  } = useFetchReports(
+    kitchenId,
+    selectedOption,
+    reportStartDate,
+    reportEndDate,
+    previousReportStartDateRef,
+    previousReportEndDateRef
+  );
 
   useEffect(() => {
     if (loading) {
