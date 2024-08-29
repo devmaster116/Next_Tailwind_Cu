@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Paragraph } from '../base/paragraph';
 import { Avatar } from '../base/avatar';
 import { CancelSvg } from '@/app/assets/svg/cancel';
-import { ConfigStaffMember } from '@/app/src/types';
+import { ConfigStaffMember, IConfig } from '@/app/src/types';
 import { twMerge } from 'tailwind-merge';
 import { HelpSvg } from '@/app/assets/svg/help';
 import { FormContext } from '@/app/context/StaffContext';
@@ -21,8 +21,7 @@ type Props = {
 const StaffView = (props: Props) => {
   const router = useRouter()
   const pathName = usePathname()
-
-  // 
+  // const searchParams = useSearchParams()
   const [statusHideShow, setStatusHideShow] = useState(false);
   const showEditUserInfoStaffModal=(data:ConfigStaffMember)=>{
     router.push(`${pathName}?type=edit-staff`)

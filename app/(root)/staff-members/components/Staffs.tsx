@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+
+import React, { useContext, useEffect, useRef, useState, MouseEvent, useMemo } from "react";
 import styles from "./Staff.module.scss";
 import { db } from "@/firebase/config";
 import {
@@ -9,15 +10,31 @@ import {
 import { IConfig, ConfigStaffMember } from "@/app/src/types";
 import { getShrinkName } from "@/app/utils";
 import StaffView from "../components/staff-view";
-import Drawer from "react-modern-drawer";
 import CustomModal from "@/app/components/CustomModal";
 import { useBanner } from "@/app/context/BannerContext";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
 import { twMerge } from "tailwind-merge";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import ViewStaffModal from "./ViewStaffModal";
 import { useFormStep } from "@/app/hooks/useFormStep";
+
+const useOutsideAlerter = (tblRef: any, ref: any, onClickOutside: () => void) => {
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (
+        ref.current && !ref.current.contains(event.target) 
+        && !tblRef.current.contains(event.target)
+      ) {
+        onClickOutside();
+      }
+    };
+    document.addEventListener('mouseup', handleClickOutside);
+    return () => {
+      document.removeEventListener('mouseup', handleClickOutside);
+    };
+  }, [ref]);
+};
 
 interface StaffProps {
   staffList: IConfig[];
@@ -25,25 +42,33 @@ interface StaffProps {
 
 const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const { setBanner } = useBanner();
-  // const { statusModal, setStatusModal} = useFormStep();
   const [openDeleteModal, setOpenDeleteModal]=useState<boolean>(false)
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const { resetForm, loadStaffForEdit,currentStaff } = useContext(FormContext)!
+  const {  loadStaffForEdit,currentStaff } = useContext(FormContext)!
   const router = useRouter()
   const pathName = usePathname()
   const searchParams = useSearchParams()
+  const [isExiting, setIsExiting] = useState(false);
+
+  const modalRef = useRef(null);
+  const tblRef = useRef(null);
+
+  useOutsideAlerter(tblRef, modalRef, () => {
+    setIsExiting(true)
+    setTimeout(() => {
+      window.history.replaceState(null, '', '/staff-members')
+    }, 500)
+  });
 
   const openDeleteStaffModal = () => {
     
     setOpenDeleteModal(!openDeleteModal);
-    // router.back()
+    router.back()
   };
   const updateStaff = async () => {
-    // setStatusModal(false);
     router.back()
-
     setOpenDeleteModal(!openDeleteModal);
     setBanner(true);
     if (!kitchenId) {
@@ -97,15 +122,20 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   };
 
   const togglePanel = (item: ConfigStaffMember) => {
-    router.push(`${pathName}?type=view-staff`)
-    // setStatusModal(true);
+    router.push(`${pathName}?type=view-staff&id=${item.id}`)
     loadStaffForEdit(item);
   };
+
   const CloseTogglePanel = () => {
-    resetForm();
-    router.back()
-    // setStatusModal(false);
+    window.history.replaceState(null, '', '/staff-members')
   };
+
+  useEffect(() => {
+    if (!searchParams?.get('type')?.includes('view-staff'))
+    setIsExiting(false)
+  }, [searchParams?.get('type')?.includes('view-staff')])
+
+
   return (
     <>
       <div className={styles.table}>
@@ -113,7 +143,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
           <div className={styles.headerName}>Name/Nickname</div>
           <div className={styles.headerRole}> Role </div>
         </div>
-        <div className={styles.body}>
+        <div className={styles.body} ref={tblRef}>
           {staffList &&
             staffList[0] &&
             staffList[0].staffMembers?.map(
@@ -121,7 +151,9 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
                 <div
                   className={styles.row}
                   key={index}
-                  onClick={() => togglePanel(item)}
+                  onClick={() => {
+                    togglePanel(item)
+                  }}
                 >
                   <div className={styles.leftItem}>
                     <div className={styles.avatar}>
@@ -143,7 +175,6 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
                       <p className={styles.nickName}>@{item.displayName}</p>
                     </div>
                   </div>
-                  {/* <div className={twMerge('!text-[16px] lg:!text-[18px]' ,styles.rightItem) }> */}
                   <div className={twMerge(
                     styles.rightItem,
                     '!text-[1rem] lg:!text-[1.125rem]'
@@ -180,27 +211,11 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
           />
       )}
 
-      {/* <Drawer
-        open={ searchParams?.get('type') === 'view-staff'} 
-
-        // open={viewStaff}
-        // onClose={CloseTogglePanel}
-        direction="right"
-        className="!w-full lg:!max-w-[400px]  overflow-auto !bg-[#FCFCFD] lg:!bg-white"
-        lockBackgroundScroll={false}
-        overlayOpacity={0}
-        enableOverlay={true}
-        zIndex={80}
-      >
-          <StaffView
-            className='h-[90%] lg:h-full overflow-auto' 
-            // onClose={CloseTogglePanel} 
-            onDeleteModalOpen = {openDeleteStaffModal} 
-          />
-      </Drawer> */}
       <ViewStaffModal 
-        // show={viewStaff}
-        show={searchParams?.get('type') === 'view-staff'}
+        ref={modalRef}
+        isExiting={isExiting}
+        setIsExiting={setIsExiting}
+        show={searchParams?.get('type')?.includes('view-staff') || false}
         onClose={CloseTogglePanel}
         title={currentStaff?.firstName + " " + currentStaff?.lastName}
         content={
