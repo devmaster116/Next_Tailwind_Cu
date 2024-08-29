@@ -4,8 +4,8 @@ import { Avatar } from "./base/avatar";
 import { FormContext } from "@/app/context/StaffContext";
 import { CancelSvg } from "@/app/assets/svg/cancel";
 import { twMerge } from "tailwind-merge";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-
+import {  useSearchParams } from "next/navigation";
+import { IConfig } from "@/app/src/types";
 interface ViewStaffModalProps {
   show: boolean;
   isExiting: boolean;
@@ -13,17 +13,29 @@ interface ViewStaffModalProps {
   content: React.ReactNode;
   onClose: MouseEventHandler;
   setIsExiting: (status: boolean) => void;
+  staffList: IConfig[];
 }
 
 const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
-  ({ show, title, onClose, content, isExiting, setIsExiting }, ref) => {
-  const { currentStaff } = useContext(FormContext)!;
-  // const searchParams = useSearchParams()
+  ({ show, title, onClose, content, isExiting, setIsExiting,staffList }, ref) => {
+  const { currentStaff,loadStaffForEdit } = useContext(FormContext)!;
+
+  const searchParams = useSearchParams()
 
     const handleClose = () => {
       setIsExiting(true);
       setTimeout(onClose, 500);
     };
+    useEffect(() => {
+      if(currentStaff) return;
+      const id = searchParams.get('id');
+      if(id){
+        const staffMembers = staffList[0].staffMembers;
+        const filteredMembers = staffMembers.filter(member => member.id === id);
+        loadStaffForEdit(filteredMembers[0])
+      }
+
+    }, [searchParams]);
 
     if (!show) {
       return null;

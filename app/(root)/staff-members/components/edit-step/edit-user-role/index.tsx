@@ -23,9 +23,9 @@ export const EditUserRole = () => {
     if (currentStaff && currentStaff.roleID) {
       try {
         if(searchParams?.get('type') === 'edit-role'){
-        
-          nextSearchParams.delete("type");
-          router.replace(`${pathname}?${nextSearchParams}`);
+            router.back()
+          // nextSearchParams.delete("type");
+          // router.replace(`${pathname}?${nextSearchParams}`);
           await updateStaffInFirebase(currentStaff, kitchenId);
           
         }

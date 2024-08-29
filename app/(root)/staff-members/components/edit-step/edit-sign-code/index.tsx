@@ -86,7 +86,7 @@ export const EditUserSignCode = ({key}:Props) => {
 
 
   return (
-    <div className="" key={key}>
+    <div className="p-0 lg:pl-[150px]" key={key}>
         <Form.Header
           title="Generate Code"
           description={`This code will be used by ${currentStaff?.firstName} to sign in to POS.`}

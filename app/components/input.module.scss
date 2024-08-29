@@ -11,31 +11,29 @@
     padding: 10px 14px;
     width: 100%;
     box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.05) ;
+
     &::-webkit-input-placeholder {
       color: var(--gray-500);
       font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
-      font-size: 16px;
+      // font-size: 18px;
       font-weight: 400;
     }
 
     &::-moz-placeholder {
       color: var(--gray-500);
       font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
-      font-size: 16px;
       font-weight: 400;
     }
 
     &:-ms-input-placeholder {
       color: var(--gray-500);
       font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
-      font-size: 16px;
       font-weight: 400;
     }
 
     &:-moz-placeholder {
       color: var(--gray-500);
       font-family: "__Urbanist_47058f", "__Urbanist_Fallback_47058f";
-      font-size: 16px;
       font-weight: 400;
     }
 

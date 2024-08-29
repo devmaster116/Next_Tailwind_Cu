@@ -213,6 +213,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
 
       <ViewStaffModal 
         ref={modalRef}
+        staffList= {staffList}
         isExiting={isExiting}
         setIsExiting={setIsExiting}
         show={searchParams?.get('type')?.includes('view-staff') || false}

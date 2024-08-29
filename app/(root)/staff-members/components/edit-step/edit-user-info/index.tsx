@@ -125,8 +125,9 @@ export const EditUserInfo = ({key}:Props) => {
         try {
           if(searchParams?.get('type') === 'edit-staff'){
             loadStaffForEdit(updatedStaff); 
-            nextSearchParams.delete("type");
-            router.replace(`${pathname}?${nextSearchParams}`);
+            router.back();
+            // nextSearchParams.delete("type");
+            // router.replace(`${pathname}?${nextSearchParams}`);
             setPageKey(pageKey + 1)
             await updateStaffInFirebase(updatedStaff, kitchenId);
           }
@@ -142,7 +143,7 @@ export const EditUserInfo = ({key}:Props) => {
 
   return (
     <div key={key}>
-      <Form.Header
+        <Form.Header
             title="Profile"
             description="You can only update the owners nickname,email address and mobile number."
         />
