@@ -83,7 +83,16 @@ const showHideSignCode= () =>{
               </div>
               <div className={twMerge('flex flex-col')} >
                 <div className='p-4'>
-                    <Paragraph 
+                  <div className='flex flex-row justify-between mb-2'>
+                    <p className='text-gray-900 font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'>
+                      Personal Details
+                    </p>
+                    <button className='cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
+                            onClick={()=>showEditUserInfoStaffModal(currentStaff)}>
+                      Edit
+                    </button>
+                  </div>
+                    {/* <Paragraph 
                       title='Personal Details'
                       content='Edit'
                       classOverride={{
@@ -92,7 +101,7 @@ const showHideSignCode= () =>{
                         content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
                       }}
                       onClick={()=>showEditUserInfoStaffModal(currentStaff)}
-                    />
+                    /> */}
 
                     <div className="flex py-[10px] lg:py-3">
                         <div className="flex-1 w-32">
@@ -154,7 +163,16 @@ const showHideSignCode= () =>{
                 </div>
                 
                 <div className='flex flex-col gap-1 p-4 border-t border-gray-200'>
-                  <Paragraph 
+                   <div className='flex flex-row justify-between'>
+                      <p className='text-gray-900 font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'>
+                      Assigned Role
+                      </p>
+                      <button className='cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
+                              onClick={()=>showEditUserRoleStaffModal(currentStaff)}>
+                        Edit
+                      </button>
+                    </div>
+                  {/* <Paragraph 
                     title='Assigned Role'
                     content='Edit'
                     classOverride={{
@@ -163,7 +181,7 @@ const showHideSignCode= () =>{
                       content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
                     }}
                     onClick={()=>showEditUserRoleStaffModal(currentStaff)}
-                  />
+                  /> */}
                     <div className='flex flex-row  ' >
                       <p className='  gap-1 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]  text-gray-800'>{currentStaff.roleName}</p>
                       <Avatar 
@@ -187,7 +205,8 @@ const showHideSignCode= () =>{
               
                 </div>
                 <div className='flex flex-col gap-1 p-4 border-t border-gray-200'>
-                  <Paragraph 
+                  
+                  {/* <Paragraph 
                       title='POS Sign In Code'
                       content={`${currentStaff.passcode?'Reset':'Generate'}`}
                       classOverride={{
@@ -197,16 +216,25 @@ const showHideSignCode= () =>{
                       }}
                       onClick={()=>showEditUserSignCodeStaffModal(currentStaff)}
 
-                    />
+                    /> */}
+                      <div className='flex flex-row justify-between '>
+                        <p className='text-gray-900 font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'>
+                        POS Sign In Code
+                        </p>
+                        <button className='cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
+                                onClick={()=>showEditUserInfoStaffModal(currentStaff)}>
+                        {`${currentStaff.passcode?'Reset':'Generate'}`}
+                        </button>
+                      </div>
                     <div className='flex flex-row  ' >
                     {currentStaff.passcode&&(
                         <div className='flex flex-row'>
                           <div className='flex flex-direction '>
                               <p className='font-bold  text-[18px] leading-[28px] lg:text-[20px] lg:leading-[28px] text-gray-800 '>{statusHideShow?currentStaff.passcode:'****'}</p>
                           </div>
-                          <div className='flex flex-direction' onClick={showHideSignCode}>
+                          <button className='flex flex-direction' onClick={showHideSignCode}>
                               <p className='cursor-pointer flex items-center ml-1 font-bold text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] text-purple-700' >{statusHideShow?'Hide Code':'Show Code'}</p>
-                          </div>
+                          </button>
                         </div>
                     )}
                     {!currentStaff.passcode&&(<p className=' pt-1 pr-3 pb-1 pl-3 font-base  font-medium   rounded-2xl bg-purple-50 text-purple-700'>No Code Set</p>)}

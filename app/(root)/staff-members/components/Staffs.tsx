@@ -177,7 +177,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
                   </div>
                   <div className={twMerge(
                     styles.rightItem,
-                    '!text-[1rem] lg:!text-[1.125rem]'
+                    '!text-[1rem] lg:!text-[1.125rem] lg:mt-[-20px] mt-0'
                   )}>
                     {item.roleName}
                   </div>
