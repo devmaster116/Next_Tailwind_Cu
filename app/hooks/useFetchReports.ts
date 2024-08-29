@@ -21,14 +21,6 @@ interface SelectedVariantsForDishResponseData {
   code: number;
 }
 
-<<<<<<< HEAD
-const useFetchReports = (
-  kitchenId: string | null,
-  reportStartDate: Date,
-  reportEndDate: Date,
-  selectedOption: string
-) => {
-=======
 interface KitchenData {
   categories: any[];
   dishes: any[];
@@ -45,8 +37,6 @@ const useFetchReports = (
   previousReportEndDateRef: React.MutableRefObject<Date | null>,
   forceCallUseFetchReport?: boolean
 ) => {
-  const [dishByOrderType, setDishByOrderType] = useState<any>(null);
->>>>>>> 24cf069 (Improve structure and readibility of hooks)
   const {
     allCategories,
     setAllCategories,
@@ -66,13 +56,10 @@ const useFetchReports = (
     setCustomDate,
     selectedVariants,
     setSelectedVariants,
-<<<<<<< HEAD
     dishByOrderType,
     setDishByOrderType,
-=======
     setMultiDayDataForTakeAwayAndDineIn,
     setHourlyDataForTakeAwayAndDineIn,
->>>>>>> 24cf069 (Improve structure and readibility of hooks)
   } = useReportDataContext();
 
   useEffect(() => {
