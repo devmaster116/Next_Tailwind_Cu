@@ -32,8 +32,8 @@ function parseStringToJson(str:string) {
 
   return result;
 }
-// Parse FIREBASE_CONFIG from environment variable
-const firebaseConfigString = process.env.FIREBASE_CONFIG ? process.env.FIREBASE_CONFIG  : process.env.LOCAL_FIREBASE_CONFIG;
+// Parse CI_FIREBASE_CONFIG from environment variable
+const firebaseConfigString = process.env.CI_FIREBASE_CONFIG ? process.env.CI_FIREBASE_CONFIG  : process.env.LOCAL_FIREBASE_CONFIG;
 
 let firebaseConfig: FirebaseOptions;
 
@@ -52,7 +52,7 @@ let db: Firestore;
 
 let jsonObject: FirebaseOptions;
 
-if(process.env.FIREBASE_CONFIG){
+if(process.env.CI_FIREBASE_CONFIG){
   jsonObject = parseStringToJson((firebaseConfigString as string));
 
 }else{
