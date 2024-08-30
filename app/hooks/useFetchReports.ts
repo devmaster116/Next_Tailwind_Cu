@@ -64,101 +64,92 @@ const useFetchReports = (
 
   useEffect(() => {
     const fetchOverviewReports = async () => {
-      try {
-        const overviewReports = httpsCallable(
-          functions,
-          "overviewReportFunction"
-        );
-
-        const result = await overviewReports({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        });
-
-        const data = result.data as KitchenData;
-        setOrdersData(data.response);
-      } catch (error) {
-        console.log("Failed to fetch overview reports:", error);
-        setOverviewReportFunctionError(true);
-      } finally {
-        setLoading(false);
-      }
+      const overviewReports = httpsCallable(
+        functions,
+        "overviewReportFunction"
+      );
+      const result = await overviewReports({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as KitchenData;
     };
+
     const fetchAdvancedReports = async () => {
-      try {
-        const advancedReports = httpsCallable(functions, "advancedReporting");
-
-        const result = await advancedReports({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        });
-
-        const data = result.data as KitchenData;
-
-        const allCategories = data.categories as Categories[];
-        setAllCategories(allCategories);
-
-        const allDishes = data.dishes as Dishes[];
-        setAllDishes(allDishes);
-      } catch (error) {
-        console.error("Failed to fetch advanced reports:", error);
-        setAdvancedReportingError(true);
-      } finally {
-        setLoading(false);
-      }
+      const advancedReports = httpsCallable(functions, "advancedReporting");
+      const result = await advancedReports({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as KitchenData;
     };
 
     const fetchSelectedVariantsForDish = async () => {
-      try {
-        const selectedVariantsForDish = httpsCallable(
-          functions,
-          "getSelectedVariantsForDish"
-        );
-
-        const result = await selectedVariantsForDish({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        });
-        const data = result.data as SelectedVariantsForDishResponseData;
-
-        if (
-          data &&
-          (data.selectedVariantsForDish as SelectedVariantsForDishData[])
-        ) {
-          setSelectedVariants(data.selectedVariantsForDish);
-        } else {
-          console.error("Unexpected data format:", data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch selected variants:", error);
-      } finally {
-        setLoading(false);
-      }
+      const selectedVariantsForDish = httpsCallable(
+        functions,
+        "getSelectedVariantsForDish"
+      );
+      const result = await selectedVariantsForDish({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as SelectedVariantsForDishResponseData;
     };
 
     const fetchDishesCountByOrderType = async () => {
+      const dishesCountByOrderType = httpsCallable(
+        functions,
+        "getDishesCountByOrderType"
+      );
+      const result = await dishesCountByOrderType({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as KitchenData;
+    };
+
+    const fetchAllReports = async () => {
+      setLoading(true);
       try {
-        const dishesCountByOrderType = httpsCallable(
-          functions,
-          "getDishesCountByOrderType"
-        );
+        const [
+          advancedReportsData,
+          overviewReportsData,
+          selectedVariantsData,
+          dishesCountByOrderTypeData,
+        ] = await Promise.all([
+          fetchAdvancedReports(),
+          fetchOverviewReports(),
+          fetchSelectedVariantsForDish(),
+          fetchDishesCountByOrderType(),
+        ]);
 
-        const result = await dishesCountByOrderType({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        });
+        setOrdersData(overviewReportsData.response);
+        setAllCategories(advancedReportsData.categories as Categories[]);
+        setAllDishes(advancedReportsData.dishes as Dishes[]);
+        setSelectedVariants(selectedVariantsData.selectedVariantsForDish);
+        setDishByOrderType(dishesCountByOrderTypeData.dishByOrderType);
 
-        const data = result.data as KitchenData;
-        setDishByOrderType(data.dishByOrderType);
+        if (selectedOption === DateRangeOptions.Custom) {
+          setCustomDate(
+            `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
+              reportEndDate
+            )}`
+          );
+        } else {
+          setCustomDate(undefined);
+        }
+
+        setError(false);
+        setAdvancedReportingError(false);
+        setOverviewReportFunctionError(false);
       } catch (error) {
-        console.log(
-          "Failed to fetch GetDishesCountByOrderType reports:",
-          error
-        );
+        console.error("Failed to fetch reports:", error);
+        setError(true);
+        setAdvancedReportingError(true);
         setOverviewReportFunctionError(true);
       } finally {
         setLoading(false);
@@ -175,23 +166,7 @@ const useFetchReports = (
       if (!ordersData || forceCallUseFetchReport || isReportDateChanged) {
         setMultiDayDataForTakeAwayAndDineIn([]);
         setHourlyDataForTakeAwayAndDineIn([]);
-
-        fetchAdvancedReports();
-        fetchOverviewReports();
-        fetchSelectedVariantsForDish();
-        fetchDishesCountByOrderType();
-
-        setLoading(true);
-
-        if (selectedOption === DateRangeOptions.Custom) {
-          setCustomDate(
-            `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-              reportEndDate
-            )}`
-          );
-        } else {
-          setCustomDate(undefined);
-        }
+        fetchAllReports();
 
         previousReportEndDateRef.current = reportEndDate;
         previousReportStartDateRef.current = reportStartDate;
