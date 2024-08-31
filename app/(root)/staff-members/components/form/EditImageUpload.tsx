@@ -13,10 +13,22 @@ import { getShrinkName } from "@/app/utils";
 import { ConfigStaffMember } from "@/app/src/types";
 import { editImageUploadDB } from "../../data-fetching";
 
-export const EditImageUpload = function ({ img, data }: { img: string, data: ConfigStaffMember }) {
+export const EditImageUpload = function ({
+  img,
+  data,
+}: {
+  img: string;
+  data: ConfigStaffMember;
+}) {
   const [images, setImages] = useState<ImageListType>([]);
   const maxNumber = 1;
-  const { state, dispatch, currentStaff,loadStaffForEdit } = useContext(FormContext)!;
+  const {
+    state,
+    dispatch,
+    currentStaff,
+    loadStaffForEdit,
+    updateStaffInFirebase,
+  } = useContext(FormContext)!;
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [firebaseImageUrl, setFirebaseImageUrl] = useState<string | null>(null);
@@ -31,58 +43,30 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
       if (imageFile && kitchenId) {
         const storageRef = ref(storage, `${kitchenId}/${imageFile.name}`);
         try {
-        
+          await uploadBytes(storageRef, imageFile);
           const url = await getDownloadURL(storageRef);
 
-          if(currentStaff) {
+          console.log("File Uploaded Successfully:", url);
 
+          if (currentStaff) {
             const updatedStaff = {
               ...currentStaff, // Keep all existing values
               displayImageURL: url, // Overwrite with the new user info
             };
-            loadStaffForEdit(updatedStaff);   
-            await uploadBytes(storageRef, imageFile);    
-          try {
-         
-            // await updateStaffInFirebase(updatedStaff, kitchenId);
-          } catch (error) {
-            console.error("Error updating staff:", error);
+            loadStaffForEdit(updatedStaff);
+            try {
+              // Update staff member in the db
+              await updateStaffInFirebase(updatedStaff, kitchenId);
+            } catch (error) {
+              console.error("Error updating staff:", error);
+            }
           }
-        }
-
-          // dispatch({ type: "SET_PROFILE_IMAGE_URL", payload: url });
-          console.log("File Uploaded Successfully:", url);
-
-          // Update staff member in the db
-          await editImageUploadDB(data, url,kitchenId)
-
         } catch (error) {
           console.error("Error uploading the file", error);
         }
       }
     }
   };
-
-  // const fetchImageFromFirebase = async () => {
-  //   if (currentStaff?.displayImageURL && kitchenId) {
-  //     console.log("currentStaff",currentStaff)
-  //     const storageRef = ref(
-  //       storage,
-  //       `${kitchenId}/${currentStaff.displayImageURL}`
-  //     );
-  //     console.log("storageRef",storageRef)
-  //     try {
-  //       const url = await getDownloadURL(storageRef);
-  //       setFirebaseImageUrl(url);
-  //     } catch (error) {
-  //       console.error("Error fetching image from Firebase:", error);
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchImageFromFirebase();
-  // }, [currentStaff, kitchenId]);
 
   return (
     <ImageUploading
@@ -121,10 +105,7 @@ export const EditImageUpload = function ({ img, data }: { img: string, data: Con
                   <div className="flex w-16 h-16 bg-gray-200 rounded-full justify-center items-center">
                     <span className="text-2xl font-medium text-gray-600">
                       {data?.firstName && data?.lastName
-                        ? getShrinkName(
-                            data.firstName,
-                            data.lastName
-                          )
+                        ? getShrinkName(data.firstName, data.lastName)
                         : "GC"}
                     </span>
                   </div>
