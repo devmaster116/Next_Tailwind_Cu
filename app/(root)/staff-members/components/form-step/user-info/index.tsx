@@ -4,6 +4,7 @@ import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { FormContext } from "@/app/context/StaffContext";
 import Input from "@/app/components/Input";
+import Image from "next/image";
 
 import {
   validateEmail,
@@ -16,9 +17,10 @@ type Props = {
 
 export const UserInfo = ({ key }: Props) => {
   const { state, dispatch } = useContext(FormContext)!;
-  const { nextClicked, setNextClicked, handleNextStep } = useFormStep();
+  const { nextClicked, setNextClicked, handleNextStep ,statusAddEditBtn,setStatusAddEditBtn,statusNickNameFlag, setStatusNickNameFlag} = useFormStep();
+  // const [statusNickNameFlag, setStatusNickNameFlag] = useState(false);
 
-  const [isEditing, setIsEditing] = useState(false);
+  // const [statusAddEditBtn, setStatusAddEditBtn] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
     firstName: "",
@@ -28,28 +30,48 @@ export const UserInfo = ({ key }: Props) => {
     phoneNumber: "",
   });
 
+
   useEffect(() => {
+    if(state)
     setNewUser({
       firstName: state.firstName || "",
       lastName: state.lastName || "",
-      displayName: state.displayName || "",
+      displayName: state.displayName,
       email: state.email || "",
       phoneNumber: state.phoneNumber || "",
     });
+    if(`${state?.firstName} ${state?.lastName.charAt(0)}`==state?.displayName){
+      setStatusNickNameFlag(true);
+    }
   }, [state]);
-
   useEffect(() => {
-    if (!isEditing) {
+    if (!statusAddEditBtn) {
+      if(statusNickNameFlag) {
+        setNewUser((prevUser) => ({
+          ...prevUser,
+          displayName:  
+            (prevUser.firstName && prevUser.lastName
+              ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
+              : ""), 
+        }));
+      }
+      else {
+        setNewUser((prevUser) => ({
+          ...prevUser,
+          displayName:  prevUser.displayName
+        }));
+      }
+    } else {
       setNewUser((prevUser) => ({
         ...prevUser,
-        displayName:
-          prevUser.firstName && prevUser.lastName
+        displayName: prevUser.displayName || 
+          (prevUser.firstName && prevUser.lastName
             ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
-            : "",
+            : ""), 
       }));
     }
-  }, [isEditing, newUser.firstName, newUser.lastName]);
-  
+  }, [statusAddEditBtn, newUser.firstName, newUser.lastName]);
+
   useEffect(() => {
     if (nextClicked) {
       validateAndProceed();
@@ -66,6 +88,11 @@ export const UserInfo = ({ key }: Props) => {
         return value?.trim().length > 0 ? "" : "Please enter a valid name.";
       case "email":
         return validateEmail(value) ? "" : "Please enter a valid email address.";
+      case "displayName":
+        if(statusAddEditBtn)
+          return value?.trim().length > 0 ? "" : "Please enter a valid nickname.";
+        if(!statusAddEditBtn)
+          return "";
       case "phoneNumber":
         if(value)
         return validateMobileNumber(value)
@@ -97,7 +124,7 @@ export const UserInfo = ({ key }: Props) => {
   };
 
   const handleEnableInputEdit = () => {
-    setIsEditing(true);
+    setStatusAddEditBtn(true);
   };
 
   const validateAndProceed = () => {
@@ -154,17 +181,31 @@ export const UserInfo = ({ key }: Props) => {
                 <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
                   <input
                     type="text"
-                    className={`${isEditing?'bg-white':'bg-gray-50'} focus:!border-sky-500 focus:outline-none  rounded-l-xl px-[14px] py-[10px] border border-gray-300 w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
+                    className={`${statusAddEditBtn?'bg-white':'bg-gray-50'} border  ${errors.displayName?'border-red-500':'border-gray-300 focus:!border-sky-500'}  focus:outline-none rounded-l-xl px-[14px] py-[10px]   w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
                     style={{ 
                       boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)'
                      }}
-                    value={newUser.displayName || 
-                      (newUser.firstName && newUser.lastName ? 
-                      `${newUser.firstName} ${newUser.lastName.charAt(0)}` : '')}
-                    placeholder="Default display name"
-                     disabled={!isEditing}
+                    value={
+                      statusAddEditBtn 
+                        ? newUser.displayName 
+                        : (newUser.displayName 
+                          ? newUser.displayName 
+                          : `${newUser.firstName} ${newUser.lastName.charAt(0)}`)
+                    }
+                     placeholder= {errors.displayName ? 'Enter Nick Name' : 'Default display name'}
+                     disabled={!statusAddEditBtn}
                      onChange={(e) => handleInputChange("displayName", e.target.value)}
                   />
+                      {errors.displayName && (
+                        <div className='absolute right-[10px] top-[15px]'>
+                          <Image
+                            src="/icons/error.svg"
+                            height={16}
+                            width={16}
+                            alt="Business Details icon"
+                          />
+                        </div>
+                      )}
                 </div>
 
                 <div className="flex cursor-pointer items-center justify-center px-[18px] py-[10px] border border-gray-300 h-[44px] lg:h-[48px] w-[64px] lg:w-[68px] rounded-r-xl"
@@ -173,7 +214,9 @@ export const UserInfo = ({ key }: Props) => {
                   <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">Edit</p>
                 </div>
               </div>
-                <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]  font-normal text-grey-600">If not set default is first name and last name initial</p>
+              <p className={`${errors.displayName?'text-red-500':'text-gray-600'} text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-normal `}>
+                {errors.displayName ? errors.displayName : 'If not set, the default is the first name and last name initial.'}
+              </p>
             </div>
 
         <div className="flex flex-col mb-6 lg:mb-7 gap-1">

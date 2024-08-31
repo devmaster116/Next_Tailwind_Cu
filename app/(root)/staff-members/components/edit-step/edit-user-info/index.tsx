@@ -5,6 +5,8 @@ import Form from "../../../components/form";
 import { useFormStep } from "@/app/hooks/useFormStep";
 import { FormContext} from "@/app/context/StaffContext";
 import Input from "@/app/components/Input";
+import Image from "next/image";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   validateEmail,
@@ -32,6 +34,7 @@ export const EditUserInfo = ({key}:Props) => {
   const searchParams = useSearchParams();
   const nextSearchParams = new URLSearchParams(searchParams.toString());
   const [loading, setLoading] = useState(false);
+  const [nickFlag, setNickFlag] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
     firstName:  "",
@@ -49,18 +52,39 @@ export const EditUserInfo = ({key}:Props) => {
       email: currentStaff.email || "",
       phoneNumber: currentStaff.phoneNumber || "",
     });
+    
+    if(`${currentStaff?.firstName} ${currentStaff?.lastName.charAt(0)}`==currentStaff?.displayName){
+      setNickFlag(true);
+    }
   }, [currentStaff]);
   useEffect(() => {
     if (!isEditing) {
+      if(nickFlag) {
+        setNewUser((prevUser) => ({
+          ...prevUser,
+          displayName:  
+            (prevUser.firstName && prevUser.lastName
+              ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
+              : ""), 
+        }));
+      }
+      else {
+        setNewUser((prevUser) => ({
+          ...prevUser,
+          displayName:  prevUser.displayName
+        }));
+      }
+    } else {
       setNewUser((prevUser) => ({
         ...prevUser,
-        displayName:
-          prevUser.firstName && prevUser.lastName
+        displayName: prevUser.displayName || 
+          (prevUser.firstName && prevUser.lastName
             ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
-            : "",
+            : ""), 
       }));
     }
   }, [isEditing, newUser.firstName, newUser.lastName]);
+  
   useEffect(() => {
     if (updateUserInfoClicked) {
       validateAndProceed();
@@ -78,6 +102,11 @@ export const EditUserInfo = ({key}:Props) => {
         return value?.trim().length > 0 ? "" : "Please enter a valid name.";
       case "email":
         return validateEmail(value) ? "" : "Please enter a valid email address.";
+      case "displayName":
+        if(isEditing)
+          return value?.trim().length > 0 ? "" : "Please enter a valid nickname.";
+        if(!isEditing)
+          return "";
       case "phoneNumber":
         if(value)
         return validateMobileNumber(value)
@@ -123,14 +152,12 @@ export const EditUserInfo = ({key}:Props) => {
             ...newUser, // Overwrite with the new user info
           };
         try {
-          if(searchParams?.get('type') === 'edit-staff'){
             loadStaffForEdit(updatedStaff); 
             router.back();
             // nextSearchParams.delete("type");
             // router.replace(`${pathname}?${nextSearchParams}`);
             setPageKey(pageKey + 1)
             await updateStaffInFirebase(updatedStaff, kitchenId);
-          }
         
         } catch (error) {
           console.error("Error updating staff:", error);
@@ -178,20 +205,32 @@ export const EditUserInfo = ({key}:Props) => {
             <div className="flex flex-col mb-6 lg:mb-7 gap-1">
               <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Nick Name (Display Name)</p>
               <div className="flex flex-row w-full" style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}>
-                <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
+                <div className="flex-grow relative flex flex-col h-[44px] lg:h-[48px]">
                   <input
                     type="text"
-                    className={`${isEditing?'bg-white':'bg-gray-50'} focus:!border-sky-500 rounded-l-xl px-[14px] py-[10px] border border-gray-300 w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
+                    className={`${isEditing?'bg-white':'bg-gray-50'} border  ${errors.displayName?'border-red-500':'border-gray-300 focus:!border-sky-500'}  focus:outline-none rounded-l-xl px-[14px] py-[10px]   w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
                     style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}
                     value={
-                      isEditing
-                        ? newUser.displayName || `${newUser.firstName} ${newUser.lastName.charAt(0)}`
-                        : `${newUser.firstName} ${newUser.lastName.charAt(0)}`
+                      isEditing 
+                        ? newUser.displayName 
+                        : (newUser.displayName 
+                          ? newUser.displayName 
+                          : `${newUser.firstName} ${newUser.lastName.charAt(0)}`)
                     }
-                    placeholder="Default display name"
-                     disabled={!isEditing}
+                    placeholder={`${errors.displayName ?'Enter Nick Name ':'Default display name'}`}
+                    disabled={!isEditing}
                      onChange={(e) => handleInputChange("displayName", e.target.value)}
                   />
+                      {errors.displayName && (
+                        <div className='absolute right-[10px] top-[15px]'>
+                          <Image
+                            src="/icons/error.svg"
+                            height={16}
+                            width={16}
+                            alt="Business Details icon"
+                          />
+                        </div>
+                      )}
                 </div>
 
                 <div className="flex cursor-pointer items-center justify-center px-[18px] py-[10px] border border-gray-300 h-[44px] lg:h-[48px] w-[64px] lg:w-[68px] rounded-r-xl"
@@ -200,7 +239,10 @@ export const EditUserInfo = ({key}:Props) => {
                   <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">Edit</p>
                 </div>
               </div>
-                <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]  font-normal text-grey-600">If not set default is first name and last name initial</p>
+              <p className={`${errors.displayName?'text-red-500':'text-gray-600'} text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-normal `}>
+                {errors.displayName ? errors.displayName : 'If not set, the default is the first name and last name initial.'}
+              </p>
+              
             </div>
             <div className="flex flex-col mb-6 lg:mb-7 gap-1">
               <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Email Address</p>

@@ -35,14 +35,19 @@ const StaffModalFullpage = ({
     pageKey,
     setPageKey,
     setNextClicked,
+    setStatusAddEditBtn,
+    setStatusNickNameFlag,
     setUpdateUserInfoClicked,
     setUpdateUserRoleClicked,
     setUpdateUserCodeClicked,
+
     
   } =useFormStep()
 
   const handleGoForwardStep = () => {
      setNextClicked(true)
+     setStatusAddEditBtn(false)
+     setStatusNickNameFlag(false)
   }
   const steps = [
     {

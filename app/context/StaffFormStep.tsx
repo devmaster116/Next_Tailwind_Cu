@@ -18,6 +18,12 @@ type FormStepContextData = {
   statusAddStaff: boolean
   setStatusAddStaff: (status: boolean) => void;
 
+  statusAddEditBtn: boolean
+  setStatusAddEditBtn: (status: boolean) => void;
+
+  statusNickNameFlag: boolean
+  setStatusNickNameFlag: (status: boolean) => void;
+  
   steps: { title: string; number: number }[];
   handleNextStep: () => void;
   handlePreviousStep: () => void;
@@ -65,6 +71,13 @@ export const FormStepContext = createContext<FormStepContextData>({
 
   statusAddStaff: false,
   setStatusAddStaff: () =>{},
+
+  statusAddEditBtn: false,
+  setStatusAddEditBtn: () =>{},
+
+  statusNickNameFlag: false,
+  setStatusNickNameFlag: () =>{},
+
   steps: [],
   handleNextStep: () => {},
   handlePreviousStep: () => {},
@@ -82,6 +95,9 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [pageKey, setPageKey] = useState(1);
   const [statusModal, setStatusModal] = useState(false);
+  const [statusAddEditBtn, setStatusAddEditBtn] = useState(false);
+  const [statusNickNameFlag, setStatusNickNameFlag] = useState(false);
+  
   const [stepInvalid, setStepInvalid] = useState(false);
   const [nextClicked, setNextClicked] = useState(false)
   const [updateUserInfoClicked, setUpdateUserInfoClicked] = useState(false)
@@ -144,6 +160,10 @@ export const FormStepProvider = ({ children }: FormStepProviderProps) => {
         steps,
         currentStep, 
         setStatusAddStaff,
+        statusAddEditBtn,
+        setStatusAddEditBtn,
+        statusNickNameFlag,
+        setStatusNickNameFlag,
         pageKey,
         setPageKey,
         updateUserInfoClicked,
