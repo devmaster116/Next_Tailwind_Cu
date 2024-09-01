@@ -36,7 +36,7 @@ export const UserInfo = ({ key }: Props) => {
     setNewUser({
       firstName: state.firstName || "",
       lastName: state.lastName || "",
-      displayName: state.displayName,
+      displayName: state.displayName || "",
       email: state.email || "",
       phoneNumber: state.phoneNumber || "",
     });
@@ -185,13 +185,15 @@ export const UserInfo = ({ key }: Props) => {
                     style={{ 
                       boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)'
                      }}
-                    value={
-                      statusAddEditBtn 
-                        ? newUser.displayName 
-                        : (newUser.displayName 
-                          ? newUser.displayName 
-                          : `${newUser.firstName} ${newUser.lastName.charAt(0)}`)
+                     value={
+                      newUser.displayName ||
+                      (!statusAddEditBtn
+                        ? (`${newUser.firstName} ${newUser.lastName.charAt(0)}`.trim() 
+                            ? `${newUser.firstName} ${newUser.lastName.charAt(0)}` 
+                            : "")
+                        : "")
                     }
+               
                      placeholder= {errors.displayName ? 'Enter Nick Name' : 'Default display name'}
                      disabled={!statusAddEditBtn}
                      onChange={(e) => handleInputChange("displayName", e.target.value)}

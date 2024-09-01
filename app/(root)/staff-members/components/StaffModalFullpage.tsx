@@ -68,6 +68,7 @@ const StaffModalFullpage = ({
     }
   ]
   const handleCloseModal = () => {
+    setStatusAddEditBtn(false)
     setPageKey(pageKey + 1);
     resetForm()
     router.back()
