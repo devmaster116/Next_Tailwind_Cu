@@ -25,6 +25,7 @@ import { formatTime } from "./utils/formatTime";
 import { formatDateToDayOfWeek } from "./utils/formatDateToDayOfWeek";
 import withAuth from "@/app/components/Auth/withAuth";
 import { Oval } from "react-loader-spinner";
+import NoSalesMessage from "../overview/components/NoSalesMessage";
 
 const SalesTrends = () => {
   console.log("HALLELUJAHH IN HERE");
@@ -99,91 +100,105 @@ const SalesTrends = () => {
         setSelectedOption={setSelectedOption}
       />
       <h1 className={styles.pageTitle}>Sales Trends</h1>
-      <div className={styles.salesDataContainer}>
-        <div className={styles.chartTitle}>
-          <h3>{isHourlyData ? "Hourly" : "Daily"} Sales Trend</h3>
-          <h4>
-            {isHourlyData
-              ? formatReadableDate(reportStartDate)
-              : `(${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-                  reportEndDate
-                )})`}
-          </h4>
-        </div>
-        {!loading ? (
-          <div className={styles.barChart}>
-            <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
-              <BarChart
-                id=""
-                data={transformedData}
-                margin={{
-                  top: 35,
-                  right: 30,
-                  left: 0,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid stroke="#F2F4F7" vertical={false} />
-                <XAxis
-                  dataKey={`${
-                    isHourlyData ? "order_hour" : "order_date.value"
-                  }`}
-                  stroke="#475467"
-                  tickFormatter={
-                    isHourlyData ? formatTime : formatDateToDayOfWeek
-                  }
-                  axisLine={false}
-                  tickLine={false}
-                  tickMargin={9}
-                />
-                <YAxis
-                  tickFormatter={value => `$${value}`}
-                  axisLine={false}
-                  tickLine={false}
-                  stroke="#475467"
-                />
-                <Tooltip />
-                <Bar dataKey="Take Away Sales" stackId="a" fill="#9E77ED" />
-                <Bar dataKey="Dine In Sales" stackId="a" fill="#6C01CC" />
-              </BarChart>
-            </ResponsiveContainer>
-            <DataTable
-              firstColumnTitle="Order Type"
-              secondColumnTitle="Count"
-              thirdColumnTitle="Net Total"
-              thirdColumnSymbol="$"
-              dataObj={[
-                {
-                  title: "Take Away",
-                  takeAway: dineInTakeAwayTotals?.totalTakeAwayOrders || 0,
-                  net: dineInTakeAwayTotals?.totalTakeAwayNetSales,
-                },
-                {
-                  title: "Dine In",
-                  dine: dineInTakeAwayTotals?.totalDineInOrders || 0,
-                  net: dineInTakeAwayTotals?.totalDineInNetSales,
-                },
-              ]}
-              loading={loading}
-              customDate={customDate}
-              selectedOption={selectedOption}
-            />
+      {!loading ? (
+        dineInTakeAwayTotals?.totalDineInOrders &&
+        dineInTakeAwayTotals?.totalTakeAwayOrders ? (
+          <div className={styles.salesDataContainer}>
+            <div className={styles.chartTitle}>
+              <h3>{isHourlyData ? "Hourly" : "Daily"} Sales Trend</h3>
+              <h4>
+                {isHourlyData
+                  ? formatReadableDate(reportStartDate)
+                  : `(${formatReadableDate(
+                      reportStartDate
+                    )} - ${formatReadableDate(reportEndDate)})`}
+              </h4>
+            </div>
+
+            <div className={styles.barChart}>
+              <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
+                <BarChart
+                  id=""
+                  data={transformedData}
+                  margin={{
+                    top: 35,
+                    right: 30,
+                    left: 0,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid stroke="#F2F4F7" vertical={false} />
+                  <XAxis
+                    dataKey={`${
+                      isHourlyData ? "order_hour" : "order_date.value"
+                    }`}
+                    stroke="#475467"
+                    tickFormatter={
+                      isHourlyData ? formatTime : formatDateToDayOfWeek
+                    }
+                    axisLine={false}
+                    tickLine={false}
+                    tickMargin={9}
+                  />
+                  <YAxis
+                    tickFormatter={value => `$${value}`}
+                    axisLine={false}
+                    tickLine={false}
+                    stroke="#475467"
+                  />
+                  <Tooltip />
+                  <Bar dataKey="Take Away Sales" stackId="a" fill="#9E77ED" />
+                  <Bar dataKey="Dine In Sales" stackId="a" fill="#6C01CC" />
+                </BarChart>
+              </ResponsiveContainer>
+              <DataTable
+                firstColumnTitle="Order Type"
+                secondColumnTitle="Count"
+                thirdColumnTitle="Net Total"
+                thirdColumnSymbol="$"
+                dataObj={[
+                  {
+                    title: "Take Away",
+                    takeAway: dineInTakeAwayTotals?.totalTakeAwayOrders || 0,
+                    net: dineInTakeAwayTotals?.totalTakeAwayNetSales,
+                  },
+                  {
+                    title: "Dine In",
+                    dine: dineInTakeAwayTotals?.totalDineInOrders || 0,
+                    net: dineInTakeAwayTotals?.totalDineInNetSales,
+                  },
+                ]}
+                loading={loading}
+                customDate={customDate}
+                selectedOption={selectedOption}
+                className="salesTrendsTable"
+              />
+            </div>
           </div>
         ) : (
-          <Oval
-            height={80}
-            width={80}
-            color="#6c01cc"
-            wrapperStyle={{}}
-            wrapperClass={styles.spinner}
-            visible={true}
-            ariaLabel="oval-loading"
-            secondaryColor="#8600ff"
-            strokeWidth={2}
-            strokeWidthSecondary={2}
+          <NoSalesMessage
+            message="No sales in selected period"
+            messageDescription={`${
+              customDate
+                ? `between ${customDate}`
+                : `No sale completed ${selectedOption?.toLowerCase()}.`
+            }`}
           />
-        )}
-      </div>
+        )
+      ) : (
+        <Oval
+          height={80}
+          width={80}
+          color="#6c01cc"
+          wrapperStyle={{}}
+          wrapperClass={styles.spinner}
+          visible={true}
+          ariaLabel="oval-loading"
+          secondaryColor="#8600ff"
+          strokeWidth={2}
+          strokeWidthSecondary={2}
+        />
+      )}
     </div>
   );
 };
