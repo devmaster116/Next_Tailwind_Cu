@@ -56,19 +56,7 @@ const showHideSignCode= () =>{
       props?.className
     )}>
       {currentStaff&&(
-          <div className='flex flex-col h-full '>
-              {/* <div className="relative flex items-center justify-center px-4 pt-4 py-4 pl-1 border-gray-100 border mb-5">
-                <p className="font-semibold  text-gray-800 text-[18px] leading-[28px] lg:text-[20px] lg:leading-[30px]">{currentStaff.firstName+ " "+ currentStaff.lastName}</p>
-                <Avatar 
-                  icon={<CancelSvg />}
-                  classOverride={{
-                    container: 'absolute left-4 top-4',
-                }}
-                  onClick={closeViewStaffModal}
-                  // onClick={props.onClose}
-                />
-            
-              </div> */}
+        <div className='flex flex-col h-full '>
           <div className='px-4'>
             <div className=' border-gray-200 border rounded-lg mb-4 ' style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}> 
               <div className='flex items-center justify-center border-b border-gray-200 py-4'>
@@ -92,16 +80,6 @@ const showHideSignCode= () =>{
                       Edit
                     </button>
                   </div>
-                    {/* <Paragraph 
-                      title='Personal Details'
-                      content='Edit'
-                      classOverride={{
-                        container: 'flex-row justify-between mb-2',
-                        title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
-                        content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
-                      }}
-                      onClick={()=>showEditUserInfoStaffModal(currentStaff)}
-                    /> */}
 
                     <div className="flex py-[10px] lg:py-3">
                         <div className="flex-1 w-32">
@@ -172,16 +150,6 @@ const showHideSignCode= () =>{
                         Edit
                       </button>
                     </div>
-                  {/* <Paragraph 
-                    title='Assigned Role'
-                    content='Edit'
-                    classOverride={{
-                      container: 'flex-row justify-between',
-                      title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
-                      content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
-                    }}
-                    onClick={()=>showEditUserRoleStaffModal(currentStaff)}
-                  /> */}
                     <div className='flex flex-row  ' >
                       <p className='  gap-1 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]  text-gray-800'>{currentStaff.roleName}</p>
                       <Avatar 
@@ -206,23 +174,12 @@ const showHideSignCode= () =>{
                 </div>
                 <div className='flex flex-col gap-1 p-4 border-t border-gray-200'>
                   
-                  {/* <Paragraph 
-                      title='POS Sign In Code'
-                      content={`${currentStaff.passcode?'Reset':'Generate'}`}
-                      classOverride={{
-                        container: 'flex-row justify-between',
-                        title: 'font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]',
-                        content: 'cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
-                      }}
-                      onClick={()=>showEditUserSignCodeStaffModal(currentStaff)}
-
-                    /> */}
                       <div className='flex flex-row justify-between '>
                         <p className='text-gray-900 font-bold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'>
                         POS Sign In Code
                         </p>
                         <button className='cursor-pointer font-semibold text-purple-700 text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]'
-                                onClick={()=>showEditUserInfoStaffModal(currentStaff)}>
+                                onClick={()=>showEditUserSignCodeStaffModal(currentStaff)}>
                         {`${currentStaff.passcode?'Reset':'Generate'}`}
                         </button>
                       </div>
