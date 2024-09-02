@@ -28,6 +28,9 @@ import { Oval } from "react-loader-spinner";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import Image from "next/image";
+import { OrderMultiDayData, Totals } from "@/app/src/types";
+import { formatDateToDayOfWeekWithDate } from "./utils/formatDateToDayOfWeekWithDate";
+import { getEvenlySpacedDates } from "./utils/getEvenlySpacedDates";
 
 const SalesTrends = () => {
   const { width } = useWindowSize();
@@ -48,9 +51,6 @@ const SalesTrends = () => {
     previousReportStartDateRef,
     previousReportEndDateRef,
   } = useReportDate();
-
-  // console.log("===>", reportStartDate);
-  // console.log("===>", reportEndDate);
 
   const {
     hourlyDataForTakeAwayAndDineIn,
@@ -90,6 +90,20 @@ const SalesTrends = () => {
     "Take Away Sales": item.total_take_away_net_sales,
   }));
 
+  const {
+    totalTakeAwayOrders,
+    totalDineInOrders,
+    totalTakeAwayNetSales,
+    totalDineInNetSales,
+  } = (dineInTakeAwayTotals as Totals) || {};
+
+  console.log("==>", transformedData);
+
+  const evenlySpacedDates =
+    !isHourlyData && transformedData && transformedData.length > 10
+      ? getEvenlySpacedDates(transformedData as OrderMultiDayData[], 8)
+      : [];
+  console.log("evenlySpacedDates", evenlySpacedDates);
   return (
     <div>
       <DateRangeSelectorModal
@@ -104,8 +118,7 @@ const SalesTrends = () => {
       />
       <h1 className={styles.pageTitle}>Sales Trends</h1>
       {!loading ? (
-        dineInTakeAwayTotals?.totalDineInOrders &&
-        dineInTakeAwayTotals?.totalTakeAwayOrders ? (
+        totalDineInOrders && totalTakeAwayOrders ? (
           <div className={styles.salesDataContainer}>
             <div className={styles.chartTitle}>
               <h3>{isHourlyData ? "Hourly" : "Daily"} Sales Trend</h3>
@@ -138,19 +151,27 @@ const SalesTrends = () => {
                     dataKey={`${
                       isHourlyData ? "order_hour" : "order_date.value"
                     }`}
-                    stroke="#475467"
+                    stroke="#344054"
                     tickFormatter={
-                      isHourlyData ? formatTime : formatDateToDayOfWeek
+                      isHourlyData
+                        ? formatTime
+                        : evenlySpacedDates.length > 0
+                        ? formatDateToDayOfWeekWithDate
+                        : formatDateToDayOfWeek
                     }
                     axisLine={false}
                     tickLine={false}
                     tickMargin={9}
+                    {...(evenlySpacedDates.length > 0
+                      ? { ticks: evenlySpacedDates }
+                      : {})}
+                    fontSize={12}
                   />
                   <YAxis
                     tickFormatter={value => `$${value}`}
                     axisLine={false}
                     tickLine={false}
-                    stroke="#475467"
+                    stroke="#344054"
                   />
                   <Tooltip />
                   <Bar
@@ -186,8 +207,8 @@ const SalesTrends = () => {
                         />
                       </>
                     ),
-                    takeAway: dineInTakeAwayTotals?.totalTakeAwayOrders || 0,
-                    net: dineInTakeAwayTotals?.totalTakeAwayNetSales,
+                    takeAway: totalTakeAwayOrders || 0,
+                    net: totalTakeAwayNetSales,
                   },
                   {
                     title: (
@@ -202,8 +223,8 @@ const SalesTrends = () => {
                         />
                       </>
                     ),
-                    dine: dineInTakeAwayTotals?.totalDineInOrders || 0,
-                    net: dineInTakeAwayTotals?.totalDineInNetSales,
+                    dine: totalDineInOrders || 0,
+                    net: totalDineInNetSales,
                   },
                 ]}
                 loading={loading}
@@ -211,6 +232,15 @@ const SalesTrends = () => {
                 selectedOption={selectedOption}
                 className="salesTrendsTable"
               />
+            </div>
+            <div className={styles.totalsRow}>
+              <div className={styles.emptyColumn}></div>
+              <div className={styles.countTotalColumn}>
+                {totalDineInOrders + totalTakeAwayOrders}
+              </div>
+              <div className={styles.netTotalColumn}>
+                {`$${(totalDineInNetSales + totalTakeAwayNetSales).toFixed(2)}`}
+              </div>
             </div>
           </div>
         ) : (
