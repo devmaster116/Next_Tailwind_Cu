@@ -26,9 +26,12 @@ import { formatDateToDayOfWeek } from "./utils/formatDateToDayOfWeek";
 import withAuth from "@/app/components/Auth/withAuth";
 import { Oval } from "react-loader-spinner";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
+import useWindowSize from "@/app/hooks/useWindowSize";
+import Image from "next/image";
 
 const SalesTrends = () => {
-  console.log("HALLELUJAHH IN HERE");
+  const { width } = useWindowSize();
+
   const BarChart = dynamic(() => import("recharts").then(mod => mod.BarChart), {
     ssr: false,
   });
@@ -116,7 +119,10 @@ const SalesTrends = () => {
             </div>
 
             <div className={styles.barChart}>
-              <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
+              <ResponsiveContainer
+                width="100%"
+                aspect={width && width >= 600 ? width / 488 : 4.0 / 3.0}
+              >
                 <BarChart
                   id=""
                   data={transformedData}
@@ -147,8 +153,18 @@ const SalesTrends = () => {
                     stroke="#475467"
                   />
                   <Tooltip />
-                  <Bar dataKey="Take Away Sales" stackId="a" fill="#9E77ED" />
-                  <Bar dataKey="Dine In Sales" stackId="a" fill="#6C01CC" />
+                  <Bar
+                    dataKey="Take Away Sales"
+                    stackId="a"
+                    fill="#9E77ED"
+                    barSize={32}
+                  />
+                  <Bar
+                    dataKey="Dine In Sales"
+                    stackId="a"
+                    fill="#6C01CC"
+                    barSize={32}
+                  />
                 </BarChart>
               </ResponsiveContainer>
               <DataTable
@@ -158,12 +174,34 @@ const SalesTrends = () => {
                 thirdColumnSymbol="$"
                 dataObj={[
                   {
-                    title: "Take Away",
+                    title: (
+                      <>
+                        Take Away{" "}
+                        <Image
+                          className={styles.icon}
+                          src="/icons/square-primary-400.svg"
+                          height={12}
+                          width={12}
+                          alt="Square icon"
+                        />
+                      </>
+                    ),
                     takeAway: dineInTakeAwayTotals?.totalTakeAwayOrders || 0,
                     net: dineInTakeAwayTotals?.totalTakeAwayNetSales,
                   },
                   {
-                    title: "Dine In",
+                    title: (
+                      <>
+                        Dine In{" "}
+                        <Image
+                          className={styles.icon}
+                          src="/icons/square-primary-700.svg"
+                          height={12}
+                          width={12}
+                          alt="Square icon"
+                        />
+                      </>
+                    ),
                     dine: dineInTakeAwayTotals?.totalDineInOrders || 0,
                     net: dineInTakeAwayTotals?.totalDineInNetSales,
                   },

@@ -120,10 +120,10 @@ export default function Sidebar({ show, setter }: SidebarProps) {
                 icon={
                   <Image
                     className={styles.icon}
-                    src="/icons/line-chart-up-01.svg"
+                    src="/icons/bar-chart-square-up.svg"
                     height={18}
                     width={18}
-                    alt="Line chart icon"
+                    alt="Bar chart square icon"
                   />
                 }
               />
