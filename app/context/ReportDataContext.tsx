@@ -28,6 +28,8 @@ interface ReportDataContextType {
   setCustomDate: Dispatch<SetStateAction<string | undefined>>;
   selectedVariants: SelectedVariantsForDishData[];
   setSelectedVariants: Dispatch<SetStateAction<SelectedVariantsForDishData[]>>;
+  dishByOrderType: any;
+  setDishByOrderType: Dispatch<SetStateAction<any>>;
 }
 
 const ReportDataContext = createContext<ReportDataContextType | undefined>(
@@ -47,6 +49,7 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
   const [selectedVariants, setSelectedVariants] = useState<
     SelectedVariantsForDishData[]
   >([]);
+  const [dishByOrderType, setDishByOrderType] = useState<any>(null);
 
   return (
     <ReportDataContext.Provider
@@ -69,6 +72,8 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
         setCustomDate,
         selectedVariants,
         setSelectedVariants,
+        dishByOrderType,
+        setDishByOrderType,
       }}
     >
       {children}

@@ -122,7 +122,6 @@ const SalesSummary = () => {
     } = ordersData[0]);
   }
 
-  // Extract details dynamically
   const takeAwayItemDetails = dishDetailsByOrderTypeParser(
     dishByOrderType,
     "Take Away"
@@ -197,16 +196,18 @@ const SalesSummary = () => {
                 <SalesData
                   title="Dine In / Take Away"
                   amount={Number(
-                    (
-                      total_dine_in_orders /
-                        (total_take_away_orders + total_dine_in_orders) || 0
-                    ).toFixed(1)
+                    calculatePercentage(
+                      total_dine_in_orders,
+                      total_take_away_orders + total_dine_in_orders || 0,
+                      1
+                    )
                   )}
                   secondAmount={Number(
-                    (
-                      total_take_away_orders /
-                        (total_take_away_orders + total_dine_in_orders) || 0
-                    ).toFixed(1)
+                    calculatePercentage(
+                      total_take_away_orders,
+                      total_take_away_orders + total_dine_in_orders || 0,
+                      1
+                    )
                   )}
                   isPercentage={true}
                   loading={loading}

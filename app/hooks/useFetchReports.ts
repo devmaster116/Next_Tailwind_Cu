@@ -27,7 +27,6 @@ const useFetchReports = (
   reportEndDate: Date,
   selectedOption: string
 ) => {
-  const [dishByOrderType, setDishByOrderType] = useState<any>(null);
   const {
     allCategories,
     setAllCategories,
@@ -47,6 +46,8 @@ const useFetchReports = (
     setCustomDate,
     selectedVariants,
     setSelectedVariants,
+    dishByOrderType,
+    setDishByOrderType,
   } = useReportDataContext();
 
   const {

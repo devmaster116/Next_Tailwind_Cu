@@ -11,7 +11,7 @@ interface SalesDataProps {
   isDollarAmount?: boolean;
   isPercentage?: boolean;
   loading?: boolean;
-  wholeNumber?:boolean
+  wholeNumber?: boolean;
 }
 
 const SalesData = ({
@@ -22,10 +22,12 @@ const SalesData = ({
   isDollarAmount = false,
   isPercentage = false,
   loading,
-  wholeNumber = false
+  wholeNumber = false,
 }: SalesDataProps) => {
   const getDisplayAmount = (amount: number | undefined): string | 0 => {
-    return isNaN(amount as number) || amount === undefined ? 0 : formatRoundUp(amount);
+    return isNaN(amount as number) || amount === undefined
+      ? 0
+      : formatRoundUp(amount);
   };
 
   function formatAmount(amount: number | undefined) {
@@ -37,13 +39,15 @@ const SalesData = ({
     }
 
     if (isPercentage) {
-      return `${getDisplayAmount(safeAmount * 100)}%`;
+      const formattedAmount = Number(getDisplayAmount(safeAmount)).toFixed(1);
+
+      return `${formattedAmount}%`;
     }
 
-    if(wholeNumber){
-     displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(0)
-    }else{
-      displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(2)
+    if (wholeNumber) {
+      displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(0);
+    } else {
+      displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(2);
     }
     return displayAmount;
   }
