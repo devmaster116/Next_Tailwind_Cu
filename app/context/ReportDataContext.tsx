@@ -7,7 +7,12 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Categories, Dishes, SelectedVariantsForDishData } from "../src/types";
+import {
+  Categories,
+  DishByOrderType,
+  Dishes,
+  SelectedVariantsForDishData,
+} from "../src/types";
 
 interface ReportDataContextType {
   allCategories: Categories[];
@@ -28,6 +33,8 @@ interface ReportDataContextType {
   setCustomDate: Dispatch<SetStateAction<string | undefined>>;
   selectedVariants: SelectedVariantsForDishData[];
   setSelectedVariants: Dispatch<SetStateAction<SelectedVariantsForDishData[]>>;
+  dishByOrderType: DishByOrderType[];
+  setDishByOrderType: Dispatch<React.SetStateAction<DishByOrderType[]>>;
 }
 
 const ReportDataContext = createContext<ReportDataContextType | undefined>(
@@ -47,6 +54,7 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
   const [selectedVariants, setSelectedVariants] = useState<
     SelectedVariantsForDishData[]
   >([]);
+  const [dishByOrderType, setDishByOrderType] = useState<DishByOrderType[]>([]);
 
   return (
     <ReportDataContext.Provider
@@ -69,6 +77,8 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
         setCustomDate,
         selectedVariants,
         setSelectedVariants,
+        dishByOrderType,
+        setDishByOrderType,
       }}
     >
       {children}
