@@ -6,6 +6,7 @@ export interface KitchenData {
   categories: KitchenItem[];
   dishes: KitchenItem[];
   response: OrdersResponse[];
+  dishByOrderType: DishByOrderType[];
 }
 
 export interface KitchenItem {
@@ -35,7 +36,9 @@ export interface OrdersResponse {
   total_cash_refunded_sum: number;
   total_cash_sum: number;
   total_completed_orders: number;
+  total_dine_in_card_surcharge: number;
   total_dine_in_orders: number;
+  total_dine_in_sum: number;
   total_holiday_surcharge: number;
   total_net_sales: number;
   total_online_orders: number;
@@ -45,8 +48,16 @@ export interface OrdersResponse {
   total_revenue: number;
   total_split_payment_orders: number;
   total_split_payment_sum: number;
+  total_take_away_card_surcharge: number;
   total_take_away_orders: number;
+  total_take_away_sum: number;
+  transactionFromDate: TransactionDate;
+  transactionToDate: TransactionDate;
 }
+
+type TransactionDate = {
+  value: string;
+};
 
 // Manually entered subscription details for MVP. Used to create subscription checkout page from admin console
 export type ChosenSubscriptionDetails = {
@@ -173,4 +184,10 @@ export interface ItemInsightsData {
 export interface DishVariationTotals {
   totalQuantity: number;
   totalPriceWithVariants: number;
+}
+
+export interface DishByOrderType {
+  orderType: string;
+  item_count: number;
+  total_price: number;
 }

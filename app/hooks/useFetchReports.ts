@@ -4,7 +4,12 @@ import {
   formatDate,
   formatReadableDate,
 } from "../(root)/overview/components/utils/formatDate";
-import { Categories, Dishes, SelectedVariantsForDishData } from "../src/types";
+import {
+  Categories,
+  Dishes,
+  KitchenData,
+  SelectedVariantsForDishData,
+} from "../src/types";
 import { useReportDataContext } from "../context/ReportDataContext";
 import { useReportDate } from "../context/ReportDateContext";
 
@@ -12,13 +17,6 @@ interface SelectedVariantsForDishResponseData {
   selectedVariantsForDish: SelectedVariantsForDishData[];
   status: string;
   code: number;
-}
-
-interface KitchenData {
-  categories: any[];
-  dishes: any[];
-  dishByOrderType: any[];
-  response: any;
 }
 
 const useFetchReports = (
