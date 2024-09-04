@@ -6,7 +6,7 @@ import LoadingSkeleton from "./components/LoadingSkeleton";
 import Staffs from "./components/Staffs";
 import StaffModalFullPage from "./components/StaffModalFullpage";
 import { Kitchen, IConfig, User } from "@/app/src/types";
-import { ToastStatus  } from "./components/base/toast-status";
+import { ToastStatus  } from "../../components/base/toast-status";
 import Drawer from 'react-modern-drawer'
 
 import {

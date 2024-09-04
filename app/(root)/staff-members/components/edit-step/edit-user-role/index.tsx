@@ -4,7 +4,7 @@ import Form from "../../../components/form";
 import { FormContext } from "@/app/context/StaffContext";
 import { RoleInfo } from "@/app/src/types";
 import { HelpSvg } from "@/app/assets/svg/help";
-import { CustomRadio } from "../../base/radio";
+import { CustomRadio } from "../../../../../components/base/radio";
 import { Tooltip } from 'react-tooltip';
 import { useKitchen } from "@/app/context/KitchenContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useContext, useState, forwardRef, Ref, useEffect } from "react";
 import styles from "./ViewStaffModal.module.scss";
-import { Avatar } from "./base/avatar";
+import { Avatar } from "../../../components/base/avatar";
 import { FormContext } from "@/app/context/StaffContext";
 import { CancelSvg } from "@/app/assets/svg/cancel";
 import { twMerge } from "tailwind-merge";

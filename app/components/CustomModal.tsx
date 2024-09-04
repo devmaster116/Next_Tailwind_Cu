@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from "react";
 import styles from "./customModal.module.scss";
 import Image from "next/image";
 import CustomModalFooter from "./customModalFooter";
-import { Avatar } from "../(root)/staff-members/components/base/avatar";
+import { Avatar } from "./base/avatar";
 import { CancelSvg } from "../assets/svg/cancel";
 
 const CustomModal = ({

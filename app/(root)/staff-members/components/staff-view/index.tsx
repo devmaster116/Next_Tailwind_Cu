@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Paragraph } from '../base/paragraph';
-import { Avatar } from '../base/avatar';
+import { Paragraph } from '../../../../components/base/paragraph';
+import { Avatar } from '../../../../components/base/avatar';
 import { CancelSvg } from '@/app/assets/svg/cancel';
 import { ConfigStaffMember, IConfig } from '@/app/src/types';
 import { twMerge } from 'tailwind-merge';
