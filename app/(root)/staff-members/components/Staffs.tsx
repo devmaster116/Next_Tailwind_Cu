@@ -65,12 +65,12 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const openDeleteStaffModal = () => {
     
     setOpenDeleteModal(!openDeleteModal);
-    router.back()
+    // router.back()
   };
   const updateStaff = async () => {
-    router.back()
+    // router.back()
     setOpenDeleteModal(!openDeleteModal);
-    setBanner(true);
+   
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
       setErrors((prevErrors) => ({
@@ -109,6 +109,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
               await updateDoc(configDocRef, { 
                 "staffMemberConfigs.staffMembers": updatedStaffMembers 
               });
+              window.history.replaceState(null, '', '/staff-members')
+              setBanner(true);
           
             } else {
               console.log("Invalid staffItem or missing roleID");

@@ -43,6 +43,9 @@ export const UserInfo = ({ key }: Props) => {
     if(`${state?.firstName} ${state?.lastName.charAt(0)}`==state?.displayName){
       setStatusNickNameFlag(true);
     }
+    // else {
+    //   setStatusNickNameFlag(false);
+    // }
   }, [state]);
   useEffect(() => {
     if (!statusAddEditBtn) {
@@ -58,7 +61,9 @@ export const UserInfo = ({ key }: Props) => {
       else {
         setNewUser((prevUser) => ({
           ...prevUser,
-          displayName:  prevUser.displayName
+          displayName:  prevUser.displayName?prevUser.displayName: (prevUser.firstName && prevUser.lastName
+            ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
+            : "")
         }));
       }
     } else {
