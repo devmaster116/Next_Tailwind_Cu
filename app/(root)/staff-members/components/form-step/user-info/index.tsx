@@ -128,6 +128,15 @@ export const UserInfo = ({ key }: Props) => {
   };
 
   const validateAndProceed = () => {
+    if (!statusAddEditBtn) {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        displayName: prevUser.displayName || 
+          (prevUser.firstName && prevUser.lastName
+            ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
+            : ""),
+      }));
+    }
     const newErrors = validateFields();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
