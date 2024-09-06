@@ -49,7 +49,7 @@ const CustomModal = ({
                 />
               </div>
               <Avatar
-                icon={<CancelSvg />}
+                icon={<CancelSvg width={14} height={14} color="#3F3F3F" />}
                 classOverride={{
                   icon: "w-10 h-10 border rounded-md",
                 }}

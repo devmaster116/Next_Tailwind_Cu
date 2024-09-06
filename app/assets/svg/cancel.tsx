@@ -1,17 +1,29 @@
 import React from "react";
 
-export const CancelSvg: React.FC<React.SVGProps<SVGSVGElement>> = props => {
+interface CancelSvgProps extends React.SVGProps<SVGSVGElement> {
+  width: number;
+  height: number;
+  color: string;
+}
+
+export const CancelSvg: React.FC<CancelSvgProps> = ({
+  width,
+  height,
+  color,
+  ...rest
+}) => {
   return (
     <svg
-      width="14"
-      height="14"
+      width={width}
+      height={height}
       viewBox="0 0 14 14"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...rest}
     >
       <path
         d="M13 1L1 13M1 1L13 13"
-        stroke="#3F3F3F"
+        stroke={color}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"

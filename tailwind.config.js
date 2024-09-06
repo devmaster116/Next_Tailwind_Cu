@@ -10,6 +10,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        "success-green-100": "#D1FADF",
+        "success-green-700": "#027A48",
+      },
       animation: {
         "fade-in-up": "fade-in-up 1000ms ease forwards",
         "fade-out-up": "fade-out-up 180ms ease forwards",

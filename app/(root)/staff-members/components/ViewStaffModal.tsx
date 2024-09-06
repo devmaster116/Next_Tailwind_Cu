@@ -58,7 +58,7 @@ const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
               {currentStaff?.firstName + " " + currentStaff?.lastName}
             </p>
             <Avatar
-              icon={<CancelSvg />}
+              icon={<CancelSvg width={12} height={12} color="#3F3F3F" />}
               classOverride={{
                 container: "absolute left-4 top-4",
               }}
