@@ -1,6 +1,5 @@
 import { ConfigStaffMember } from "@/app/src/types";
 import { db } from "@/firebase/config";
-import { FirebaseError } from "firebase/app";
 import {
   collection,
   doc,
@@ -33,7 +32,7 @@ export const fetchPermissions = (callback: (permissions: any[]) => void) => {
       callback(permissions);
       console;
     },
-    (error) => {
+    error => {
       console.error("Error fetching permissions:", error);
     }
   );
@@ -50,7 +49,7 @@ export const subscribeRoles = (
 
   const roleDocRef = doc(db, "roles", kitchenId);
 
-  const unsubscribe = onSnapshot(roleDocRef, (docSnapshot) => {
+  const unsubscribe = onSnapshot(roleDocRef, docSnapshot => {
     const data = docSnapshot.data();
     const rolesList = data?.roles || [];
     const ownerDetails = data?.owner || {};
@@ -67,7 +66,7 @@ export const fetchRoles = async (permissions: any[]) => {
   const rolesList: any[] = [];
   let ownerDetails: any = {};
 
-  rolesSnapshot.docs.forEach((doc) => {
+  rolesSnapshot.docs.forEach(doc => {
     const data = doc.data();
     if (Array.isArray(data.roles)) {
       data.roles.forEach(
@@ -95,7 +94,7 @@ export const fetchRoles = async (permissions: any[]) => {
     }
   });
 
-  const permissionNamesSet = new Set(permissions.map((p) => p.label));
+  const permissionNamesSet = new Set(permissions.map(p => p.label));
 
   const filteredPermissions = (ownerDetails.permissions || []).filter(
     (permission: any) => permissionNamesSet.has(permission.name)
@@ -121,7 +120,6 @@ export const addRoleToExistingDocument = async (
       console.log("Existing roles before update:", existingRoles);
       console.log("New role to add:", newRole);
 
-      // Ensure all fields in newRole are defined
       const sanitizedNewRole = {
         ...newRole,
         permissions: newRole.permissions.map((permission: any) => ({
@@ -155,7 +153,6 @@ export const editImageUploadDB = async (
   }
   const configDocRef = doc(db, "configs", kitchenId);
 
-  // Retrieve the document and destructure the necessary data
   const configDoc = await getDoc(configDocRef);
   if (!configDoc.exists()) {
     console.log("Config document does not exist!");

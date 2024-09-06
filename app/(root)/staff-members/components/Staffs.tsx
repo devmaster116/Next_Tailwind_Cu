@@ -1,12 +1,7 @@
-
-import React, { useContext, useEffect, useRef, useState, MouseEvent, useMemo } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./Staff.module.scss";
 import { db } from "@/firebase/config";
-import {
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { IConfig, ConfigStaffMember } from "@/app/src/types";
 import { getShrinkName } from "@/app/utils";
 import StaffView from "../components/staff-view";
@@ -15,23 +10,27 @@ import { useBanner } from "@/app/context/BannerContext";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
 import { twMerge } from "tailwind-merge";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ViewStaffModal from "./ViewStaffModal";
-import { useFormStep } from "@/app/hooks/useFormStep";
 
-const useOutsideAlerter = (tblRef: any, ref: any, onClickOutside: () => void) => {
+const useOutsideAlerter = (
+  tblRef: any,
+  ref: any,
+  onClickOutside: () => void
+) => {
   useEffect(() => {
     const handleClickOutside = (event: any) => {
       if (
-        ref.current && !ref.current.contains(event.target) 
-        && !tblRef.current.contains(event.target)
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !tblRef.current.contains(event.target)
       ) {
         onClickOutside();
       }
     };
-    document.addEventListener('mouseup', handleClickOutside);
+    document.addEventListener("mouseup", handleClickOutside);
     return () => {
-      document.removeEventListener('mouseup', handleClickOutside);
+      document.removeEventListener("mouseup", handleClickOutside);
     };
   }, [ref]);
 };
@@ -42,38 +41,35 @@ interface StaffProps {
 
 const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const { setBanner } = useBanner();
-  const [openDeleteModal, setOpenDeleteModal]=useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const {  loadStaffForEdit,currentStaff } = useContext(FormContext)!
-  const router = useRouter()
-  const pathName = usePathname()
-  const searchParams = useSearchParams()
+  const { loadStaffForEdit, currentStaff } = useContext(FormContext)!;
+  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
   const [isExiting, setIsExiting] = useState(false);
 
   const modalRef = useRef(null);
   const tblRef = useRef(null);
 
   useOutsideAlerter(tblRef, modalRef, () => {
-    setIsExiting(true)
+    setIsExiting(true);
     setTimeout(() => {
-      window.history.replaceState(null, '', '/staff-members')
-    }, 500)
+      window.history.replaceState(null, "", "/staff-members");
+    }, 500);
   });
 
   const openDeleteStaffModal = () => {
-    
     setOpenDeleteModal(!openDeleteModal);
-    // router.back()
   };
   const updateStaff = async () => {
-    // router.back()
     setOpenDeleteModal(!openDeleteModal);
-   
+
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         kitchenId: "Kitchen ID is required",
       }));
@@ -90,53 +86,48 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
       }
 
       try {
-            const configDocRef = doc(db, "configs", kitchenId);
-            const configDoc = await getDoc(configDocRef);
-         
-              if (!configDoc.exists()) {
-              console.log("Config document does not exist!");
-              return;
-            }
-      
-            const { staffMemberConfigs = {} } = configDoc.data();
-            const { staffMembers = [] } = staffMemberConfigs;
-        
-            if (currentStaff && currentStaff.id) {
-              const updatedStaffMembers = staffMembers.filter(
-                (member: ConfigStaffMember) => member.id !== currentStaff.id
-              );
-          
-              await updateDoc(configDocRef, { 
-                "staffMemberConfigs.staffMembers": updatedStaffMembers 
-              });
-              window.history.replaceState(null, '', '/staff-members')
-              setBanner(true);
-          
-            } else {
-              console.log("Invalid staffItem or missing roleID");
-            }
+        const configDocRef = doc(db, "configs", kitchenId);
+        const configDoc = await getDoc(configDocRef);
+
+        if (!configDoc.exists()) {
+          console.log("Config document does not exist!");
+          return;
+        }
+
+        const { staffMemberConfigs = {} } = configDoc.data();
+        const { staffMembers = [] } = staffMemberConfigs;
+
+        if (currentStaff && currentStaff.id) {
+          const updatedStaffMembers = staffMembers.filter(
+            (member: ConfigStaffMember) => member.id !== currentStaff.id
+          );
+
+          await updateDoc(configDocRef, {
+            "staffMemberConfigs.staffMembers": updatedStaffMembers,
+          });
+          window.history.replaceState(null, "", "/staff-members");
+          setBanner(true);
+        } else {
+          console.log("Invalid staffItem or missing roleID");
+        }
       } catch (error) {
         console.error("Error deleting role:", error);
       }
-    
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const togglePanel = (item: ConfigStaffMember) => {
-    router.push(`${pathName}?type=view-staff&id=${item.id}`)
+    router.push(`${pathName}?type=view-staff&id=${item.id}`);
     loadStaffForEdit(item);
   };
 
   const CloseTogglePanel = () => {
-    window.history.replaceState(null, '', '/staff-members')
+    window.history.replaceState(null, "", "/staff-members");
   };
 
   useEffect(() => {
-    if (!searchParams?.get('type')?.includes('view-staff'))
-    setIsExiting(false)
-  }, [searchParams?.get('type')?.includes('view-staff')])
-
+    if (!searchParams?.get("type")?.includes("view-staff")) setIsExiting(false);
+  }, [searchParams?.get("type")?.includes("view-staff")]);
 
   return (
     <>
@@ -154,7 +145,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
                   className={styles.row}
                   key={index}
                   onClick={() => {
-                    togglePanel(item)
+                    togglePanel(item);
                   }}
                 >
                   <div className={styles.leftItem}>
@@ -177,10 +168,12 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
                       <p className={styles.nickName}>@{item.displayName}</p>
                     </div>
                   </div>
-                  <div className={twMerge(
-                    styles.rightItem,
-                    '!text-[1rem] lg:!text-[1.125rem] lg:mt-[-20px] mt-0'
-                  )}>
+                  <div
+                    className={twMerge(
+                      styles.rightItem,
+                      "!text-[1rem] lg:!text-[1.125rem] lg:mt-[-20px] mt-0"
+                    )}
+                  >
                     {item.roleName}
                   </div>
                 </div>
@@ -190,43 +183,47 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
       </div>
 
       {openDeleteModal && (
-          <CustomModal
-            show={openDeleteModal}
-            onClose={openDeleteStaffModal}
-            type="delete"
-            title=""
-            onUpdateClick={updateStaff}
-            confirmButtonText="Delete Now"
-            cancelButtonText="Keep Staff"
-            content={
-              <>
-                <h3 className={twMerge(styles.deleteModalTitle,'text-gray-900')}>Delete Staff Member?</h3>
-                <p className={styles.deleteMessage}>
-                  Are you sure you want to delete the {currentStaff?.firstName + " " + currentStaff?.lastName}?
-                </p>
-                <br />
-                <p className={styles.description}>
-                 This action cannot be undone and all related data will be permanently removed.
-                </p>
-              </>
-            }
-          />
+        <CustomModal
+          show={openDeleteModal}
+          onClose={openDeleteStaffModal}
+          type="delete"
+          title=""
+          onUpdateClick={updateStaff}
+          confirmButtonText="Delete Now"
+          cancelButtonText="Keep Staff"
+          content={
+            <>
+              <h3 className={twMerge(styles.deleteModalTitle, "text-gray-900")}>
+                Delete Staff Member?
+              </h3>
+              <p className={styles.deleteMessage}>
+                Are you sure you want to delete the{" "}
+                {currentStaff?.firstName + " " + currentStaff?.lastName}?
+              </p>
+              <br />
+              <p className={styles.description}>
+                This action cannot be undone and all related data will be
+                permanently removed.
+              </p>
+            </>
+          }
+        />
       )}
 
-      <ViewStaffModal 
+      <ViewStaffModal
         ref={modalRef}
-        staffList= {staffList}
+        staffList={staffList}
         isExiting={isExiting}
         setIsExiting={setIsExiting}
-        show={searchParams?.get('type')?.includes('view-staff') || false}
+        show={searchParams?.get("type")?.includes("view-staff") || false}
         onClose={CloseTogglePanel}
         title={currentStaff?.firstName + " " + currentStaff?.lastName}
         content={
           <>
             <StaffView
-              className='h-[90%] lg:h-full overflow-auto' 
-              onDeleteModalOpen = {openDeleteStaffModal} 
-              onClose={CloseTogglePanel} 
+              className="h-[90%] lg:h-full overflow-auto"
+              onDeleteModalOpen={openDeleteStaffModal}
+              onClose={CloseTogglePanel}
             />
           </>
         }

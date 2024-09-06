@@ -7,7 +7,6 @@ import styles from "./SidebarMenuLayout.module.scss";
 import { usePathname } from "next/navigation";
 import { formatUrlToTitle } from "./Auth/utils/helper";
 
-
 interface SidebarMenuLayoutProps {
   pageTitle?: string;
   children: ReactNode;
@@ -35,10 +34,8 @@ const SidebarMenuLayout: React.FC<SidebarMenuLayoutProps> = ({
             setter={setShowSidebar}
             pageTitle={pathnameToPageTitle}
           />
-
           <Sidebar show={showSidebar} setter={setShowSidebar} />
           <div className={styles.contentArea}>{children}</div>
-
         </div>
       </div>
     </>

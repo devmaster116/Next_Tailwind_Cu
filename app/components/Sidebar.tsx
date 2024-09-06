@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useEffect } from "react";
 import Link from "next/link";
 import styles from "./Sidebar.module.scss";
@@ -22,34 +22,25 @@ interface SidebarProps {
 
 export default function Sidebar({ show, setter }: SidebarProps) {
   const pathname = usePathname();
-  // const searchParams = useSearchParams()
   const { user } = useUser();
   const { kitchen } = useKitchen();
-  const {banner, setBanner} = useBanner();
-  const {statusAddStaff,setStatusAddStaff } = useFormStep()
+  const { banner, setBanner } = useBanner();
+  const { statusAddStaff, setStatusAddStaff } = useFormStep();
 
   useEffect(() => {
-    // if(previousRoute!==pathname) {
-    //   console.log("previousRoute",previousRoute)
-    //   console.log("pathname",pathname)
-    //   setBanner(false)
-    //   setStatusAddStaff(false)
-    // }
-    if (!pathname.includes('/stuff-members')) {
-      setBanner(false)
-      setStatusAddStaff(false)
+    if (!pathname.includes("/stuff-members")) {
+      setBanner(false);
+      setStatusAddStaff(false);
     }
-    console.log("===banner ===", banner)
-  }, [pathname])
+  }, [pathname]);
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
   }`;
 
   const MenuItem = ({ icon, name, route }: MenuItemProps) => {
-    
     const isActive = pathname === route;
     const colorClass = isActive ? styles.active : styles.inactive;
-     
+
     return (
       <Link
         href={route}
@@ -151,19 +142,19 @@ export default function Sidebar({ show, setter }: SidebarProps) {
                     />
                   }
                 />
-                   <MenuItem
-                      name="Staff Members"
-                      route="/staff-members"
-                      icon={
-                        <Image
-                          className={styles.icon}
-                          src="/icons/user.svg"
-                          height={18}
-                          width={18}
-                          alt="Business Details icon"
-                        />
-                      }
+                <MenuItem
+                  name="Staff Members"
+                  route="/staff-members"
+                  icon={
+                    <Image
+                      className={styles.icon}
+                      src="/icons/user.svg"
+                      height={18}
+                      width={18}
+                      alt="Business Details icon"
                     />
+                  }
+                />
               </div>
             </div>
           )}

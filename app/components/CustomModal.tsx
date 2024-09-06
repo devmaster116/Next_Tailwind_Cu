@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import styles from "./customModal.module.scss";
 import Image from "next/image";
 import CustomModalFooter from "./customModalFooter";
@@ -22,7 +22,7 @@ const CustomModal = ({
   content: React.ReactElement;
   cancelButtonText?: string;
   confirmButtonText?: string;
-  onUpdateClick:()=> void;
+  onUpdateClick: () => void;
   type?: string;
   updateButtonText?: string;
 }) => {
@@ -48,10 +48,10 @@ const CustomModal = ({
                   alt="Close Button"
                 />
               </div>
-              <Avatar 
+              <Avatar
                 icon={<CancelSvg />}
                 classOverride={{
-                  icon: 'w-10 h-10 border rounded-md'
+                  icon: "w-10 h-10 border rounded-md",
                 }}
                 onClick={onClose}
               />

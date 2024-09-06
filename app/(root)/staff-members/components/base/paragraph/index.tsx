@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Typography } from "../typography";
+import { Typography } from "@/app/components/base/typography";
 
 type ClassOverrideProps = {
   container?: string;

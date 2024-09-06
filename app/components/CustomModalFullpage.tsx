@@ -1,7 +1,6 @@
 import React, { MouseEventHandler, useState } from "react";
 import styles from "./customModalFullPage.module.scss";
 import Image from "next/image";
-import CustomModalFooter from "./customModalFooter";
 import CustomModal from "./CustomModal";
 
 const CustomModalFullPage = ({
@@ -10,7 +9,6 @@ const CustomModalFullPage = ({
   title,
   content,
   type,
-  updateButtonText,
   onUpdateClick,
   onDeleteClick,
   isExiting,
@@ -22,21 +20,20 @@ const CustomModalFullPage = ({
   cancelButtonText?: string;
   confirmButtonText?: string;
 
-  onUpdateClick: ()=>void;
+  onUpdateClick: () => void;
   type?: string;
   updateButtonText?: string;
-  onDeleteClick: () => void; 
+  onDeleteClick: () => void;
   isExiting: boolean;
 }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [isExitings, setIsExitings] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
   const handleClose = (e: React.MouseEvent) => {
     setIsExitings(true);
     setTimeout(() => {
       setIsExitings(false);
-      onClose(e); // Calls the parent onClose to actually hide the modal
-    }, 500); // Duration of the exit animation
+      onClose(e);
+    }, 500);
   };
 
   if (!show) {
@@ -49,7 +46,7 @@ const CustomModalFullPage = ({
         <div className={`${styles.modalOverlay} `}>
           <div
             className={`${styles.modal} ${isExiting ? styles.exit : ""}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
@@ -83,7 +80,7 @@ const CustomModalFullPage = ({
         <div className={`${styles.modalOverlay} `}>
           <div
             className={`${styles.modal} ${isExitings ? styles.exit : ""}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={handleClose}>
@@ -117,7 +114,7 @@ const CustomModalFullPage = ({
         <div className={`${styles.modalOverlay} `}>
           <div
             className={`${styles.modal} ${isExiting ? styles.exit : ""}`}
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
@@ -144,7 +141,6 @@ const CustomModalFullPage = ({
                 >
                   Delete Role{" "}
                 </button>
-                {/* <button className={styles.updateBtn} onClick={onUpdateClick} > */}
                 <button className={styles.updateBtn} onClick={onUpdateClick}>
                   Update{" "}
                 </button>
@@ -171,15 +167,13 @@ const CustomModalFullPage = ({
           cancelButtonText="Keep Role"
           content={
             <>
-              <p className={styles.deleteModalTitle}>
-                Deleting ‘{title}’ role
-              </p>
+              <p className={styles.deleteModalTitle}>Deleting ‘{title}’ role</p>
               <p className={styles.deleteMessage}>
                 Are you sure you want to delete the role?
               </p>
               <br />
               <p className={styles.description}>
-                Confirming this means you can’t get this role but you can always
+                Confirming this means you can't get this role but you can always
                 recreate it if you wish.
               </p>
             </>

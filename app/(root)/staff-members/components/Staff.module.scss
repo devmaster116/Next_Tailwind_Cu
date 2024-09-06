@@ -1,150 +1,161 @@
 .table {
+  width: 100%;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  background-color: #fff;
+
+  .header {
+    display: flex;
     width: 100%;
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-    // min-width: 320px;
-    background-color: #fff;
-    .header {
+    align-items: center;
+    padding: 12px;
+    background-color: var(--gray-50);
+    font-weight: 700;
+    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid var(--gray-200);
+    color: var(--gray-800);
+
+    .headerName,
+    .headerRole {
+      display: flex;
+      flex: 1 1 0;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .headerName {
+        flex: 2 1 0;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      .headerRole {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .body .row:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .body {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    .row {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid var(--gray-200);
+
+      .leftItem {
         display: flex;
-        width: 100%;
-        align-items: center;
-        padding: 12px;
-        background-color: var(--gray-50);
-        font-weight: 700;
-        border-radius: 12px 12px 0 0;
-        border-bottom: 1px solid var(--gray-200);
-        color: var(--gray-800);
-        .headerName, .headerRole {
-            display: flex;
-            flex: 1 1 0;
+        flex: 1 1 0;
+        gap: 12px;
+
+        @media only screen and (max-width: 600px) {
+          flex: 2 1 0;
+        }
+
+        .avatar {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 28px;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          color: var(--gray-600);
+          background-color: #f2f4f7;
+        }
+
+        @media only screen and (max-width: 600px) {
+          .avatar {
+            width: 48px;
+            height: 48px;
+            color: var(--gray-600);
+            background-color: #f2f4f7;
             font-size: 16px;
             line-height: 24px;
+          }
         }
-        @media only screen and (max-width: 600px) {
-            .headerName {
-                flex:2 1 0;
-                font-size:14px;
-                line-height: 20px;
-                // font-weight: 600;
+
+        .content {
+          display: flex;
+          flex-direction: column;
+
+          .fullName {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 28px;
+            color: var(--gray-900);
+
+            @media only screen and (max-width: 600px) {
+              font-size: 16px;
+              line-height: 24px;
             }
-            .headerRole {
-                font-size:14px;
-                line-height: 20px;
+          }
+
+          .nickName {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            color: var(--gray-600);
+
+            @media only screen and (max-width: 600px) {
+              font-size: 14px;
+              line-height: 20px;
             }
-          
+          }
         }
-      
-    }
-    .body .row:last-child {
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-    }
-    .body {
+      }
+
+      .rightItem {
         display: flex;
-        width: 100%;
-        flex-direction: column;
-        .row {
-            // border-radius: 0 0 11px 11px ;
-            display: flex;
-            width:100%;
-            align-items: center;
-            padding: 12px;
-            border-bottom: 1px solid var(--gray-200);
+        flex: 1 1 0;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 28px;
+        color: var(--gray-700);
 
-            
-            .leftItem {
-                display: flex;
-                flex: 1 1 0;
-                gap: 12px;
-                @media only screen and (max-width: 600px) {
-                    flex:2 1 0;
-                  }
-                .avatar {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-weight: 500;
-                    font-size: 18px;
-                    line-height: 28px;
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 50%;
-                    color: var(--gray-600);
-                    background-color: #F2F4F7;
-                }
-                @media only screen and (max-width: 600px) {
-                    .avatar {
-                        width: 48px;
-                        height: 48px;
-                        color: var(--gray-600);
-                        background-color: #F2F4F7;
-                        font-size: 16px;
-                        line-height: 24px;
-                    }
-                }
-                .content {
-                    display: flex;
-                    flex-direction: column;
-                    .fullName {
-                        font-weight: 600;
-                        font-size: 18px;
-                        line-height: 28px;
-                        color: var(--gray-900);
-                        @media only screen and (max-width: 600px) {
-                            // color: var(--gray-900);
-                            font-size: 16px;
-                            line-height: 24px;
-                          }
-                    }
-                    .nickName{
-                        font-weight: 400;
-                        font-size: 16px;
-                        line-height: 24px;
-                        color: var(--gray-600);
-                        @media only screen and (max-width: 600px) {
-                            font-size: 14px;
-                            line-height: 20px;
-                          }
-                    }
-                }
-            }
-            .rightItem {
-                display: flex;
-                flex: 1 1 0;
-                font-weight: 400;
-                font-size: 18px;
-                line-height: 28px;
-                color: var(--gray-700);
-                // margin-top:-20px;                
-                @media only screen and (max-width: 600px) {
-                    .rightItem {
-                        font-size: 16px;
-                        line-height:24px;
-                      }
-                  }
-            }
+        @media only screen and (max-width: 600px) {
+          .rightItem {
+            font-size: 16px;
+            line-height: 24px;
+          }
         }
-        .row:hover {
-            background-color: var(--gray-50);
-            cursor: pointer;
-            .fullName {
-                color: black;
-            }
-            .avatar {
-                color: black;
-                background-color: #EAECF0;
-            }
-            .nickName {
-                color: black;
-            }
-            .rightItem {
-                color:black
-            }
-          
-
-        }
+      }
     }
 
-}
+    .row:hover {
+      background-color: var(--gray-50);
+      cursor: pointer;
 
+      .fullName {
+        color: black;
+      }
+
+      .avatar {
+        color: black;
+        background-color: #eaecf0;
+      }
+
+      .nickName {
+        color: black;
+      }
+
+      .rightItem {
+        color: black;
+      }
+    }
+  }
+}

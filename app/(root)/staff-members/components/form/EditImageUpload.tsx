@@ -1,17 +1,15 @@
 "use client";
 
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { storage } from "@/firebase/config";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { FormContext } from "@/app/context/StaffContext";
-import { UploadSvg } from "@/app/assets/svg/upload";
 import { twMerge } from "tailwind-merge";
 import { getShrinkName } from "@/app/utils";
 import { ConfigStaffMember } from "@/app/src/types";
-import { editImageUploadDB } from "../../data-fetching";
 
 export const EditImageUpload = function ({
   img,
@@ -22,20 +20,11 @@ export const EditImageUpload = function ({
 }) {
   const [images, setImages] = useState<ImageListType>([]);
   const maxNumber = 1;
-  const {
-    state,
-    dispatch,
-    currentStaff,
-    loadStaffForEdit,
-    updateStaffInFirebase,
-  } = useContext(FormContext)!;
+  const { currentStaff, loadStaffForEdit, updateStaffInFirebase } =
+    useContext(FormContext)!;
   const { kitchen } = useKitchen();
   const kitchenId = kitchen?.kitchenId ?? null;
-  const [firebaseImageUrl, setFirebaseImageUrl] = useState<string | null>(null);
-  const onChange = async (
-    imageList: ImageListType,
-    addUpdateIndex: number[] | undefined
-  ) => {
+  const onChange = async (imageList: ImageListType) => {
     setImages(imageList);
 
     if (imageList.length > 0) {
@@ -50,12 +39,11 @@ export const EditImageUpload = function ({
 
           if (currentStaff) {
             const updatedStaff = {
-              ...currentStaff, // Keep all existing values
-              displayImageURL: url, // Overwrite with the new user info
+              ...currentStaff,
+              displayImageURL: url,
             };
             loadStaffForEdit(updatedStaff);
             try {
-              // Update staff member in the db
               await updateStaffInFirebase(updatedStaff, kitchenId);
             } catch (error) {
               console.error("Error updating staff:", error);

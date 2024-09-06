@@ -7,16 +7,12 @@ const LoadingSkeleton = () => {
       <div className={styles.details}>
         <div className={styles.addOns} />
       </div>
-
       <div className={styles.border} />
-
       <div className={styles.title} />
       <div className={styles.details}>
         <div className={styles.addOns} />
       </div>
-
       <div className={styles.border} />
-
       <div className={styles.title} />
       <div className={styles.details}>
         <div className={styles.addOns} />

@@ -21,7 +21,7 @@ export const BannerProvider = ({ children }: { children: ReactNode }) => {
 export const useBanner = () => {
   const context = useContext(BannerContext);
   if (context === undefined) {
-    throw new Error("useBaner must be used within a BannerProvider");
+    throw new Error("useBanner must be used within a BannerProvider");
   }
   return context;
 };

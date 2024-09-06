@@ -47,12 +47,10 @@ import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
 import { twMerge } from "tailwind-merge";
 
-
-
 const Permissions = () => {
   const [loading, setLoading] = useState(false);
   const { kitchen } = useKitchen();
-  const kitchenId = kitchen?.kitchenId ?? null
+  const kitchenId = kitchen?.kitchenId ?? null;
   const [editRoleModalOpen, setEditRoleModalOpen] = useState(false);
   const [roleToEdit, setRoleToEdit] = useState<any>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -69,7 +67,7 @@ const Permissions = () => {
   });
 
   const [addNewRoleModalOpen, setAddNewRoleModalOpen] = useState(false);
-  const [permissions, setPermissions] = useState<any[]>([])
+  const [permissions, setPermissions] = useState<any[]>([]);
   const [newRoleName, setNewRoleName] = useState("");
   const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]); // Track selected permissions by index
   const [roles, setRoles] = useState<RoleInfo[]>([]);
@@ -78,12 +76,13 @@ const Permissions = () => {
   const [editSelectedPermissions, setEditSelectedPermissions] = useState<
     number[]
   >([]);
-  const [deleteModal, setDeleteModal] = useState(false)
-
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const [ownerDetials, setOwnerDetails] = useState<any>();
 
-  const handleCloseModal = (modalStateSetter:  React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleCloseModal = (
+    modalStateSetter: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
     setIsExiting(true);
     setTimeout(() => {
       modalStateSetter(false);
@@ -96,7 +95,6 @@ const Permissions = () => {
     }, 500);
   };
 
-
   const handleEditRole = (role: RoleInfo) => {
     setRoleToEdit({
       ...role,
@@ -104,7 +102,7 @@ const Permissions = () => {
     });
     setEditSelectedPermissions(
       role.permissions.map((p: any) =>
-        permissions.findIndex((permission) => permission.label === p.name)
+        permissions.findIndex(permission => permission.label === p.name)
       )
     );
     setEditRoleModalOpen(true);
@@ -116,11 +114,10 @@ const Permissions = () => {
     }));
   };
   const handleDeleteRole = async () => {
-    // console.log('deleted triggered')
     if (!roleToEdit) return;
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         kitchenId: "Kitchen ID is required",
       }));
@@ -136,7 +133,7 @@ const Permissions = () => {
         const updatedRoles = rolesData.filter(
           (r: any) => r.id !== roleToEdit.id // Use ID to identify the role to delete
         );
-        
+
         await updateDoc(roleDocRef, { roles: updatedRoles });
       }
       setEditRoleModalOpen(false);
@@ -158,30 +155,36 @@ const Permissions = () => {
     setErrors({}); // Clear previous errors
 
     if (!roleToEdit.name.trim()) {
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         roleName: "Role name is required",
       }));
       if (roleNameInputRef.current) {
-        roleNameInputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        roleNameInputRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
       }
       return;
     }
 
     if (editSelectedPermissions.length === 0) {
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         permissions: "At least one permission is required",
       }));
       if (errorRef.current) {
-        errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        errorRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
       }
       return;
     }
 
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         kitchenId: "Kitchen ID is required",
       }));
@@ -190,14 +193,14 @@ const Permissions = () => {
 
     try {
       const updatedPermissions = editSelectedPermissions
-        .map((index) => {
+        .map(index => {
           const permission = permissions[index];
           return permission
             ? {
-              name: permission.label,
-              description: permission.description,
-              id: permission.id
-            }
+                name: permission.label,
+                description: permission.description,
+                id: permission.id,
+              }
             : null;
         })
         .filter(Boolean);
@@ -217,8 +220,8 @@ const Permissions = () => {
 
       if (roleSnapshot.exists()) {
         const rolesData = roleSnapshot.data().roles || [];
-        const updatedRoles = rolesData.map((r: any) =>
-          r.id === roleToEdit.id ? updatedRole : r // Use ID to identify the role to update
+        const updatedRoles = rolesData.map(
+          (r: any) => (r.id === roleToEdit.id ? updatedRole : r) // Use ID to identify the role to update
         );
         // Update the roles document
         await updateDoc(roleDocRef, { roles: updatedRoles });
@@ -229,8 +232,6 @@ const Permissions = () => {
       }
       handleCloseModal(setEditRoleModalOpen);
 
-
-
       // Close the modal and clear role to edit
       // setEditRoleModalOpen(false);
       // setRoleToEdit(null);
@@ -240,14 +241,13 @@ const Permissions = () => {
     }
   };
 
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewRoleName(e.target.value);
   };
 
   const togglePermission = (index: number) => {
-    setSelectedPermissions((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    setSelectedPermissions(prev =>
+      prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]
     );
   };
 
@@ -265,16 +265,18 @@ const Permissions = () => {
       return;
     }
 
-    const unsubscribePermissions = fetchPermissions((fetchedPermissions: any) => {
-      setPermissions(
-        fetchedPermissions.map((permission: any) => ({
-          id: permission.id,
-          label: permission.name,
-          description: permission.description,
-          enabled: false,
-        }))
-      );
-    });
+    const unsubscribePermissions = fetchPermissions(
+      (fetchedPermissions: any) => {
+        setPermissions(
+          fetchedPermissions.map((permission: any) => ({
+            id: permission.id,
+            label: permission.name,
+            description: permission.description,
+            enabled: false,
+          }))
+        );
+      }
+    );
 
     const unsubscribeRoles = subscribeRoles(
       kitchenId,
@@ -290,24 +292,23 @@ const Permissions = () => {
     };
   }, [kitchenId]);
 
-
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "roles"), (snapShot) => {
-      const ownerData: RoleInfo[] = []
+    const unsubscribe = onSnapshot(collection(db, "roles"), snapShot => {
+      const ownerData: RoleInfo[] = [];
 
       snapShot.docs.forEach(data => {
-        ownerData.push(data.data() as RoleInfo)
-      })
+        ownerData.push(data.data() as RoleInfo);
+      });
 
-      setOwnerDetails(ownerData[0]?.roles[0])
+      setOwnerDetails(ownerData[0]?.roles[0]);
     });
-    () => unsubscribe()
-  }, [])
+    () => unsubscribe();
+  }, []);
   const handleSubmit = async () => {
     setErrors({});
     if (!kitchenId) {
       console.error("Kitchen ID is required but was not provided.");
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         kitchenId: "Kitchen ID is required",
       }));
@@ -315,23 +316,29 @@ const Permissions = () => {
     }
 
     if (!newRoleName.trim()) {
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         businessName: "Role name is required",
       }));
       if (roleNameInputRef.current) {
-        roleNameInputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        roleNameInputRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
       }
       return;
     }
 
     if (selectedPermissions.length === 0) {
-      setErrors((prevErrors) => ({
+      setErrors(prevErrors => ({
         ...prevErrors,
         permissions: "At least one permission is required",
       }));
       if (errorRef.current) {
-        errorRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+        errorRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
       }
       return;
     }
@@ -347,7 +354,7 @@ const Permissions = () => {
             role.name.toLowerCase() === newRoleName.trim().toLowerCase()
         );
         if (roleExists) {
-          setErrors((prevErrors) => ({
+          setErrors(prevErrors => ({
             ...prevErrors,
             businessName: "Role name already exists",
           }));
@@ -356,17 +363,17 @@ const Permissions = () => {
       }
 
       const selectedPermissionDetails = selectedPermissions.map(
-        (index) => permissions[index]
+        index => permissions[index]
       );
       const combinedDescriptions = selectedPermissionDetails
-        .map((permission) => permission.label)
+        .map(permission => permission.label)
         .join(", ");
 
       const newRole = {
         id: `role_${uuidv4()}`,
         name: newRoleName,
         description: combinedDescriptions || "No description",
-        permissions: selectedPermissionDetails.map((permission) => ({
+        permissions: selectedPermissionDetails.map(permission => ({
           id: permission.id,
           name: permission.label,
           description: permission.description || "No description available",
@@ -376,7 +383,6 @@ const Permissions = () => {
       await addRoleToExistingDocument(newRole, kitchenId);
 
       handleCloseModal(setAddNewRoleModalOpen);
-
     } catch (error) {
       console.error("Error saving role:", error);
     }
@@ -406,13 +412,14 @@ const Permissions = () => {
   return (
     <>
       <div className={styles.main_container}>
-        <div className={
-          twMerge('font-bold',styles.pageHeader)
-        }>
+        <div className={twMerge("font-bold", styles.pageHeader)}>
           <h1 className={styles.pageTitle}>POS Permissions</h1>
           <button
             className={styles.buttonPrimary}
-            onClick={() =>{ setAddNewRoleModalOpen(true);setNewRoleName("");}}
+            onClick={() => {
+              setAddNewRoleModalOpen(true);
+              setNewRoleName("");
+            }}
           >
             <span style={{ marginRight: "8px" }}>{plusIcon}</span>
             New Role{" "}
@@ -431,7 +438,7 @@ const Permissions = () => {
             title={"Add New Role"}
             isExiting={isExiting}
             onUpdateClick={handleSubmit}
-            onDeleteClick={() => { }}
+            onDeleteClick={() => {}}
             content={
               <>
                 <div className={styles.formContainer}>
@@ -439,14 +446,14 @@ const Permissions = () => {
                     <label className={styles.ownerpermission}>Role Name</label>
                     <Input
                       value={newRoleName}
-                      handleInputChange={(e) => setNewRoleName(e.target.value)}
-                       //handleBlurField={handleBlurField} // If needed
+                      handleInputChange={e => setNewRoleName(e.target.value)}
+                      //handleBlurField={handleBlurField} // If needed
                       error={errors.businessName}
                       loading={loading}
                       placeholder="Enter Role Name"
                       ref={roleNameInputRef}
                     />
-                     {/* <Input
+                    {/* <Input
                     value={roleToEdit.name}
                     handleInputChange={handleRoleNameChange}
                     error={errors.roleName}
@@ -455,11 +462,11 @@ const Permissions = () => {
                     ref={roleNameInputRef}
 
                   /> */}
-
                   </div>
 
-
-                  <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}>
+                  <h2
+                    className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
+                  >
                     POS Role Permissions
                   </h2>
 
@@ -486,7 +493,6 @@ const Permissions = () => {
                           </div>
                         </label>
                       </li>
-
                     ))}
                   </ul>
                   <p
@@ -510,8 +516,8 @@ const Permissions = () => {
             isExiting={isExiting}
             type="view"
             title="Owner"
-            onUpdateClick={() => { }}
-            onDeleteClick={() => { }}
+            onUpdateClick={() => {}}
+            onDeleteClick={() => {}}
             content={
               <div className={styles.formContainer}>
                 {/* <h2>Role: {ownerDetials.name}</h2> */}
@@ -522,7 +528,7 @@ const Permissions = () => {
                     value={ownerDetials.name}
                     className={styles.readOnlyInput}
                     readOnly
-                    style={{ width: '100%', }}
+                    style={{ width: "100%" }}
                     disabled
                   />
                   <p className={styles.warningMsg}>
@@ -531,7 +537,9 @@ const Permissions = () => {
                 </div>
                 {/* <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}> */}
 
-                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider} ${styles.ownerPermissionMobile}`}>
+                <h2
+                  className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider} ${styles.ownerPermissionMobile}`}
+                >
                   Owners have full access. Permissions can’t be changed.{" "}
                 </h2>
                 <ul className={`${styles.disabled} ${styles.mobilePadding}`}>
@@ -586,20 +594,32 @@ const Permissions = () => {
                     loading={loading}
                     placeholder="Enter Role Name"
                     ref={roleNameInputRef}
-
                   />
                   {/* {errors.roleName && (
     <p style={{ color: "#F04438" }}>{errors.roleName}</p>
   )} */}
                   <div>
-                    <button className={`${styles.deleteButtonMobile}`} onClick={() => { setDeleteModal(true) }}>Delete Role</button>
+                    <button
+                      className={`${styles.deleteButtonMobile}`}
+                      onClick={() => {
+                        setDeleteModal(true);
+                      }}
+                    >
+                      Delete Role
+                    </button>
                   </div>
                 </div>
 
                 {/* <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} /> */}
 
-                <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}>POS Role Permissions</h2>
-                <ul className={` ${styles.mobilePadding} ${styles.internalContainer}`}>
+                <h2
+                  className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
+                >
+                  POS Role Permissions
+                </h2>
+                <ul
+                  className={` ${styles.mobilePadding} ${styles.internalContainer}`}
+                >
                   {permissions.map((permission, index) => (
                     <li key={index} className={styles.permissionItem}>
                       <label className={styles.permissionsSection}>
@@ -623,7 +643,10 @@ const Permissions = () => {
                     </li>
                   ))}
                 </ul>
-                <p ref={errorRef} style={{ color: "#F04438", textAlign: "center" }}>
+                <p
+                  ref={errorRef}
+                  style={{ color: "#F04438", textAlign: "center" }}
+                >
                   {errors.permissions}
                 </p>
               </div>
@@ -640,10 +663,11 @@ const Permissions = () => {
             onUpdateClick={handleDeleteRole}
             confirmButtonText="Delete Role"
             cancelButtonText="Keep Role"
-
             content={
               <>
-                <h3 className={styles.deleteModalTitle}>Deleting ‘{roleToEdit.name}’ role</h3>
+                <h3 className={styles.deleteModalTitle}>
+                  Deleting ‘{roleToEdit.name}’ role
+                </h3>
                 <p className={styles.deleteMessage}>
                   Are you sure you want to delete the role?
                 </p>

@@ -214,7 +214,7 @@ const ItemSales = () => {
                 customDate={customDate}
                 selectedOption={selectedOption}
                 onRowClick={handleRowClick}
-              /> 
+              />
             </>
           ) : (
             <NoSalesMessage

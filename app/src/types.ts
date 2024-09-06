@@ -175,26 +175,23 @@ export interface DishVariationTotals {
   totalQuantity: number;
   totalPriceWithVariants: number;
 }
-// ==== type for config
 
 export interface ConfigStaffMember {
   id: string;
-  displayName: string
-  firstName: string
-  lastName: string
-  passcode: string
-  roleID: string
-  roleName: string
-  description: string
-  displayImageURL:string
-  email:string
-  phoneNumber:string
-
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  passcode: string;
+  roleID: string;
+  roleName: string;
+  description: string;
+  displayImageURL: string;
+  email: string;
+  phoneNumber: string;
 }
 export interface IConfig {
-  enabled: boolean
-  idleTime: number
-  passcodeEnabled: boolean
-  staffMembers: ConfigStaffMember[]
+  enabled: boolean;
+  idleTime: number;
+  passcodeEnabled: boolean;
+  staffMembers: ConfigStaffMember[];
 }
-

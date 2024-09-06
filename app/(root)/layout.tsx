@@ -1,6 +1,6 @@
 import "../../app/globals.css";
 import "../../app/globals.scss";
-import 'react-modern-drawer/dist/index.css'
+import "react-modern-drawer/dist/index.css";
 import "react-step-progress-bar/styles.css";
 import SidebarMenuLayout from "../components/SidebarMenuLayout";
 import { Urbanist } from "next/font/google";
@@ -25,24 +25,22 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <ReportDateProvider>
         <UserProvider>
           <KitchenProvider>
-          <FormStepProvider>
-            <FormProvider>
-              <BannerProvider>
-            
-                <html lang="en" className={urbanist.className}>
+            <FormStepProvider>
+              <FormProvider>
+                <BannerProvider>
+                  <html lang="en" className={urbanist.className}>
                     <body>
                       <Navbar />
                       <main className="main">
                         <SidebarMenuLayout>{children}</SidebarMenuLayout>
                       </main>
                       <footer className="footer">
-                        © {new Date().getFullYear()} Swifti. All rights reserved.
+                        © {new Date().getFullYear()} Swifti. All rights
+                        reserved.
                       </footer>
                     </body>
                   </html>
-                 
-              </BannerProvider>
-               
+                </BannerProvider>
               </FormProvider>
             </FormStepProvider>
           </KitchenProvider>

@@ -5,51 +5,50 @@ import { FormContext } from "@/app/context/StaffContext";
 import { RoleInfo } from "@/app/src/types";
 import { HelpSvg } from "@/app/assets/svg/help";
 import { CustomRadio } from "../../../../../components/base/radio";
-import { Tooltip } from 'react-tooltip';
+import { Tooltip } from "react-tooltip";
 import { useKitchen } from "@/app/context/KitchenContext";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const EditUserRole = () => {
-  const { dispatch, getStaffRole, roles, currentStaff, updateStaffInFirebase, loadStaffForEdit } = useContext(FormContext)!;
+  const {
+    getStaffRole,
+    roles,
+    currentStaff,
+    updateStaffInFirebase,
+    loadStaffForEdit,
+  } = useContext(FormContext)!;
   const [error, setError] = useState<boolean>(false);
   const { updateUserRoleClicked, setUpdateUserRoleClicked } = useFormStep();
   const { kitchen } = useKitchen();
   const router = useRouter();
   const kitchenId = kitchen?.kitchenId ?? null;
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const nextSearchParams = new URLSearchParams(searchParams.toString());
   const handleGoForwardStep = async () => {
     if (currentStaff && currentStaff.roleID) {
       try {
-        if(searchParams?.get('type') === 'edit-role'){
-            router.back()
-          // nextSearchParams.delete("type");
-          // router.replace(`${pathname}?${nextSearchParams}`);
+        if (searchParams?.get("type") === "edit-role") {
+          router.back();
           await updateStaffInFirebase(currentStaff, kitchenId);
-          
         }
-        
       } catch (error) {
         console.error("Error updating staff:", error);
       }
     } else {
-      setError(true); // Show error if no role is selected
+      setError(true);
     }
   };
 
   const onChange = (value: string) => {
-
     const selectedRole = roles?.find((role: RoleInfo) => role.name === value);
     if (selectedRole) {
       if (currentStaff) {
         const updatedStaff = {
-          ...currentStaff, // Keep all existing values
+          ...currentStaff,
           roleName: selectedRole.name,
-          roleID: selectedRole.id // Overwrite with the new user role info
+          roleID: selectedRole.id,
         };
-        loadStaffForEdit(updatedStaff);     
-        setError(false); 
+        loadStaffForEdit(updatedStaff);
+        setError(false);
       }
     }
   };
@@ -78,22 +77,22 @@ export const EditUserRole = () => {
             <div className="relative" key={index}>
               <CustomRadio
                 label={item.name}
-                checked={currentStaff?.roleName === item.name} // Pass checked state based on currentStaff role
-                onChange={() => onChange(item.name)} // Trigger onChange when clicked
+                checked={currentStaff?.roleName === item.name}
+                onChange={() => onChange(item.name)}
                 icon={
                   <>
                     <a
-                      data-tooltip-id="my-tooltip" 
+                      data-tooltip-id="my-tooltip"
                       data-tooltip-html={`<div><p>${item.name}</p><p>${item.description}</p></div>`}
                       className="truncate"
                     >
                       <HelpSvg />
                     </a>
-                    <Tooltip 
-                      id="my-tooltip" 
-                      className="max-w-[320px]" 
+                    <Tooltip
+                      id="my-tooltip"
+                      className="max-w-[320px]"
                       place={"bottom"}
-                      positionStrategy={'fixed'}
+                      positionStrategy={"fixed"}
                     />
                   </>
                 }

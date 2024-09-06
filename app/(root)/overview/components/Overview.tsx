@@ -133,7 +133,7 @@ const Overview = () => {
                     customDate={customDate}
                     selectedOption={selectedOption}
                     className={allCategories[0] && "linkTable"}
-                  /> 
+                  />
                   {allCategories[0] && (
                     <div className={styles.linkToSeeAllContainer}>
                       <Link className={styles.link} href="/category-sales">

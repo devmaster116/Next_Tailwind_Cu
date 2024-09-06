@@ -4,61 +4,55 @@ import React from "react";
 import { ProgressBar, Step } from "react-step-progress-bar";
 
 interface ProgressProps {
-  stepIndex: number
+  stepIndex: number;
 }
 
 export function StepStatus({ stepIndex }: ProgressProps) {
   return (
     <div className="flex flex-col mb-0 lg:mb-10">
-            <ProgressBar
-                filledBackground="#4CA30D"
-                percent={stepIndex*25}
-              >
-                <Step transition="scale">
-                  {({ accomplished, index }: { accomplished: boolean; index: number }) => (
-                    <div
-                      className={`transitionStep ${accomplished ? "accomplished" : ""}`}
-                    >
-                    </div>
-                  )}
-                </Step>
-                <Step transition="scale" >
-                  {({ accomplished, index }: { accomplished: boolean; index: number }) => (
-                    <div
-                      className={`transitionStep ${accomplished ? "accomplished" : ""}`}
-                    >
-                      <div className="w-1 h-[10px] bg-white "></div>
-                    </div>
-                  )}
-                </Step>
-                <Step transition="scale">
-                  {({ accomplished, index }: { accomplished: boolean; index: number }) => (
-                    <div
-                      className={`transitionStep ${accomplished ? "accomplished" : ""}`}
-                    >
-                    <div className="w-1 h-[10px] bg-white "></div>
-                    </div>
-                  )}
-                </Step>
-                <Step transition="scale">
-                  {({ accomplished, index }: { accomplished: boolean; index: number }) => (
-                    <div
-                      className={`transitionStep ${accomplished ? "accomplished" : ""}`}
-                    >
-                  <div className="w-1 h-[10px] bg-white "></div>
-                    </div>
-                  )}
-                </Step>
-                <Step transition="scale">
-                  {({ accomplished, index }: { accomplished: boolean; index: number }) => (
-                    <div
-                      className={`transitionStep ${accomplished ? "accomplished" : ""}`}
-                    >
-                      {/* <div className="w-2 h-2 bg-white "></div> */}
-                    </div>
-                  )}
-                </Step>
-              </ProgressBar>
-      </div>
-  )
-} 
+      <ProgressBar filledBackground="#4CA30D" percent={stepIndex * 25}>
+        <Step transition="scale">
+          {({ accomplished }: { accomplished: boolean; index: number }) => (
+            <div
+              className={`transitionStep ${accomplished ? "accomplished" : ""}`}
+            ></div>
+          )}
+        </Step>
+        <Step transition="scale">
+          {({ accomplished }: { accomplished: boolean; index: number }) => (
+            <div
+              className={`transitionStep ${accomplished ? "accomplished" : ""}`}
+            >
+              <div className="w-1 h-[10px] bg-white "></div>
+            </div>
+          )}
+        </Step>
+        <Step transition="scale">
+          {({ accomplished }: { accomplished: boolean; index: number }) => (
+            <div
+              className={`transitionStep ${accomplished ? "accomplished" : ""}`}
+            >
+              <div className="w-1 h-[10px] bg-white "></div>
+            </div>
+          )}
+        </Step>
+        <Step transition="scale">
+          {({ accomplished }: { accomplished: boolean; index: number }) => (
+            <div
+              className={`transitionStep ${accomplished ? "accomplished" : ""}`}
+            >
+              <div className="w-1 h-[10px] bg-white "></div>
+            </div>
+          )}
+        </Step>
+        <Step transition="scale">
+          {({ accomplished }: { accomplished: boolean; index: number }) => (
+            <div
+              className={`transitionStep ${accomplished ? "accomplished" : ""}`}
+            ></div>
+          )}
+        </Step>
+      </ProgressBar>
+    </div>
+  );
+}

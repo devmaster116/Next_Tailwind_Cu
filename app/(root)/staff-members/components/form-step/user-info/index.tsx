@@ -17,10 +17,15 @@ type Props = {
 
 export const UserInfo = ({ key }: Props) => {
   const { state, dispatch } = useContext(FormContext)!;
-  const { nextClicked, setNextClicked, handleNextStep ,statusAddEditBtn,setStatusAddEditBtn,statusNickNameFlag, setStatusNickNameFlag} = useFormStep();
-  // const [statusNickNameFlag, setStatusNickNameFlag] = useState(false);
-
-  // const [statusAddEditBtn, setStatusAddEditBtn] = useState(false);
+  const {
+    nextClicked,
+    setNextClicked,
+    handleNextStep,
+    statusAddEditBtn,
+    setStatusAddEditBtn,
+    statusNickNameFlag,
+    setStatusNickNameFlag,
+  } = useFormStep();
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
     firstName: "",
@@ -30,49 +35,49 @@ export const UserInfo = ({ key }: Props) => {
     phoneNumber: "",
   });
 
-
   useEffect(() => {
-    if(state)
-    setNewUser({
-      firstName: state.firstName || "",
-      lastName: state.lastName || "",
-      displayName: state.displayName || "",
-      email: state.email || "",
-      phoneNumber: state.phoneNumber || "",
-    });
-    if(`${state?.firstName} ${state?.lastName.charAt(0)}`==state?.displayName){
+    if (state)
+      setNewUser({
+        firstName: state.firstName || "",
+        lastName: state.lastName || "",
+        displayName: state.displayName || "",
+        email: state.email || "",
+        phoneNumber: state.phoneNumber || "",
+      });
+    if (
+      `${state?.firstName} ${state?.lastName.charAt(0)}` == state?.displayName
+    ) {
       setStatusNickNameFlag(true);
     }
-    // else {
-    //   setStatusNickNameFlag(false);
-    // }
   }, [state]);
   useEffect(() => {
     if (!statusAddEditBtn) {
-      if(statusNickNameFlag) {
-        setNewUser((prevUser) => ({
+      if (statusNickNameFlag) {
+        setNewUser(prevUser => ({
           ...prevUser,
-          displayName:  
-            (prevUser.firstName && prevUser.lastName
+          displayName:
+            prevUser.firstName && prevUser.lastName
               ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
-              : ""), 
+              : "",
         }));
-      }
-      else {
-        setNewUser((prevUser) => ({
+      } else {
+        setNewUser(prevUser => ({
           ...prevUser,
-          displayName:  prevUser.displayName?prevUser.displayName: (prevUser.firstName && prevUser.lastName
+          displayName: prevUser.displayName
+            ? prevUser.displayName
+            : prevUser.firstName && prevUser.lastName
             ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
-            : "")
+            : "",
         }));
       }
     } else {
-      setNewUser((prevUser) => ({
+      setNewUser(prevUser => ({
         ...prevUser,
-        displayName: prevUser.displayName || 
+        displayName:
+          prevUser.displayName ||
           (prevUser.firstName && prevUser.lastName
             ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
-            : ""), 
+            : ""),
       }));
     }
   }, [statusAddEditBtn, newUser.firstName, newUser.lastName]);
@@ -92,17 +97,20 @@ export const UserInfo = ({ key }: Props) => {
       case "lastName":
         return value?.trim().length > 0 ? "" : "Please enter a valid name.";
       case "email":
-        return validateEmail(value) ? "" : "Please enter a valid email address.";
-      case "displayName":
-        if(statusAddEditBtn)
-          return value?.trim().length > 0 ? "" : "Please enter a valid nickname.";
-        if(!statusAddEditBtn)
-          return "";
-      case "phoneNumber":
-        if(value)
-        return validateMobileNumber(value)
+        return validateEmail(value)
           ? ""
-          : "Enter a valid mobile number containing 10 digits.";
+          : "Please enter a valid email address.";
+      case "displayName":
+        if (statusAddEditBtn)
+          return value?.trim().length > 0
+            ? ""
+            : "Please enter a valid nickname.";
+        if (!statusAddEditBtn) return "";
+      case "phoneNumber":
+        if (value)
+          return validateMobileNumber(value)
+            ? ""
+            : "Enter a valid mobile number containing 10 digits.";
       default:
         return "";
     }
@@ -120,9 +128,9 @@ export const UserInfo = ({ key }: Props) => {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setNewUser((prevUser) => ({ ...prevUser, [field]: value }));
+    setNewUser(prevUser => ({ ...prevUser, [field]: value }));
     const fieldError = validateField(field, value);
-    setErrors((prevErrors) => ({
+    setErrors(prevErrors => ({
       ...prevErrors,
       [field]: fieldError,
     }));
@@ -134,9 +142,10 @@ export const UserInfo = ({ key }: Props) => {
 
   const validateAndProceed = () => {
     if (!statusAddEditBtn) {
-      setNewUser((prevUser) => ({
+      setNewUser(prevUser => ({
         ...prevUser,
-        displayName: prevUser.displayName || 
+        displayName:
+          prevUser.displayName ||
           (prevUser.firstName && prevUser.lastName
             ? `${prevUser.firstName} ${prevUser.lastName.charAt(0)}`
             : ""),
@@ -165,7 +174,7 @@ export const UserInfo = ({ key }: Props) => {
             </p>
             <Input
               value={newUser.firstName}
-              handleInputChange={(e) =>
+              handleInputChange={e =>
                 handleInputChange("firstName", e.target.value)
               }
               error={errors.firstName}
@@ -179,7 +188,7 @@ export const UserInfo = ({ key }: Props) => {
             </p>
             <Input
               value={newUser.lastName}
-              handleInputChange={(e) =>
+              handleInputChange={e =>
                 handleInputChange("lastName", e.target.value)
               }
               error={errors.lastName}
@@ -190,50 +199,75 @@ export const UserInfo = ({ key }: Props) => {
         </div>
 
         <div className="flex flex-col mb-6 lg:mb-7 gap-1">
-              <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">Nick Name (Display Name)</p>
-              <div className="flex flex-row w-full" style={{ boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)' }}>
-                <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
-                  <input
-                    type="text"
-                    className={`${statusAddEditBtn?'bg-white':'bg-gray-50'} border  ${errors.displayName?'border-red-500':'border-gray-300 focus:!border-sky-500'}  focus:outline-none rounded-l-xl px-[14px] py-[10px]   w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
-                    style={{ 
-                      boxShadow: '0 1px 2px 0 rgba(16, 24, 40, 0.05)'
-                     }}
-                     value={
-                      newUser.displayName ||
-                      (!statusAddEditBtn
-                        ? (`${newUser.firstName} ${newUser.lastName.charAt(0)}`.trim() 
-                            ? `${newUser.firstName} ${newUser.lastName.charAt(0)}` 
-                            : "")
-                        : "")
-                    }
-               
-                     placeholder= {errors.displayName ? 'Enter Nick Name' : 'Default display name'}
-                     disabled={!statusAddEditBtn}
-                     onChange={(e) => handleInputChange("displayName", e.target.value)}
+          <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
+            Nick Name (Display Name)
+          </p>
+          <div
+            className="flex flex-row w-full"
+            style={{ boxShadow: "0 1px 2px 0 rgba(16, 24, 40, 0.05)" }}
+          >
+            <div className="flex-grow flex flex-col h-[44px] lg:h-[48px]">
+              <input
+                type="text"
+                className={`${
+                  statusAddEditBtn ? "bg-white" : "bg-gray-50"
+                } border  ${
+                  errors.displayName
+                    ? "border-red-500"
+                    : "border-gray-300 focus:!border-sky-500"
+                }  focus:outline-none rounded-l-xl px-[14px] py-[10px]   w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
+                style={{
+                  boxShadow: "0 1px 2px 0 rgba(16, 24, 40, 0.05)",
+                }}
+                value={
+                  newUser.displayName ||
+                  (!statusAddEditBtn
+                    ? `${newUser.firstName} ${newUser.lastName.charAt(
+                        0
+                      )}`.trim()
+                      ? `${newUser.firstName} ${newUser.lastName.charAt(0)}`
+                      : ""
+                    : "")
+                }
+                placeholder={
+                  errors.displayName
+                    ? "Enter Nick Name"
+                    : "Default display name"
+                }
+                disabled={!statusAddEditBtn}
+                onChange={e => handleInputChange("displayName", e.target.value)}
+              />
+              {errors.displayName && (
+                <div className="absolute right-[10px] top-[15px]">
+                  <Image
+                    src="/icons/error.svg"
+                    height={16}
+                    width={16}
+                    alt="Business Details icon"
                   />
-                      {errors.displayName && (
-                        <div className='absolute right-[10px] top-[15px]'>
-                          <Image
-                            src="/icons/error.svg"
-                            height={16}
-                            width={16}
-                            alt="Business Details icon"
-                          />
-                        </div>
-                      )}
                 </div>
+              )}
+            </div>
 
-                <div className="flex cursor-pointer items-center justify-center px-[18px] py-[10px] border border-gray-300 h-[44px] lg:h-[48px] w-[64px] lg:w-[68px] rounded-r-xl"
-                onClick={handleEnableInputEdit}
-                >
-                  <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">Edit</p>
-                </div>
-              </div>
-              <p className={`${errors.displayName?'text-red-500':'text-gray-600'} text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-normal `}>
-                {errors.displayName ? errors.displayName : 'If not set, the default is the first name and last name initial.'}
+            <div
+              className="flex cursor-pointer items-center justify-center px-[18px] py-[10px] border border-gray-300 h-[44px] lg:h-[48px] w-[64px] lg:w-[68px] rounded-r-xl"
+              onClick={handleEnableInputEdit}
+            >
+              <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">
+                Edit
               </p>
             </div>
+          </div>
+          <p
+            className={`${
+              errors.displayName ? "text-red-500" : "text-gray-600"
+            } text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-normal `}
+          >
+            {errors.displayName
+              ? errors.displayName
+              : "If not set, the default is the first name and last name initial."}
+          </p>
+        </div>
 
         <div className="flex flex-col mb-6 lg:mb-7 gap-1">
           <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
@@ -241,7 +275,7 @@ export const UserInfo = ({ key }: Props) => {
           </p>
           <Input
             value={newUser.email}
-            handleInputChange={(e) => handleInputChange("email", e.target.value)}
+            handleInputChange={e => handleInputChange("email", e.target.value)}
             error={errors.email}
             placeholder="Enter email address"
             inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
@@ -256,7 +290,7 @@ export const UserInfo = ({ key }: Props) => {
             value={newUser.phoneNumber}
             type="number"
             maxLength={10}
-            handleInputChange={(e) =>
+            handleInputChange={e =>
               handleInputChange("phoneNumber", e.target.value)
             }
             error={errors.phoneNumber}

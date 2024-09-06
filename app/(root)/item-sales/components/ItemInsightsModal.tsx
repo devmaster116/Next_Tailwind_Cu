@@ -94,7 +94,7 @@ const ItemInsightsModal = ({
             )}
             className="dataInsightsTable"
           />
-        )} 
+        )}
       </div>
     </div>
   );

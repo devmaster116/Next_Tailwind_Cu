@@ -1,10 +1,15 @@
-import React, { MouseEventHandler, useContext, useState, forwardRef, Ref, useEffect } from "react";
+import React, {
+  MouseEventHandler,
+  useContext,
+  forwardRef,
+  useEffect,
+} from "react";
 import styles from "./ViewStaffModal.module.scss";
 import { Avatar } from "../../../components/base/avatar";
 import { FormContext } from "@/app/context/StaffContext";
 import { CancelSvg } from "@/app/assets/svg/cancel";
 import { twMerge } from "tailwind-merge";
-import {  useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { IConfig } from "@/app/src/types";
 interface ViewStaffModalProps {
   show: boolean;
@@ -17,24 +22,23 @@ interface ViewStaffModalProps {
 }
 
 const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
-  ({ show, title, onClose, content, isExiting, setIsExiting,staffList }, ref) => {
-  const { currentStaff,loadStaffForEdit } = useContext(FormContext)!;
+  ({ show, onClose, content, isExiting, setIsExiting, staffList }, ref) => {
+    const { currentStaff, loadStaffForEdit } = useContext(FormContext)!;
 
-  const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
 
     const handleClose = () => {
       setIsExiting(true);
       setTimeout(onClose, 500);
     };
     useEffect(() => {
-      if(currentStaff) return;
-      const id = searchParams.get('id');
-      if(id){
+      if (currentStaff) return;
+      const id = searchParams.get("id");
+      if (id) {
         const staffMembers = staffList[0].staffMembers;
         const filteredMembers = staffMembers.filter(member => member.id === id);
-        loadStaffForEdit(filteredMembers[0])
+        loadStaffForEdit(filteredMembers[0]);
       }
-
     }, [searchParams]);
 
     if (!show) {
@@ -56,7 +60,7 @@ const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
             <Avatar
               icon={<CancelSvg />}
               classOverride={{
-                container: 'absolute left-4 top-4',
+                container: "absolute left-4 top-4",
               }}
               onClick={handleClose}
             />
@@ -71,4 +75,3 @@ const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
 ViewStaffModal.displayName = "ViewStaffModal";
 
 export default ViewStaffModal;
-

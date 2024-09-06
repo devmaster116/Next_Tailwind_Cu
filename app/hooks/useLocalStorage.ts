@@ -19,5 +19,5 @@ export function useLocalStorage() {
     getValueFromLocalStorage: getValue,
     saveValueToLocalStorage: setValue,
     removeValueFromLocalStorage: removeValue,
-  }
+  };
 }

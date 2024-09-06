@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import styles from "./customModal.module.scss";
 import { twMerge } from "tailwind-merge";
 
@@ -21,10 +21,7 @@ const CustomModalFooter = ({
     <>
       {type === "delete" && (
         <>
-          <div className={twMerge(
-            styles.deleteModalFooter,
-            'flex-col'
-          )}>
+          <div className={twMerge(styles.deleteModalFooter, "flex-col")}>
             <button className={styles.closeButton} onClick={onClose}>
               {cancelButtonText ? cancelButtonText : "Keep User"}
             </button>
