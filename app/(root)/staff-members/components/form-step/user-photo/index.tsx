@@ -20,7 +20,7 @@ export const UserPhoto = () => {
     <div className="animate-fade-in-up ">
       <Form.Header
         title="Add Profile Photo"
-        description={`You can add a photo for ${state.firstName} which will appear in the POS and in your admin potal.`}
+        description={`You can add a photo for ${state.firstName} which will appear in the POS and in your admin portal.`}
       />
       <div className="mt-6 flex flex-col ">
         <ImageUpload />
