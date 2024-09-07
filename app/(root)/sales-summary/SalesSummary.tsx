@@ -139,12 +139,12 @@ const SalesSummary = () => {
 
   const takeAwayAverageItems =
     takeAwayItemCount && total_take_away_orders
-      ? Math.round(takeAwayItemCount / total_take_away_orders)
+      ? (takeAwayItemCount / total_take_away_orders).toFixed(2)
       : 0;
 
   const dineInAverageItems =
     dineInItemCount && total_dine_in_orders
-      ? Math.round(dineInItemCount / total_dine_in_orders)
+      ? (dineInItemCount / total_dine_in_orders).toFixed(2)
       : 0;
 
   return (
