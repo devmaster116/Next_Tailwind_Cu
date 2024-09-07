@@ -11,8 +11,6 @@ import {
   Categories,
   DishByOrderType,
   Dishes,
-  SelectedVariantsForDishData,
-  Dishes,
   OrderHourData,
   OrderMultiDayData,
   SelectedVariantsForDishData,

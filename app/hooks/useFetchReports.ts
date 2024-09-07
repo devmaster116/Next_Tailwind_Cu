@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { functions, httpsCallable } from "@/firebase/config";
 import {
   formatDate,
@@ -11,21 +11,12 @@ import {
   SelectedVariantsForDishData,
 } from "../src/types";
 import { useReportDataContext } from "../context/ReportDataContext";
-import { useReportDate } from "../context/ReportDateContext";
-import useFetchSalesTrendsData from "./useFetchSalesTrendsData";
 import { DateRangeOptions } from "../(root)/overview/components/utils/DateRangeSelectorModal";
 
 interface SelectedVariantsForDishResponseData {
   selectedVariantsForDish: SelectedVariantsForDishData[];
   status: string;
   code: number;
-}
-
-interface KitchenData {
-  categories: any[];
-  dishes: any[];
-  dishByOrderType: any[];
-  response: any;
 }
 
 const useFetchReports = (
