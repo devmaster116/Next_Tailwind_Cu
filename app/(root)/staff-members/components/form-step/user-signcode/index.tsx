@@ -51,10 +51,9 @@ export const UserSignCode = () => {
       setError(true);
     } else {
       setError(false);
+      setStatusAddStaff(true); //
       nextSearchParams.delete("type");
       router.replace(`${pathname}?${nextSearchParams}`);
-      setStatusAddStaff(true); //
-      setCurrentStep(1);
 
       try {
         if (!kitchenId) {
@@ -79,6 +78,8 @@ export const UserSignCode = () => {
             staffMembers: [...staffMembers, { ...state, id: uuidv4() }],
           },
         });
+     
+        setCurrentStep(1);
         resetForm();
         console.log("New staff member added successfully!");
       } catch (error) {
