@@ -1,0 +1,79 @@
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+
+  @media only screen and (max-width: 961px) {
+    display: none;
+  }
+}
+
+.salesDataContainer {
+  background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  padding: 16px 16px 6px 16px;
+
+  .chartTitle {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+
+    h3 {
+      color: var(--gray-800);
+      font-weight: 600;
+
+      @media only screen and (min-width: 600px) {
+        font-size: 18px;
+      }
+    }
+
+    h4 {
+      font-weight: 400;
+
+      @media only screen and (min-width: 600px) {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .barChart {
+    width: 100%;
+    position: relative;
+    z-index: 0;
+
+    &:first-child {
+      border-bottom: 1px solid var(--gray-200);
+    }
+  }
+
+  .totalsRow {
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    margin: 0px -16px 0px;
+    width: calc(100% + 32px);
+    padding: 6px 16px 0px 16px;
+
+    .emptyColumn {
+      flex: 2 1;
+    }
+
+    .countTotalColumn,
+    .netTotalColumn {
+      font-size: 18px;
+      flex: 1 1;
+    }
+
+    .countTotalColumn {
+      text-align: center;
+    }
+
+    .netTotalColumn {
+      text-align: right;
+    }
+  }
+}
+
+.spinner {
+  margin: 30px;
+  justify-content: center;
+}

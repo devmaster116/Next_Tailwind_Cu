@@ -17,6 +17,11 @@ import { useReportDate } from "@/app/context/ReportDateContext";
 import { removeGst } from "@/app/components/Auth/utils/helper";
 
 const CategorySales = () => {
+  const [noSales, setNoSales] = useState<boolean>(false);
+  const { kitchen } = useKitchen();
+
+  const kitchenId = kitchen?.kitchenId ?? null;
+
   const {
     reportStartDate,
     setReportStartDate,
@@ -24,12 +29,9 @@ const CategorySales = () => {
     setReportEndDate,
     selectedOption,
     setSelectedOption,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
   } = useReportDate();
-
-  const [noSales, setNoSales] = useState<boolean>(false);
-  const { kitchen } = useKitchen();
-
-  const kitchenId = kitchen?.kitchenId ?? null;
 
   const {
     loading,
@@ -40,9 +42,11 @@ const CategorySales = () => {
     advancedReportingError,
   } = useFetchReports(
     kitchenId,
+    selectedOption,
     reportStartDate,
     reportEndDate,
-    selectedOption
+    previousReportStartDateRef,
+    previousReportEndDateRef
   );
 
   const [categoryStats, setCategoryStats] = useState<{

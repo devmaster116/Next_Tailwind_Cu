@@ -11,7 +11,10 @@ import {
   Categories,
   DishByOrderType,
   Dishes,
+  OrderHourData,
+  OrderMultiDayData,
   SelectedVariantsForDishData,
+  Totals,
 } from "../src/types";
 
 interface ReportDataContextType {
@@ -35,6 +38,14 @@ interface ReportDataContextType {
   setSelectedVariants: Dispatch<SetStateAction<SelectedVariantsForDishData[]>>;
   dishByOrderType: DishByOrderType[];
   setDishByOrderType: Dispatch<React.SetStateAction<DishByOrderType[]>>;
+  hourlyDataForTakeAwayAndDineIn: OrderHourData[] | undefined;
+  setHourlyDataForTakeAwayAndDineIn: Dispatch<SetStateAction<OrderHourData[]>>;
+  multiDayDataForTakeAwayAndDineIn: OrderMultiDayData[] | undefined;
+  setMultiDayDataForTakeAwayAndDineIn: Dispatch<
+    SetStateAction<OrderMultiDayData[] | undefined>
+  >;
+  dineInTakeAwayTotals: Totals | null;
+  setDineInTakeAwayTotals: Dispatch<React.SetStateAction<Totals | null>>;
 }
 
 const ReportDataContext = createContext<ReportDataContextType | undefined>(
@@ -55,6 +66,14 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
     SelectedVariantsForDishData[]
   >([]);
   const [dishByOrderType, setDishByOrderType] = useState<DishByOrderType[]>([]);
+  const [hourlyDataForTakeAwayAndDineIn, setHourlyDataForTakeAwayAndDineIn] =
+    useState<OrderHourData[]>([]);
+  const [
+    multiDayDataForTakeAwayAndDineIn,
+    setMultiDayDataForTakeAwayAndDineIn,
+  ] = useState<OrderMultiDayData[]>();
+  const [dineInTakeAwayTotals, setDineInTakeAwayTotals] =
+    useState<Totals | null>(null);
 
   return (
     <ReportDataContext.Provider
@@ -79,6 +98,12 @@ export const ReportDataProvider = ({ children }: { children: ReactNode }) => {
         setSelectedVariants,
         dishByOrderType,
         setDishByOrderType,
+        hourlyDataForTakeAwayAndDineIn,
+        setHourlyDataForTakeAwayAndDineIn,
+        multiDayDataForTakeAwayAndDineIn,
+        setMultiDayDataForTakeAwayAndDineIn,
+        dineInTakeAwayTotals,
+        setDineInTakeAwayTotals,
       }}
     >
       {children}

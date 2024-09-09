@@ -114,6 +114,19 @@ export default function Sidebar({ show, setter }: SidebarProps) {
                   />
                 }
               />
+              <MenuItem
+                name="Sales Trends"
+                route="/sales-trends"
+                icon={
+                  <Image
+                    className={styles.icon}
+                    src="/icons/bar-chart-square-up.svg"
+                    height={18}
+                    width={18}
+                    alt="Bar chart square icon"
+                  />
+                }
+              />
             </div>
           </div>
           {kitchen?.accessManagementEnabled && (

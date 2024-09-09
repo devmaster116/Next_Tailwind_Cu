@@ -1,5 +1,13 @@
 "use client";
-import { createContext, useState, ReactNode, useContext, useMemo } from "react";
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useMemo,
+  useRef,
+} from "react";
+import { DateRangeOptions } from "../(root)/overview/components/utils/DateRangeSelectorModal";
 
 interface ReportDateContextType {
   reportStartDate: Date;
@@ -8,6 +16,8 @@ interface ReportDateContextType {
   setReportEndDate: (date: Date) => void;
   selectedOption: string;
   setSelectedOption: (option: string) => void;
+  previousReportEndDateRef: React.MutableRefObject<Date | null>;
+  previousReportStartDateRef: React.MutableRefObject<Date | null>;
 }
 
 const ReportDateContext = createContext<ReportDateContextType | undefined>(
@@ -17,7 +27,11 @@ const ReportDateContext = createContext<ReportDateContextType | undefined>(
 export const ReportDateProvider = ({ children }: { children: ReactNode }) => {
   const [reportStartDate, setReportStartDate] = useState<Date>(new Date());
   const [reportEndDate, setReportEndDate] = useState<Date>(new Date());
-  const [selectedOption, setSelectedOption] = useState<string>("Today");
+  const [selectedOption, setSelectedOption] = useState<string>(
+    DateRangeOptions.Today
+  );
+  const previousReportEndDateRef = useRef<Date | null>(reportEndDate);
+  const previousReportStartDateRef = useRef<Date | null>(reportStartDate);
 
   const contextValue = useMemo(
     () => ({
@@ -27,6 +41,8 @@ export const ReportDateProvider = ({ children }: { children: ReactNode }) => {
       setReportEndDate,
       selectedOption,
       setSelectedOption,
+      previousReportEndDateRef,
+      previousReportStartDateRef,
     }),
     [reportStartDate, reportEndDate, selectedOption]
   );

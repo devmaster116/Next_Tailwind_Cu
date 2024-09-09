@@ -21,6 +21,16 @@ export const formatReadableDate = (date: Date | null): string => {
   return `${day} ${month} '${year}`;
 };
 
+export const convertToFullDate = (dateString: string): Date => {
+  const dateParts = dateString.split("-");
+
+  const year = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[2], 10);
+
+  return new Date(year, month, day);
+};
+
 export const getTopFive = (items: KitchenItem[]): KitchenItem[] => {
   const sortedItems = items.sort((a, b) => b.item_count - a.item_count);
   return sortedItems.slice(0, 5);

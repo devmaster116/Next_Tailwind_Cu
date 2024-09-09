@@ -29,6 +29,8 @@ const SalesSummary = () => {
     setReportEndDate,
     selectedOption,
     setSelectedOption,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
   } = useReportDate();
 
   const {
@@ -41,9 +43,11 @@ const SalesSummary = () => {
     overviewReportFunctionError,
   } = useFetchReports(
     kitchenId,
+    selectedOption,
     reportStartDate,
     reportEndDate,
-    selectedOption
+    previousReportStartDateRef,
+    previousReportEndDateRef
   );
 
   useEffect(() => {
