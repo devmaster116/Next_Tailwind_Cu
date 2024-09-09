@@ -175,7 +175,9 @@ const SalesTrends = () => {
                   <Tooltip
                     formatter={value => `$${value}`}
                     labelFormatter={value =>
-                      `${formatReadableDate(convertToFullDate(value))}`
+                      isHourlyData
+                        ? formatTime(value)
+                        : `${formatReadableDate(convertToFullDate(value))}`
                     }
                   />
                   <Bar
