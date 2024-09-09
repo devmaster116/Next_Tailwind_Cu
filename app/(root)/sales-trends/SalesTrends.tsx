@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { useReportDate } from "@/app/context/ReportDateContext";
@@ -19,7 +18,10 @@ import "../overview/components/DatePicker.scss";
 import { useKitchen } from "@/app/context/KitchenContext";
 import styles from "./SalesTrends.module.scss";
 import useFetchSalesTrendsData from "@/app/hooks/useFetchSalesTrendsData";
-import { formatReadableDate } from "../overview/components/utils/formatDate";
+import {
+  convertToFullDate,
+  formatReadableDate,
+} from "../overview/components/utils/formatDate";
 import DataTable from "../overview/components/DataTable";
 import { formatTime } from "./utils/formatTime";
 import { formatDateToDayOfWeek } from "./utils/formatDateToDayOfWeek";
@@ -97,13 +99,10 @@ const SalesTrends = () => {
     totalDineInNetSales,
   } = (dineInTakeAwayTotals as Totals) || {};
 
-  console.log("==>", transformedData);
-
   const evenlySpacedDates =
     !isHourlyData && transformedData && transformedData.length > 10
       ? getEvenlySpacedDates(transformedData as OrderMultiDayData[], 8)
       : [];
-  console.log("evenlySpacedDates", evenlySpacedDates);
   return (
     <div>
       <DateRangeSelectorModal
@@ -173,7 +172,12 @@ const SalesTrends = () => {
                     tickLine={false}
                     stroke="#344054"
                   />
-                  <Tooltip />
+                  <Tooltip
+                    formatter={value => `$${value}`}
+                    labelFormatter={value =>
+                      `${formatReadableDate(convertToFullDate(value))}`
+                    }
+                  />
                   <Bar
                     dataKey="Take Away Sales"
                     stackId="a"

@@ -56,8 +56,6 @@ const useFetchSalesTrendsData = (
   }
 
   useEffect(() => {
-    console.log("UFSTD");
-
     const fetchHourlyData = async () => {
       try {
         const hourlyDataForTakeAwayAndDineInResponse = httpsCallable(

@@ -33,12 +33,6 @@ const Overview = () => {
     previousReportEndDateRef,
   } = useReportDate();
 
-  console.log("OVERVIEW");
-  console.log(reportStartDate);
-  console.log(previousReportEndDateRef);
-  console.log(reportEndDate);
-  console.log(previousReportEndDateRef);
-
   const {
     loading,
     error,
