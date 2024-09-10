@@ -7,6 +7,7 @@ import Input from "@/app/components/Input";
 import Image from "next/image";
 
 import {
+  capitalizeFirstLetter,
   validateEmail,
   validateMobileNumber,
 } from "@/app/components/Auth/utils/helper";
@@ -175,7 +176,10 @@ export const UserInfo = ({ key }: Props) => {
             <Input
               value={newUser.firstName}
               handleInputChange={e =>
-                handleInputChange("firstName", e.target.value)
+                handleInputChange(
+                  "firstName",
+                  capitalizeFirstLetter(e.target.value)
+                )
               }
               error={errors.firstName}
               placeholder="Enter first name"
@@ -189,7 +193,10 @@ export const UserInfo = ({ key }: Props) => {
             <Input
               value={newUser.lastName}
               handleInputChange={e =>
-                handleInputChange("lastName", e.target.value)
+                handleInputChange(
+                  "lastName",
+                  capitalizeFirstLetter(e.target.value)
+                )
               }
               error={errors.lastName}
               placeholder="Enter last name"

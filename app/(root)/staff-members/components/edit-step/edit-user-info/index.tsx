@@ -8,6 +8,7 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import {
+  capitalizeFirstLetter,
   validateEmail,
   validateMobileNumber,
 } from "@/app/components/Auth/utils/helper";
@@ -179,7 +180,7 @@ export const EditUserInfo = ({ key }: Props) => {
             <Input
               value={newUser.firstName}
               handleInputChange={e =>
-                handleInputChange("firstName", e.target.value)
+                handleInputChange("firstName", capitalizeFirstLetter(e.target.value))
               }
               error={errors.firstName}
               loading={loading}
@@ -194,7 +195,7 @@ export const EditUserInfo = ({ key }: Props) => {
             <Input
               value={newUser.lastName}
               handleInputChange={e =>
-                handleInputChange("lastName", e.target.value)
+                handleInputChange("lastName", capitalizeFirstLetter(e.target.value))
               }
               error={errors.lastName}
               loading={loading}
