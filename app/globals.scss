@@ -55,10 +55,10 @@
   --gray-800: #3f3f3f;
   --gray-900: #353435;
 
-  --error-50: #FEF3F2;
+  --error-50: #fef3f2;
   --error-300: #fda29b;
   --error-500: #f04438;
-  --error-700: #B42318;
+  --error-700: #b42318;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -98,8 +98,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  -webkit-tap-highlight-color: transparent!important;
-
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 body {
@@ -163,6 +162,7 @@ body {
 .footer {
   align-items: center;
   background-color: #fff;
+  border-top: 1px solid var(--gray-200);
   display: flex;
   color: var(--gray-500);
   justify-content: center;
@@ -214,16 +214,4 @@ button {
   padding: 0;
   margin: 0;
   outline: none;
-}
-
-.contentArea {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  width: 100vw; /* Adjust this to ensure proper width for the content area */
-  min-height: calc(100vh - 190px);
-  @media (min-width: 768px) {
-    min-height: calc(100vh - 190px);
-    width: 100%; /* Full width on larger screens */
-  }
 }
