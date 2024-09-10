@@ -1,7 +1,9 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import styles from "./customModal.module.scss";
 import Image from "next/image";
 import CustomModalFooter from "./customModalFooter";
+import { Avatar } from "./base/avatar";
+import { CancelSvg } from "../assets/svg/cancel";
 
 const CustomModal = ({
   show,
@@ -15,12 +17,12 @@ const CustomModal = ({
   confirmButtonText,
 }: {
   show: boolean;
-  onClose: MouseEventHandler;
+  onClose: () => void;
   title: string;
   content: React.ReactElement;
   cancelButtonText?: string;
   confirmButtonText?: string;
-  onUpdateClick: MouseEventHandler;
+  onUpdateClick: () => void;
   type?: string;
   updateButtonText?: string;
 }) => {
@@ -46,17 +48,15 @@ const CustomModal = ({
                   alt="Close Button"
                 />
               </div>
-              <button className={styles.titleCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={10}
-                  width={10}
-                  alt="Close Button"
-                />
-              </button>
+              <Avatar
+                icon={<CancelSvg width={14} height={14} color="#3F3F3F" />}
+                classOverride={{
+                  icon: "w-10 h-10 border rounded-md",
+                }}
+                onClick={onClose}
+              />
             </div>
-            <div className={styles.modalContent}>{content}</div>
+            <div className={`${styles.modalContent}`}>{content}</div>
             <CustomModalFooter
               updateButtonText={updateButtonText}
               confirmButtonText={confirmButtonText}

@@ -1,12 +1,14 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import styles from "./Sidebar.module.scss";
 import Image from "next/image";
 import LogoutButton from "./Auth/LogoutButton";
 import { useUser } from "../context/UserContext";
 import { useKitchen } from "../context/KitchenContext";
-
+import { useBanner } from "../context/BannerContext";
+import { useFormStep } from "../hooks/useFormStep";
+import { usePathname } from "next/navigation";
 interface MenuItemProps {
   icon: React.ReactNode;
   name: string;
@@ -20,10 +22,17 @@ interface SidebarProps {
 
 export default function Sidebar({ show, setter }: SidebarProps) {
   const pathname = usePathname();
-
   const { user } = useUser();
   const { kitchen } = useKitchen();
+  const { banner, setBanner } = useBanner();
+  const { statusAddStaff, setStatusAddStaff } = useFormStep();
 
+  useEffect(() => {
+    if (!pathname.includes("/stuff-members")) {
+      setBanner(false);
+      setStatusAddStaff(false);
+    }
+  }, [pathname]);
   const className = `${styles.sidebar} ${
     show ? styles.sidebarShow : styles.sidebarHide
   }`;
@@ -140,6 +149,19 @@ export default function Sidebar({ show, setter }: SidebarProps) {
                     <Image
                       className={styles.icon}
                       src="/icons/permissions.svg"
+                      height={18}
+                      width={18}
+                      alt="Business Details icon"
+                    />
+                  }
+                />
+                <MenuItem
+                  name="Staff Members"
+                  route="/staff-members"
+                  icon={
+                    <Image
+                      className={styles.icon}
+                      src="/icons/user.svg"
                       height={18}
                       width={18}
                       alt="Business Details icon"

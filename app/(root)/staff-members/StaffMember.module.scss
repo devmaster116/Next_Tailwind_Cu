@@ -1,0 +1,488 @@
+.pageTitle {
+  margin: 16px 0px 20px 0px;
+  margin-top: 40px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  color: var(--gray-900);
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+
+    .pageTitle {
+      font-size: 18px;
+      line-height: 28px;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+  }
+}
+
+.parentContainer {
+  background-color: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  margin-top: 40px;
+  max-width: 553px;
+
+  @media only screen and (max-width: 600px) {
+    margin-top: 12px;
+  }
+}
+
+.buttonPrimary {
+  background-color: var(--primary-purple-600) !important;
+  color: #fff !important;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+
+  span {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media only screen and (max-width: 600px) {
+    margin-block: 20px;
+  }
+}
+
+.freshpageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobilePadding {
+  padding-inline: 0px;
+
+  @media only screen and (max-width: 600px) {
+    padding-inline: 20px;
+  }
+}
+
+.mobileDivider {
+  border-bottom: none;
+
+  @media only screen and (max-width: 600px) {
+    border-bottom: 1px solid #eaecf0;
+    padding-bottom: 8px;
+  }
+}
+
+.subContainer {
+  border-bottom: 1px solid var(--gray-200);
+  padding: 15px;
+}
+
+.editText {
+  color: var(--primary-purple-700);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.titleTextContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button_container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ownershipButton {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #344054;
+  background-color: #f2f4f7;
+  padding: 4px 12px 4px 10px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 500;
+
+  &:disabled {
+    cursor: auto;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.commonTitle {
+  font-size: 16px;
+  font-weight: 700;
+  padding-top: 32px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+    font-weight: 700;
+    padding-top: 24px;
+  }
+}
+
+.titleText {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 8px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.headerText {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.ownerPermissionMobile {
+  @media only screen and (max-width: 600px) {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 20px !important;
+  }
+}
+
+.bodyText {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+  }
+}
+
+.deleteButtonMobile {
+  display: none;
+  padding: 12px 20px;
+  background: var(--error-50);
+  color: var(--error-700);
+  border: none;
+  margin-top: 14px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+
+  &:hover {
+    background: var(--gray-200);
+  }
+
+  @media only screen and (max-width: 600px) {
+    display: block;
+  }
+}
+
+.emailVerificationText {
+  color: var(--gray-400);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  pointer-events: none;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+.button {
+  padding: 16px;
+  color: var(--primary-purple-700);
+  font-weight: 600;
+  font-size: 16px;
+
+  &:hover {
+    color: var(--primary-purple-600);
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 14px;
+  }
+}
+
+@mixin input-styles($border-color) {
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  font-size: 16px;
+  gap: 8px;
+  height: 44px;
+  margin-bottom: 6px;
+  padding: 10px 14px 10px 14px;
+  width: 100%;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 680px;
+  margin: auto;
+
+  .roleHeading {
+    font-size: 16px;
+  }
+
+  .warningMsg {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    margin-block: 6px;
+  }
+
+  .inputLabelsection {
+    margin-bottom: 26px;
+
+    label {
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    @media only screen and (max-width: 600px) {
+      padding-inline: 20px;
+      margin-bottom: 24px;
+    }
+  }
+
+  .ownerpermission {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #344054;
+    margin-bottom: 6px;
+  }
+
+  .permissionsSection {
+    .name {
+      font-size: 18px;
+      color: var(--gray-700);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .description {
+      font-size: 16px;
+      color: var(--gray-600);
+      font-weight: 400;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    gap: 6px;
+
+    .roleHeading {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .warningMsg {
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: 0px;
+      margin-bottom: 0px;
+    }
+
+    .ownerpermission {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .permissionsSection {
+      -webkit-tap-highlight-color: transparent;
+
+      .name {
+        font-size: 16px;
+      }
+      .description {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.deleteModalTitle {
+  font-size: 18px;
+  font-weight: 600;
+  list-style: 28px;
+  color: #353435;
+}
+
+.deleteMessage {
+  font-size: 14px;
+  font-weight: 400;
+  list-style: 20px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.description {
+  font-size: 14px;
+  font-weight: 400;
+  list-style: 20px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+  color: #344054;
+}
+
+.permissionItem {
+  list-style: none;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--gray-200);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.permissionItem label {
+  display: flex;
+  justify-content: space-between;
+  padding-block: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px;
+  min-width: 34px;
+  min-height: 20px;
+  margin-left: 1rem;
+
+  @media only screen and (max-width: 600px) {
+    width: 44px;
+    height: 24px;
+    min-width: 44px;
+    min-height: 24px;
+  }
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+
+  @media only screen and (max-width: 600px) {
+  }
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+
+  @media only screen and (max-width: 600px) {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(28px);
+
+  @media only screen and (max-width: 600px) {
+    transform: translateX(20px);
+  }
+}
+
+.readOnlyInput {
+  padding: 15px;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 18px;
+  opacity: 1;
+  background: var(--gray-50);
+  box-sizing: border-box;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-500);
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+
+  &:disabled,
+  &:read-only {
+    background: var(--gray-50);
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 16px;
+  }
+}
+
+.disabled {
+  pointer-events: not-allowed;
+  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.5);
+}

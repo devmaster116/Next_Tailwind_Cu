@@ -156,6 +156,7 @@ export interface RoleInfo {
   access: string;
   staff: number;
   name: string;
+  description: string;
   permissions: Permission[];
 }
 
@@ -184,6 +185,26 @@ export interface ItemInsightsData {
 export interface DishVariationTotals {
   totalQuantity: number;
   totalPriceWithVariants: number;
+}
+
+export interface ConfigStaffMember {
+  id: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  passcode: string;
+  roleID: string;
+  roleName: string;
+  description: string;
+  displayImageURL: string;
+  email: string;
+  phoneNumber: string;
+}
+export interface IConfig {
+  enabled: boolean;
+  idleTime: number;
+  passcodeEnabled: boolean;
+  staffMembers: ConfigStaffMember[];
 }
 
 export interface DishByOrderType {

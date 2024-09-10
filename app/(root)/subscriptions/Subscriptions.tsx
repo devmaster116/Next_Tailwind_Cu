@@ -11,7 +11,7 @@ import {
   ActiveSubscriptionDetails,
   ChosenSubscriptionDetails,
 } from "@/app/src/types";
-import { capitalizeFirstLetter } from "../overview/components/utils/CapitalizeFirstLetter";
+import { capitalizeFirstLetter } from "@/app/components/Auth/utils/helper";
 import LightLoader from "@/app/components/LightLoader";
 import Modal from "@/app/components/Modal";
 import { getDaySuffix } from "../overview/components/utils/DateSuffix";

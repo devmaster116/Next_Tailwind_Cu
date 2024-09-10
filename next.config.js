@@ -4,13 +4,14 @@ const { execSync } = require("child_process");
 // Define the environment variable name you want to check
 const variableName = "FIREBASE_CONFIG";
 
+let projectId;
 let localFirebaseConfig;
+let updatedEnvVar;
 
-// Check if the environment variable exists
+// Check if the environment variable exists. Only in CI exists
 if (process.env[variableName]) {
-  console.log(
-    `Environment variable ${variableName} exists with value: ${process.env[variableName]}`
-  );
+  // Get the update FIREBASE_CONFIG variable that includes the storageBucket
+  updatedEnvVar = execSync("node get-projectId.js", { encoding: "utf-8" });
 } else {
   console.log(`Environment variable ${variableName} does not exist.`);
   // Run the custom script to prepare the environment
@@ -18,6 +19,8 @@ if (process.env[variableName]) {
 
   // Load the temporary environment file
   require("dotenv").config({ path: path.resolve(process.cwd(), ".env.temp") });
+
+  projectId = process.env.projectId;
 
   localFirebaseConfig = {
     apiKey: process.env.apiKey,
@@ -46,9 +49,9 @@ const nextConfig = {
     ];
   },
   env: {
-    FIREBASE_CONFIG: process.env.FIREBASE_CONFIG,
+    CI_FIREBASE_CONFIG: updatedEnvVar,
     LOCAL_FIREBASE_CONFIG: localFirebaseConfig,
-    ENVIRONMENT: process.env.ENVIRONMENT
+    ENVIRONMENT: process.env.ENVIRONMENT,
   },
 };
 
