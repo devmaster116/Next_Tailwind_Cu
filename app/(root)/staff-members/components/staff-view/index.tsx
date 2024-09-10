@@ -7,7 +7,7 @@ import { HelpSvg } from "@/app/assets/svg/help";
 import { FormContext } from "@/app/context/StaffContext";
 import { EditImageUpload } from "../form/EditImageUpload";
 import { usePathname, useRouter } from "next/navigation";
-import { Tooltip } from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 type Props = {
   onClose: () => void;
@@ -163,26 +163,31 @@ const StaffView = (props: Props) => {
                       Edit
                     </button>
                   </div>
-                  <div className="flex flex-row  ">
-                    <p className="  gap-1 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]  text-gray-800">
+                  <div className="flex flex-row">
+                    <p className="gap-1 font-normal text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] text-gray-800">
                       {currentStaff.roleName}
                     </p>
                     <Avatar
                       icon={
                         <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${currentStaff.roleName}</p><p>${currentStaff.description}</p></div>`}
-                            className="truncate"
-                          >
+                          <a data-tooltip-id="my-tooltip" className="truncate">
                             <HelpSvg />
                           </a>
-                          <Tooltip
+                          <ReactTooltip
                             id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
+                            className="max-w-[320px] !rounded-lg"
+                            place="bottom"
+                            positionStrategy="fixed"
+                          >
+                            <div>
+                              <p className="text-white text-xs font-semibold">
+                                {currentStaff.roleName}
+                              </p>
+                              <p className="text-white text-xs font-normal">
+                                {currentStaff.description}
+                              </p>
+                            </div>
+                          </ReactTooltip>
                         </>
                       }
                     />

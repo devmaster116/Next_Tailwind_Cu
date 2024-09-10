@@ -5,7 +5,7 @@ import { FormContext } from "@/app/context/StaffContext";
 import { RoleInfo } from "@/app/src/types";
 import { HelpSvg } from "@/app/assets/svg/help";
 import { CustomRadio } from "../../../../../components/base/radio";
-import { Tooltip } from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -82,18 +82,26 @@ export const EditUserRole = () => {
                 icon={
                   <>
                     <a
-                      data-tooltip-id="my-tooltip"
-                      data-tooltip-html={`<div><p>${item.name}</p><p>${item.description}</p></div>`}
+                      data-tooltip-id={`my-tooltip ${item.name}`}
                       className="truncate"
                     >
                       <HelpSvg />
                     </a>
-                    <Tooltip
-                      id="my-tooltip"
-                      className="max-w-[320px]"
-                      place={"bottom"}
-                      positionStrategy={"fixed"}
-                    />
+                    <ReactTooltip
+                      id={`my-tooltip ${item.name}`}
+                      className="max-w-[320px] !rounded-lg z-10"
+                      place="bottom"
+                      positionStrategy="fixed"
+                    >
+                      <div>
+                        <p className="text-white text-xs font-semibold">
+                          {item.name}
+                        </p>
+                        <p className="text-white text-xs font-normal">
+                          {item.description}
+                        </p>
+                      </div>
+                    </ReactTooltip>
                   </>
                 }
                 classOverride={{
