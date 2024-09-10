@@ -29,6 +29,8 @@ const SalesSummary = () => {
     setReportEndDate,
     selectedOption,
     setSelectedOption,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
   } = useReportDate();
 
   const {
@@ -41,9 +43,11 @@ const SalesSummary = () => {
     overviewReportFunctionError,
   } = useFetchReports(
     kitchenId,
+    selectedOption,
     reportStartDate,
     reportEndDate,
-    selectedOption
+    previousReportStartDateRef,
+    previousReportEndDateRef
   );
 
   useEffect(() => {
@@ -122,7 +126,6 @@ const SalesSummary = () => {
     } = ordersData[0]);
   }
 
-  // Extract details dynamically
   const takeAwayItemDetails = dishDetailsByOrderTypeParser(
     dishByOrderType,
     "Take Away"
@@ -140,12 +143,12 @@ const SalesSummary = () => {
 
   const takeAwayAverageItems =
     takeAwayItemCount && total_take_away_orders
-      ? Math.round(takeAwayItemCount / total_take_away_orders)
+      ? (takeAwayItemCount / total_take_away_orders).toFixed(2)
       : 0;
 
   const dineInAverageItems =
     dineInItemCount && total_dine_in_orders
-      ? Math.round(dineInItemCount / total_dine_in_orders)
+      ? (dineInItemCount / total_dine_in_orders).toFixed(2)
       : 0;
 
   return (
@@ -197,16 +200,18 @@ const SalesSummary = () => {
                 <SalesData
                   title="Dine In / Take Away"
                   amount={Number(
-                    (
-                      total_dine_in_orders /
-                        (total_take_away_orders + total_dine_in_orders) || 0
-                    ).toFixed(1)
+                    calculatePercentage(
+                      total_dine_in_orders,
+                      total_take_away_orders + total_dine_in_orders || 0,
+                      1
+                    )
                   )}
                   secondAmount={Number(
-                    (
-                      total_take_away_orders /
-                        (total_take_away_orders + total_dine_in_orders) || 0
-                    ).toFixed(1)
+                    calculatePercentage(
+                      total_take_away_orders,
+                      total_take_away_orders + total_dine_in_orders || 0,
+                      1
+                    )
                   )}
                   isPercentage={true}
                   loading={loading}

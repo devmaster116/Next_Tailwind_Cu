@@ -23,15 +23,6 @@ import { removeGst } from "@/app/components/Auth/utils/helper";
 import ItemInsightsModal from "./components/ItemInsightsModal";
 
 const ItemSales = () => {
-  const {
-    reportStartDate,
-    setReportStartDate,
-    reportEndDate,
-    setReportEndDate,
-    selectedOption,
-    setSelectedOption,
-  } = useReportDate();
-
   const [noSales, setNoSales] = useState<boolean>(false);
   const [isItemInsightsModalOpen, setIsItemInsightsModalOpen] = useState(false);
   const [dishName, setDishName] = useState<string>("");
@@ -43,6 +34,17 @@ const ItemSales = () => {
   const kitchenId = kitchen?.kitchenId ?? null;
 
   const {
+    reportStartDate,
+    setReportStartDate,
+    reportEndDate,
+    setReportEndDate,
+    selectedOption,
+    setSelectedOption,
+    previousReportStartDateRef,
+    previousReportEndDateRef,
+  } = useReportDate();
+
+  const {
     loading,
     error,
     customDate,
@@ -52,9 +54,11 @@ const ItemSales = () => {
     selectedVariants,
   } = useFetchReports(
     kitchenId,
+    selectedOption,
     reportStartDate,
     reportEndDate,
-    selectedOption
+    previousReportStartDateRef,
+    previousReportEndDateRef
   );
 
   const [dishStats, setDishesStats] = useState<{

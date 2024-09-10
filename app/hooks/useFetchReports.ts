@@ -1,12 +1,17 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { functions, httpsCallable } from "@/firebase/config";
 import {
   formatDate,
   formatReadableDate,
 } from "../(root)/overview/components/utils/formatDate";
-import { Categories, Dishes, SelectedVariantsForDishData } from "../src/types";
+import {
+  Categories,
+  Dishes,
+  KitchenData,
+  SelectedVariantsForDishData,
+} from "../src/types";
 import { useReportDataContext } from "../context/ReportDataContext";
-import { useReportDate } from "../context/ReportDateContext";
+import { DateRangeOptions } from "../(root)/overview/components/utils/DateRangeSelectorModal";
 
 interface SelectedVariantsForDishResponseData {
   selectedVariantsForDish: SelectedVariantsForDishData[];
@@ -14,20 +19,15 @@ interface SelectedVariantsForDishResponseData {
   code: number;
 }
 
-interface KitchenData {
-  categories: any[];
-  dishes: any[];
-  dishByOrderType: any[];
-  response: any;
-}
-
 const useFetchReports = (
   kitchenId: string | null,
+  selectedOption: string,
   reportStartDate: Date,
   reportEndDate: Date,
-  selectedOption: string
+  previousReportStartDateRef: React.MutableRefObject<Date | null>,
+  previousReportEndDateRef: React.MutableRefObject<Date | null>,
+  forceCallUseFetchReport?: boolean
 ) => {
-  const [dishByOrderType, setDishByOrderType] = useState<any>(null);
   const {
     allCategories,
     setAllCategories,
@@ -47,114 +47,84 @@ const useFetchReports = (
     setCustomDate,
     selectedVariants,
     setSelectedVariants,
+    dishByOrderType,
+    setDishByOrderType,
+    setMultiDayDataForTakeAwayAndDineIn,
+    setHourlyDataForTakeAwayAndDineIn,
   } = useReportDataContext();
 
-  const {
-    reportEndDate: reportEndDateContext,
-    reportStartDate: reportStartDateContext,
-  } = useReportDate();
-
-  const previousReportEndDateRef = useRef<Date | null>(reportEndDateContext);
-  const previousReportStartDateRef = useRef<Date | null>(
-    reportStartDateContext
-  );
-
   useEffect(() => {
-    if (kitchenId !== null) {
-      if (
-        !ordersData ||
-        previousReportEndDateRef.current?.toDateString() !==
-          reportEndDateContext.toDateString() ||
-        previousReportStartDateRef.current?.toDateString() !==
-          reportStartDateContext.toDateString()
-      ) {
-        const advancedReports = httpsCallable(functions, "advancedReporting");
-        const overviewReports = httpsCallable(
-          functions,
-          "overviewReportFunction"
-        );
-        const dishesCountByOrderType = httpsCallable(
-          functions,
-          "getDishesCountByOrderType"
-        );
-        const selectedVariantsForDish = httpsCallable(
-          functions,
-          "getSelectedVariantsForDish"
-        );
-        setLoading(true);
+    const fetchOverviewReports = async () => {
+      const overviewReports = httpsCallable(
+        functions,
+        "overviewReportFunction"
+      );
+      const result = await overviewReports({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as KitchenData;
+    };
 
-        const fetchAdvancedReports = advancedReports({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        })
-          .then(result => {
-            const data = result.data as KitchenData;
+    const fetchAdvancedReports = async () => {
+      const advancedReports = httpsCallable(functions, "advancedReporting");
+      const result = await advancedReports({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as KitchenData;
+    };
 
-            const allCategories = data.categories as Categories[];
-            setAllCategories(allCategories);
-            const allDishes = data.dishes as Dishes[];
+    const fetchSelectedVariantsForDish = async () => {
+      const selectedVariantsForDish = httpsCallable(
+        functions,
+        "getSelectedVariantsForDish"
+      );
+      const result = await selectedVariantsForDish({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as SelectedVariantsForDishResponseData;
+    };
 
-            setAllDishes(allDishes);
-          })
-          .catch(error => {
-            console.error("Failed to fetch advanced reports:", error);
-            setAdvancedReportingError(true);
-          });
+    const fetchDishesCountByOrderType = async () => {
+      const dishesCountByOrderType = httpsCallable(
+        functions,
+        "getDishesCountByOrderType"
+      );
+      const result = await dishesCountByOrderType({
+        kitchenId: kitchenId,
+        fromReportDate: formatDate(reportStartDate),
+        toReportDate: formatDate(reportEndDate),
+      });
+      return result.data as KitchenData;
+    };
 
-        selectedVariantsForDish({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDateContext),
-          toReportDate: formatDate(reportEndDateContext),
-        })
-          .then(result => {
-            const data = result.data as SelectedVariantsForDishResponseData;
+    const fetchAllReports = async () => {
+      setLoading(true);
+      try {
+        const [
+          advancedReportsData,
+          overviewReportsData,
+          selectedVariantsData,
+          dishesCountByOrderTypeData,
+        ] = await Promise.all([
+          fetchAdvancedReports(),
+          fetchOverviewReports(),
+          fetchSelectedVariantsForDish(),
+          fetchDishesCountByOrderType(),
+        ]);
 
-            if (
-              data &&
-              (data.selectedVariantsForDish as SelectedVariantsForDishData[])
-            ) {
-              setSelectedVariants(data.selectedVariantsForDish);
-            } else {
-              console.error("Unexpected data format:", data);
-            }
-          })
-          .catch(error => {
-            console.error("Failed to fetch selected variants:", error);
-          });
+        setOrdersData(overviewReportsData.response);
+        setAllCategories(advancedReportsData.categories as Categories[]);
+        setAllDishes(advancedReportsData.dishes as Dishes[]);
+        setSelectedVariants(selectedVariantsData.selectedVariantsForDish);
+        setDishByOrderType(dishesCountByOrderTypeData.dishByOrderType);
 
-        const fetchOverviewReports = overviewReports({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        })
-          .then(result => {
-            const data = result.data as KitchenData;
-            setOrdersData(data.response);
-          })
-          .catch(error => {
-            console.log("Failed to fetch overview reports:", error);
-            setOverviewReportFunctionError(true);
-          });
-
-        const fetchDishesCountByOrderType = dishesCountByOrderType({
-          kitchenId: kitchenId,
-          fromReportDate: formatDate(reportStartDate),
-          toReportDate: formatDate(reportEndDate),
-        })
-          .then(result => {
-            const data = result.data as KitchenData;
-            setDishByOrderType(data.dishByOrderType);
-          })
-          .catch(error => {
-            console.log(
-              "Failed to fetch GetDishesCountByOrderType reports:",
-              error
-            );
-            setOverviewReportFunctionError(true);
-          });
-
-        if (selectedOption === "Custom") {
+        if (selectedOption === DateRangeOptions.Custom) {
           setCustomDate(
             `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
               reportEndDate
@@ -164,29 +134,39 @@ const useFetchReports = (
           setCustomDate(undefined);
         }
 
-        Promise.allSettled([
-          fetchAdvancedReports,
-          fetchOverviewReports,
-          fetchDishesCountByOrderType,
-        ]).finally(() => {
-          setLoading(false);
-        });
+        setError(false);
+        setAdvancedReportingError(false);
+        setOverviewReportFunctionError(false);
+      } catch (error) {
+        console.error("Failed to fetch reports:", error);
+        setError(true);
+        setAdvancedReportingError(true);
+        setOverviewReportFunctionError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        previousReportEndDateRef.current = reportEndDateContext;
-        previousReportStartDateRef.current = reportStartDateContext;
+    const isReportDateChanged =
+      previousReportEndDateRef.current?.toDateString() !==
+        reportEndDate.toDateString() ||
+      previousReportStartDateRef.current?.toDateString() !==
+        reportStartDate.toDateString();
+
+    if (kitchenId !== null) {
+      if (!ordersData || forceCallUseFetchReport || isReportDateChanged) {
+        setMultiDayDataForTakeAwayAndDineIn([]);
+        setHourlyDataForTakeAwayAndDineIn([]);
+        fetchAllReports();
+
+        previousReportEndDateRef.current = reportEndDate;
+        previousReportStartDateRef.current = reportStartDate;
       }
     } else {
       setError(true);
       setLoading(false);
     }
-  }, [
-    reportEndDateContext,
-    reportStartDateContext,
-    kitchenId,
-    functions,
-    selectedOption,
-    ordersData,
-  ]);
+  }, [reportStartDate, reportEndDate]);
 
   const memoizedData = useMemo(
     () => ({

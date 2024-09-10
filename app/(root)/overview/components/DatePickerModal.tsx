@@ -3,6 +3,7 @@ import styles from "./Overview.module.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatReadableDate } from "./utils/formatDate";
+import { DateRangeOptions } from "./utils/DateRangeSelectorModal";
 
 interface DatePickerModalProps {
   setIsReportVisible: (value: boolean) => void;
@@ -45,11 +46,11 @@ const DatePickerModal = ({
       setReportStartDate(startDate);
       setReportEndDate(finalEndDate);
 
-      setSelectedOption("Custom");
+      setSelectedOption(DateRangeOptions.Custom);
       hideModal();
     }
 
-    if (selectedOption === "Custom") {
+    if (selectedOption === DateRangeOptions.Custom) {
       setCustomDate(
         `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
           reportEndDate

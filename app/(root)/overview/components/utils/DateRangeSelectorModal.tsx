@@ -20,6 +20,14 @@ interface DateRangeSelectorModalProps {
   setSelectedOption: (option: string) => void;
 }
 
+export enum DateRangeOptions {
+  Today = "Today",
+  Yesterday = "Yesterday",
+  ThisWeek = "This Week",
+  ThisMonth = "This Month",
+  Custom = "Custom",
+}
+
 const DateRangeSelectorModal = ({
   selectedOption,
   reportStartDate,
@@ -35,11 +43,11 @@ const DateRangeSelectorModal = ({
   const [isAnimating, setIsAnimating] = useState(false);
 
   const dateRangeOptions = [
-    { value: "Today", label: "Today" },
-    { value: "Yesterday", label: "Yesterday" },
-    { value: "This Week", label: "This Week" },
-    { value: "This Month", label: "This Month" },
-    { value: "Custom", label: "Custom" },
+    { value: DateRangeOptions.Today, label: DateRangeOptions.Today },
+    { value: DateRangeOptions.Yesterday, label: DateRangeOptions.Yesterday },
+    { value: DateRangeOptions.ThisWeek, label: DateRangeOptions.ThisWeek },
+    { value: DateRangeOptions.ThisMonth, label: DateRangeOptions.ThisMonth },
+    { value: DateRangeOptions.Custom, label: DateRangeOptions.Custom },
   ];
 
   useEffect(() => {
@@ -68,27 +76,27 @@ const DateRangeSelectorModal = ({
   const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     switch (value) {
-      case "Today":
+      case DateRangeOptions.Today:
         const today = new Date();
         setReportDates(today, today);
         setSelectedOption(value);
         break;
-      case "Yesterday":
+      case DateRangeOptions.Yesterday:
         const yesterday = getYesterdayDate();
         setReportDates(yesterday, yesterday);
         setSelectedOption(value);
         break;
-      case "This Week":
+      case DateRangeOptions.ThisWeek:
         const { startDate, endDate } = getCurrentWeekRange();
         setReportDates(startDate, endDate);
         setSelectedOption(value);
         break;
-      case "This Month":
+      case DateRangeOptions.ThisMonth:
         const { startMonthDate, endMonthDate } = getCurrentMonthRange();
         setReportDates(startMonthDate, endMonthDate);
         setSelectedOption(value);
         break;
-      case "Custom":
+      case DateRangeOptions.Custom:
         setIsReportVisible(false);
         break;
       default:
@@ -139,7 +147,7 @@ const DateRangeSelectorModal = ({
                     value={option.value}
                     label={option.label}
                     checked={
-                      option.value !== "Custom" &&
+                      option.value !== DateRangeOptions.Custom &&
                       selectedOption === option.value
                     }
                     onChange={handleOptionChange}
