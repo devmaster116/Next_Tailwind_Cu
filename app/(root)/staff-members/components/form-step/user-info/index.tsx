@@ -164,7 +164,7 @@ export const UserInfo = ({ key }: Props) => {
     <div key={key}>
       <Form.Header
         title="Profile"
-        description="Add your staff members' name, nickname, email address, and mobile number."
+        description="Add your staff member's name, nickname, email address, and mobile number."
       />
       <form className="mt-5 lg:mt-8">
         <div className="flex flex-col lg:flex-row justify-between  gap-6 mb-6 lg:mb-7">
@@ -265,7 +265,7 @@ export const UserInfo = ({ key }: Props) => {
           >
             {errors.displayName
               ? errors.displayName
-              : "If not set, the default is the first name and last name initial."}
+              : "If not set, the default will be the first name followed by the initial of the last name."}
           </p>
         </div>
 

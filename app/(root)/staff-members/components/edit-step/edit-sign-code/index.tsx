@@ -75,7 +75,7 @@ export const EditUserSignCode = ({ key }: Props) => {
       <div className="mt-6 lg:[mt-8] flex flex-col ">
         <div className="flex flex-col">
           <h2 className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
-            Gustons' Sign in Code
+            Sign in Code
           </h2>
 
           <div className="flex flex-row  w-full lg:w-2/3  my-[6px]">
@@ -130,7 +130,7 @@ export const EditUserSignCode = ({ key }: Props) => {
           <div className="flex flex-col">
             <div className="flex flex-row ">
               <p className="text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700">
-                Send passcode via email to {` ${currentStaff?.firstName}`}.
+                Send passcode via email to {`${currentStaff?.firstName}`}.
               </p>
             </div>
             <div className="flex flex-row">

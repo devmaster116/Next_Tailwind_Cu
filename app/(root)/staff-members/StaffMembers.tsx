@@ -84,13 +84,13 @@ const StaffMembers = () => {
     <>
       {banner && (
         <ToastStatus
-          label={`${currentStaff?.firstName} Was Deleted As Staff Member`}
+          label={`${currentStaff?.firstName} was deleted as staff member`}
           onClose={handleClose}
         />
       )}
       {statusAddStaff && (
         <ToastStatus
-          label={"New Staff Member Created"}
+          label={"New staff member created"}
           onClose={handleCloseStaffBanner}
         />
       )}

@@ -103,7 +103,7 @@ export const UserSignCode = () => {
       <div className="mt-6 lg:[mt-8] flex flex-col ">
         <div className="flex flex-col">
           <h2 className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
-            Gustons' Sign in Code
+            Sign in Code
           </h2>
 
           <div className="flex flex-row  w-full lg:w-2/3  my-[6px]">

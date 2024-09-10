@@ -69,7 +69,7 @@ export const EditUserRole = () => {
     <div className="">
       <Form.Header
         title="Assign Role"
-        description={`Manage ${currentStaff?.firstName} permissions.`}
+        description={`Manage ${currentStaff?.firstName}'s permissions.`}
       />
       <div className="flex flex-col gap-3 w-full my-5 lg:my-8">
         {roles &&
