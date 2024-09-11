@@ -46,6 +46,7 @@ export const EditUserRole = () => {
           ...currentStaff,
           roleName: selectedRole.name,
           roleId: selectedRole.id,
+          description:selectedRole.description
         };
         loadStaffForEdit(updatedStaff);
         setError(false);
