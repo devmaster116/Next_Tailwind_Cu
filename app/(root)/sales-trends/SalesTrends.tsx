@@ -164,13 +164,16 @@ const SalesTrends = () => {
                     {...(evenlySpacedDates.length > 0
                       ? { ticks: evenlySpacedDates }
                       : {})}
-                    fontSize={12}
+                    fontSize={width && width >= 600 ? 16 : 14}
+                    tick={{ fill: "#475467" }}
                   />
                   <YAxis
                     tickFormatter={value => `$${value}`}
                     axisLine={false}
                     tickLine={false}
                     stroke="#344054"
+                    fontSize={width && width >= 600 ? 16 : 14}
+                    tick={{ fill: "#475467" }}
                   />
                   <Tooltip
                     formatter={value => `$${value}`}
@@ -199,13 +202,13 @@ const SalesTrends = () => {
                 secondColumnTitle="Count"
                 thirdColumnTitle="Net Total"
                 thirdColumnSymbol="$"
+                className="salesTrendsTable"
                 dataObj={[
                   {
                     title: (
                       <>
-                        Take Away{" "}
+                        Take Away
                         <Image
-                          className={styles.icon}
                           src="/icons/square-primary-400.svg"
                           height={12}
                           width={12}
@@ -219,7 +222,7 @@ const SalesTrends = () => {
                   {
                     title: (
                       <>
-                        Dine In{" "}
+                        Dine In
                         <Image
                           className={styles.icon}
                           src="/icons/square-primary-700.svg"
@@ -236,7 +239,6 @@ const SalesTrends = () => {
                 loading={loading}
                 customDate={customDate}
                 selectedOption={selectedOption}
-                className="salesTrendsTable"
               />
             </div>
             <div className={styles.totalsRow}>
