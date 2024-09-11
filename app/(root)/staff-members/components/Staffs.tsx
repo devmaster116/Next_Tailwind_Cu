@@ -118,11 +118,16 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
 
   const togglePanel = (item: ConfigStaffMember) => {
     router.push(`${pathName}?type=view-staff&id=${item.id}`);
+    if (typeof window != 'undefined' && window.document) {
+      document.body.style.overflow = 'hidden';
+    }
     loadStaffForEdit(item);
+  
   };
 
   const CloseTogglePanel = () => {
     window.history.replaceState(null, "", "/staff-members");
+    document.body.style.overflow = 'unset';
   };
 
   useEffect(() => {

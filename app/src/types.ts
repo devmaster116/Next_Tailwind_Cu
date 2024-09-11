@@ -193,7 +193,7 @@ export interface ConfigStaffMember {
   firstName: string;
   lastName: string;
   passcode: string;
-  roleID: string;
+  roleId: string;
   roleName: string;
   description: string;
   displayImageURL: string;
