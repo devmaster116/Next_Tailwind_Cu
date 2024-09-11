@@ -117,7 +117,7 @@ const SalesTrends = () => {
       />
       <h1 className={styles.pageTitle}>Sales Trends</h1>
       {!loading ? (
-        totalDineInOrders && totalTakeAwayOrders ? (
+        totalDineInOrders || totalTakeAwayOrders ? (
           <div className={styles.salesDataContainer}>
             <div className={styles.chartTitle}>
               <h3>{isHourlyData ? "Hourly" : "Daily"} Sales Trend</h3>
