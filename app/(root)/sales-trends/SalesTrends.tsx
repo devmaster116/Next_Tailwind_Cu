@@ -35,7 +35,7 @@ import { formatDateToDayOfWeekWithDate } from "./utils/formatDateToDayOfWeekWith
 import { getEvenlySpacedDates } from "./utils/getEvenlySpacedDates";
 
 const SalesTrends = () => {
-  const { width } = useWindowSize();
+  // const { width } = useWindowSize();
 
   const BarChart = dynamic(() => import("recharts").then(mod => mod.BarChart), {
     ssr: false,
@@ -133,7 +133,7 @@ const SalesTrends = () => {
             <div className={styles.barChart}>
               <ResponsiveContainer
                 width="100%"
-                aspect={width && width >= 600 ? width / 488 : 4.0 / 3.0}
+                className={styles.chartContainer}
               >
                 <BarChart
                   id=""
@@ -164,16 +164,14 @@ const SalesTrends = () => {
                     {...(evenlySpacedDates.length > 0
                       ? { ticks: evenlySpacedDates }
                       : {})}
-                    fontSize={width && width >= 600 ? 16 : 14}
-                    tick={{ fill: "#475467" }}
+                    fontSize={14}
                   />
                   <YAxis
                     tickFormatter={value => `$${value}`}
                     axisLine={false}
                     tickLine={false}
-                    stroke="#344054"
-                    fontSize={width && width >= 600 ? 16 : 14}
-                    tick={{ fill: "#475467" }}
+                    stroke="#475467"
+                    fontSize={14}
                   />
                   <Tooltip
                     formatter={value => `$${value}`}

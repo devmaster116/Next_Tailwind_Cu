@@ -43,6 +43,11 @@
     position: relative;
     z-index: 0;
 
+    .chartContainer {
+      aspect-ratio: 4/3;
+      max-height: 316px;
+    }
+
     &:first-child {
       border-bottom: 1px solid var(--gray-200);
     }
