@@ -44,7 +44,12 @@ const StaffView = (props: Props) => {
   };
 
   return (
-    <div className={twMerge(" rounded-lg h-[90%] max-h-[85%] lg:h-full lg:max-h-[100%]", props?.className)}>
+    <div
+      className={twMerge(
+        " rounded-lg h-[90%] max-h-[85%] lg:h-full lg:max-h-[100%]",
+        props?.className
+      )}
+    >
       {currentStaff && (
         <div className="flex flex-col h-full ">
           <div className="px-4">

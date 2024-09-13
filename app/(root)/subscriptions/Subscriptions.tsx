@@ -323,7 +323,7 @@ const Subscriptions = () => {
                         className={styles.subscriptionCancelledStatusContainer}
                       >
                         <span className={styles.subscriotionCancelledText}>
-                          You’ve Cancelled.
+                          You've Cancelled.
                         </span>
                       </div>
                     )}

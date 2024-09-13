@@ -17,6 +17,7 @@ export const EditUserRole = () => {
     updateStaffInFirebase,
     loadStaffForEdit,
   } = useContext(FormContext)!;
+
   const [error, setError] = useState<boolean>(false);
   const { updateUserRoleClicked, setUpdateUserRoleClicked } = useFormStep();
   const { kitchen } = useKitchen();
@@ -46,7 +47,7 @@ export const EditUserRole = () => {
           ...currentStaff,
           roleName: selectedRole.name,
           roleId: selectedRole.id,
-          description:selectedRole.description
+          description: selectedRole.description,
         };
         loadStaffForEdit(updatedStaff);
         setError(false);
