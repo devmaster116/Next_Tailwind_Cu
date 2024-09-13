@@ -8,7 +8,7 @@ import { IConfig } from "@/app/src/types";
 import { ToastStatus } from "../../components/base/toast-status";
 import Drawer from "react-modern-drawer";
 
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 import styles from "./StaffMember.module.scss";
@@ -25,20 +25,65 @@ const StaffMembers = () => {
   const { banner, setBanner } = useBanner();
   const { statusAddStaff, setStatusAddStaff } = useFormStep();
 
-  const { state, currentStaff } = useContext(FormContext)!;
+  const { currentStaff,roles,getStaffRole } = useContext(FormContext)!;
 
   const [staffConfig, setStaffConfig] = useState<IConfig[]>([]);
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "configs"), snapShot => {
-      const _configs: IConfig[] = [];
 
-      snapShot.docs.forEach(data => {
+  useEffect(() => {
+  
+    const unsubscribe = onSnapshot(collection(db, "configs"), (snapShot) => {
+      const _configs: IConfig[] = [];
+  
+      snapShot.docs.forEach((data) => {
         _configs.push(data.data().staffMemberConfigs as IConfig);
       });
-      setStaffConfig(_configs);
+  
+      if (!_configs?.[0]?.staffMembers) {
+        setStaffConfig(_configs); // Set initial empty config if no staff members
+        return;
+      }
+  
+      const _staffMembers = _configs[0].staffMembers;
+  
+      const updateConfigs = async () => {
+        const updatedConfigs = await Promise.all(
+          _staffMembers.map(async (staff) => {
+            const role = roles.find((r) => r.id === staff.roleId); 
+            if (role) {
+              return {
+                ...staff,
+                roleName: role.name,
+                description: role.description,
+              };
+            }
+            return staff;
+          })
+        );
+  
+        // Update the _configs object with the updated staff members
+        _configs[0] = {
+          ..._configs[0],
+          staffMembers: updatedConfigs,
+        };
+  
+        // Update the state
+        setStaffConfig(_configs);
+      };
+  
+      // Call the async update function
+      updateConfigs()
+        .then(() => {
+          console.log("Configs updated with roles from context:", _configs);
+        })
+        .catch((error) => {
+          console.error("Error updating configs:", error);
+        });
     });
+  
+    // Cleanup on component unmount
     return () => unsubscribe();
-  }, []);
+  }, [roles]);
+
 
   const handleClose = () => {
     setBanner(false);
@@ -55,6 +100,9 @@ const StaffMembers = () => {
     return searchParams?.get("type") === "add-staff";
   }, [searchParams]);
 
+  useEffect(() => {
+    getStaffRole();
+  }, []);
   const plusIcon = (
     <svg
       width="14"

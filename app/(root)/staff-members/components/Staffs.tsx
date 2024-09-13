@@ -12,6 +12,7 @@ import { FormContext } from "@/app/context/StaffContext";
 import { twMerge } from "tailwind-merge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ViewStaffModal from "./ViewStaffModal";
+import useWindowSize from "@/app/hooks/useWindowSize";
 
 const useOutsideAlerter = (
   tblRef: any,
@@ -50,6 +51,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const [isExiting, setIsExiting] = useState(false);
+  const { width } = useWindowSize();
 
   const modalRef = useRef(null);
   const tblRef = useRef(null);
@@ -118,11 +120,19 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
 
   const togglePanel = (item: ConfigStaffMember) => {
     router.push(`${pathName}?type=view-staff&id=${item.id}`);
+    if(width<1024){
+      if (typeof window != 'undefined' && window.document) {
+        document.body.style.overflow = 'hidden';
+      }
+    }
+   
     loadStaffForEdit(item);
+  
   };
 
   const CloseTogglePanel = () => {
     window.history.replaceState(null, "", "/staff-members");
+    width<1024? document.body.style.overflow = 'unset':'';
   };
 
   useEffect(() => {

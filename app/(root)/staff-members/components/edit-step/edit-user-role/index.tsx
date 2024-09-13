@@ -24,7 +24,7 @@ export const EditUserRole = () => {
   const kitchenId = kitchen?.kitchenId ?? null;
   const searchParams = useSearchParams();
   const handleGoForwardStep = async () => {
-    if (currentStaff && currentStaff.roleID) {
+    if (currentStaff && currentStaff.roleId) {
       try {
         if (searchParams?.get("type") === "edit-role") {
           router.back();
@@ -45,7 +45,8 @@ export const EditUserRole = () => {
         const updatedStaff = {
           ...currentStaff,
           roleName: selectedRole.name,
-          roleID: selectedRole.id,
+          roleId: selectedRole.id,
+          description:selectedRole.description
         };
         loadStaffForEdit(updatedStaff);
         setError(false);

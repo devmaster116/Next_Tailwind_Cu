@@ -46,7 +46,7 @@ const initialState: ConfigStaffMember = {
   description: "",
   displayImageURL: "",
   roleName: "",
-  roleID: "",
+  roleId: "",
   passcode: "",
 };
 
@@ -66,7 +66,7 @@ const formReducer = (
     case "SET_USER_ROLE":
       return { ...state, roleName: action.payload };
     case "SET_USER_ROLE_ID":
-      return { ...state, roleID: action.payload };
+      return { ...state, roleId: action.payload };
     case "SET_USER_ROLE_DESCRIPTION":
       return { ...state, description: action.payload };
     case "SET_PASSCODE":
