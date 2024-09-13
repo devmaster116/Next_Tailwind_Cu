@@ -46,6 +46,7 @@ import styles from "./Permission.module.scss";
 import { FirebaseError } from "firebase/app";
 import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
 import { twMerge } from "tailwind-merge";
+import { PlusIcon } from "@/app/assets/svg/plusIcon";
 
 const Permissions = () => {
   const [loading, setLoading] = useState(false);
@@ -387,23 +388,6 @@ const Permissions = () => {
       console.error("Error saving role:", error);
     }
   };
-  const plusIcon = (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.99984 1.16667V12.8333M1.1665 7H12.8332"
-        stroke="white"
-        stroke-width="1.66667"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  );
 
   const viewRoleModal = () => {
     setOwnerRoleModal(true);
@@ -421,7 +405,9 @@ const Permissions = () => {
               setNewRoleName("");
             }}
           >
-            <span style={{ marginRight: "8px" }}>{plusIcon}</span>
+            <span style={{ marginRight: "8px" }}>
+              <PlusIcon width={14} height={14} color="#fff" />
+            </span>
             New Role{" "}
           </button>
         </div>
@@ -540,7 +526,7 @@ const Permissions = () => {
                 <h2
                   className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider} ${styles.ownerPermissionMobile}`}
                 >
-                  Owners have full access. Permissions can’t be changed.{" "}
+                  Owners have full access. Permissions can't be changed.
                 </h2>
                 <ul className={`${styles.disabled} ${styles.mobilePadding}`}>
                   {(ownerDetials.permissions || []).map(

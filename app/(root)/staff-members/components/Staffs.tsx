@@ -52,6 +52,7 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
   const searchParams = useSearchParams();
   const [isExiting, setIsExiting] = useState(false);
   const { width } = useWindowSize();
+  const mediumSizeScreen = 1024;
 
   const modalRef = useRef(null);
   const tblRef = useRef(null);
@@ -120,19 +121,18 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
 
   const togglePanel = (item: ConfigStaffMember) => {
     router.push(`${pathName}?type=view-staff&id=${item.id}`);
-    if(width<1024){
-      if (typeof window != 'undefined' && window.document) {
-        document.body.style.overflow = 'hidden';
+    if (width < mediumSizeScreen) {
+      if (typeof window != "undefined" && window.document) {
+        document.body.style.overflow = "hidden";
       }
     }
-   
+
     loadStaffForEdit(item);
-  
   };
 
   const CloseTogglePanel = () => {
     window.history.replaceState(null, "", "/staff-members");
-    width<1024? document.body.style.overflow = 'unset':'';
+    width < mediumSizeScreen ? (document.body.style.overflow = "unset") : "";
   };
 
   useEffect(() => {

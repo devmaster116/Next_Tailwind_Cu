@@ -8,7 +8,7 @@ import { IConfig } from "@/app/src/types";
 import { ToastStatus } from "../../components/base/toast-status";
 import Drawer from "react-modern-drawer";
 
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 import styles from "./StaffMember.module.scss";
@@ -17,6 +17,7 @@ import { useFormStep } from "@/app/hooks/useFormStep";
 import { UserSvg } from "@/app/assets/svg/user";
 import { FormContext } from "@/app/context/StaffContext";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { PlusIcon } from "@/app/assets/svg/plusIcon";
 
 const StaffMembers = () => {
   const router = useRouter();
@@ -25,30 +26,29 @@ const StaffMembers = () => {
   const { banner, setBanner } = useBanner();
   const { statusAddStaff, setStatusAddStaff } = useFormStep();
 
-  const { currentStaff,roles,getStaffRole } = useContext(FormContext)!;
+  const { currentStaff, roles, getStaffRole } = useContext(FormContext)!;
 
   const [staffConfig, setStaffConfig] = useState<IConfig[]>([]);
 
   useEffect(() => {
-  
-    const unsubscribe = onSnapshot(collection(db, "configs"), (snapShot) => {
+    const unsubscribe = onSnapshot(collection(db, "configs"), snapShot => {
       const _configs: IConfig[] = [];
-  
-      snapShot.docs.forEach((data) => {
+
+      snapShot.docs.forEach(data => {
         _configs.push(data.data().staffMemberConfigs as IConfig);
       });
-  
+
       if (!_configs?.[0]?.staffMembers) {
-        setStaffConfig(_configs); // Set initial empty config if no staff members
+        setStaffConfig(_configs);
         return;
       }
-  
+
       const _staffMembers = _configs[0].staffMembers;
-  
+
       const updateConfigs = async () => {
         const updatedConfigs = await Promise.all(
-          _staffMembers.map(async (staff) => {
-            const role = roles.find((r) => r.id === staff.roleId); 
+          _staffMembers.map(async staff => {
+            const role = roles.find(r => r.id === staff.roleId);
             if (role) {
               return {
                 ...staff,
@@ -59,31 +59,26 @@ const StaffMembers = () => {
             return staff;
           })
         );
-  
-        // Update the _configs object with the updated staff members
+
         _configs[0] = {
           ..._configs[0],
           staffMembers: updatedConfigs,
         };
-  
-        // Update the state
+
         setStaffConfig(_configs);
       };
-  
-      // Call the async update function
+
       updateConfigs()
         .then(() => {
           console.log("Configs updated with roles from context:", _configs);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Error updating configs:", error);
         });
     });
-  
-    // Cleanup on component unmount
+
     return () => unsubscribe();
   }, [roles]);
-
 
   const handleClose = () => {
     setBanner(false);
@@ -103,23 +98,6 @@ const StaffMembers = () => {
   useEffect(() => {
     getStaffRole();
   }, []);
-  const plusIcon = (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 14 14"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.99984 1.16667V12.8333M1.1665 7H12.8332"
-        stroke="white"
-        strokeWidth="1.66667"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
 
   if (!Array.isArray(staffConfig) || staffConfig.length === 0)
     return (
@@ -148,8 +126,10 @@ const StaffMembers = () => {
             <div className={styles.pageHeader}>
               <h1 className={styles.pageTitle}>Staff Members</h1>
               <button className={styles.buttonPrimary} onClick={handleAddStaff}>
-                <span style={{ marginRight: "8px" }}>{plusIcon}</span>
-                Staff Member{" "}
+                <span style={{ marginRight: "8px" }}>
+                  <PlusIcon width={14} height={14} color="#fff" />
+                </span>
+                Staff Member
               </button>
             </div>
             <Staffs staffList={staffConfig} />
@@ -172,14 +152,16 @@ const StaffMembers = () => {
                   No Staff Created
                 </p>
                 <p className="text-gray-800 font-normal text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] mb-4">
-                  You haven’t created any staff yet.
+                  You haven't created any staff yet.
                 </p>
                 <button
                   className={styles.buttonPrimary}
                   onClick={handleAddStaff}
                 >
-                  <span style={{ marginRight: "8px" }}>{plusIcon}</span>
-                  Staff Member{" "}
+                  <span style={{ marginRight: "8px" }}>
+                    <PlusIcon width={14} height={14} color="#fff" />
+                  </span>
+                  Staff Member
                 </button>
               </div>
             </div>
@@ -188,7 +170,7 @@ const StaffMembers = () => {
         <Drawer
           open={openModal}
           direction="bottom"
-          className="w-full !h-full  "
+          className="w-full !h-full"
           overlayOpacity={0}
         >
           <StaffModalFullPage type="add" editPage="" />
@@ -197,7 +179,7 @@ const StaffMembers = () => {
         <Drawer
           open={searchParams?.get("type") === "edit-staff"}
           direction="bottom"
-          className="  w-full !h-full e "
+          className="w-full !h-full e"
           lockBackgroundScroll={true}
           overlayOpacity={0}
         >
@@ -206,7 +188,7 @@ const StaffMembers = () => {
         <Drawer
           open={searchParams?.get("type") === "edit-role"}
           direction="bottom"
-          className="  w-full !h-full"
+          className="w-full !h-full"
           lockBackgroundScroll={true}
           overlayOpacity={0}
         >
@@ -215,7 +197,7 @@ const StaffMembers = () => {
         <Drawer
           open={searchParams?.get("type") === "edit-code"}
           direction="bottom"
-          className="  w-full !h-full  "
+          className="w-full !h-full"
           lockBackgroundScroll={true}
           overlayOpacity={0}
         >
