@@ -100,7 +100,7 @@ const Overview = () => {
                   />
                   <SalesData
                     title="Orders"
-                    amount={total_orders}
+                    amount={Number(total_orders)}
                     isDollarAmount={false}
                     loading={loading}
                     wholeNumber={true}
