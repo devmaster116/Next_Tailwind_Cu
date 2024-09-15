@@ -105,6 +105,15 @@ const useFetchReports = (
 
     const fetchAllReports = async () => {
       setLoading(true);
+      if (selectedOption === DateRangeOptions.Custom) {
+        setCustomDate(
+          `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
+            reportEndDate
+          )}`
+        );
+      } else {
+        setCustomDate(undefined);
+      }
       try {
         const [
           advancedReportsData,
@@ -123,16 +132,6 @@ const useFetchReports = (
         setAllDishes(advancedReportsData.dishes as Dishes[]);
         setSelectedVariants(selectedVariantsData.selectedVariantsForDish);
         setDishByOrderType(dishesCountByOrderTypeData.dishByOrderType);
-
-        if (selectedOption === DateRangeOptions.Custom) {
-          setCustomDate(
-            `${formatReadableDate(reportStartDate)} - ${formatReadableDate(
-              reportEndDate
-            )}`
-          );
-        } else {
-          setCustomDate(undefined);
-        }
 
         setError(false);
         setAdvancedReportingError(false);
