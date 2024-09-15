@@ -45,10 +45,9 @@ const SalesData = ({
     }
 
     if (wholeNumber) {
-      displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(0);
-    } else {
-      displayAmount = Number(getDisplayAmount(safeAmount))?.toFixed(2);
+      displayAmount = safeAmount.toString();
     }
+
     return displayAmount;
   }
 
