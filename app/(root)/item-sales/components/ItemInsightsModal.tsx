@@ -58,16 +58,18 @@ const ItemInsightsModal = ({
           </button>
           <h2 className={styles.title}>{title}</h2>
         </div>
-        <div className={styles.dishName}>
+        <div className={styles.heading}>
           <h2 className={styles.category}>{`${
             uniqueVariations[0]?.category ?? 0
           } / `}</h2>
-          <h2>{dishName}</h2>
+          <h2 className={styles.dishName}>{dishName}</h2>
         </div>
         <div className={styles.salesData}>
           <ItemSalesData
             title="Net Sales"
-            amount={formatRoundUp(totalDishVariantCount.totalPriceWithVariants).toString()}
+            amount={formatRoundUp(
+              totalDishVariantCount.totalPriceWithVariants
+            ).toString()}
             symbol="$"
           />
           <ItemSalesData
