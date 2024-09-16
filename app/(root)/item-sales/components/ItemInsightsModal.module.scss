@@ -71,7 +71,7 @@
   }
 }
 
-.dishName {
+.heading {
   border: 1px solid var(--gray-100);
   display: flex;
   font-weight: 700;
@@ -82,6 +82,19 @@
   .category {
     font-weight: 400;
     margin-right: 5px;
+  }
+
+  .dishName {
+    color: var(--gray-800);
+  }
+
+  .category,
+  .dishName {
+    font-size: 20px;
+
+    @media only screen and (max-width: 599px) {
+      font-size: 18px;
+    }
   }
 }
 
