@@ -28,15 +28,13 @@ import { formatDateToDayOfWeek } from "./utils/formatDateToDayOfWeek";
 import withAuth from "@/app/components/Auth/withAuth";
 import { Oval } from "react-loader-spinner";
 import NoSalesMessage from "../overview/components/NoSalesMessage";
-import useWindowSize from "@/app/hooks/useWindowSize";
 import Image from "next/image";
 import { OrderMultiDayData, Totals } from "@/app/src/types";
 import { formatDateToDayOfWeekWithDate } from "./utils/formatDateToDayOfWeekWithDate";
 import { getEvenlySpacedDates } from "./utils/getEvenlySpacedDates";
+import SalesTrendsTooltip from "@/app/(root)/sales-trends/components/SalesTrendsTooltip";
 
 const SalesTrends = () => {
-  // const { width } = useWindowSize();
-
   const BarChart = dynamic(() => import("recharts").then(mod => mod.BarChart), {
     ssr: false,
   });
@@ -88,8 +86,8 @@ const SalesTrends = () => {
 
   const transformedData = data?.map(item => ({
     ...item,
-    "Dine In Sales": item.total_dine_in_net_sales,
-    "Take Away Sales": item.total_take_away_net_sales,
+    "Dine In": item.total_dine_in_net_sales,
+    "Take Away": item.total_take_away_net_sales,
   }));
 
   const {
@@ -174,21 +172,16 @@ const SalesTrends = () => {
                     fontSize={14}
                   />
                   <Tooltip
-                    formatter={value => `$${value}`}
-                    labelFormatter={value =>
-                      isHourlyData
-                        ? formatTime(value)
-                        : `${formatReadableDate(convertToFullDate(value))}`
-                    }
+                    content={<SalesTrendsTooltip isHourlyData={isHourlyData} />}
                   />
                   <Bar
-                    dataKey="Take Away Sales"
+                    dataKey="Take Away"
                     stackId="a"
                     fill="#9E77ED"
                     barSize={32}
                   />
                   <Bar
-                    dataKey="Dine In Sales"
+                    dataKey="Dine In"
                     stackId="a"
                     fill="#6C01CC"
                     barSize={32}
