@@ -32,7 +32,7 @@ import Image from "next/image";
 import { OrderMultiDayData, Totals } from "@/app/src/types";
 import { formatDateToDayOfWeekWithDate } from "./utils/formatDateToDayOfWeekWithDate";
 import { getEvenlySpacedDates } from "./utils/getEvenlySpacedDates";
-import CustomTooltip from "@/app/components/CustomTooltip";
+import SalesTrendsTooltip from "@/app/(root)/sales-trends/components/SalesTrendsTooltip";
 
 const SalesTrends = () => {
   const BarChart = dynamic(() => import("recharts").then(mod => mod.BarChart), {
@@ -172,12 +172,7 @@ const SalesTrends = () => {
                     fontSize={14}
                   />
                   <Tooltip
-                    content={
-                      <CustomTooltip
-                        isHourlyData={isHourlyData}
-                        dineInTakeAwayTotals={dineInTakeAwayTotals}
-                      />
-                    }
+                    content={<SalesTrendsTooltip isHourlyData={isHourlyData} />}
                   />
                   <Bar
                     dataKey="Take Away"
