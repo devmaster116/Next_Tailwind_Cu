@@ -426,10 +426,7 @@ const Permissions = () => {
                       </li>
                     ))}
                   </ul>
-                  <p
-                    ref={errorRef}
-                    style={{ color: "#F04438", textAlign: "center" }}
-                  >
+                  <p ref={errorRef} className="text-error-500 text-center">
                     {errors.permissions}
                   </p>
                 </div>
@@ -520,9 +517,6 @@ const Permissions = () => {
                     placeholder="Enter Role Name"
                     ref={roleNameInputRef}
                   />
-                  {/* {errors.roleName && (
-    <p style={{ color: "#F04438" }}>{errors.roleName}</p>
-  )} */}
                   <div>
                     <button
                       className={`${styles.deleteButtonMobile}`}
@@ -534,16 +528,13 @@ const Permissions = () => {
                     </button>
                   </div>
                 </div>
-
-                {/* <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} /> */}
-
                 <h2
                   className={`${styles.ownerPermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
                 >
                   POS Role Permissions
                 </h2>
                 <ul
-                  className={` ${styles.mobilePadding} ${styles.internalContainer}`}
+                  className={`${styles.mobilePadding} ${styles.internalContainer}`}
                 >
                   {permissions.map((permission, index) => (
                     <li key={index} className={styles.permissionItem}>
@@ -568,10 +559,7 @@ const Permissions = () => {
                     </li>
                   ))}
                 </ul>
-                <p
-                  ref={errorRef}
-                  style={{ color: "#F04438", textAlign: "center" }}
-                >
+                <p ref={errorRef} className="text-error-500 text-center">
                   {errors.permissions}
                 </p>
               </div>
@@ -596,7 +584,6 @@ const Permissions = () => {
                 <p className={styles.deleteMessage}>
                   Are you sure you want to delete the role?
                 </p>
-                <br />
                 <p className={styles.description}>
                   Confirming this means they wont have access to the portal
                   anymore.
@@ -606,11 +593,7 @@ const Permissions = () => {
           />
         )}
 
-        {loading && (
-          <>
-            <LightLoader />
-          </>
-        )}
+        {loading && <LightLoader />}
       </div>
     </>
   );
