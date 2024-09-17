@@ -1,50 +1,29 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import withAuth from "@/app/components/Auth/withAuth";
-import useWindowSize from "@/app/hooks/useWindowSize";
 import LightLoader from "@/app/components/LightLoader";
-import LoadingSkeleton from "./components/LoadingSkeleton";
 import StaffRoles from "./components/StaffRoles";
-import CustomModalFullPage from "@/app/components/CustomModalFullpage";
+import CustomModalFullPage from "@/app/components/CustomModalFullPage";
 import CustomModal from "@/app/components/CustomModal";
 import Input from "@/app/components/Input";
 import {
   fetchPermissions,
   addRoleToExistingDocument,
-  fetchRoles,
   subscribeRoles,
 } from "./data-fetching";
 
-import { Kitchen, RoleInfo, User } from "@/app/src/types";
+import { RoleInfo } from "@/app/src/types";
 import {
-  addDoc,
   collection,
   doc,
-  FieldValue,
   getDoc,
-  getDocs,
-  query,
   updateDoc,
-  arrayRemove,
-  where,
   onSnapshot,
-  DocumentData,
 } from "firebase/firestore";
-import { auth, db } from "@/firebase/config";
-import {
-  handleBlurField,
-  handleInputChangeField,
-  validateEmail,
-  formatDate,
-  validateMobileNumber,
-} from "@/app/components/Auth/utils/helper";
-import { User as FirebaseUser } from "firebase/auth";
+import { db } from "@/firebase/config";
 import { useKitchen } from "../../context/KitchenContext";
-import { useUser } from "../../context/UserContext";
-import styles from "./Permission.module.scss";
-import { FirebaseError } from "firebase/app";
-import { v4 as uuidv4 } from "uuid"; // Import uuid to generate unique IDs
+import styles from "./Permissions.module.scss";
+import { v4 as uuidv4 } from "uuid";
 import { twMerge } from "tailwind-merge";
 import { PlusIcon } from "@/app/assets/svg/plusIcon";
 
@@ -57,20 +36,11 @@ const Permissions = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [ownerRoleModal, setOwnerRoleModal] = useState<any>();
   const [isExiting, setIsExiting] = useState(false);
-  const [formState, setFormState] = useState<{ [key: string]: string }>({
-    businessName: "",
-    businessAddress: "",
-    ownerEmail: "",
-    ownerMobile: "",
-    secondaryContactName: "",
-    secondaryContactEmail: "",
-    secondaryContacts: "",
-  });
 
   const [addNewRoleModalOpen, setAddNewRoleModalOpen] = useState(false);
   const [permissions, setPermissions] = useState<any[]>([]);
   const [newRoleName, setNewRoleName] = useState("");
-  const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]); // Track selected permissions by index
+  const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
   const [roles, setRoles] = useState<RoleInfo[]>([]);
   const errorRef = useRef<HTMLParagraphElement | null>(null);
   const roleNameInputRef = useRef<HTMLInputElement | null>(null);
@@ -79,7 +49,7 @@ const Permissions = () => {
   >([]);
   const [deleteModal, setDeleteModal] = useState(false);
 
-  const [ownerDetials, setOwnerDetails] = useState<any>();
+  const [ownerDetails, setOwnerDetails] = useState<any>();
 
   const handleCloseModal = (
     modalStateSetter: React.Dispatch<React.SetStateAction<boolean>>
@@ -92,7 +62,6 @@ const Permissions = () => {
       setSelectedPermissions([]);
       setEditSelectedPermissions([]);
       setRoleToEdit(null);
-      // setNewRoleName("");
     }, 500);
   };
 
@@ -132,7 +101,7 @@ const Permissions = () => {
       if (roleSnapshot.exists()) {
         const rolesData = roleSnapshot.data().roles || [];
         const updatedRoles = rolesData.filter(
-          (r: any) => r.id !== roleToEdit.id // Use ID to identify the role to delete
+          (r: any) => r.id !== roleToEdit.id
         );
 
         await updateDoc(roleDocRef, { roles: updatedRoles });
@@ -153,7 +122,7 @@ const Permissions = () => {
 
   const handleEditSubmit = async () => {
     if (!roleToEdit) return;
-    setErrors({}); // Clear previous errors
+    setErrors({});
 
     if (!roleToEdit.name.trim()) {
       setErrors(prevErrors => ({
@@ -213,7 +182,7 @@ const Permissions = () => {
       const updatedRole = {
         ...roleToEdit,
         permissions: updatedPermissions,
-        description: combinedDescriptions || "No description", // Update the role description
+        description: combinedDescriptions || "No description",
       };
 
       const roleDocRef = doc(db, "roles", kitchenId);
@@ -221,29 +190,19 @@ const Permissions = () => {
 
       if (roleSnapshot.exists()) {
         const rolesData = roleSnapshot.data().roles || [];
-        const updatedRoles = rolesData.map(
-          (r: any) => (r.id === roleToEdit.id ? updatedRole : r) // Use ID to identify the role to update
+        const updatedRoles = rolesData.map((r: any) =>
+          r.id === roleToEdit.id ? updatedRole : r
         );
-        // Update the roles document
+
         await updateDoc(roleDocRef, { roles: updatedRoles });
         setRoles(updatedRoles);
-        // console.log("Role updated successfully:", updatedRole);
       } else {
         console.error("Roles document not found");
       }
       handleCloseModal(setEditRoleModalOpen);
-
-      // Close the modal and clear role to edit
-      // setEditRoleModalOpen(false);
-      // setRoleToEdit(null);
-      // setEditSelectedPermissions([]);
     } catch (error) {
       console.error("Error updating role:", error);
     }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewRoleName(e.target.value);
   };
 
   const togglePermission = (index: number) => {
@@ -279,13 +238,9 @@ const Permissions = () => {
       }
     );
 
-    const unsubscribeRoles = subscribeRoles(
-      kitchenId,
-      ({ rolesList, ownerDetails }: any) => {
-        setRoles(rolesList);
-        // setOwnerDetails(ownerDetails);
-      }
-    );
+    const unsubscribeRoles = subscribeRoles(kitchenId, ({ rolesList }: any) => {
+      setRoles(rolesList);
+    });
 
     return () => {
       if (unsubscribePermissions) unsubscribePermissions();
@@ -408,7 +363,7 @@ const Permissions = () => {
             <span style={{ marginRight: "8px" }}>
               <PlusIcon width={14} height={14} color="#fff" />
             </span>
-            New Role{" "}
+            New Role
           </button>
         </div>
         <StaffRoles
@@ -428,30 +383,20 @@ const Permissions = () => {
             content={
               <>
                 <div className={styles.formContainer}>
-                  <div className={styles.inputLabelsection}>
-                    <label className={styles.ownerpermission}>Role Name</label>
+                  <div className={styles.inputLabelSection}>
+                    <label className={styles.ownerPermission}>Role Name</label>
                     <Input
                       value={newRoleName}
                       handleInputChange={e => setNewRoleName(e.target.value)}
-                      //handleBlurField={handleBlurField} // If needed
                       error={errors.businessName}
                       loading={loading}
                       placeholder="Enter Role Name"
                       ref={roleNameInputRef}
                     />
-                    {/* <Input
-                    value={roleToEdit.name}
-                    handleInputChange={handleRoleNameChange}
-                    error={errors.roleName}
-                    loading={loading}
-                    placeholder="Enter Role Name"
-                    ref={roleNameInputRef}
-
-                  /> */}
                   </div>
 
                   <h2
-                    className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
+                    className={`${styles.ownerPermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
                   >
                     POS Role Permissions
                   </h2>
@@ -485,7 +430,6 @@ const Permissions = () => {
                     ref={errorRef}
                     style={{ color: "#F04438", textAlign: "center" }}
                   >
-                    {" "}
                     {errors.permissions}
                   </p>
                 </div>
@@ -493,9 +437,7 @@ const Permissions = () => {
             }
           />
         )}
-        {/* ___________________________ */}
-
-        {ownerRoleModal && ownerDetials?.name && (
+        {ownerRoleModal && ownerDetails?.name && (
           <CustomModalFullPage
             show={true}
             onClose={() => setOwnerRoleModal(null)}
@@ -506,30 +448,27 @@ const Permissions = () => {
             onDeleteClick={() => {}}
             content={
               <div className={styles.formContainer}>
-                {/* <h2>Role: {ownerDetials.name}</h2> */}
-                <div className={styles.inputLabelsection}>
-                  <h2 className={styles.ownerpermission}>Role Name</h2>
+                <div className={styles.inputLabelSection}>
+                  <h2 className={styles.ownerPermission}>Role Name</h2>
                   <input
                     type="text"
-                    value={ownerDetials.name}
+                    value={ownerDetails.name}
                     className={styles.readOnlyInput}
                     readOnly
                     style={{ width: "100%" }}
                     disabled
                   />
                   <p className={styles.warningMsg}>
-                    This role name cannot be change.
+                    This role name cannot be changed.
                   </p>
                 </div>
-                {/* <h2 className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobiledivider}`}> */}
-
                 <h2
-                  className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider} ${styles.ownerPermissionMobile}`}
+                  className={`${styles.ownerPermission} ${styles.mobilePadding} ${styles.mobileDivider} ${styles.ownerPermissionMobile}`}
                 >
                   Owners have full access. Permissions can't be changed.
                 </h2>
                 <ul className={`${styles.disabled} ${styles.mobilePadding}`}>
-                  {(ownerDetials.permissions || []).map(
+                  {(ownerDetails.permissions || []).map(
                     (permission: any, index: any) => (
                       <li key={index} className={styles.permissionItem}>
                         <label className={styles.permissionsSection}>
@@ -571,8 +510,8 @@ const Permissions = () => {
             onDeleteClick={handleDeleteRole}
             content={
               <div className={styles.formContainer}>
-                <div className={styles.inputLabelsection}>
-                  <h2 className={styles.ownerpermission}>Role Name </h2>
+                <div className={styles.inputLabelSection}>
+                  <h2 className={styles.ownerPermission}>Role Name </h2>
                   <Input
                     value={roleToEdit.name}
                     handleInputChange={handleRoleNameChange}
@@ -599,7 +538,7 @@ const Permissions = () => {
                 {/* <input type="text"  value={roleToEdit.name} className={styles.readOnlyInput} /> */}
 
                 <h2
-                  className={`${styles.ownerpermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
+                  className={`${styles.ownerPermission} ${styles.mobilePadding} ${styles.mobileDivider}`}
                 >
                   POS Role Permissions
                 </h2>

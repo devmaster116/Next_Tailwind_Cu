@@ -1,7 +1,3 @@
-
-
-
-
 @keyframes slideUp {
   from {
     transform: translateY(100%);
@@ -10,6 +6,7 @@
     transform: translateY(0);
   }
 }
+
 @keyframes slideDown {
   from {
     transform: translateY(0);
@@ -18,6 +15,7 @@
     transform: translateY(100%);
   }
 }
+
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -28,14 +26,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  // animation: slideUp 0.5s ease-out; /* Add this line */
-
 }
 
 .modal {
   display: flex;
   flex-direction: column;
-  // gap: 30px;
   background: white;
   border-radius: 0px;
   width: 100vw;
@@ -48,15 +43,16 @@
   max-height: 100vh;
   height: 100vh;
   overflow-y: scroll;
-  animation: slideUp 0.5s ease-out; /* Add this line */
+  animation: slideUp 0.5s ease-out;
 
   @media only screen and (max-width: 600px) {
     width: 343px;
     gap: 20px;
   }
 }
+
 .exit {
-  animation: slideDown 0.5s ease-out forwards; /* Exit animation */
+  animation: slideDown 0.5s ease-out forwards;
 }
 
 .addModal {
@@ -102,9 +98,7 @@
   padding: 0px 10px;
   padding-top: 113px;
 
-
   @media only screen and (max-width: 600px) {
-    // padding: 20px;
     padding-inline: 0px;
     padding-block: 120px;
   }
@@ -115,10 +109,10 @@
   font-weight: 600;
   line-height: 32px;
   color: var(--gray-800);
-  position: absolute; /* Position relative to parent .titleDiv */
-  top: 50%; /* Vertical center */
-  left: 50%; /* Horizontal center */
-  transform: translate(-50%, -50%); /* Center the element */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   @media only screen and (max-width: 600px) {
     position: relative;
@@ -178,10 +172,10 @@
   font-weight: 600;
   line-height: 24px;
 }
+
 .closeButton:hover {
   background: var(--gray-200);
 }
-
 
 .deleteButton {
   padding: 12px 20px;
@@ -193,13 +187,11 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
-  &:hover{
+
+  &:hover {
     background: var(--gray-200);
   }
 }
-
-
-
 
 .confirmButton {
   padding: 10px;
@@ -238,37 +230,42 @@
   background-color: #fff;
 
   .titleCloseBtn {
-    // padding: 10px;
     border: 2px solid #dee1e6;
     border-radius: 6px;
     height: 40px;
     width: 40px;
   }
+
   .titleAddCloseBtn {
-    // padding: 10px;
     border-radius: 6px;
     height: 24px;
     width: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    img{
-      height: 20px;
-        width: 20px;
+
+    .icon {
+      color: red;
     }
+
+    img {
+      height: 20px;
+      width: 20px;
+    }
+
     @media screen and (max-width: 600px) {
       height: 16px;
       width: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      img{
+      img {
         height: 16px;
         width: 16px;
       }
     }
-    
   }
+
   @media only screen and (max-width: 600px) {
     justify-content: flex-start;
     position: fixed;
@@ -278,24 +275,31 @@
     padding: 20px;
     z-index: 10001;
     background-color: #fff;
-    button{
+
+    button {
       position: absolute;
       top: 27px;
       left: 20px;
     }
-    .titleText{
+
+    .titleText {
       margin: auto;
       min-height: 28px;
     }
-    .updateBtn{
+
+    .updateBtn {
       display: none;
     }
-    .deleteButton{display: none;}
+
+    .deleteButton {
+      display: none;
+    }
   }
 }
 
-.modalFooter{
+.modalFooter {
   display: none;
+
   @media only screen and (max-width: 600px) {
     position: fixed;
     display: block;
@@ -304,13 +308,14 @@
     left: 0;
     width: 100%;
     padding: 20px;
-    button{
+    button {
       width: 100%;
     }
   }
 }
-.modalFooterEdit{
+.modalFooterEdit {
   display: none;
+
   @media only screen and (max-width: 600px) {
     position: fixed;
     display: block;
@@ -323,21 +328,18 @@
     justify-content: center;
     flex-grow: 1;
     padding: 20px;
-    button{
+
+    button {
       width: 100%;
     }
-   
   }
 }
-
-
 
 .titleDivDeleteModal {
   display: flex;
   justify-content: space-between;
 
   .titleCloseBtn {
-    // padding: 10px;
     border: 2px solid #dee1e6;
     border-radius: 6px;
     height: 44px;
@@ -363,6 +365,7 @@
   &:focus {
     background-color: var(--primary-purple-700);
   }
+
   @media only screen and (max-width: 600px) {
     display: none;
   }
@@ -405,6 +408,7 @@
 
 .errorIcon {
   margin-top: 10px;
+
   @media only screen and (max-width: 600px) {
     margin-top: 0px;
   }

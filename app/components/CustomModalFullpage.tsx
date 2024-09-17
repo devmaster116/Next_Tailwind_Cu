@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useState } from "react";
-import styles from "./customModalFullPage.module.scss";
+import styles from "./CustomModalFullPage.module.scss";
 import Image from "next/image";
 import CustomModal from "./CustomModal";
 
@@ -27,11 +27,12 @@ const CustomModalFullPage = ({
   isExiting: boolean;
 }) => {
   const [deleteModal, setDeleteModal] = useState(false);
-  const [isExitings, setIsExitings] = useState(false);
+  const [isModalExiting, setIsModalExiting] = useState(false);
+
   const handleClose = (e: React.MouseEvent) => {
-    setIsExitings(true);
+    setIsModalExiting(true);
     setTimeout(() => {
-      setIsExitings(false);
+      setIsModalExiting(false);
       onClose(e);
     }, 500);
   };
@@ -56,10 +57,6 @@ const CustomModalFullPage = ({
                   height={12}
                   width={12}
                   alt="Close Button"
-                  style={{
-                    filter:
-                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-                  }}
                 />
               </button>
               <div className={styles.titleText}>{title}</div>
@@ -79,7 +76,7 @@ const CustomModalFullPage = ({
       {type === "view" && (
         <div className={`${styles.modalOverlay} `}>
           <div
-            className={`${styles.modal} ${isExitings ? styles.exit : ""}`}
+            className={`${styles.modal} ${isModalExiting ? styles.exit : ""}`}
             onClick={e => e.stopPropagation()}
           >
             <div className={styles.titleDiv}>
@@ -87,24 +84,20 @@ const CustomModalFullPage = ({
                 <Image
                   className={styles.icon}
                   src="/icons/close.svg"
-                  height={10}
-                  width={10}
+                  height={12}
+                  width={12}
                   alt="Close Button"
-                  style={{
-                    filter:
-                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-                  }}
                 />
               </button>
               <div className={styles.titleText}>{title}</div>
               <button className={styles.updateBtn} onClick={handleClose}>
-                Done{" "}
+                Done
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
             <div className={styles.modalFooter}>
               <button className={styles.updateBtn} onClick={handleClose}>
-                Done{" "}
+                Done
               </button>
             </div>
           </div>
@@ -121,13 +114,9 @@ const CustomModalFullPage = ({
                 <Image
                   className={styles.icon}
                   src="/icons/close.svg"
-                  height={10}
-                  width={10}
+                  height={12}
+                  width={12}
                   alt="Close Button"
-                  style={{
-                    filter:
-                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-                  }}
                 />
               </button>
               <div className={styles.titleText}>{title}</div>
@@ -139,17 +128,17 @@ const CustomModalFullPage = ({
                     setDeleteModal(true);
                   }}
                 >
-                  Delete Role{" "}
+                  Delete Role
                 </button>
                 <button className={styles.updateBtn} onClick={onUpdateClick}>
-                  Update{" "}
+                  Update
                 </button>
               </div>
             </div>
             <div className={styles.modalContent}>{content}</div>
             <div className={`${styles.modalFooterEdit} ${styles.modalFooter}`}>
               <button className={styles.updateBtn} onClick={onUpdateClick}>
-                Update Role Permissions{" "}
+                Update Role Permissions
               </button>
             </div>
           </div>
@@ -169,7 +158,7 @@ const CustomModalFullPage = ({
             <>
               <p className={styles.deleteModalTitle}>Deleting ‘{title}’ role</p>
               <p className={styles.deleteMessage}>
-                Are you sure you want to delete the role?
+                Are you sure you want to delete this role?
               </p>
               <br />
               <p className={styles.description}>

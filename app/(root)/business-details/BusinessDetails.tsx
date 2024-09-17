@@ -733,7 +733,7 @@ const BusinessDetails = () => {
                       ) : (
                         <>
                           <button
-                            className={styles.button_container}
+                            className={styles.buttonContainer}
                             onClick={() => setTransferOwnerShipModalOpen(true)}
                             disabled={isTransferOwnership ? true : false}
                           >
@@ -827,7 +827,7 @@ const BusinessDetails = () => {
               {user?.owner ? (
                 <div className={styles.button}>
                   <button
-                    className={styles.button_container}
+                    className={styles.buttonContainer}
                     onClick={() => handleContactModal("secondaryContact")}
                   >
                     <Image
@@ -885,7 +885,7 @@ const BusinessDetails = () => {
           {userData && userData?.length === 0 && (
             <div className={styles.button}>
               <button
-                className={styles.button_container}
+                className={styles.buttonContainer}
                 onClick={() => handleContactModal("newUser")}
               >
                 <Image
