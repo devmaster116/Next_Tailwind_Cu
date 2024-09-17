@@ -34,6 +34,10 @@ module.exports = {
         "gray-700": "#344054",
         "gray-800": "#3f3f3f",
         "gray-900": "#353435",
+        "error-50": "#fef3f2",
+        "error-300": "#fda29b",
+        "error-500": "#f04438",
+        "error-700": "#b42318",
       },
       animation: {
         "fade-in-up": "fade-in-up 1000ms ease forwards",
