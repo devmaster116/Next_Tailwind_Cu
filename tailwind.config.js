@@ -10,6 +10,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        "min-sm": { min: "599px" },
+        "max-sm": { max: "599px" },
+        "min-md": { min: "600px" },
+        "max-md": { max: "600px" },
+        "min-lg": { min: "961px" },
+        "max-lg": { max: "961px" },
+      },
       colors: {
         "success-green-100": "#D1FADF",
         "success-green-700": "#027A48",
