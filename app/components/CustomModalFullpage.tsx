@@ -3,6 +3,7 @@ import styles from "./CustomModalFullPage.module.scss";
 import Image from "next/image";
 import CustomModal from "./CustomModal";
 import { CancelSvg } from "../assets/svg/cancel";
+import ModalFooter from "./ModalFooter";
 
 const CustomModalFullPage = ({
   show,
@@ -60,11 +61,7 @@ const CustomModalFullPage = ({
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={styles.modalFooter}>
-              <button onClick={onUpdateClick} className={styles.updateBtn}>
-                Save
-              </button>
-            </div>
+            <ModalFooter onActionClick={onUpdateClick} actionLabel="Save" />
           </div>
         </div>
       )}
@@ -84,11 +81,7 @@ const CustomModalFullPage = ({
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={styles.modalFooter}>
-              <button className={styles.updateBtn} onClick={handleClose}>
-                Done
-              </button>
-            </div>
+            <ModalFooter onActionClick={handleClose} actionLabel="Done" />
           </div>
         </div>
       )}
@@ -119,11 +112,10 @@ const CustomModalFullPage = ({
               </div>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={`${styles.modalFooterEdit} ${styles.modalFooter}`}>
-              <button className={styles.updateBtn} onClick={onUpdateClick}>
-                Update Role Permissions
-              </button>
-            </div>
+            <ModalFooter
+              onActionClick={onUpdateClick}
+              actionLabel="Update Role Permissions"
+            />
           </div>
         </div>
       )}
@@ -143,7 +135,6 @@ const CustomModalFullPage = ({
               <p className={styles.deleteMessage}>
                 Are you sure you want to delete this role?
               </p>
-              <br />
               <p className={styles.description}>
                 Confirming this means you can't get this role but you can always
                 recreate it if you wish.

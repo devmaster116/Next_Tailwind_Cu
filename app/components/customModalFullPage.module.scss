@@ -297,44 +297,6 @@
   }
 }
 
-.modalFooter {
-  display: none;
-
-  @media only screen and (max-width: 600px) {
-    position: fixed;
-    display: block;
-    background-color: #fff;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    button {
-      width: 100%;
-    }
-  }
-}
-.modalFooterEdit {
-  display: none;
-
-  @media only screen and (max-width: 600px) {
-    position: fixed;
-    display: block;
-    background-color: #fff;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    padding: 20px;
-
-    button {
-      width: 100%;
-    }
-  }
-}
-
 .titleDivDeleteModal {
   display: flex;
   justify-content: space-between;
