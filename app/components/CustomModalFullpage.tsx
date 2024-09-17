@@ -2,6 +2,7 @@ import React, { MouseEventHandler, useState } from "react";
 import styles from "./CustomModalFullPage.module.scss";
 import Image from "next/image";
 import CustomModal from "./CustomModal";
+import { CancelSvg } from "../assets/svg/cancel";
 
 const CustomModalFullPage = ({
   show,
@@ -51,13 +52,7 @@ const CustomModalFullPage = ({
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={12}
-                  width={12}
-                  alt="Close Button"
-                />
+                <CancelSvg width={12} height={12} color="#667085" />
               </button>
               <div className={styles.titleText}>{title}</div>
               <button onClick={onUpdateClick} className={styles.saveBtn}>
@@ -81,13 +76,7 @@ const CustomModalFullPage = ({
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={handleClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={12}
-                  width={12}
-                  alt="Close Button"
-                />
+                <CancelSvg width={12} height={12} color="#667085" />
               </button>
               <div className={styles.titleText}>{title}</div>
               <button className={styles.updateBtn} onClick={handleClose}>
@@ -111,13 +100,7 @@ const CustomModalFullPage = ({
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={12}
-                  width={12}
-                  alt="Close Button"
-                />
+                <CancelSvg width={12} height={12} color="#667085" />
               </button>
               <div className={styles.titleText}>{title}</div>
               <div style={{ display: "flex" }}>
