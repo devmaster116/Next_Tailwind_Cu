@@ -55,7 +55,7 @@ const SalesTrendsTooltip: React.FC<SalesTrendsTooltipProps> = ({
         <div className="text-white font-normal grid grid-cols-[1fr_auto_auto] gap-5 pt-2 border-t border-gray-200 mb-2">
           <div>Total</div>
           <div className="flex justify-center w-10">{totalCount}</div>
-          <div className="flex justify-end w-10">${totalNet}</div>
+          <div className="flex justify-end w-10">${totalNet.toFixed(2)}</div>
         </div>
       </TooltipWrapper>
     );
