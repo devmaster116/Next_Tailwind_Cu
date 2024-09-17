@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./customModal.module.scss";
+import styles from "./CustomModal.module.scss";
 import Image from "next/image";
-import CustomModalFooter from "./customModalFooter";
+import CustomModalFooter from "./CustomModalFooter";
 import { Avatar } from "./base/avatar";
 import { CancelSvg } from "../assets/svg/cancel";
 

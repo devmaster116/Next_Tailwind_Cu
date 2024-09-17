@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./customModal.module.scss";
+import styles from "./CustomModal.module.scss";
 import { twMerge } from "tailwind-merge";
 
 const CustomModalFooter = ({
