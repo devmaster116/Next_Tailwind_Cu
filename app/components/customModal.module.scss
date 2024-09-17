@@ -14,25 +14,7 @@
 .modal {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  background: white;
-  border-radius: 8px;
-  width: 400px;
-  max-width: 100%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-  padding: 15px;
-
-  @media only screen and (max-width: 600px) {
-    width: 343px;
-    gap: 20px;
-  }
-}
-
-.addModal {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   background: white;
   border-radius: 8px;
   width: 400px;
@@ -162,27 +144,20 @@
   justify-content: space-between;
   align-items: center;
 
-  .titleCloseBtn {
+  .titleAddCloseBtn, .titleCloseBtn {
     border: 2px solid #dee1e6;
     border-radius: 6px;
     height: 44px;
     width: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .titleCloseBtn {
     @media only screen and (max-width: 600px) {
       display: none;
     }
-  }
-}
-
-.titleDiv {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .titleAddCloseBtn {
-    border: 2px solid #dee1e6;
-    border-radius: 6px;
-    height: 44px;
-    width: 44px;
   }
 }
 
