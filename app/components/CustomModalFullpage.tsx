@@ -1,7 +1,9 @@
 import React, { MouseEventHandler, useState } from "react";
-import styles from "./customModalFullPage.module.scss";
+import styles from "./CustomModalFullPage.module.scss";
 import Image from "next/image";
 import CustomModal from "./CustomModal";
+import { CancelSvg } from "../assets/svg/cancel";
+import ModalFooter from "./ModalFooter";
 
 const CustomModalFullPage = ({
   show,
@@ -27,11 +29,12 @@ const CustomModalFullPage = ({
   isExiting: boolean;
 }) => {
   const [deleteModal, setDeleteModal] = useState(false);
-  const [isExitings, setIsExitings] = useState(false);
+  const [isModalExiting, setIsModalExiting] = useState(false);
+
   const handleClose = (e: React.MouseEvent) => {
-    setIsExitings(true);
+    setIsModalExiting(true);
     setTimeout(() => {
-      setIsExitings(false);
+      setIsModalExiting(false);
       onClose(e);
     }, 500);
   };
@@ -50,17 +53,7 @@ const CustomModalFullPage = ({
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={12}
-                  width={12}
-                  alt="Close Button"
-                  style={{
-                    filter:
-                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-                  }}
-                />
+                <CancelSvg width={12} height={12} color="#667085" />
               </button>
               <div className={styles.titleText}>{title}</div>
               <button onClick={onUpdateClick} className={styles.saveBtn}>
@@ -68,45 +61,27 @@ const CustomModalFullPage = ({
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={styles.modalFooter}>
-              <button onClick={onUpdateClick} className={styles.updateBtn}>
-                Save
-              </button>
-            </div>
+            <ModalFooter onActionClick={onUpdateClick} actionLabel="Save" />
           </div>
         </div>
       )}
       {type === "view" && (
         <div className={`${styles.modalOverlay} `}>
           <div
-            className={`${styles.modal} ${isExitings ? styles.exit : ""}`}
+            className={`${styles.modal} ${isModalExiting ? styles.exit : ""}`}
             onClick={e => e.stopPropagation()}
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={handleClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={10}
-                  width={10}
-                  alt="Close Button"
-                  style={{
-                    filter:
-                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-                  }}
-                />
+                <CancelSvg width={12} height={12} color="#667085" />
               </button>
               <div className={styles.titleText}>{title}</div>
               <button className={styles.updateBtn} onClick={handleClose}>
-                Done{" "}
+                Done
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={styles.modalFooter}>
-              <button className={styles.updateBtn} onClick={handleClose}>
-                Done{" "}
-              </button>
-            </div>
+            <ModalFooter onActionClick={handleClose} actionLabel="Done" />
           </div>
         </div>
       )}
@@ -118,17 +93,7 @@ const CustomModalFullPage = ({
           >
             <div className={styles.titleDiv}>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={10}
-                  width={10}
-                  alt="Close Button"
-                  style={{
-                    filter:
-                      "invert(35%) sepia(5%) saturate(368%) hue-rotate(175deg) brightness(98%) contrast(90%)",
-                  }}
-                />
+                <CancelSvg width={12} height={12} color="#667085" />
               </button>
               <div className={styles.titleText}>{title}</div>
               <div style={{ display: "flex" }}>
@@ -139,19 +104,18 @@ const CustomModalFullPage = ({
                     setDeleteModal(true);
                   }}
                 >
-                  Delete Role{" "}
+                  Delete Role
                 </button>
                 <button className={styles.updateBtn} onClick={onUpdateClick}>
-                  Update{" "}
+                  Update
                 </button>
               </div>
             </div>
             <div className={styles.modalContent}>{content}</div>
-            <div className={`${styles.modalFooterEdit} ${styles.modalFooter}`}>
-              <button className={styles.updateBtn} onClick={onUpdateClick}>
-                Update Role Permissions{" "}
-              </button>
-            </div>
+            <ModalFooter
+              onActionClick={onUpdateClick}
+              actionLabel="Update Role Permissions"
+            />
           </div>
         </div>
       )}
@@ -169,9 +133,8 @@ const CustomModalFullPage = ({
             <>
               <p className={styles.deleteModalTitle}>Deleting ‘{title}’ role</p>
               <p className={styles.deleteMessage}>
-                Are you sure you want to delete the role?
+                Are you sure you want to delete this role?
               </p>
-              <br />
               <p className={styles.description}>
                 Confirming this means you can't get this role but you can always
                 recreate it if you wish.

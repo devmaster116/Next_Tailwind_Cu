@@ -1,7 +1,7 @@
 import React from "react";
-import styles from "./customModal.module.scss";
+import styles from "./CustomModal.module.scss";
 import Image from "next/image";
-import CustomModalFooter from "./customModalFooter";
+import CustomModalFooter from "./CustomModalFooter";
 import { Avatar } from "./base/avatar";
 import { CancelSvg } from "../assets/svg/cancel";
 
@@ -75,13 +75,7 @@ const CustomModal = ({
             <div className={styles.titleDiv}>
               <div className={styles.titleText}>{title}</div>
               <button className={styles.titleCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={10}
-                  width={10}
-                  alt="Close Button"
-                />
+                <CancelSvg width={10} height={10} color="#3F3F3F" />
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>
@@ -97,17 +91,11 @@ const CustomModal = ({
 
       {type === "add" && (
         <div className={styles.modalOverlay}>
-          <div className={styles.addModal} onClick={e => e.stopPropagation()}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
             <div className={styles.titleDiv}>
               <div className={styles.titleText}>{title}</div>
               <button className={styles.titleAddCloseBtn} onClick={onClose}>
-                <Image
-                  className={styles.icon}
-                  src="/icons/close.svg"
-                  height={10}
-                  width={10}
-                  alt="Close Button"
-                />
+                <CancelSvg width={10} height={10} color="#3F3F3F" />
               </button>
             </div>
             <div className={styles.modalContent}>{content}</div>

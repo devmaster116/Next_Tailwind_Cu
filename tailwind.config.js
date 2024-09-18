@@ -10,6 +10,14 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        "min-sm": { min: "599px" },
+        "max-sm": { max: "599px" },
+        "min-md": { min: "600px" },
+        "max-md": { max: "600px" },
+        "min-lg": { min: "961px" },
+        "max-lg": { max: "961px" },
+      },
       colors: {
         "success-green-100": "#D1FADF",
         "success-green-700": "#027A48",
@@ -26,6 +34,10 @@ module.exports = {
         "gray-700": "#344054",
         "gray-800": "#3f3f3f",
         "gray-900": "#353435",
+        "error-50": "#fef3f2",
+        "error-300": "#fda29b",
+        "error-500": "#f04438",
+        "error-700": "#b42318",
       },
       animation: {
         "fade-in-up": "fade-in-up 1000ms ease forwards",

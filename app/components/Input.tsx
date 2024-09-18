@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import styles from "./input.module.scss";
+import styles from "./Input.module.scss";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
