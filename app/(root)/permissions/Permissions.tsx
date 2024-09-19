@@ -89,7 +89,7 @@ const Permissions = () => {
       console.error("Kitchen ID is required but was not provided.");
       setErrors(prevErrors => ({
         ...prevErrors,
-        kitchenId: "Kitchen ID is required",
+        kitchenId: "Kitchen ID is required.",
       }));
 
       return;
