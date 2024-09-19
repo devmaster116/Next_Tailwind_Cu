@@ -1,6 +1,5 @@
 import React, { MouseEventHandler, useState } from "react";
 import styles from "./CustomModalFullPage.module.scss";
-import Image from "next/image";
 import CustomModal from "./CustomModal";
 import { CancelSvg } from "../assets/svg/cancel";
 import ModalFooter from "./ModalFooter";
