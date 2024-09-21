@@ -28,7 +28,7 @@ export default function Sidebar({ show, setter }: SidebarProps) {
   const { statusAddStaff, setStatusAddStaff } = useFormStep();
 
   useEffect(() => {
-    if (!pathname.includes("/stuff-members")) {
+    if (!pathname.includes("/staff-members")) {
       setBanner(false);
       setStatusAddStaff(false);
     }
@@ -171,7 +171,52 @@ export default function Sidebar({ show, setter }: SidebarProps) {
               </div>
             </div>
           )}
-
+   {kitchen?.accessManagementEnabled && (
+            <div className={styles.logoContainer}>
+              <h4>Settings</h4>
+              <div className={styles.menuItems}>
+                <MenuItem
+                  name="POS Configuration"
+                  route="/pos-configuration"
+                  icon={
+                    <Image
+                      className={styles.icon}
+                      src="/icons/pos-config.svg"
+                      height={18}
+                      width={18}
+                      alt="POS Configuration"
+                    />
+                  }
+                />
+                <MenuItem
+                  name="Service Surcharges"
+                  route="/service-surcharges"
+                  icon={
+                    <Image
+                      className={styles.icon}
+                      src="/icons/service-surcharges.svg"
+                      height={18}
+                      width={18}
+                      alt="Service Surcharges"
+                    />
+                  }
+                />
+                <MenuItem
+                  name="Online Ordering"
+                  route="/online-ordering"
+                  icon={
+                    <Image
+                      className={styles.icon}
+                      src="/icons/online-ordering.svg"
+                      height={18}
+                      width={18}
+                      alt="Online Ordering"
+                    />
+                  }
+                />
+              </div>
+            </div>
+          )}
           <div className={styles.logoContainer}>
             <h4>Account and Billing</h4>
             <div className={styles.menuItems}>
