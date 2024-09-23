@@ -282,7 +282,7 @@ export interface OnlineOrderConfig {
   dineInEnabled:boolean;
   takeAwayEnabled:boolean;
   cardFeePercent:number;
-  isTyroLoactionIdValid:boolean;
+  isTyroLocationIdValid:boolean;
   onlineOrderingPaused:boolean;
   orderReadyTime:number;
   tyroLocationId:string;
