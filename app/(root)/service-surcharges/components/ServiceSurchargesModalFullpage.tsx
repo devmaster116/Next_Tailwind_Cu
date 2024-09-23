@@ -1,19 +1,19 @@
 import React, { useContext } from "react";
-import styles from "./PosConfigModalFullPage.module.scss";
+import styles from "./ServiceSurchargesModalFullpage.module.scss";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import {useRouter, useSearchParams } from "next/navigation";
-import PosConfigEdit from "../components/pos-config-edit";
+import ServiceSurcharges from "../components/service-surcharges-edit";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 
-const PosConfigModalFullPage = ({
+const ServiceSurchargesModalFullpage = ({
   type,
   editPage,
 }: {
   type: "edit";
-  editPage: "pos-security" | "register-screen" | "order-flow" | "order-types";
+  editPage: "add-custom-surcharge" | "edit-custom-surcharge";
 }) => {
   const { width } = useWindowSize();
   const router = useRouter();
@@ -38,17 +38,11 @@ const PosConfigModalFullPage = ({
 
 
   const handleUpdateStaff = () => {
-    if (searchParams?.get("type") === "edit-register-screen") {
+    if (searchParams?.get("type") === "add-custom-surcharge") {
        setUpdatePosRegisterScreenClicked(true);
     }
-    if (searchParams?.get("type") === "edit-order-flow") {
+    if (searchParams?.get("type") === "edit-custom-surcharge") {
        setUpdatePosOrderFlowClicked(true);
-    }
-    if (searchParams?.get("type") === "edit-order-types") {
-      setUpdatePosOrderTypesClicked(true);
-    }
-    if (searchParams?.get("type") === "edit-pos-security") {
-       setUpdatePosSecurityClicked(true);
     }
   };
 
@@ -83,10 +77,8 @@ const PosConfigModalFullPage = ({
                   />
                 </button>
                 <div className={styles.titleText}>
-                  {editPage == "register-screen" && "Register Screen"}
-                  {editPage == "order-flow" && "Order Flow"}
-                  {editPage == "order-types" && "Order Types"}
-                  {editPage == "pos-security" && "POS Security"}
+                  {editPage == "add-custom-surcharge" && "Add Custom Surcharge"}
+                  {editPage == "edit-custom-surcharge" && "Edit Custom Surcharge"}
                 </div>
                 <button
                   type="button"
@@ -106,26 +98,17 @@ const PosConfigModalFullPage = ({
               "lg:!w-[680px] mx-auto"
             )}
           >
-            {editPage == "register-screen" && (
+            {editPage == "add-custom-surcharge" && (
               <>
-                <PosConfigEdit.EditRegisterScreen  key={pageKey}/>
+                <ServiceSurcharges.AddCustomSurcharge  key={pageKey}/>
               </>
             )}
-            {editPage == "order-flow" && (
+            {editPage == "edit-custom-surcharge" && (
               <>
-                <PosConfigEdit.EditOrderFlow key={pageKey}/>
+                <ServiceSurcharges.EditCustomSurcharge key={pageKey}/>
               </>
             )}
-            {editPage == "order-types" && (
-              <>
-                <PosConfigEdit.EditOrderTypes key={pageKey}  />
-              </>
-            )}
-             {editPage == "pos-security" && (
-              <>
-                <PosConfigEdit.EditPosSecurity  key={pageKey} />
-              </>
-            )}
+          
           </div>
           <div className={twMerge(styles.modalFooter, "")}>
             <button
@@ -142,4 +125,4 @@ const PosConfigModalFullPage = ({
   );
 };
 
-export default PosConfigModalFullPage;
+export default ServiceSurchargesModalFullpage;

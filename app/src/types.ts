@@ -201,12 +201,48 @@ export interface ConfigStaffMember {
   phoneNumber: string;
 }
 export interface IConfig {
+  isItemImagesHidden:boolean;
+  isOpenCashDraw:boolean;
+  isSplitPaymentsConfigEnabled:boolean;
+  mandatoryPrepaymentConfig:boolean;
+  markOrderCompletedConfig:boolean;
+  markOrderReadyConfig:boolean;
   enabled: boolean;
   idleTime: number;
-  passcodeEnabled: boolean;
+  passCodeEnabled: boolean;
   staffMembers: ConfigStaffMember[];
 }
 
+export interface StaffMembers {
+  id: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
+  passcode: string;
+  roleId: string;
+  roleName: string;
+  description: string;
+  displayImageURL: string;
+  email: string;
+  phoneNumber: string;
+}
+export interface  StaffMemberConfigs {
+  enabled: boolean;
+  idleTime: number;
+  passCodeEnabled: boolean;
+  staffMembers:StaffMembers[];
+}
+export interface Configs {
+  isItemImagesHidden:boolean;
+  isOpenCashDraw:boolean;
+  isSplitPaymentsConfigEnabled:boolean;
+  mandatoryPrepaymentConfig:boolean;
+  markOrderCompletedConfig:boolean;
+  markOrderReadyConfig:boolean;
+  kitchenId:string,
+  staffMemberConfigs:StaffMemberConfigs
+
+}
 export interface DishByOrderType {
   orderType: string;
   item_count: number;
@@ -240,4 +276,14 @@ export interface Totals {
   totalDineInOrders: number;
   totalTakeAwayNetSales: number;
   totalDineInNetSales: number;
+}
+
+export interface OnlineOrderConfig {
+  dineInEnabled:boolean;
+  takeAwayEnabled:boolean;
+  cardFeePercent:number;
+  isTyroLoactionIdValid:boolean;
+  onlineOrderingPaused:boolean;
+  orderReadyTime:number;
+  tyroLocationId:string;
 }

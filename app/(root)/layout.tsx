@@ -11,7 +11,10 @@ import { ReportDateProvider } from "../context/ReportDateContext";
 import { ReportDataProvider } from "../context/ReportDataContext";
 import { FormStepProvider } from "../context/StaffFormStep";
 import { FormProvider } from "../context/StaffContext";
+import { PosConfigProvider } from "../context/PosConfigContext";
 import { BannerProvider } from "../context/BannerContext";
+import { OnlineOrderConfigProvider } from "../context/OnlineOrderConfigContext";
+import { ServiceSurchargesProvider } from "../context/ServiceSurchargesContext";
 
 const urbanist = Urbanist({
   weight: ["400", "600"],
@@ -27,6 +30,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <KitchenProvider>
             <FormStepProvider>
               <FormProvider>
+              <PosConfigProvider>
+              <OnlineOrderConfigProvider>
+              <ServiceSurchargesProvider>
                 <BannerProvider>
                   <html lang="en" className={urbanist.className}>
                     <body>
@@ -41,6 +47,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                     </body>
                   </html>
                 </BannerProvider>
+              </ServiceSurchargesProvider>
+              </OnlineOrderConfigProvider>
+              </PosConfigProvider>
               </FormProvider>
             </FormStepProvider>
           </KitchenProvider>

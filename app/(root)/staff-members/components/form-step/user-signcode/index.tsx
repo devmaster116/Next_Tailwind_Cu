@@ -74,7 +74,7 @@ export const UserSignCode = () => {
             ...staffMemberConfigs,
             enabled: true,
             idleTime: 0,
-            passcodeEnabled: true,
+            passCodeEnabled: true,
             staffMembers: [...staffMembers, { ...state, id: uuidv4() }],
           },
         });

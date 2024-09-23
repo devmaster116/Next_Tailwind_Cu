@@ -1,8 +1,38 @@
 import { CustomRadio } from "../../../../../components/base/radio";
 
-export const EditPosSecurity = () => {
+import { useKitchen } from "@/app/context/KitchenContext";
+import { PosConfigContext } from "@/app/context/PosConfigContext";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import ToggleSwitch from "../../ToogleSwitch";
+import { updatePosConfigInFirebase } from '../../../data-fetching';
+import { useBanner } from "@/app/context/BannerContext";
+type Props = {
+  key: number;
+};
+interface CurrentValue {
+  idleTime?: number; // Optional property
+  label?: string; // Optional property
+}
 
-  const onChange = (value) => {
+export const EditPosSecurity = ({ key }: Props) => {
+  const { 
+    updatePosSecurityClicked,
+    setUpdatePosSecurityClicked,
+    currentPosConfig , 
+    loadPosConfigForEdit,
+  } = useContext(PosConfigContext)!;
+  
+  const { kitchen } = useKitchen();
+  const router = useRouter();
+  const kitchenId = kitchen?.kitchenId ?? null;
+  const searchParams = useSearchParams();
+  const [enabled, setEnabled]=useState(currentPosConfig?.staffMemberConfigs?.enabled);
+  const [idleTime, setIdleTime]=useState(currentPosConfig?.staffMemberConfigs?.idleTime);
+  const [passCodeEnabled, setPassCodeEnabled]=useState(currentPosConfig?.staffMemberConfigs?.passCodeEnabled);
+  const { setBanner } = useBanner();
+  const onChange = (value:number) => {
+    setIdleTime(value)
     // const selectedRole = roles?.find((role: RoleInfo) => role.name === value);
     // if (selectedRole) {
     //   dispatch({ type: "SET_USER_ROLE", payload: selectedRole.name });
@@ -13,15 +43,63 @@ export const EditPosSecurity = () => {
     //   });
     // }
   };
-  const currentValue = [
-    {
-      label: 'No Time Out',
-      idleTime:0
-    },
-   
-  ];
+  const FuncUpdatePosSecurity = async () => {
+
+  if(!kitchenId) return ;
+
+  try {
+    if (searchParams?.get("type") === "edit-pos-security") {
+      router.back();
+      
+      const staffMemberConfigs = {
+        ...currentPosConfig?.staffMemberConfigs,
+        enabled:enabled, 
+        idleTime:idleTime,
+        passCodeEnabled:passCodeEnabled,
+      };
+      const configs = {
+        ...currentPosConfig,
+       staffMemberConfigs:staffMemberConfigs, 
+
+      };
+  
+      loadPosConfigForEdit(configs); // Dispatch the updated config
+      setBanner(true);
+      await updatePosConfigInFirebase(configs, kitchenId); // Persist to Firebase
+    }
+  } catch (error) {
+    console.error("Error updating staff:", error);
+  }
+};
+
+const handleStaffMemberModeToggle = async () => {
+  setEnabled((prev) => !prev);
+};
+
+const handleStaffSignInCodeToggle = async () => {
+  setPassCodeEnabled((prev) => !prev);
+
+};
+// const handleInactivityToggle = async () => {
+//   setIdleTime((prev) => !prev);
+
+// };
+useEffect(()=>{
+  setEnabled(currentPosConfig?.staffMemberConfigs?.enabled||false);
+  setPassCodeEnabled(currentPosConfig?.staffMemberConfigs?.passCodeEnabled||false);
+  setIdleTime(currentPosConfig?.staffMemberConfigs?.idleTime);
+},[currentPosConfig])
+
+useEffect(() => {
+  if (updatePosSecurityClicked) {
+    FuncUpdatePosSecurity();
+  }
+  return () => {
+    setUpdatePosSecurityClicked(false);
+  };
+}, [updatePosSecurityClicked]);
   return (
-     <div className="w-full">
+     <div className="w-full" key={key}>
         <p className="font-normal text-[16px] leading-[24px] md:text-[18px] md:leading-[28px] text-gray-800 ">
             Configure your security settings to track staff activity and control access levels
         </p>
@@ -38,10 +116,8 @@ export const EditPosSecurity = () => {
                           </div>
 
                           <div className="flex flex-col">
-                            <label class="inline-flex items-center cursor-pointer">
-                              <input type="checkbox" value="" class="sr-only peer" ></input>
-                              <div class="relative w-11 lg:w-14 h-6 lg:h-7 bg-gray-200 rounded-full    dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full lg:after:h-6 after:h-5 lg:after:w-6 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                            </label>
+                          <ToggleSwitch isToggled={enabled } onToggle={handleStaffMemberModeToggle} />
+
                           </div>
                     </div>
                 </div>
@@ -57,10 +133,8 @@ export const EditPosSecurity = () => {
                                 </div>
 
                                 <div className="flex flex-col">
-                                  <label class="inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" value="" class="sr-only peer" ></input>
-                                    <div class="relative w-11 lg:w-14 h-6 lg:h-7 bg-gray-200 rounded-full    dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full lg:after:h-6 after:h-5 lg:after:w-6 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                                  </label>
+                                <ToggleSwitch isToggled={passCodeEnabled } onToggle={handleStaffSignInCodeToggle} />
+
                                 </div>
                       </div>
                 </div>
@@ -81,22 +155,22 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col  w-1/2 ">
                       <CustomRadio
                           label={'No Time Out'}
-                          checked={true}
-                          onChange={() => onChange('No Time Out')}
+                          checked={idleTime === 0}
+                          onChange={() => onChange(0)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 0
+                              idleTime === 0
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 0
+                              idleTime === 0
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 0
+                              idleTime !== 0
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}
@@ -105,22 +179,23 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col w-1/2 ">
                       <CustomRadio
                           label={'2 Minutes'}
-                          checked={true}
-                          onChange={() => onChange('2 Minutes')}
+                          checked={idleTime === 2}
+                          
+                          onChange={() => onChange(2)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 2
+                              idleTime === 2
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 2
+                              idleTime === 2
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 2
+                              idleTime !== 2
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}
@@ -131,22 +206,22 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col  w-1/2 ">
                       <CustomRadio
                           label={'5 Minutes'}
-                          checked={true}
-                          onChange={() => onChange('5')}
+                          checked={idleTime === 5}
+                          onChange={() => onChange(5)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 5
+                              idleTime === 5
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 5
+                              idleTime === 5
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 5
+                              idleTime !== 5
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}
@@ -155,22 +230,22 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col w-1/2 ">
                       <CustomRadio
                           label={'8 Minutes'}
-                          checked={true}
-                          onChange={() => onChange('8 Minutes')}
+                          checked={idleTime === 8}
+                          onChange={() => onChange(8)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 8
+                              idleTime === 8
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 8
+                              idleTime === 8
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 8
+                              idleTime !== 8
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}
@@ -181,22 +256,22 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col  w-1/2 ">
                       <CustomRadio
                           label={'12 Minutes'}
-                          checked={true}
-                          onChange={() => onChange('12')}
+                          checked={idleTime === 12}
+                          onChange={() => onChange(12)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 12
+                              idleTime === 12
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 12
+                              idleTime === 12
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 12
+                              idleTime !== 12
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}
@@ -205,22 +280,22 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col w-1/2 ">
                       <CustomRadio
                           label={'20 Minutes'}
-                          checked={true}
-                          onChange={() => onChange('20 Minutes')}
+                          checked={idleTime === 20}
+                          onChange={() => onChange(20)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 20
+                              idleTime === 20
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 20
+                              idleTime === 20
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 20
+                              idleTime !== 20
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}
@@ -231,22 +306,22 @@ export const EditPosSecurity = () => {
                   <div className="flex flex-col  w-1/2 ">
                       <CustomRadio
                           label={'30 Minutes'}
-                          checked={true}
-                          onChange={() => onChange('30')}
+                          checked={idleTime === 30}
+                          onChange={() => onChange(30)}
                         
                           classOverride={{
                             labelContainer:
                               "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                             container:
-                              currentValue?.idleTime === 30
+                              idleTime === 30
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             radioStyle:
-                              currentValue?.idleTime === 30
+                              idleTime === 30
                                 ? "border-purple-700 border-2"
                                 : "border-gray-300",
                             innerRadioStyle:
-                              currentValue?.idleTime !== 30
+                              idleTime !== 30
                                 ? "bg-white"
                                 : "bg-purple-700 border-2",
                           }}

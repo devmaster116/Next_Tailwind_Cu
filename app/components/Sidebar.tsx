@@ -24,8 +24,8 @@ export default function Sidebar({ show, setter }: SidebarProps) {
   const pathname = usePathname();
   const { user } = useUser();
   const { kitchen } = useKitchen();
-  const { banner, setBanner } = useBanner();
-  const { statusAddStaff, setStatusAddStaff } = useFormStep();
+  const { setBanner } = useBanner();
+  const { setStatusAddStaff } = useFormStep();
 
   useEffect(() => {
     if (!pathname.includes("/staff-members")) {
