@@ -10,7 +10,10 @@ export const validateMobileNumber = (mobileNumber: string): boolean => {
   const mobileNumberRegex = /^04\d{8}$/;
   return mobileNumberRegex.test(mobileNumber);
 };
-
+export const validateNumber = (number: string): boolean => {
+  const numberRegex = /^\d+$/;
+  return numberRegex.test(number);
+};
 export const handleBlurEmail = (
   e: React.ChangeEvent<HTMLInputElement>,
   setEmail: (email: string) => void,
@@ -55,7 +58,7 @@ export function removeGst<T extends Record<K, number>, K extends keyof T>(
   items: T[],
   priceKey: K
 ): T[] {
-  return items.map(item => ({
+  return items.map((item) => ({
     ...item,
     [priceKey]: parseFloat((item[priceKey] / 1.1).toFixed(2)),
   }));
@@ -65,7 +68,7 @@ export function formatUrlToTitle(urlPath: string): string {
   return urlPath
     .replace(/^\//, "")
     .replace(/-/g, " ")
-    .replace(/\b\w/g, char => char.toUpperCase());
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 export const handleInputChangeField = (
@@ -75,8 +78,8 @@ export const handleInputChangeField = (
   fieldName: string
 ) => {
   const newValue: string = e.target.value;
-  setState(prevState => ({ ...prevState, [fieldName]: newValue }));
-  setError(prevState => ({ ...prevState, [fieldName]: "" }));
+  setState((prevState) => ({ ...prevState, [fieldName]: newValue }));
+  setError((prevState) => ({ ...prevState, [fieldName]: "" }));
 };
 
 export const handleBlurField = (
@@ -89,10 +92,10 @@ export const handleBlurField = (
 ) => {
   const { value } = e.target;
   if (!validate(value)) {
-    setError(prevState => ({ ...prevState, [fieldName]: errorMessage }));
+    setError((prevState) => ({ ...prevState, [fieldName]: errorMessage }));
   } else {
-    setState(prevState => ({ ...prevState, [fieldName]: value }));
-    setError(prevState => ({ ...prevState, [fieldName]: "" }));
+    setState((prevState) => ({ ...prevState, [fieldName]: value }));
+    setError((prevState) => ({ ...prevState, [fieldName]: "" }));
   }
 };
 

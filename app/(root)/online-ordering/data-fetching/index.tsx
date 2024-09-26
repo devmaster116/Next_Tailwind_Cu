@@ -1,4 +1,4 @@
-import { ConfigStaffMember } from "@/app/src/types";
+import { ConfigStaffMember, OnlineOrderConfig } from "@/app/src/types";
 import { db } from "@/firebase/config";
 import {
   collection,
@@ -7,177 +7,72 @@ import {
   getDocs,
   onSnapshot,
   query,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
-export const fetchPermissions = (callback: (permissions: any[]) => void) => {
-  const q = query(collection(db, "permissions"));
 
-  return onSnapshot(
-    q,
-    (querySnapshot: any) => {
-      const permissions: any[] = [];
-      querySnapshot.forEach((doc: any) => {
-        const data = doc.data();
-        console.log(`Fetching permissions from document ID: ${doc.id}`, data);
-        if (Array.isArray(data.permissions)) {
-          data.permissions.forEach((permission: any) => {
-            permissions.push({
-              id: permission.id,
-              name: permission.name,
-              description: permission.description,
-            });
-          });
-        }
-      });
-      callback(permissions);
-      console;
-    },
-    error => {
-      console.error("Error fetching permissions:", error);
-    }
-  );
-};
-
-export const subscribeRoles = (
-  kitchenId: string | null,
-  callback: (data: { rolesList: any[]; ownerDetails: any }) => void
-) => {
-  if (!kitchenId) {
-    console.error("Kitchen ID is required but was not provided.");
-    return;
-  }
-
-  const roleDocRef = doc(db, "roles", kitchenId);
-
-  const unsubscribe = onSnapshot(roleDocRef, docSnapshot => {
-    const data = docSnapshot.data();
-    const rolesList = data?.roles || [];
-    const ownerDetails = data?.owner || {};
-    callback({ rolesList, ownerDetails });
-  });
-
-  return unsubscribe;
-};
-
-export const fetchRoles = async (permissions: any[]) => {
-  const rolesCollection = collection(db, "roles");
-  const rolesSnapshot = await getDocs(rolesCollection);
-
-  const rolesList: any[] = [];
-  let ownerDetails: any = {};
-
-  rolesSnapshot.docs.forEach(doc => {
-    const data = doc.data();
-    if (Array.isArray(data.roles)) {
-      data.roles.forEach(
-        (role: {
-          id: string;
-          name: string;
-          description: string;
-          permissions: any[];
-        }) => {
-          const roleData = {
-            id: role.id,
-            name: role.name,
-            description: role.description,
-            staff: data.staff || 0,
-            permissions: role.permissions || [],
-          };
-
-          rolesList.push(roleData);
-
-          if (role.name.toLowerCase() === "owner") {
-            ownerDetails = roleData;
-          }
-        }
-      );
-    }
-  });
-
-  const permissionNamesSet = new Set(permissions.map(p => p.label));
-
-  const filteredPermissions = (ownerDetails.permissions || []).filter(
-    (permission: any) => permissionNamesSet.has(permission.name)
-  );
-
-  return {
-    rolesList,
-    ownerDetails: { ...ownerDetails, permissions: filteredPermissions },
-  };
-};
-
-export const addRoleToExistingDocument = async (
-  newRole: any,
+export const updateOnlineOrderConfigInFirebase = async (
+  updatedConfig: OnlineOrderConfig, // Should be named `updatedConfig` to reflect it's for configuration
   kitchenId: string
 ) => {
   try {
-    const docRef = doc(db, "roles", kitchenId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      const docData = docSnap.data();
-      const existingRoles = docData.roles || [];
-      console.log("Existing roles before update:", existingRoles);
-      console.log("New role to add:", newRole);
-
-      const sanitizedNewRole = {
-        ...newRole,
-        permissions: newRole.permissions.map((permission: any) => ({
-          id: permission.id || "",
-          name: permission.name || "",
-          description: permission.description || "No description available",
-        })),
-      };
-
-      const updatedRoles = [...existingRoles, sanitizedNewRole];
-      console.log("Updated roles:", updatedRoles);
-
-      await updateDoc(docRef, { roles: updatedRoles });
-      console.log("Role added successfully!");
-    } else {
-      console.log("No such document!");
+    if (!kitchenId) {
+      console.error("Kitchen ID is required but was not provided.");
+      return;
     }
+
+    const configDocRef = doc(db, "onlineOrdersConfigs", kitchenId);
+
+    const configDoc = await getDoc(configDocRef);
+
+    if (!configDoc.exists()) {
+      console.log("Config document does not exist!");
+      return;
+    }
+
+    await updateDoc(configDocRef, {
+      ...updatedConfig,
+    });
   } catch (error) {
-    console.error("Error adding role:", error);
+    console.error("Error updating config in Firebase:", error);
   }
 };
-
-export const editImageUploadDB = async (
-  staffMemberDetails: ConfigStaffMember,
-  imageUrl: string,
+export const addOnlineOrderConfigInFirebase = async (
+  tyroLocationId: string, // Should be named `updatedConfig` to reflect it's for configuration
   kitchenId: string
 ) => {
-  if (!kitchenId) {
-    console.error("Kitchen ID is required but was not provided.");
-    return;
-  }
-  const configDocRef = doc(db, "configs", kitchenId);
-
-  const configDoc = await getDoc(configDocRef);
-  if (!configDoc.exists()) {
-    console.log("Config document does not exist!");
-    return;
-  }
-
-  const { staffMemberConfigs = {} } = configDoc.data();
-  const { staffMembers = [] } = staffMemberConfigs;
-
-  const updatedStaffMemberList = staffMembers.map(
-    (member: ConfigStaffMember) => {
-      if (member.id === staffMemberDetails.id) {
-        return {
-          ...member,
-          displayImageURL: imageUrl,
-        };
-      }
-      return member;
+  try {
+    if (!kitchenId) {
+      console.error("Kitchen ID is required but was not provided.");
+      return;
     }
-  );
+    const configDocRef = doc(db, "onlineOrdersConfigs", kitchenId);
+    const configDoc = await getDoc(configDocRef);
+    if (!configDoc.exists()) {
+      // If the document does not exist, create it
+      await setDoc(configDocRef, {
+        kitchenId: kitchenId, // Set the kitchenId in the document data
+        tyroLocationId: tyroLocationId,
+        onlineOrderTypes: "", // Default values for new config
+        cardFeePercent: 1.9,
+        cardFeeFixedCharge: 9,
+        orderReadyTime: 15,
+      });
+      console.log("New online order config created successfully!");
+    } else {
+      // If the document exists, update the existing document
+      await updateDoc(configDocRef, {
+        tyroLocationId: tyroLocationId,
+        onlineOrderTypes: "",
+        cardFeePercent: 1.9,
+        cardFeeFixedCharge: 9,
+        orderReadyTime: 15,
+      });
+      console.log("Online order config updated successfully!");
+    }
 
-  await updateDoc(configDocRef, {
-    staffMemberConfigs: {
-      ...staffMemberConfigs,
-      staffMembers: updatedStaffMemberList,
-    },
-  });
+    // loadOnlineOrderForEdit(updatedConfig); // Dispatch the updated config
+  } catch (error) {
+    console.error("Error updating staff:", error);
+  }
 };

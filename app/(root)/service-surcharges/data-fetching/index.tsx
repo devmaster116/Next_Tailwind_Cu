@@ -32,7 +32,6 @@ export const updatePosConfigInFirebase = async (
     await updateDoc(configDocRef, {
       ...updatedConfig,
     });
-
   } catch (error) {
     console.error("Error updating config in Firebase:", error);
   }
@@ -60,7 +59,6 @@ export const updateOnlineOrderConfigInFirebase = async (
     await updateDoc(configDocRef, {
       ...updatedConfig,
     });
-
   } catch (error) {
     console.error("Error updating config in Firebase:", error);
   }

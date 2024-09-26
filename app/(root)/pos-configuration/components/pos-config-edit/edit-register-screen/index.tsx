@@ -3,38 +3,44 @@ import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import ToggleSwitch from "../../ToogleSwitch";
-import { updatePosConfigInFirebase } from '../../../data-fetching';
+import { updatePosConfigInFirebase } from "../../../data-fetching";
 import { useBanner } from "@/app/context/BannerContext";
 type Props = {
   key: number;
 };
 export const EditRegisterScreen = ({ key }: Props) => {
-  const { 
+  const {
     updatePosRegisterScreenClicked,
     setUpdatePosRegisterScreenClicked,
-    currentPosConfig , // Use state from the context
+    currentPosConfig, // Use state from the context
     loadPosConfigForEdit,
+    setBannerLabel,
   } = useContext(PosConfigContext)!;
 
   const { kitchen } = useKitchen();
   const router = useRouter();
   const kitchenId = kitchen?.kitchenId ?? null;
   const searchParams = useSearchParams();
-  const [itemImageHidden, setItemImageHidden]=useState(currentPosConfig?.isItemImagesHidden);
-  const [openCashDraw, setOpenCashDraw]=useState(currentPosConfig?.isOpenCashDraw);
+  const [itemImageHidden, setItemImageHidden] = useState(
+    currentPosConfig?.isItemImagesHidden
+  );
+  const [openCashDraw, setOpenCashDraw] = useState(
+    currentPosConfig?.isOpenCashDraw
+  );
   const { setBanner } = useBanner();
   const FuncUpdateRegisterScreen = async () => {
-    if(!kitchenId) return ;
+    if (!kitchenId) return;
 
     try {
       if (searchParams?.get("type") === "edit-register-screen") {
         router.back();
-        
+
         const updatedConfig = {
           ...currentPosConfig,
-          isItemImagesHidden:itemImageHidden, 
-          isOpenCashDraw:openCashDraw
+          isItemImagesHidden: itemImageHidden,
+          isOpenCashDraw: openCashDraw,
         };
+        setBannerLabel("Register Screen settings updated.");
         loadPosConfigForEdit(updatedConfig); // Dispatch the updated config
         setBanner(true);
         await updatePosConfigInFirebase(updatedConfig, kitchenId); // Persist to Firebase
@@ -50,12 +56,11 @@ export const EditRegisterScreen = ({ key }: Props) => {
 
   const handleOpenCashDrawToggle = async () => {
     setOpenCashDraw((prev) => !prev);
-
   };
-  useEffect(()=>{
-    setItemImageHidden(currentPosConfig?.isItemImagesHidden||false);
-    setOpenCashDraw(currentPosConfig?.isOpenCashDraw||false);
-  },[currentPosConfig])
+  useEffect(() => {
+    setItemImageHidden(currentPosConfig?.isItemImagesHidden || false);
+    setOpenCashDraw(currentPosConfig?.isOpenCashDraw || false);
+  }, [currentPosConfig]);
 
   useEffect(() => {
     if (updatePosRegisterScreenClicked) {
@@ -79,12 +84,16 @@ export const EditRegisterScreen = ({ key }: Props) => {
                 Show item images on register
               </p>
               <p className="font-normal text-gray-600 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
-                Enabling this means item images will be shown on the register screen
+                Enabling this means item images will be shown on the register
+                screen
               </p>
             </div>
 
             <div className="flex flex-col">
-              <ToggleSwitch isToggled={itemImageHidden } onToggle={handleItemImageToggle} />
+              <ToggleSwitch
+                isToggled={itemImageHidden}
+                onToggle={handleItemImageToggle}
+              />
             </div>
           </div>
         </div>
@@ -95,12 +104,16 @@ export const EditRegisterScreen = ({ key }: Props) => {
               Show open cash draw button
             </p>
             <p className="font-normal text-gray-600 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
-              Enabling this allows users with access to the draw to open it outside of a transaction.
+              Enabling this allows users with access to the draw to open it
+              outside of a transaction.
             </p>
           </div>
 
           <div className="flex flex-col">
-            <ToggleSwitch isToggled={openCashDraw} onToggle={handleOpenCashDrawToggle} />
+            <ToggleSwitch
+              isToggled={openCashDraw}
+              onToggle={handleOpenCashDrawToggle}
+            />
           </div>
         </div>
       </div>

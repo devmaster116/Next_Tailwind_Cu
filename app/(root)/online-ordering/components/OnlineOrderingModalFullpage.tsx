@@ -4,37 +4,54 @@ import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import OnlineOrdering from "../components/online-ordering-edit";
+import OnlineOrdering from "./online-ordering-edit";
+import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 
 const OnlineOrderingModalFullPage = ({
   type,
   editPage,
 }: {
   type: "edit";
-  editPage: "order-ready-times" | "tyro-location-id" | "online-payment-surcharge" | "online-order-types";
+  editPage:
+    | "add-tyro-location-id"
+    | "order-ready-times"
+    | "tyro-location-id"
+    | "online-payment-surcharge"
+    | "online-order-types";
 }) => {
   const { width } = useWindowSize();
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const {
+    setUpdateOrderReadyTimesClicked,
+    setUpdateTyroLocationIdClicked,
+    setUpdatePosOrderTypesClicked,
+    setUpdateOnlinePaymentSurchargeClicked,
+    setAddTyroLocationIdClicked,
+    pageKey,
+    setPageKey,
+  } = useContext(OnlineOrderConfigContext)!;
   const handleCloseModal = () => {
+    setPageKey(pageKey + 1);
     router.back();
   };
   const handleUpdateStaff = () => {
-    if (searchParams?.get("type") === "edit-register-screen") {
-      // setUpdateUserInfoClicked(true);
+    if (searchParams?.get("type") === "edit-online-payment-surcharge") {
+      setUpdateOnlinePaymentSurchargeClicked(true);
     }
-    if (searchParams?.get("type") === "edit-order-flow") {
-      // setUpdateUserRoleClicked(true);
+    if (searchParams?.get("type") === "edit-order-ready-time") {
+      setUpdateOrderReadyTimesClicked(true);
     }
-    if (searchParams?.get("type") === "edit-order-types") {
-      // setUpdateUserCodeClicked(true);
+    if (searchParams?.get("type") === "edit-online-order-types") {
+      setUpdatePosOrderTypesClicked(true);
     }
-    if (searchParams?.get("type") === "edit-pos-security") {
-      // setUpdateUserCodeClicked(true);
+    if (searchParams?.get("type") === "edit-tyro-location-id") {
+      setUpdateTyroLocationIdClicked(true);
+    }
+    if (searchParams?.get("type") === "add-tyro-location-id") {
+      setAddTyroLocationIdClicked(true);
     }
   };
-
 
   return (
     <>
@@ -68,7 +85,9 @@ const OnlineOrderingModalFullPage = ({
                 <div className={styles.titleText}>
                   {editPage == "order-ready-times" && "Order Ready Time"}
                   {editPage == "tyro-location-id" && "Tyro Location ID"}
-                  {editPage == "online-payment-surcharge" && "Online Payment Surcharge"}
+                  {editPage == "add-tyro-location-id" && "Tyro Location ID"}
+                  {editPage == "online-payment-surcharge" &&
+                    "Online Payment Surcharge"}
                   {editPage == "online-order-types" && "Online Order Types"}
                 </div>
                 <button
@@ -91,22 +110,27 @@ const OnlineOrderingModalFullPage = ({
           >
             {editPage == "order-ready-times" && (
               <>
-                <OnlineOrdering.EditOrderReadyTimes  />
+                <OnlineOrdering.EditOrderReadyTimes key={pageKey} />
               </>
             )}
             {editPage == "tyro-location-id" && (
               <>
-                <OnlineOrdering.EditTyroLocationId/>
+                <OnlineOrdering.EditTyroLocationId />
               </>
             )}
             {editPage == "online-payment-surcharge" && (
               <>
-                <OnlineOrdering.EditOnlinePaymentSurcharge  />
+                <OnlineOrdering.EditOnlinePaymentSurcharge key={pageKey} />
               </>
             )}
-             {editPage == "online-order-types" && (
+            {editPage == "online-order-types" && (
               <>
                 <OnlineOrdering.EditOrderTypes />
+              </>
+            )}
+            {editPage == "add-tyro-location-id" && (
+              <>
+                <OnlineOrdering.AddTyroLocationId key={pageKey} />
               </>
             )}
           </div>

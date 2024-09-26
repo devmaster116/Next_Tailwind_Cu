@@ -9,10 +9,12 @@ export type PosConfigContextType = {
   pageKey: number;
   setPageKey: (status: number) => void;
 
+  bannerLabel: string;
+  setBannerLabel: (status: string) => void;
 
   dispatch: React.Dispatch<FormAction>;
   loadPosConfigForEdit: (pos: Configs) => void; // Implement this
-  
+
   updatePosRegisterScreenClicked: boolean;
   setUpdatePosRegisterScreenClicked: (_clicked: boolean) => void;
 
@@ -33,16 +35,19 @@ const initialState: Configs = {
   mandatoryPrepaymentConfig: false,
   markOrderCompletedConfig: false,
   markOrderReadyConfig: false,
-  kitchenId:'',
-  staffMemberConfigs: {  // Wrap this in curly braces
+  kitchenId: "",
+  staffMemberConfigs: {
     enabled: false,
     idleTime: 0,
     passCodeEnabled: false,
     staffMembers: [],
-  }
+  },
 };
 
-export type FormAction = { type: "SET_CURRENT_POS_CONFIG"; payload: Configs | null };
+export type FormAction = {
+  type: "SET_CURRENT_POS_CONFIG";
+  payload: Configs | null;
+};
 
 export const PosConfigContext = createContext<PosConfigContextType>({
   state: initialState,
@@ -51,6 +56,8 @@ export const PosConfigContext = createContext<PosConfigContextType>({
   loadPosConfigForEdit: () => {},
   pageKey: 1,
   setPageKey: () => {},
+  bannerLabel: "",
+  setBannerLabel: () => {},
   updatePosRegisterScreenClicked: false,
   setUpdatePosRegisterScreenClicked: () => {},
   updatePosOrderFlowClicked: false,
@@ -61,21 +68,31 @@ export const PosConfigContext = createContext<PosConfigContextType>({
   setUpdatePosSecurityClicked: () => {},
 });
 
-export const PosConfigProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [updatePosRegisterScreenClicked, setUpdatePosRegisterScreenClicked] = useState(false);
-  const [updatePosOrderFlowClicked, setUpdatePosOrderFlowClicked] = useState(false);
-  const [updatePosOrderTypesClicked, setUpdatePosOrderTypesClicked] = useState(false);
-  const [updatePosSecurityClicked, setUpdatePosSecurityClicked] = useState(false);
+export const PosConfigProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [updatePosRegisterScreenClicked, setUpdatePosRegisterScreenClicked] =
+    useState(false);
+  const [updatePosOrderFlowClicked, setUpdatePosOrderFlowClicked] =
+    useState(false);
+  const [updatePosOrderTypesClicked, setUpdatePosOrderTypesClicked] =
+    useState(false);
+  const [updatePosSecurityClicked, setUpdatePosSecurityClicked] =
+    useState(false);
   const [pageKey, setPageKey] = useState(1);
+  const [bannerLabel, setBannerLabel] = useState("");
 
-  const [state, dispatch] = useReducer((prevState: Configs, action: FormAction) => {
-    switch (action.type) {
-      case "SET_CURRENT_POS_CONFIG":
-        return { ...prevState, ...action.payload };
-      default:
-        return prevState;
-    }
-  }, initialState);
+  const [state, dispatch] = useReducer(
+    (prevState: Configs, action: FormAction) => {
+      switch (action.type) {
+        case "SET_CURRENT_POS_CONFIG":
+          return { ...prevState, ...action.payload };
+        default:
+          return prevState;
+      }
+    },
+    initialState
+  );
 
   const loadPosConfigForEdit = (pos: Configs) => {
     dispatch({ type: "SET_CURRENT_POS_CONFIG", payload: pos });
@@ -90,6 +107,8 @@ export const PosConfigProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         loadPosConfigForEdit,
         pageKey,
         setPageKey,
+        bannerLabel,
+        setBannerLabel,
         updatePosRegisterScreenClicked,
         setUpdatePosRegisterScreenClicked,
         updatePosOrderFlowClicked,

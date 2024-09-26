@@ -201,12 +201,12 @@ export interface ConfigStaffMember {
   phoneNumber: string;
 }
 export interface IConfig {
-  isItemImagesHidden:boolean;
-  isOpenCashDraw:boolean;
-  isSplitPaymentsConfigEnabled:boolean;
-  mandatoryPrepaymentConfig:boolean;
-  markOrderCompletedConfig:boolean;
-  markOrderReadyConfig:boolean;
+  isItemImagesHidden: boolean;
+  isOpenCashDraw: boolean;
+  isSplitPaymentsConfigEnabled: boolean;
+  mandatoryPrepaymentConfig: boolean;
+  markOrderCompletedConfig: boolean;
+  markOrderReadyConfig: boolean;
   enabled: boolean;
   idleTime: number;
   passCodeEnabled: boolean;
@@ -226,22 +226,21 @@ export interface StaffMembers {
   email: string;
   phoneNumber: string;
 }
-export interface  StaffMemberConfigs {
+export interface StaffMemberConfigs {
   enabled: boolean;
   idleTime: number;
   passCodeEnabled: boolean;
-  staffMembers:StaffMembers[];
+  staffMembers: StaffMembers[];
 }
 export interface Configs {
-  isItemImagesHidden:boolean;
-  isOpenCashDraw:boolean;
-  isSplitPaymentsConfigEnabled:boolean;
-  mandatoryPrepaymentConfig:boolean;
-  markOrderCompletedConfig:boolean;
-  markOrderReadyConfig:boolean;
-  kitchenId:string,
-  staffMemberConfigs:StaffMemberConfigs
-
+  isItemImagesHidden: boolean;
+  isOpenCashDraw: boolean;
+  isSplitPaymentsConfigEnabled: boolean;
+  mandatoryPrepaymentConfig: boolean;
+  markOrderCompletedConfig: boolean;
+  markOrderReadyConfig: boolean;
+  kitchenId: string;
+  staffMemberConfigs: StaffMemberConfigs;
 }
 export interface DishByOrderType {
   orderType: string;
@@ -279,11 +278,13 @@ export interface Totals {
 }
 
 export interface OnlineOrderConfig {
-  dineInEnabled:boolean;
-  takeAwayEnabled:boolean;
-  cardFeePercent:number;
-  isTyroLocationIdValid:boolean;
-  onlineOrderingPaused:boolean;
-  orderReadyTime:number;
-  tyroLocationId:string;
+  dineInEnabled: boolean;
+  takeAwayEnabled: boolean;
+  cardFeePercent: number;
+  cardFeeFixedCharge: number;
+  isTyroLocationIdValid: boolean;
+  onlineOrderingPaused: boolean;
+  orderReadyTime: number;
+  tyroLocationId: string;
+  onlineOrderTypes: string;
 }

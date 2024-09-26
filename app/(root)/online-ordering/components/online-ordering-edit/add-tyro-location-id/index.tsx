@@ -1,23 +1,24 @@
 import Input from "@/app/components/Input";
 import { useContext, useEffect, useState } from "react";
 import { validateNumber } from "@/app/components/Auth/utils/helper";
-import { updateOnlineOrderConfigInFirebase } from "../../../data-fetching";
-import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 import { useKitchen } from "@/app/context/KitchenContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBanner } from "@/app/context/BannerContext";
+import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebase/config";
+import { addOnlineOrderConfigInFirebase } from "../../../data-fetching";
 
-export const EditTyroLocationId = () => {
-  const {
-    setUpdateTyroLocationIdClicked,
-    updateTyroLocationIdClicked,
-    currentOnlineOrderConfig,
-    loadOnlineOrderForEdit,
-  } = useContext(OnlineOrderConfigContext)!;
+type Props = {
+  key: number;
+};
+
+export const AddTyroLocationId = ({ key }: Props) => {
   const [errors, setErrors] = useState<string>("");
-  const [tyroLocationId, setTyroLocationId] = useState(
-    currentOnlineOrderConfig?.tyroLocationId
-  );
+  const [tyroLocationId, setTyroLocationId] = useState<string>("");
+  const { setAddTyroLocationIdClicked, addTyroLocationIdClicked } = useContext(
+    OnlineOrderConfigContext
+  )!;
 
   const { kitchen } = useKitchen();
   const router = useRouter();
@@ -34,27 +35,22 @@ export const EditTyroLocationId = () => {
       return;
     }
     if (!errors && tyroLocationId) {
-      if (searchParams?.get("type") === "edit-tyro-location-id") {
+      if (searchParams?.get("type") === "add-tyro-location-id") {
+        await addOnlineOrderConfigInFirebase(tyroLocationId, kitchenId);
         router.back();
-        const configs = {
-          ...currentOnlineOrderConfig,
-          tyroLocationId: tyroLocationId,
-        };
-        console.log("configs", configs);
-        loadOnlineOrderForEdit(configs);
+        setTyroLocationId("");
         setBanner(true);
-        await updateOnlineOrderConfigInFirebase(configs, kitchenId);
       }
     }
   };
   useEffect(() => {
-    if (updateTyroLocationIdClicked) {
+    if (addTyroLocationIdClicked) {
       FuncUpdateOrderType();
     }
     return () => {
-      setUpdateTyroLocationIdClicked(false);
+      setAddTyroLocationIdClicked(false);
     };
-  }, [updateTyroLocationIdClicked]);
+  }, [addTyroLocationIdClicked]);
 
   const handleInputChange = (value: string) => {
     if (!value) {
@@ -66,8 +62,9 @@ export const EditTyroLocationId = () => {
     }
     setTyroLocationId(value); // Update the input value
   };
+
   return (
-    <div className="w-full">
+    <div className="w-full" key={key}>
       <p className="font-normal text-[16px] leading-[24px] md:text-[18px] md:leading-[28px] text-gray-800 ">
         To enable your Swifti online store front you need to have a
         Tyro-e-Commerce location ID.
@@ -80,7 +77,7 @@ export const EditTyroLocationId = () => {
           <Input
             value={tyroLocationId}
             type="number"
-            maxLength={8}
+            maxLength={30}
             handleInputChange={(e) => handleInputChange(e.target.value)}
             error={errors}
             placeholder="Enter your location ID"

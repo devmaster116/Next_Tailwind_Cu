@@ -4,11 +4,11 @@ import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
 import {useRouter, useSearchParams } from "next/navigation";
-import ServiceSurcharges from "../components/service-surcharges-edit";
+import ServiceSurcharges from "./service-surcharges-edit";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 
-const ServiceSurchargesModalFullpage = ({
+const ServiceSurchargesModalFullPage = ({
   type,
   editPage,
 }: {
@@ -125,4 +125,4 @@ const ServiceSurchargesModalFullpage = ({
   );
 };
 
-export default ServiceSurchargesModalFullpage;
+export default ServiceSurchargesModalFullPage;
