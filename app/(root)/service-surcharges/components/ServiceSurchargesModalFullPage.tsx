@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from "./ServiceSurchargesModalFullpage.module.scss";
+import styles from "./ServiceSurchargesModalFullPage.module.scss";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";

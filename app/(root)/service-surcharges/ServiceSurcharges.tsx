@@ -4,7 +4,7 @@ import withAuth from "@/app/components/Auth/withAuth";
 import styles from "./ServiceSurcharges.module.scss";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Drawer from "react-modern-drawer";
-import ServiceSurchargesModalFullPage from "./components/ServiceSurchargesModalFullpage-2";
+import ServiceSurchargesModalFullPage from "./components/ServiceSurchargesModalFullPage";
 
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
