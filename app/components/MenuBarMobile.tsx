@@ -7,13 +7,14 @@ interface MenuBarMobileProps {
   pageTitle: string | undefined;
 }
 const MenuBarMobile: React.FC<MenuBarMobileProps> = ({ setter, pageTitle }) => {
+  console.log("pageTItle", pageTitle);
   return (
     <nav className={styles.menuBarMobile}>
       <div className={styles.menuBarInnerContainer}>
         <button
           className={styles.menuButton}
           onClick={() => {
-            setter(oldVal => !oldVal);
+            setter((oldVal) => !oldVal);
           }}
         >
           <Image

@@ -4,7 +4,7 @@ import { useKitchen } from "@/app/context/KitchenContext";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import ToggleSwitch from "../../ToogleSwitch";
+import ToggleSwitch from "../../ToggleSwitch";
 import { updatePosConfigInFirebase } from "../../../data-fetching";
 import { useBanner } from "@/app/context/BannerContext";
 type Props = {
@@ -142,15 +142,15 @@ export const EditPosSecurity = ({ key }: Props) => {
             </div>
             <div className="flex  ">
               <p className="font-normal text-gray-600 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
-                Automatically lock the POS after inactivity,requiring a passcode
-                to resume use.
+                Automatically lock the POS after inactivity, requiring a
+                passcode to resume use.
               </p>
             </div>
           </div>
           <div className="flex w-full gap-3 mb-3">
             <div className="flex flex-col  w-1/2 ">
               <CustomRadio
-                label={"No Time Out"}
+                label={"No Timeout"}
                 checked={idleTime === 0}
                 onChange={() => onChange(0)}
                 classOverride={{
@@ -158,14 +158,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 0
-                      ? "border-purple-700 border-2"
+                      ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 0
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 0 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 0 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 0 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>
@@ -179,14 +176,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 2
-                      ? "border-purple-700 border-2"
+                      ? " shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 2
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 2 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 2 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 2 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>
@@ -202,14 +196,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 5
-                      ? "border-purple-700 border-2"
+                      ? " shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 5
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 5 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 5 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 5 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>
@@ -223,14 +214,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 8
-                      ? "border-purple-700 border-2"
+                      ? " shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 8
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 8 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 8 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 8 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>
@@ -246,14 +234,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 12
-                      ? "border-purple-700 border-2"
+                      ? " shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 12
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 12 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 12 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 12 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>
@@ -267,14 +252,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 20
-                      ? "border-purple-700 border-2"
+                      ? " shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 20
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 20 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 20 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 20 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>
@@ -290,14 +272,11 @@ export const EditPosSecurity = ({ key }: Props) => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     idleTime === 30
-                      ? "border-purple-700 border-2"
+                      ? " shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
-                  radioStyle:
-                    idleTime === 30
-                      ? "border-purple-700 border-2"
-                      : "border-gray-300",
+                  radioStyle: idleTime === 30 ? " border-2" : "border-gray-300",
                   innerRadioStyle:
-                    idleTime !== 30 ? "bg-white" : "bg-purple-700 border-2",
+                    idleTime !== 30 ? "bg-white" : "bg-purple-700 ",
                 }}
               />
             </div>

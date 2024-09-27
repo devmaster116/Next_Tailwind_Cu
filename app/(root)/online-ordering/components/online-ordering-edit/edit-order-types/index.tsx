@@ -5,7 +5,7 @@ import { updateOnlineOrderConfigInFirebase } from "../../../data-fetching";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { useBanner } from "@/app/context/BannerContext";
-import ToggleSwitch from "@/app/(root)/pos-configuration/components/ToogleSwitch";
+import ToggleSwitch from "@/app/(root)/pos-configuration/components/ToggleSwitch";
 type Props = {
   key: number;
 };

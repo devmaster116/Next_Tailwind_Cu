@@ -1,4 +1,4 @@
-.pageTitle {
+.pageTitles {
   font-size: 24px;
   font-weight: 600;
   line-height: 32px;
@@ -7,7 +7,7 @@
   @media only screen and (max-width: 600px) {
     display: none;
 
-    .pageTitle {
+    .pageTitles {
       font-size: 18px;
       line-height: 28px;
       font-weight: 600;
@@ -28,7 +28,6 @@
     margin-top: 12px;
   }
 }
-
 
 .pageHeader {
   display: flex;

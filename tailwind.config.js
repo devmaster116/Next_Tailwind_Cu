@@ -18,6 +18,9 @@ module.exports = {
         "min-lg": { min: "961px" },
         "max-lg": { max: "961px" },
       },
+      maxWidth: {
+        "553px": "553px", // Define a custom max-width of 553px
+      },
       colors: {
         "success-green-100": "#D1FADF",
         "success-green-700": "#027A48",

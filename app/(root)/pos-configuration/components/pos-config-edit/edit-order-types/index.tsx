@@ -1,7 +1,7 @@
 import { useKitchen } from "@/app/context/KitchenContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import ToggleSwitch from "../../ToogleSwitch";
+import ToggleSwitch from "../../ToggleSwitch";
 import { updateDataAPI } from "../../../data-fetching";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 import { PosConfigContext } from "@/app/context/PosConfigContext";

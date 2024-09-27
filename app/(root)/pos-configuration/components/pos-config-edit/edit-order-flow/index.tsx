@@ -2,7 +2,7 @@ import { useKitchen } from "@/app/context/KitchenContext";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import ToggleSwitch from "../../ToogleSwitch";
+import ToggleSwitch from "../../ToggleSwitch";
 import { updatePosConfigInFirebase } from "../../../data-fetching";
 import { useBanner } from "@/app/context/BannerContext";
 type Props = {

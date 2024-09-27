@@ -44,7 +44,7 @@ const ItemInsightsModal = ({
     <div className={styles.modalOverlay}>
       <div
         className={`${styles.modal} ${isExiting ? styles.exit : ""}`}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.headerContent}>
           <button className={styles.closeButton} onClick={handleClose}>
@@ -56,7 +56,7 @@ const ItemInsightsModal = ({
               alt="Close icon"
             />
           </button>
-          <h2 className={styles.title}>{title}</h2>
+          {/* <h2 className={styles.title}>{title}</h2> */}
         </div>
         <div className={styles.heading}>
           <h2 className={styles.category}>{`${

@@ -19,6 +19,7 @@ import { useBanner } from "@/app/context/BannerContext";
 import { ToastStatus } from "@/app/components/base/toast-status";
 import LightLoader from "@/app/components/LightLoader";
 import { Tooltip } from "react-tooltip";
+import ReusableTooltip from "@/app/components/ReusableTooltip";
 const PosConfiguration = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -86,8 +87,8 @@ const PosConfiguration = () => {
     <>
       {banner && <ToastStatus label={bannerLabel} onClose={handleClose} />}
       <div className="lg:mt-6 mt-5">
-        <div className={styles.pageTitle}>POS Configuration</div>
-        <div className="flex flex-col lg:w-1/2 w-full lg:mt-8">
+        <div className={styles.pageTitles}>POS Configuration</div>
+        <div className="flex flex-col lg:w-1/2 w-full lg:mt-8 lg:max-w-553px">
           <div className="flex-row w-full lg:mb-6 mb-5">
             <div
               className=" border-gray-200 rounded-lg  border-solid border"
@@ -110,30 +111,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row ">
-                    <p className=" text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Show item images on register
                     </p>
                   </div>
                   <div className="flex-row">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Show item images on register
-                              `}</p><p>${`Enabling this means item images will be shown on the register screen`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Show item images on register"
+                      title="Show item images on register"
+                      description="Enabling this means item images will be shown on the register screen"
                     />
                   </div>
                 </div>
@@ -153,30 +139,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center ">
                   <div className="flex-row ">
-                    <p className=" text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Show open cash draw button
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Show open cash draw button
-                              `}</p><p>${`Enabling this allows users with access to the draw to open it outside of a transaction.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Show open cash draw button"
+                      title="Show open cash draw button"
+                      description="Enabling this allows users with access to the draw to open it outside of a transaction."
                     />
                   </div>
                 </div>
@@ -214,30 +185,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Manadatory Prepayment
                     </p>
                   </div>
                   <div className="flex-row">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Manadatory Prepayment
-                              `}</p><p>${`Enabling this means an order can't be created on the unless payment is captured upfront.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Manadatory Prepayment"
+                      title="Manadatory Prepayment"
+                      description="Enabling this means an order can't be created on the unless payment is captured upfront."
                     />
                   </div>
                 </div>
@@ -259,30 +215,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center   bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Mark orders as Ready
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Mark orders as Ready
-                              `}</p><p>${`Enabling this requires wait or kitchen stuff to mark the order as ready when it's fully prepared.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Mark orders as Ready"
+                      title="Mark orders as Ready"
+                      description="Enabling this requires wait or kitchen stuff to mark the order as ready when it's fully prepared."
                     />
                   </div>
                 </div>
@@ -301,30 +242,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center   bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Mark orders as Complete
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Mark order as Complete
-                              `}</p><p>${`Enabling this means staff will need to mark the order as complete once it's served or collected.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Mark order as Complete"
+                      title="Mark order as Complete"
+                      description="Enabling this means staff will need to mark the order as complete once it's served or collected."
                     />
                   </div>
                 </div>
@@ -345,29 +271,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Split payments by amount
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Split payments by amount`}</p><p>${`Allow customers to split payments by specific amounts for post pay orders/bills.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Split payments by amount"
+                      title="Split payments by amount"
+                      description="Allow customers to split payments by specific amounts for post pay orders/bills."
                     />
                   </div>
                 </div>
@@ -409,30 +321,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Take Away
                     </p>
                   </div>
                   <div className="flex-row">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Take Away Orders`}</p>
-                            <p>${`Enabling this option to allow the creation of take-away orders for customers on the go.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Take Away Orders"
+                      title="Take Away Orders"
+                      description="Enabling this option to allow the creation of take-away orders for customers on the go."
                     />
                   </div>
                 </div>
@@ -452,30 +349,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center  ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Dine In
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Dine In Orders`}</p>
-                            <p>${`Enable this option to allow the creation of dine-in orders for your guests.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Dine In Orders"
+                      title="Dine In Orders"
+                      description="Enable this option to allow the creation of dine-in orders for your guests."
                     />
                   </div>
                 </div>
@@ -512,30 +394,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Staff Member Feature
                     </p>
                   </div>
                   <div className="flex-row">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${` Staff Member Feature`}</p>
-                            <p>${`Track staff actions and set role-based permissions to limit access.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Staff Member Feature"
+                      title="Staff Member Feature"
+                      description="Track staff actions and set role-based permissions to limit access."
                     />
                   </div>
                 </div>
@@ -557,30 +424,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center   bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Staff Sign in Code
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${` Staff Sign in Code`}</p>
-                            <p>${`Require staff to enter a passcode before using the POS.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Staff Sign in Code"
+                      title="Staff Sign in Code"
+                      description="Require staff to enter a passcode before using the POS."
                     />
                   </div>
                 </div>
@@ -601,30 +453,15 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
+                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Inactivity Timeout
                     </p>
                   </div>
                   <div className="flex-row ">
-                    <Avatar
-                      icon={
-                        <>
-                          <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-html={`<div><p>${`Inactivity Timeout`}</p>
-                            <p>${`Automatically lock the POS after inactivity,requiring a passcode to resume use.`}</p></div>`}
-                            className="truncate"
-                          >
-                            <HelpSvg />
-                          </a>
-                          <Tooltip
-                            id="my-tooltip"
-                            className="max-w-[320px]"
-                            place={"bottom"}
-                            positionStrategy={"fixed"}
-                          />
-                        </>
-                      }
+                    <ReusableTooltip
+                      id="Inactivity Timeout"
+                      title="Inactivity Timeout"
+                      description="Automatically lock the POS after inactivity, requiring a passcode to resume use."
                     />
                   </div>
                 </div>

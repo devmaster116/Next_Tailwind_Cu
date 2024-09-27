@@ -132,14 +132,10 @@ export const EditOnlinePaymentSurcharge = ({ key }: Props) => {
               labelContainer:
                 "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
               container: noPassFee
-                ? "border-purple-700 border-2"
+                ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                 : "border-gray-300",
-              radioStyle: noPassFee
-                ? "border-purple-700 border-2"
-                : "border-gray-300",
-              innerRadioStyle: !noPassFee
-                ? "bg-white"
-                : "bg-purple-700 border-2",
+              radioStyle: noPassFee ? " border-2" : "border-gray-300",
+              innerRadioStyle: !noPassFee ? "bg-white" : "bg-purple-700 ",
             }}
           />
         </div>

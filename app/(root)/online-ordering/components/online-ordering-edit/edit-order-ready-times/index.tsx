@@ -122,14 +122,10 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
                   "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                 container:
                   idleTime === 5
-                    ? "border-purple-700 border-2"
+                    ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                     : "border-gray-300",
-                radioStyle:
-                  idleTime === 5
-                    ? "border-purple-700 border-2"
-                    : "border-gray-300",
-                innerRadioStyle:
-                  idleTime !== 5 ? "bg-white" : "bg-purple-700 border-2",
+                radioStyle: idleTime === 5 ? " border-2" : "border-gray-300",
+                innerRadioStyle: idleTime !== 5 ? "bg-white" : "bg-purple-700 ",
               }}
             />
           </div>
@@ -143,14 +139,11 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
                   "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                 container:
                   idleTime === 10
-                    ? "border-purple-700 border-2"
+                    ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                     : "border-gray-300",
-                radioStyle:
-                  idleTime === 10
-                    ? "border-purple-700 border-2"
-                    : "border-gray-300",
+                radioStyle: idleTime === 10 ? " border-2" : "border-gray-300",
                 innerRadioStyle:
-                  idleTime !== 10 ? "bg-white" : "bg-purple-700 border-2",
+                  idleTime !== 10 ? "bg-white" : "bg-purple-700 ",
               }}
             />
           </div>
@@ -231,14 +224,11 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
                   "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                 container:
                   idleTime === 30
-                    ? "border-purple-700 border-2"
+                    ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                     : "border-gray-300",
-                radioStyle:
-                  idleTime === 30
-                    ? "border-purple-700 border-2"
-                    : "border-gray-300",
+                radioStyle: idleTime === 30 ? " border-2" : "border-gray-300",
                 innerRadioStyle:
-                  idleTime !== 30 ? "bg-white" : "bg-purple-700 border-2",
+                  idleTime !== 30 ? "bg-white" : "bg-purple-700 ",
               }}
             />
           </div>
@@ -254,14 +244,11 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
                   "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                 container:
                   idleTime === 45
-                    ? "border-purple-700 border-2"
+                    ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                     : "border-gray-300",
-                radioStyle:
-                  idleTime === 45
-                    ? "border-purple-700 border-2"
-                    : "border-gray-300",
+                radioStyle: idleTime === 45 ? " border-2" : "border-gray-300",
                 innerRadioStyle:
-                  idleTime !== 45 ? "bg-white" : "bg-purple-700 border-2",
+                  idleTime !== 45 ? "bg-white" : "bg-purple-700 ",
               }}
             />
           </div>
@@ -275,14 +262,11 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
                   "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                 container:
                   idleTime === 60
-                    ? "border-purple-700 border-2"
+                    ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                     : "border-gray-300",
-                radioStyle:
-                  idleTime === 60
-                    ? "border-purple-700 border-2"
-                    : "border-gray-300",
+                radioStyle: idleTime === 60 ? " border-2" : "border-gray-300",
                 innerRadioStyle:
-                  idleTime !== 60 ? "bg-white" : "bg-purple-700 border-2",
+                  idleTime !== 60 ? "bg-white" : "bg-purple-700 ",
               }}
             />
           </div>

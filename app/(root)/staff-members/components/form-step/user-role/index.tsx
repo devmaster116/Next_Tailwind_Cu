@@ -80,16 +80,16 @@ export const UserRole = () => {
                     "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                   container:
                     state.roleName === item.name
-                      ? "border-purple-700 border-2"
+                      ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)]"
                       : "border-gray-300",
                   radioStyle:
                     state.roleName === item.name
-                      ? "border-purple-700 border-2"
+                      ? " border-2"
                       : "border-gray-300",
                   innerRadioStyle:
                     state.roleName !== item.name
                       ? "bg-white"
-                      : "bg-purple-700 border-2",
+                      : "bg-purple-700 ",
                 }}
               />
             </div>

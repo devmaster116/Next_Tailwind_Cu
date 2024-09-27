@@ -21,7 +21,7 @@ export const CustomRadio = (props: Props) => {
       className={twMerge(
         "flex justify-between items-center p-4 bg-white rounded-lg border border-gray-200 cursor-pointer",
         props?.classOverride?.container,
-        props.checked ? "border-purple-700" : ""
+        props.checked ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)]" : ""
       )}
       onClick={props.onChange}
     >
@@ -36,9 +36,9 @@ export const CustomRadio = (props: Props) => {
       </div>
       <div
         className={twMerge(
-          "flex justify-center items-center border rounded-full w-5 h-5",
+          "flex justify-center items-center border rounded-full lg:w-6 lg:h-6 w-5 h-5",
           props?.classOverride?.radioStyle,
-          props.checked ? "border-purple-700" : "border-gray-300"
+          props.checked ? "border-purple-600" : "border-gray-300"
         )}
       >
         {props.checked && (
@@ -46,7 +46,7 @@ export const CustomRadio = (props: Props) => {
             className={twMerge(
               "w-3 h-3 rounded-full",
               props?.classOverride?.innerRadioStyle,
-              props.checked ? "bg-purple-700" : "bg-white"
+              props.checked ? "bg-purple-600" : "bg-white"
             )}
           />
         )}

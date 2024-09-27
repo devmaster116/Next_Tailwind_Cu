@@ -15,14 +15,15 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ isToggled, onToggle }) => {
         onChange={onToggle}
       />
       <div
-        className={`relative w-11 lg:w-14 h-6 lg:h-7 rounded-full ${
-          isToggled ? "bg-green-600" : "bg-gray-200"
-        } dark:bg-gray-700 transition-colors`}
+        className={`relative w-11 lg:w-14 h-6 lg:h-7 rounded-full p-[2px] ${
+          isToggled ? "bg-green-500" : "bg-gray-100"
+        }  transition-colors`}
       >
         <div
-          className={`absolute top-0.5 left-1 bg-white border border-gray-300 rounded-full lg:h-6 h-5 lg:w-6 w-5 transition-all ${
+          className={` bg-white rounded-full lg:h-6 h-5 lg:w-6 w-5 transition-all ${
             isToggled ? "translate-x-full" : ""
-          } dark:border-gray-600`}
+          } `}
+          style={{ boxShadow: "0 1px 2px 0 rgba(16, 24, 40, 0.05)" }}
         ></div>
       </div>
     </label>
