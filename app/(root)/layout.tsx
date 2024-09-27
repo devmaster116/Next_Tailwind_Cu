@@ -14,7 +14,7 @@ import { FormProvider } from "../context/StaffContext";
 import { BannerProvider } from "../context/BannerContext";
 
 const urbanist = Urbanist({
-  weight: ["400", "600"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
 });
