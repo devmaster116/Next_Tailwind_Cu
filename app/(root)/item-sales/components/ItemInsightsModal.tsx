@@ -56,7 +56,7 @@ const ItemInsightsModal = ({
               alt="Close icon"
             />
           </button>
-          {/* <h2 className={styles.title}>{title}</h2> */}
+          <h2 className={styles.title}>{title}</h2>
         </div>
         <div className={styles.heading}>
           <h2 className={styles.category}>{`${
