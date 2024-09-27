@@ -8,7 +8,7 @@ import { Tooltip as ReactTooltip, Tooltip } from "react-tooltip";
 import { Avatar } from "@/app/components/base/avatar";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Drawer from "react-modern-drawer";
-import OnlineOrderingModalFullPage from "./components/OnlineOrderingModalFullPage";
+import OnlineOrderingModalFullPage from "./components/OnlineOrderingModalFullpage-2";
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { Kitchen, OnlineOrderConfig, DaySchedule } from "@/app/src/types";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
