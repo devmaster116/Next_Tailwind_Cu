@@ -9,6 +9,7 @@ import { updateOnlineOrderConfigInFirebase } from "../../../data-fetching";
 import { useBanner } from "@/app/context/BannerContext";
 import Input from "@/app/components/Input";
 import { twMerge } from "tailwind-merge";
+import { PosConfigContext } from "@/app/context/PosConfigContext";
 type Props = {
   key: number;
 };
@@ -30,6 +31,8 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
   const [idleTime, setIdleTime] = useState(
     currentOnlineOrderConfig?.orderReadyTime
   );
+  const { setBannerLabel } = useContext(PosConfigContext)!;
+
   const [showOtherReady, setShowOtherReady] = useState(false);
   const { setBanner } = useBanner();
   const onChange = (value: number) => {
@@ -63,6 +66,7 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
         console.log("configs", configs);
         loadOnlineOrderForEdit(configs);
         setBanner(true);
+        setBannerLabel("Order Ready Time updated.");
         await updateOnlineOrderConfigInFirebase(configs, kitchenId);
       }
     } catch (error) {

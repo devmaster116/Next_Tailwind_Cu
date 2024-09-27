@@ -125,7 +125,7 @@ const OnlineOrderingModalFullPage = ({
             )}
             {editPage == "online-order-types" && (
               <>
-                <OnlineOrdering.EditOrderTypes />
+                <OnlineOrdering.EditOrderTypes key={pageKey} />
               </>
             )}
             {editPage == "add-tyro-location-id" && (

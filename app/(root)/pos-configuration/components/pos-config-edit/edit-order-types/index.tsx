@@ -2,7 +2,7 @@ import { useKitchen } from "@/app/context/KitchenContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import ToggleSwitch from "../../ToogleSwitch";
-import { updateOnlineOrderConfigInFirebase } from "../../../data-fetching";
+import { updateDataAPI } from "../../../data-fetching";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { useBanner } from "@/app/context/BannerContext";
@@ -10,22 +10,18 @@ type Props = {
   key: number;
 };
 export const EditOrderTypes = ({ key }: Props) => {
-  const {
-    updatePosOrderTypesClicked,
-    setUpdatePosOrderTypesClicked,
-    currentOnlineOrderConfig, // Use state from the context
-    loadOnlineOrderForEdit,
-  } = useContext(OnlineOrderConfigContext)!;
+  const { updatePosOrderTypesClicked, setUpdatePosOrderTypesClicked } =
+    useContext(OnlineOrderConfigContext)!;
   const { setBannerLabel } = useContext(PosConfigContext)!;
   const { kitchen } = useKitchen();
   const router = useRouter();
   const kitchenId = kitchen?.kitchenId ?? null;
   const searchParams = useSearchParams();
   const [takeAwayEnabled, setTakeAwayEnabled] = useState(
-    currentOnlineOrderConfig?.takeAwayEnabled
+    kitchen?.takeAwayConfig?.enabled || false
   );
   const [dineInEnabled, setDineInEnabled] = useState(
-    currentOnlineOrderConfig?.dineInEnabled
+    kitchen?.dineInConfig?.Enabled || false
   );
   const { setBanner } = useBanner();
   const [error, setError] = useState<boolean>(false);
@@ -36,15 +32,12 @@ export const EditOrderTypes = ({ key }: Props) => {
       if (searchParams?.get("type") === "edit-order-types") {
         router.back();
 
-        const updatedConfig = {
-          ...currentOnlineOrderConfig,
-          takeAwayEnabled: takeAwayEnabled,
-          dineInEnabled: dineInEnabled,
-        };
         setBannerLabel("Order Types settings updated.");
-        loadOnlineOrderForEdit(updatedConfig); // Dispatch the updated config
         setBanner(true);
-        await updateOnlineOrderConfigInFirebase(updatedConfig, kitchenId); // Persist to Firebase
+        await updateDataAPI("kitchens", kitchenId, {
+          dineInConfig: dineInEnabled,
+          takeAwayConfig: takeAwayEnabled,
+        });
       }
     } catch (error) {
       console.error("Error updating staff:", error);
@@ -59,9 +52,9 @@ export const EditOrderTypes = ({ key }: Props) => {
     setDineInEnabled((prev) => !prev);
   };
   useEffect(() => {
-    setTakeAwayEnabled(currentOnlineOrderConfig?.takeAwayEnabled || false);
-    setDineInEnabled(currentOnlineOrderConfig?.dineInEnabled || false);
-  }, [currentOnlineOrderConfig]);
+    setTakeAwayEnabled(kitchen?.takeAwayConfig?.enabled || false);
+    setDineInEnabled(kitchen?.dineInConfig?.Enabled || false);
+  }, [kitchen]);
 
   useEffect(() => {
     if (updatePosOrderTypesClicked) {

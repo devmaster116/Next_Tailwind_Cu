@@ -31,7 +31,6 @@ const initialState: OnlineOrderConfig = {
   onlineOrderingPaused: false,
   orderReadyTime: 15,
   tyroLocationId: "",
-  onlineOrderTypes: "",
 };
 
 export type FormAction = {

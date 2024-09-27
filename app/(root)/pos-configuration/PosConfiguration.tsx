@@ -18,6 +18,7 @@ import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext
 import { useBanner } from "@/app/context/BannerContext";
 import { ToastStatus } from "@/app/components/base/toast-status";
 import LightLoader from "@/app/components/LightLoader";
+import { Tooltip } from "react-tooltip";
 const PosConfiguration = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -117,9 +118,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Show item images on register
+                              `}</p><p>${`Enabling this means item images will be shown on the register screen`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -149,9 +161,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Show open cash draw button
+                              `}</p><p>${`Enabling this allows users with access to the draw to open it outside of a transaction.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -199,9 +222,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Manadatory Prepayment
+                              `}</p><p>${`Enabling this means an order can't be created on the unless payment is captured upfront.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -233,9 +267,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Mark orders as Ready
+                              `}</p><p>${`Enabling this requires wait or kitchen stuff to mark the order as ready when it's fully prepared.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -264,9 +309,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Mark order as Complete
+                              `}</p><p>${`Enabling this means staff will need to mark the order as complete once it's served or collected.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -297,9 +353,19 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Split payments by amount`}</p><p>${`Allow customers to split payments by specific amounts for post pay orders/bills.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -351,9 +417,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Take Away Orders`}</p>
+                            <p>${`Enabling this option to allow the creation of take-away orders for customers on the go.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -383,9 +460,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Dine In Orders`}</p>
+                            <p>${`Enable this option to allow the creation of dine-in orders for your guests.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -432,9 +520,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${` Staff Member Feature`}</p>
+                            <p>${`Track staff actions and set role-based permissions to limit access.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -466,9 +565,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${` Staff Sign in Code`}</p>
+                            <p>${`Require staff to enter a passcode before using the POS.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />
@@ -499,9 +609,20 @@ const PosConfiguration = () => {
                     <Avatar
                       icon={
                         <>
-                          <a data-tooltip-id="my-tooltip" className="truncate">
+                          <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-html={`<div><p>${`Inactivity Timeout`}</p>
+                            <p>${`Automatically lock the POS after inactivity,requiring a passcode to resume use.`}</p></div>`}
+                            className="truncate"
+                          >
                             <HelpSvg />
                           </a>
+                          <Tooltip
+                            id="my-tooltip"
+                            className="max-w-[320px]"
+                            place={"bottom"}
+                            positionStrategy={"fixed"}
+                          />
                         </>
                       }
                     />

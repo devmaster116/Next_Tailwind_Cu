@@ -13,15 +13,14 @@ export type ServiceSurchargesContextType = {
   setUpdatePosOrderTypesClicked: (_clicked: boolean) => void;
 };
 const initialState: OnlineOrderConfig = {
-  dineInEnabled: false,
-  takeAwayEnabled: false,
+  dineInEnabled: true,
+  takeAwayEnabled: true,
   cardFeeFixedCharge: 0,
   cardFeePercent: 0,
   isTyroLocationIdValid: false,
   onlineOrderingPaused: false,
   orderReadyTime: 0,
   tyroLocationId: "",
-  onlineOrderTypes: "",
 };
 
 export type FormAction = {

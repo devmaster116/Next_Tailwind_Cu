@@ -9,7 +9,7 @@ import ToggleSwitch from "@/app/(root)/pos-configuration/components/ToogleSwitch
 type Props = {
   key: number;
 };
-export const EditOrderTypes = () => {
+export const EditOrderTypes = ({ key }: Props) => {
   const {
     updatePosOrderTypesClicked,
     setUpdatePosOrderTypesClicked,
@@ -27,6 +27,7 @@ export const EditOrderTypes = () => {
   const [dineInEnabled, setDineInEnabled] = useState(
     currentOnlineOrderConfig?.dineInEnabled
   );
+
   const { setBanner } = useBanner();
   const [error, setError] = useState<boolean>(false);
   const FuncUpdateOrderType = async () => {
@@ -77,7 +78,7 @@ export const EditOrderTypes = () => {
     };
   }, [updatePosOrderTypesClicked]);
   return (
-    <div className="w-full">
+    <div className="w-full" key={key}>
       <p className="font-normal text-[16px] leading-[24px] md:text-[18px] md:leading-[28px] text-gray-800 ">
         You can configure your register screen depending on your preferences.
       </p>

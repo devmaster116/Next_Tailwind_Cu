@@ -53,20 +53,22 @@ export const addOnlineOrderConfigInFirebase = async (
       await setDoc(configDocRef, {
         kitchenId: kitchenId, // Set the kitchenId in the document data
         tyroLocationId: tyroLocationId,
-        onlineOrderTypes: "", // Default values for new config
         cardFeePercent: 1.9,
         cardFeeFixedCharge: 9,
         orderReadyTime: 15,
+        dineInEnabled: true,
+        takeAwayEnabled: true,
       });
       console.log("New online order config created successfully!");
     } else {
       // If the document exists, update the existing document
       await updateDoc(configDocRef, {
         tyroLocationId: tyroLocationId,
-        onlineOrderTypes: "",
         cardFeePercent: 1.9,
         cardFeeFixedCharge: 9,
         orderReadyTime: 15,
+        dineInEnabled: true,
+        takeAwayEnabled: true,
       });
       console.log("Online order config updated successfully!");
     }

@@ -114,7 +114,7 @@ export const EditPosSecurity = ({ key }: Props) => {
             </div>
           </div>
         </div>
-        <div className={`${enabled ? "pointer-events-none opacity-50" : ""}`}>
+        <div className={`${!enabled ? "pointer-events-none opacity-50" : ""}`}>
           <div className="border-b border-gray-200">
             <div className="flex my-4 lg:my-5 gap-5 justify-between">
               <div className="flex flex-col  gap-1 ">

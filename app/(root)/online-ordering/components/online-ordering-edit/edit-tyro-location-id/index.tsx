@@ -6,6 +6,7 @@ import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext
 import { useKitchen } from "@/app/context/KitchenContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBanner } from "@/app/context/BannerContext";
+import { PosConfigContext } from "@/app/context/PosConfigContext";
 
 export const EditTyroLocationId = () => {
   const {
@@ -18,6 +19,7 @@ export const EditTyroLocationId = () => {
   const [tyroLocationId, setTyroLocationId] = useState(
     currentOnlineOrderConfig?.tyroLocationId
   );
+  const { setBannerLabel } = useContext(PosConfigContext)!;
 
   const { kitchen } = useKitchen();
   const router = useRouter();
@@ -43,6 +45,7 @@ export const EditTyroLocationId = () => {
         console.log("configs", configs);
         loadOnlineOrderForEdit(configs);
         setBanner(true);
+        setBannerLabel("Online Order has been setup.");
         await updateOnlineOrderConfigInFirebase(configs, kitchenId);
       }
     }

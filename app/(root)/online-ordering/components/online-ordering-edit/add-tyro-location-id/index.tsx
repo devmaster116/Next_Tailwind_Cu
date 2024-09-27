@@ -8,6 +8,7 @@ import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { addOnlineOrderConfigInFirebase } from "../../../data-fetching";
+import { PosConfigContext } from "@/app/context/PosConfigContext";
 
 type Props = {
   key: number;
@@ -19,7 +20,7 @@ export const AddTyroLocationId = ({ key }: Props) => {
   const { setAddTyroLocationIdClicked, addTyroLocationIdClicked } = useContext(
     OnlineOrderConfigContext
   )!;
-
+  const { setBannerLabel } = useContext(PosConfigContext)!;
   const { kitchen } = useKitchen();
   const router = useRouter();
   const kitchenId = kitchen?.kitchenId ?? null;
@@ -36,9 +37,10 @@ export const AddTyroLocationId = ({ key }: Props) => {
     }
     if (!errors && tyroLocationId) {
       if (searchParams?.get("type") === "add-tyro-location-id") {
-        await addOnlineOrderConfigInFirebase(tyroLocationId, kitchenId);
+        setBannerLabel("Online Ordering has been setup.");
         router.back();
         setTyroLocationId("");
+        await addOnlineOrderConfigInFirebase(tyroLocationId, kitchenId);
         setBanner(true);
       }
     }

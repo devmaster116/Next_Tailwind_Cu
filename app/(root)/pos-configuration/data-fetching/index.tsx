@@ -1,8 +1,9 @@
-import { Configs, OnlineOrderConfig } from "@/app/src/types";
+import { Configs, Kitchen, OnlineOrderConfig } from "@/app/src/types";
 import { db } from "@/firebase/config";
 import {
   collection,
   doc,
+  DocumentData,
   getDoc,
   getDocs,
   onSnapshot,
@@ -32,14 +33,13 @@ export const updatePosConfigInFirebase = async (
     await updateDoc(configDocRef, {
       ...updatedConfig,
     });
-
   } catch (error) {
     console.error("Error updating config in Firebase:", error);
   }
 };
 
 export const updateOnlineOrderConfigInFirebase = async (
-  updatedConfig: OnlineOrderConfig, // Should be named `updatedConfig` to reflect it's for configuration
+  updatedConfig: Kitchen, // Should be named `updatedConfig` to reflect it's for configuration
   kitchenId: string
 ) => {
   try {
@@ -60,8 +60,38 @@ export const updateOnlineOrderConfigInFirebase = async (
     await updateDoc(configDocRef, {
       ...updatedConfig,
     });
-
   } catch (error) {
     console.error("Error updating config in Firebase:", error);
+  }
+};
+export const updateDataAPI = async (
+  collectionName: string,
+  docId: string,
+  updateData: Partial<DocumentData>
+): Promise<void> => {
+  try {
+    validateStringParameter(collectionName, "collectionName");
+    validateStringParameter(docId, "docId");
+    validateUpdateData(updateData);
+    if (!docId) {
+      throw new Error("Document ID is required.");
+    }
+    const docRef = doc(db, collectionName, docId);
+    await updateDoc(docRef, updateData);
+  } catch (err) {
+    console.error(`Error updating document in ${collectionName}:`, err);
+    throw err;
+  }
+};
+
+const validateStringParameter = (param: string, paramName: string): void => {
+  if (!param || typeof param !== "string" || param.trim() === "") {
+    throw new Error(`${paramName} must be a non-empty string.`);
+  }
+};
+
+const validateUpdateData = (data: Partial<DocumentData>): void => {
+  if (!data || typeof data !== "object" || Object.keys(data).length === 0) {
+    throw new Error(`updateData must be a non-empty object.`);
   }
 };

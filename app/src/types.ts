@@ -8,6 +8,9 @@ export interface KitchenData {
   response: OrdersResponse[];
   dishByOrderType: DishByOrderType[];
 }
+export interface DineInConfig {
+  Enabled: boolean;
+}
 
 export interface KitchenItem {
   item_name: string;
@@ -92,7 +95,7 @@ interface HoursSchedule {
   to: string;
 }
 
-interface DaySchedule {
+export interface DaySchedule {
   [key: string]: HoursSchedule;
 }
 
@@ -131,6 +134,7 @@ export interface Kitchen {
   isBetaTrialEnabled?: boolean;
   kitchenOrderStatus?: string;
   takeAwayConfig?: TakeAwayConfig;
+  dineInConfig?: DineInConfig;
   subscriptionId?: string | null;
   DocumentData?: any;
 }
@@ -286,5 +290,4 @@ export interface OnlineOrderConfig {
   onlineOrderingPaused: boolean;
   orderReadyTime: number;
   tyroLocationId: string;
-  onlineOrderTypes: string;
 }

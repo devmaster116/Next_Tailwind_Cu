@@ -8,6 +8,7 @@ import { useKitchen } from "@/app/context/KitchenContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBanner } from "@/app/context/BannerContext";
 import { twMerge } from "tailwind-merge";
+import { PosConfigContext } from "@/app/context/PosConfigContext";
 type Props = {
   key: number;
 };
@@ -18,6 +19,7 @@ export const EditOnlinePaymentSurcharge = ({ key }: Props) => {
     currentOnlineOrderConfig,
     loadOnlineOrderForEdit,
   } = useContext(OnlineOrderConfigContext)!;
+  const { setBannerLabel } = useContext(PosConfigContext)!;
 
   const { kitchen } = useKitchen();
   const router = useRouter();
@@ -94,6 +96,7 @@ export const EditOnlinePaymentSurcharge = ({ key }: Props) => {
 
         loadOnlineOrderForEdit(configs);
         setBanner(true);
+        setBannerLabel("Online Payment Surcharge updated.");
         await updateOnlineOrderConfigInFirebase(configs, kitchenId);
       }
     } catch (error) {
