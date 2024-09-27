@@ -83,10 +83,10 @@ const OnlineOrdering = () => {
     setBannerLabel("");
   };
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "kitchens"), (snapShot) => {
+    const unsubscribe = onSnapshot(collection(db, "kitchens"), snapShot => {
       const _configs: Kitchen[] = [];
 
-      snapShot.docs.forEach((data) => {
+      snapShot.docs.forEach(data => {
         _configs.push(data.data() as Kitchen);
       });
 
@@ -103,7 +103,7 @@ const OnlineOrdering = () => {
         ];
         const currentDay = daysOfWeek[currentDayIndex];
         const currentDaySchedule = _configs[0].hours.schedule.find(
-          (day) => day[currentDay]
+          day => day[currentDay]
         );
 
         if (currentDaySchedule) {
@@ -147,10 +147,10 @@ const OnlineOrdering = () => {
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "onlineOrdersConfigs"),
-      (snapShot) => {
+      snapShot => {
         const _configs: OnlineOrderConfig[] = [];
 
-        snapShot.docs.forEach((data) => {
+        snapShot.docs.forEach(data => {
           _configs.push(data.data() as OnlineOrderConfig);
         });
 
