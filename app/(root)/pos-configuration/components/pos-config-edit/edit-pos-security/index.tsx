@@ -135,7 +135,7 @@ export const EditPosSecurity = ({ key }: Props) => {
             </div>
           </div>
           <div className="my-4 lg:my-5 ">
-            <div className="flex  gap-1 ">
+            <div className="flex  mb-1 ">
               <p className="text-gray-700 font-semibold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                 Inactivity Timeout
               </p>

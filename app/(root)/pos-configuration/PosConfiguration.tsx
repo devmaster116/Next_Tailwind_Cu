@@ -88,7 +88,7 @@ const PosConfiguration = () => {
       {banner && <ToastStatus label={bannerLabel} onClose={handleClose} />}
       <div className="lg:mt-6 mt-5">
         <div className={styles.pageTitles}>POS Configuration</div>
-        <div className="flex flex-col lg:w-1/2 w-full lg:mt-8 lg:max-w-553px">
+        <div className="flex flex-col  w-full lg:mt-8 lg:max-w-553px">
           <div className="flex-row w-full lg:mb-6 mb-5">
             <div
               className=" border-gray-200 rounded-lg  border-solid border"
@@ -111,7 +111,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row ">
-                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className=" text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Show item images on register
                     </p>
                   </div>
@@ -139,7 +139,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center ">
                   <div className="flex-row ">
-                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className=" text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Show open cash draw button
                     </p>
                   </div>
@@ -185,7 +185,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className=" text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Manadatory Prepayment
                     </p>
                   </div>
@@ -215,7 +215,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center   bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className="text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Mark orders as Ready
                     </p>
                   </div>
@@ -242,7 +242,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center   bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className=" text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Mark orders as Complete
                     </p>
                   </div>
@@ -271,7 +271,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className="text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Split payments by amount
                     </p>
                   </div>
@@ -321,7 +321,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className=" text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Take Away
                     </p>
                   </div>
@@ -349,7 +349,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center  ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className="text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Dine In
                     </p>
                   </div>
@@ -394,7 +394,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className=" text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className=" text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Staff Member Feature
                     </p>
                   </div>
@@ -424,7 +424,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center   bg-white pl-4 pr-3 py-4 border-solid border-b border-gray-100">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className="text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Staff Sign in Code
                     </p>
                   </div>
@@ -453,7 +453,7 @@ const PosConfiguration = () => {
               <div className="flex flex-row justify-between  justify-center rounded-b-2xl  bg-white pl-4 pr-3 py-4 ">
                 <div className="flex items-center ">
                   <div className="flex-row">
-                    <p className="text-gray-800 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
+                    <p className="text-gray-700 font-medium text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                       Inactivity Timeout
                     </p>
                   </div>
@@ -467,9 +467,10 @@ const PosConfiguration = () => {
                 </div>
                 <div className="flex items-center">
                   <span className="font-medium text-gray-700 text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px]">
-                    {posConfig[0]?.staffMemberConfigs?.idleTime !== undefined
+                    {posConfig[0]?.staffMemberConfigs?.idleTime !== undefined &&
+                    posConfig[0]?.staffMemberConfigs?.idleTime !== 0
                       ? `${posConfig[0]?.staffMemberConfigs?.idleTime} Minutes`
-                      : "No Timeout Set"}
+                      : "No Timeout"}
                   </span>
                 </div>
               </div>
