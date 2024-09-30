@@ -8,7 +8,7 @@ import { IConfig } from "@/app/src/types";
 import { ToastStatus } from "../../components/base/toast-status";
 import Drawer from "react-modern-drawer";
 
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 import styles from "./StaffMember.module.scss";
@@ -18,6 +18,7 @@ import { UserSvg } from "@/app/assets/svg/user";
 import { FormContext } from "@/app/context/StaffContext";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { PlusIcon } from "@/app/assets/svg/plusIcon";
+import { useKitchen } from "@/app/context/KitchenContext";
 
 const StaffMembers = () => {
   const router = useRouter();
@@ -27,23 +28,21 @@ const StaffMembers = () => {
   const { statusAddStaff, setStatusAddStaff } = useFormStep();
 
   const { currentStaff, roles, getStaffRole } = useContext(FormContext)!;
+  const { kitchen } = useKitchen();
+  const kitchenId = kitchen?.kitchenId ?? null;
 
-  const [staffConfig, setStaffConfig] = useState<IConfig[]>([]);
+  const [staffConfig, setStaffConfig] = useState<IConfig>();
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "configs"), snapShot => {
-      const _configs: IConfig[] = [];
-
-      snapShot.docs.forEach(data => {
-        _configs.push(data.data().staffMemberConfigs as IConfig);
-      });
-
-      if (!_configs?.[0]?.staffMembers) {
-        setStaffConfig(_configs);
+    const unsubscribe = onSnapshot(doc(db, `configs/${kitchenId}`), docSnapshot => {
+      let _configs: IConfig = docSnapshot.data()?.staffMemberConfigs as IConfig
+ 
+      if (!_configs?.staffMembers) {
+        setStaffConfig({} as IConfig);
         return;
       }
 
-      const _staffMembers = _configs[0].staffMembers;
+      const _staffMembers = _configs?.staffMembers ?? [];
 
       const updateConfigs = async () => {
         const updatedConfigs = await Promise.all(
@@ -60,8 +59,8 @@ const StaffMembers = () => {
           })
         );
 
-        _configs[0] = {
-          ..._configs[0],
+        _configs = {
+          ..._configs,
           staffMembers: updatedConfigs,
         };
 
@@ -99,7 +98,7 @@ const StaffMembers = () => {
     getStaffRole();
   }, []);
 
-  if (!Array.isArray(staffConfig) || staffConfig.length === 0)
+  if ( staffConfig?.staffMembers?.length === 0 || !Array.isArray(staffConfig?.staffMembers))
     return (
       <>
         <LightLoader />
@@ -121,7 +120,7 @@ const StaffMembers = () => {
         />
       )}
       <div className={"w-full"}>
-        {staffConfig?.[0]?.staffMembers?.length > 0 ? (
+        {staffConfig?.staffMembers?.length > 0 ? (
           <>
             <div className={styles.pageHeader}>
               <h1 className={styles.pageTitle}>Staff Members</h1>
