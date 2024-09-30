@@ -18,7 +18,7 @@ interface ViewStaffModalProps {
   content: React.ReactNode;
   onClose: MouseEventHandler;
   setIsExiting: (status: boolean) => void;
-  staffList: IConfig[];
+  staffList: IConfig;
 }
 
 const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
@@ -35,7 +35,7 @@ const ViewStaffModal = forwardRef<HTMLDivElement, ViewStaffModalProps>(
       if (currentStaff) return;
       const id = searchParams.get("id");
       if (id) {
-        const staffMembers = staffList[0].staffMembers;
+        const staffMembers = staffList?.staffMembers;
         const filteredMembers = staffMembers.filter(member => member.id === id);
         loadStaffForEdit(filteredMembers[0]);
       }

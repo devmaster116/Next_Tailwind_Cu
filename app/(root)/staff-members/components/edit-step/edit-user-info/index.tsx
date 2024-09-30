@@ -31,7 +31,7 @@ export const EditUserInfo = ({ key }: Props) => {
   } = useFormStep();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [nickFlag, setNickFlag] = useState(false);
+  const [nicknameFlag, setNicknameFlag] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [newUser, setNewUser] = useState<{ [key: string]: string }>({
     firstName: "",
@@ -54,12 +54,12 @@ export const EditUserInfo = ({ key }: Props) => {
       `${currentStaff?.firstName} ${currentStaff?.lastName.charAt(0)}` ==
       currentStaff?.displayName
     ) {
-      setNickFlag(true);
+      setNicknameFlag(true);
     }
   }, [currentStaff]);
   useEffect(() => {
     if (!isEditing) {
-      if (nickFlag) {
+      if (nicknameFlag) {
         setNewUser(prevUser => ({
           ...prevUser,
           displayName:

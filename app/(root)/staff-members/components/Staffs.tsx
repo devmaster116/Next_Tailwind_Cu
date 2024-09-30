@@ -37,7 +37,7 @@ const useOutsideAlerter = (
 };
 
 interface StaffProps {
-  staffList: IConfig[];
+  staffList: IConfig;
 }
 
 const Staffs: React.FC<StaffProps> = ({ staffList }) => {
@@ -148,8 +148,8 @@ const Staffs: React.FC<StaffProps> = ({ staffList }) => {
         </div>
         <div className={styles.body} ref={tblRef}>
           {staffList &&
-            staffList[0] &&
-            staffList[0].staffMembers?.map(
+            staffList &&
+            staffList?.staffMembers?.map(
               (item: ConfigStaffMember, index: number) => (
                 <div
                   className={styles.row}

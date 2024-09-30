@@ -9,6 +9,8 @@ import { useKitchen } from "../context/KitchenContext";
 import { useBanner } from "../context/BannerContext";
 import { useFormStep } from "../hooks/useFormStep";
 import { usePathname } from "next/navigation";
+import { featureFlags } from "../src/featureFlags/featureFlags";
+
 interface MenuItemProps {
   icon: React.ReactNode;
   name: string;
@@ -21,6 +23,8 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ show, setter }: SidebarProps) {
+  console.log("flag ==>", featureFlags.showNewComponent);
+  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
   const pathname = usePathname();
   const { user } = useUser();
   const { kitchen } = useKitchen();
@@ -138,6 +142,26 @@ export default function Sidebar({ show, setter }: SidebarProps) {
               />
             </div>
           </div>
+          {featureFlags.showNewComponent && (
+            <div className={styles.logoContainer}>
+              <h4>Menu Management</h4>
+              <div className={styles.menuItems}>
+                <MenuItem
+                  name="Categories"
+                  route="/categories"
+                  icon={
+                    <Image
+                      className={styles.icon}
+                      src="/icons/home-line.svg"
+                      height={18}
+                      width={18}
+                      alt="Home line icon"
+                    />
+                  }
+                />
+              </div>
+            </div>
+          )}
           {kitchen?.accessManagementEnabled && (
             <div className={styles.logoContainer}>
               <h4>POS Access Management</h4>
