@@ -5,8 +5,6 @@ import { useKitchen } from "@/app/context/KitchenContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useBanner } from "@/app/context/BannerContext";
 import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
 import { addOnlineOrderConfigInFirebase } from "../../../data-fetching";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 

@@ -6,13 +6,15 @@ import ToggleSwitch from "../../ToogleSwitch";
 import { updatePosConfigInFirebase } from "../../../data-fetching";
 import { useBanner } from "@/app/context/BannerContext";
 import Input from "@/app/components/Input";
+import { validateNumber } from "@/app/components/Auth/utils/helper";
+
 type Props = {
   key: number;
 };
 export const AddCustomSurcharge = ({ key }: Props) => {
   const {
-    updatePosRegisterScreenClicked,
-    setUpdatePosRegisterScreenClicked,
+    addServiceSurchargesClicked,
+    setAddServiceSurchargesClicked,
     currentPosConfig, // Use state from the context
     loadPosConfigForEdit,
   } = useContext(PosConfigContext)!;
@@ -21,16 +23,16 @@ export const AddCustomSurcharge = ({ key }: Props) => {
   const router = useRouter();
   const kitchenId = kitchen?.kitchenId ?? null;
   const searchParams = useSearchParams();
-  const [itemImageHidden, setItemImageHidden] = useState(
-    currentPosConfig?.isItemImagesHidden
-  );
-  const [openCashDraw, setOpenCashDraw] = useState(
-    currentPosConfig?.isOpenCashDraw
-  );
-  const { setBanner } = useBanner();
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [itemImageHidden, set] = useState(currentPosConfig?.isItemImagesHidden);
+  const [applySurcharge, setApplySurcharge] = useState(true);
+  const [surchargeName, setSurchargeName] = useState("");
+  const [surchargeValue, setSurchargeValue] = useState("");
 
-  const FuncUpdateRegisterScreen = async () => {
+  const { setBanner } = useBanner();
+  const [surchargeError, setSurchargeError] = useState<string>("");
+  const [percentageError, setPercentageError] = useState<string>("");
+
+  const FuncAddCustomSurcharge = async () => {
     if (!kitchenId) return;
 
     try {
@@ -38,56 +40,66 @@ export const AddCustomSurcharge = ({ key }: Props) => {
         router.back();
 
         const updatedConfig = {
-          ...currentPosConfig,
-          isItemImagesHidden: itemImageHidden,
-          isOpenCashDraw: openCashDraw,
+          ...currentPosConfig.surchargeConfigs,
+          surchargeName: surchargeName,
+          surchargeValue: surchargeValue,
         };
-        loadPosConfigForEdit(updatedConfig); // Dispatch the updated config
+        // loadPosConfigForEdit(updatedConfig); // Dispatch the updated config
         setBanner(true);
-        await updatePosConfigInFirebase(updatedConfig, kitchenId); // Persist to Firebase
+        // await updatePosConfigInFirebase(updatedConfig, kitchenId); // Persist to Firebase
       }
     } catch (error) {
       console.error("Error updating staff:", error);
     }
   };
 
-  const handleItemImageToggle = async () => {
-    setItemImageHidden((prev) => !prev);
+  const handleApplySurcharge = async () => {
+    setApplySurcharge((prev) => !prev);
   };
 
-  const handleOpenCashDrawToggle = async () => {
-    setOpenCashDraw((prev) => !prev);
+  const handleInputChange = (option: string, value: string) => {
+    console.log(option, value);
+    if (option == "name") {
+      if (!value) {
+        setSurchargeError("Please enter a surcharge name to continue");
+      } else {
+        setSurchargeError("");
+      }
+      setSurchargeName(value);
+    }
+    if (option == "percentage") {
+      if (!value) {
+        setPercentageError("Please enter a number above 0 to continue.");
+      } else if (!validateNumber(value)) {
+        setPercentageError("Invalid ID format. Please enter a valid number.");
+      } else {
+        setPercentageError("");
+      }
+      setSurchargeValue(value);
+    }
   };
-  useEffect(() => {
-    setItemImageHidden(currentPosConfig?.isItemImagesHidden || false);
-    setOpenCashDraw(currentPosConfig?.isOpenCashDraw || false);
-  }, [currentPosConfig]);
 
   useEffect(() => {
-    if (updatePosRegisterScreenClicked) {
-      FuncUpdateRegisterScreen();
+    if (addServiceSurchargesClicked) {
+      FuncAddCustomSurcharge();
     }
     return () => {
-      setUpdatePosRegisterScreenClicked(false);
+      setAddServiceSurchargesClicked(false);
     };
-  }, [updatePosRegisterScreenClicked]);
+  }, [addServiceSurchargesClicked]);
 
   return (
     <div className="w-full" key={key}>
-      <p className="font-normal text-[16px] leading-[24px] md:text-[18px] md:leading-[28px] text-gray-800">
-        You can configure your register screen depending on your preferences.
-      </p>
       <div className="mt-5 lg:mt-8">
         <div className="flex flex-col mb-6 lg:mb-7 gap-1">
           <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
-            e-Commerce location ID
+            Name
           </p>
           <Input
+            type="text"
             value={""}
-            // handleInputChange={e =>
-            //   handleInputChange("phoneNumber", e.target.value)
-            // }
-            error={errors.name}
+            handleInputChange={(e) => handleInputChange("name", e.target.value)}
+            error={surchargeError}
             placeholder="Enter a surcharge name"
             inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
           />
@@ -97,11 +109,12 @@ export const AddCustomSurcharge = ({ key }: Props) => {
             Percentage Amount
           </p>
           <Input
+            type="number"
             value={""}
-            // handleInputChange={e =>
-            //   handleInputChange("phoneNumber", e.target.value)
-            // }
-            error={errors.percentage}
+            handleInputChange={(e) =>
+              handleInputChange("percentage", e.target.value)
+            }
+            error={percentageError}
             placeholder="0%"
             inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
           />
@@ -120,8 +133,8 @@ export const AddCustomSurcharge = ({ key }: Props) => {
 
             <div className="flex flex-col">
               <ToggleSwitch
-                isToggled={itemImageHidden}
-                onToggle={handleItemImageToggle}
+                isToggled={applySurcharge}
+                onToggle={handleApplySurcharge}
               />
             </div>
           </div>

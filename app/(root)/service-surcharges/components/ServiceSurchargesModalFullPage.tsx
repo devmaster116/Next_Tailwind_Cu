@@ -3,10 +3,10 @@ import styles from "./ServiceSurchargesModalFullPage.module.scss";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import useWindowSize from "@/app/hooks/useWindowSize";
-import {useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ServiceSurcharges from "./service-surcharges-edit";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
-import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
+// import { OnlineOrderConfigContext } from "@/app/context/OnlineOrderConfigContext";
 
 const ServiceSurchargesModalFullPage = ({
   type,
@@ -18,34 +18,30 @@ const ServiceSurchargesModalFullPage = ({
   const { width } = useWindowSize();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { 
-    setUpdatePosRegisterScreenClicked,
-    setUpdatePosOrderFlowClicked,
-    setUpdatePosSecurityClicked,
+  const {
+    setUpdateServiceSurchargesClicked,
+    setAddServiceSurchargesClicked,
     pageKey,
     setPageKey,
-   } = useContext(PosConfigContext)!;
+  } = useContext(PosConfigContext)!;
 
-   const { 
-    setUpdatePosOrderTypesClicked,
-   } = useContext(OnlineOrderConfigContext)!;
+  //  const {
+  //   setUpdatePosOrderTypesClicked,
+  //  } = useContext(OnlineOrderConfigContext)!;
 
   const handleCloseModal = () => {
     setPageKey(pageKey + 1);
     router.back();
-
   };
-
 
   const handleUpdateStaff = () => {
     if (searchParams?.get("type") === "add-custom-surcharge") {
-       setUpdatePosRegisterScreenClicked(true);
+      setUpdateServiceSurchargesClicked(true);
     }
     if (searchParams?.get("type") === "edit-custom-surcharge") {
-       setUpdatePosOrderFlowClicked(true);
+      setAddServiceSurchargesClicked(true);
     }
   };
-
 
   return (
     <>
@@ -78,7 +74,8 @@ const ServiceSurchargesModalFullPage = ({
                 </button>
                 <div className={styles.titleText}>
                   {editPage == "add-custom-surcharge" && "Add Custom Surcharge"}
-                  {editPage == "edit-custom-surcharge" && "Edit Custom Surcharge"}
+                  {editPage == "edit-custom-surcharge" &&
+                    "Edit Custom Surcharge"}
                 </div>
                 <button
                   type="button"
@@ -100,15 +97,14 @@ const ServiceSurchargesModalFullPage = ({
           >
             {editPage == "add-custom-surcharge" && (
               <>
-                <ServiceSurcharges.AddCustomSurcharge  key={pageKey}/>
+                <ServiceSurcharges.AddCustomSurcharge key={pageKey} />
               </>
             )}
             {editPage == "edit-custom-surcharge" && (
               <>
-                <ServiceSurcharges.EditCustomSurcharge key={pageKey}/>
+                <ServiceSurcharges.EditCustomSurcharge key={pageKey} />
               </>
             )}
-          
           </div>
           <div className={twMerge(styles.modalFooter, "")}>
             <button

@@ -22,6 +22,7 @@ import { useBanner } from "@/app/context/BannerContext";
 import { PauseCircleSvg } from "@/app/assets/svg/pauseCircle";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
 import { ToastStatus } from "@/app/components/base/toast-status";
+import ReusableTooltip from "@/app/components/ReusableTooltip";
 
 const OnlineOrdering = () => {
   const router = useRouter();
@@ -83,10 +84,10 @@ const OnlineOrdering = () => {
     setBannerLabel("");
   };
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "kitchens"), snapShot => {
+    const unsubscribe = onSnapshot(collection(db, "kitchens"), (snapShot) => {
       const _configs: Kitchen[] = [];
 
-      snapShot.docs.forEach(data => {
+      snapShot.docs.forEach((data) => {
         _configs.push(data.data() as Kitchen);
       });
 
@@ -103,7 +104,7 @@ const OnlineOrdering = () => {
         ];
         const currentDay = daysOfWeek[currentDayIndex];
         const currentDaySchedule = _configs[0].hours.schedule.find(
-          day => day[currentDay]
+          (day) => day[currentDay]
         );
 
         if (currentDaySchedule) {
@@ -147,10 +148,10 @@ const OnlineOrdering = () => {
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "onlineOrdersConfigs"),
-      snapShot => {
+      (snapShot) => {
         const _configs: OnlineOrderConfig[] = [];
 
-        snapShot.docs.forEach(data => {
+        snapShot.docs.forEach((data) => {
           _configs.push(data.data() as OnlineOrderConfig);
         });
 
@@ -269,24 +270,10 @@ Next opening time is Wednesday 11am`}</p></div>`}
                       <p className=" text-gray-800 font-semibold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                         Order Ready Times
                       </p>
-                      <Avatar
-                        icon={
-                          <>
-                            <a
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-html={`<div><p>${`Order Ready Times`}</p><p>${`This setting determines what the user sees as the estimated time their order will be ready when they are ordering online.`}</p></div>`}
-                              className="truncate"
-                            >
-                              <HelpSvg />
-                            </a>
-                            <Tooltip
-                              id="my-tooltip"
-                              className="max-w-[320px]"
-                              place={"bottom"}
-                              positionStrategy={"fixed"}
-                            />
-                          </>
-                        }
+                      <ReusableTooltip
+                        id="Order Ready Times"
+                        title="Order Ready Times"
+                        description="This setting determines what the user sees as the estimated time their order will be ready when they are ordering online."
                       />
                     </div>
                     <div className="flex items-center">
@@ -310,25 +297,10 @@ Next opening time is Wednesday 11am`}</p></div>`}
                       <p className=" text-gray-800 font-semibold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                         Tyro Location ID
                       </p>
-                      <Avatar
-                        icon={
-                          <>
-                            <a
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-html={`<div><p>${`Tyro Location ID
-                              `}</p><p>${`To enable your Swifti online store front you need to have a Tyro-e-Commerce location ID.`}</p></div>`}
-                              className="truncate"
-                            >
-                              <HelpSvg />
-                            </a>
-                            <Tooltip
-                              id="my-tooltip"
-                              className="max-w-[320px]"
-                              place={"bottom"}
-                              positionStrategy={"fixed"}
-                            />
-                          </>
-                        }
+                      <ReusableTooltip
+                        id="Tyro Location ID"
+                        title="Tyro Location ID"
+                        description="To enable your Swifti online store front you need to have a Tyro-e-Commerce location ID."
                       />
                     </div>
                     <div className="flex items-center">
@@ -352,27 +324,12 @@ Next opening time is Wednesday 11am`}</p></div>`}
                       <p className=" text-gray-800 font-semibold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                         Online Payment Surcharge
                       </p>
-                      <Avatar
-                        icon={
-                          <>
-                            <a
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-html={`<div><p>${`Online Payment Surcharge
-                              `}</p><p>${`Online payment fee is 1.9% + 11¢ per transaction.
+                      <ReusableTooltip
+                        id="Online Payment Surcharge"
+                        title="Online Payment Surcharge"
+                        description="Online payment fee is 1.9% + 11¢ per transaction.
 
-Below you have the option to pass part or all of the fee to the customer`}</p></div>`}
-                              className="truncate"
-                            >
-                              <HelpSvg />
-                            </a>
-                            <Tooltip
-                              id="my-tooltip"
-                              className="max-w-[320px]"
-                              place={"bottom"}
-                              positionStrategy={"fixed"}
-                            />
-                          </>
-                        }
+                            Below you have the option to pass part or all of the fee to the customer"
                       />
                     </div>
                     <div className="flex items-center">
@@ -398,25 +355,10 @@ Below you have the option to pass part or all of the fee to the customer`}</p></
                       <p className=" text-gray-800 font-semibold text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px]">
                         Online Order Types
                       </p>
-                      <Avatar
-                        icon={
-                          <>
-                            <a
-                              data-tooltip-id="my-tooltip"
-                              data-tooltip-html={`<div><p>${`Online Order Types
-                              `}</p><p>${`You can configure your register screen depending on your preferences.`}</p></div>`}
-                              className="truncate"
-                            >
-                              <HelpSvg />
-                            </a>
-                            <Tooltip
-                              id="my-tooltip"
-                              className="max-w-[320px]"
-                              place={"bottom"}
-                              positionStrategy={"fixed"}
-                            />
-                          </>
-                        }
+                      <ReusableTooltip
+                        id="Online Order Types"
+                        title="Online Order Types"
+                        description="You can configure your register screen depending on your preferences."
                       />
                     </div>
                     <div className="flex items-center">

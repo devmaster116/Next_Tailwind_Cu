@@ -18,6 +18,10 @@ module.exports = {
         "min-lg": { min: "961px" },
         "max-lg": { max: "961px" },
       },
+      width: {
+        "2/9": "22.2222%", // 2 divided by 9 as a percentage
+        "1/9": "11.1111%", // Custom width for 1/9
+      },
       maxWidth: {
         "553px": "553px", // Define a custom max-width of 553px
       },

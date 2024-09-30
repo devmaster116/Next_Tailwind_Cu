@@ -9,6 +9,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useBanner } from "@/app/context/BannerContext";
 import { twMerge } from "tailwind-merge";
 import { PosConfigContext } from "@/app/context/PosConfigContext";
+import Image from "next/image";
+
 type Props = {
   key: number;
 };
@@ -56,13 +58,22 @@ export const EditOnlinePaymentSurcharge = ({ key }: Props) => {
   };
 
   const handleFeeInputChange = (type: "percent" | "fixed", value: string) => {
-    const numValue = parseFloat(value);
-    if (type === "percent") {
-      setCardFeePercent(numValue);
-    } else {
-      setCardFeeFixedCharge(numValue);
-    }
+    console.log("value", value);
 
+    const numValue = parseFloat(value);
+    // if (type === "percent") {
+    //   console.log("num", numValue);
+    //   setCardFeePercent(numValue);
+    // } else {
+    //   setCardFeeFixedCharge(numValue);
+    // }
+    if (!isNaN(numValue) || value === "") {
+      if (type === "percent") {
+        setCardFeePercent(value === "" ? 0 : numValue);
+      } else {
+        setCardFeeFixedCharge(value === "" ? 0 : numValue);
+      }
+    }
     if (cardFeePercent >= 1.9 || cardFeeFixedCharge >= 95) {
       setErrors(
         "The surcharge you pass on can’t be more than the online payment fee (1.9% + 95¢)"
@@ -176,16 +187,38 @@ export const EditOnlinePaymentSurcharge = ({ key }: Props) => {
                     <p className="text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-semibold text-gray-700">
                       Payment Surcharge
                     </p>
-                    <Input
-                      value={cardFeePercent.toString()}
+                  </div>
+                  <div className=" relative flex flex-col h-[44px] lg:h-[48px]">
+                    <input
                       type="number"
-                      handleInputChange={(e) =>
+                      className={`${"bg-white"} border  ${
+                        errors
+                          ? "border-red-500"
+                          : "border-gray-300 focus:!border-sky-500"
+                      }  focus:outline-none rounded-xl px-[14px] py-[10px]   w-full h-full text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-normal text-gray-900 placeholder-gray-500`}
+                      style={{
+                        boxShadow: "0 1px 2px 0 rgba(16, 24, 40, 0.05)",
+                      }}
+                      value={cardFeePercent.toString()}
+                      placeholder={
+                        !errors
+                          ? "Enter Card Fee Percent"
+                          : "Default display name"
+                      }
+                      onChange={(e) =>
                         handleFeeInputChange("percent", e.target.value)
                       }
-                      error={errors}
-                      placeholder="Enter card fee percent"
-                      inputStyle="text-[1rem] lg:!text-[1.125rem] leading-[24] lg:!leading-[28] text-gray-900 font-normal placeholder-gray-500"
                     />
+                    {errors && (
+                      <div className="absolute right-[10px] top-[15px]">
+                        <Image
+                          src="/icons/error.svg"
+                          height={16}
+                          width={16}
+                          alt="Business Details icon"
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
 

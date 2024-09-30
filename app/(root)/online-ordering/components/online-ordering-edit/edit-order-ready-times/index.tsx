@@ -203,14 +203,11 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
                   "text-[16px] leading-[24px] lg:text-[18px] lg:leading-[28px] font-semibold text-gray-700",
                 container:
                   idleTime === 25
-                    ? "border-purple-700 border-2"
+                    ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                     : "border-gray-300",
-                radioStyle:
-                  idleTime === 25
-                    ? "border-purple-700 border-2"
-                    : "border-gray-300",
+                radioStyle: idleTime === 25 ? "border-2" : "border-gray-300",
                 innerRadioStyle:
-                  idleTime !== 25 ? "bg-white" : "bg-purple-700 border-2",
+                  idleTime !== 25 ? "bg-white" : "bg-purple-700 ",
               }}
             />
           </div>
@@ -288,7 +285,7 @@ export const EditOrderReadyTimes = ({ key }: Props) => {
               className={twMerge(
                 "flex justify-center items-center border rounded-full w-5 h-5",
                 showOtherReady
-                  ? "border-purple-700 border-2"
+                  ? "shadow-[inset_0_0_0_2px_rgba(168,85,247)] "
                   : "border-gray-300"
               )}
             >

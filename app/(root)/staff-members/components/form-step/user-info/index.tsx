@@ -265,7 +265,7 @@ export const UserInfo = ({ key }: Props) => {
               </p>
             </div>
           </div>
-          <p
+          <p                                                                                                                                
             className={`${
               errors.displayName ? "text-red-500" : "text-gray-600"
             } text-[14px] leading-[20px] lg:text-[16px] lg:leading-[24px] font-normal `}

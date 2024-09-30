@@ -26,6 +26,12 @@ export type PosConfigContextType = {
 
   updatePosSecurityClicked: boolean;
   setUpdatePosSecurityClicked: (_clicked: boolean) => void;
+
+  updateServiceSurchargesClicked: boolean;
+  setUpdateServiceSurchargesClicked: (_clicked: boolean) => void;
+
+  addServiceSurchargesClicked: boolean;
+  setAddServiceSurchargesClicked: (_clicked: boolean) => void;
 };
 
 const initialState: Configs = {
@@ -41,6 +47,21 @@ const initialState: Configs = {
     idleTime: 0,
     passCodeEnabled: false,
     staffMembers: [],
+  },
+  surchargeConfigs: {
+    customSurcharges: [],
+    publicHolidaySurcharge: {
+      enabled: true,
+      value: 0,
+    },
+    saturdaySurcharge: {
+      enabled: true,
+      value: 0,
+    },
+    sundaySurcharge: {
+      enabled: true,
+      value: 0,
+    },
   },
 };
 
@@ -66,6 +87,10 @@ export const PosConfigContext = createContext<PosConfigContextType>({
   setUpdatePosOrderTypesClicked: () => {},
   updatePosSecurityClicked: false,
   setUpdatePosSecurityClicked: () => {},
+  updateServiceSurchargesClicked: false,
+  setUpdateServiceSurchargesClicked: () => {},
+  addServiceSurchargesClicked: false,
+  setAddServiceSurchargesClicked: () => {},
 });
 
 export const PosConfigProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -78,6 +103,10 @@ export const PosConfigProvider: React.FC<{ children: React.ReactNode }> = ({
   const [updatePosOrderTypesClicked, setUpdatePosOrderTypesClicked] =
     useState(false);
   const [updatePosSecurityClicked, setUpdatePosSecurityClicked] =
+    useState(false);
+  const [addServiceSurchargesClicked, setAddServiceSurchargesClicked] =
+    useState(false);
+  const [updateServiceSurchargesClicked, setUpdateServiceSurchargesClicked] =
     useState(false);
   const [pageKey, setPageKey] = useState(1);
   const [bannerLabel, setBannerLabel] = useState("");
@@ -117,6 +146,11 @@ export const PosConfigProvider: React.FC<{ children: React.ReactNode }> = ({
         setUpdatePosOrderTypesClicked,
         updatePosSecurityClicked,
         setUpdatePosSecurityClicked,
+
+        updateServiceSurchargesClicked,
+        setUpdateServiceSurchargesClicked,
+        addServiceSurchargesClicked,
+        setAddServiceSurchargesClicked,
       }}
     >
       {children}

@@ -11,8 +11,8 @@ type Props = {
 };
 export const EditCustomSurcharge = ({ key }: Props) => {
   const {
-    updatePosRegisterScreenClicked,
-    setUpdatePosRegisterScreenClicked,
+    updateServiceSurchargesClicked,
+    setUpdateServiceSurchargesClicked,
     currentPosConfig, // Use state from the context
     loadPosConfigForEdit,
   } = useContext(PosConfigContext)!;
@@ -64,13 +64,13 @@ export const EditCustomSurcharge = ({ key }: Props) => {
   }, [currentPosConfig]);
 
   useEffect(() => {
-    if (updatePosRegisterScreenClicked) {
+    if (updateServiceSurchargesClicked) {
       FuncUpdateRegisterScreen();
     }
     return () => {
-      setUpdatePosRegisterScreenClicked(false);
+      setUpdateServiceSurchargesClicked(false);
     };
-  }, [updatePosRegisterScreenClicked]);
+  }, [updateServiceSurchargesClicked]);
 
   return (
     <div className="w-full" key={key}>

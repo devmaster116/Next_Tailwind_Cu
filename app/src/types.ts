@@ -245,13 +245,37 @@ export interface Configs {
   markOrderReadyConfig: boolean;
   kitchenId: string;
   staffMemberConfigs: StaffMemberConfigs;
+  surchargeConfigs: SurchargeConfigs;
+}
+export interface SurchargeConfigs {
+  customSurcharges: CustomSurcharges[];
+  publicHolidaySurcharge: PublicHolidaySurcharge;
+  saturdaySurcharge: SaturdaySurcharge;
+  sundaySurcharge: SundaySurcharge;
+}
+export interface CustomSurcharges {
+  enabled: boolean;
+  surchargeId: string;
+  surchargeName: string;
+  surchargeValue: number;
+}
+export interface PublicHolidaySurcharge {
+  enabled: boolean;
+  value: number;
 }
 export interface DishByOrderType {
   orderType: string;
   item_count: number;
   total_price: number;
 }
-
+export interface SaturdaySurcharge {
+  enabled: true;
+  value: number;
+}
+export interface SundaySurcharge {
+  enabled: boolean;
+  value: number;
+}
 export interface OrderMultiDayData {
   order_date: {
     value: string;
